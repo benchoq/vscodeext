@@ -28,8 +28,10 @@
       "@task/*": ["./src/tasks/*"],
       "@util/*": ["./src/util/*"],
       "@debug/*": ["./src/debug/*"],
-      "@preview/*": ["./src/preview/*"]
+      "@preview/*": ["./src/preview/*"],
+      "@qtshared/*": ["../shared/*"]
     }
   },
-  "include": ["src/**/*", "test/**/*"]
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": ["webview-ui/**/*"]
 }

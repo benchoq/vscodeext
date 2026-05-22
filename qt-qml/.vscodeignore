@@ -26,3 +26,6 @@ extension_packs/**
 .eslintcache
 **/tsconfig.tsbuildinfo
 tests/**
+webview-ui/**
+!webview-ui/dist/**
+!webview-ui/ThirdPartyNotices.txt

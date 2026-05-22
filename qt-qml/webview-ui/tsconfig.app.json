@@ -8,9 +8,12 @@
     "allowJs": true,
     "checkJs": true,
     "isolatedModules": true,
-    "moduleDetection": "force"
+    "moduleDetection": "force",
+    "paths": {
+      "@/*": ["./src/*"],
+      // "@shared/*": ["../src/webview/shared/*"],
+      "@qtshared/*": ["../../shared/*"]
+    }
   },
-  "include": [
-    "webview/**/*.{ts,js,svelte}"
-  ]
+  "include": ["src/**/*.{ts,js,svelte}"],
 }

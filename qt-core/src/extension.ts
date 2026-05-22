@@ -38,7 +38,6 @@ import {
 } from '@/webview/welcome/controller';
 import { registerCreateNewItemPanelCommand } from '@/webview/new-item/panel';
 import { registerQrcEditorProvider } from '@/webview/qrc-editor/editor-provider';
-import { registerQmlTraceProvider } from '@/webview/qml-trace/editor-provider';
 import { registerOpenInLinguistCommand } from '@/translation';
 
 const logger = createLogger('extension');
@@ -79,7 +78,7 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   registerQrcEditorProvider(context);
-  registerQmlTraceProvider(context);
+  // registerQmlTraceProvider(context);
   await enableQtTsFileSupport(context);
 
   telemetry.sendEvent(`activated`);

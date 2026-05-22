@@ -44,6 +44,7 @@ import {
   AcquirePortTaskProvider
 } from './tasks/acquire-port.mjs';
 import { registerTraceViewerCommand } from './traceviewer/installer.mts';
+import { registerQmlTraceProvider } from '@/webview/qml-trace/editor-provider.mts';
 import { QtQmlAPIImpl } from './api.mts';
 
 export let projectManager: QMLProjectManager;
@@ -104,6 +105,9 @@ export async function activate(context: vscode.ExtensionContext) {
     registerStopQmlProfilerCommand(),
     registerTraceViewerCommand(context)
   );
+
+  registerQmlTraceProvider(context);
+
   taskProviders.push(
     vscode.tasks.registerTaskProvider(
       AcquirePortTaskProvider.type,
