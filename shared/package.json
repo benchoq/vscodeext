@@ -1,0 +1,12 @@
+{
+  "name": "qtshared",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@types/vscode-webview": "^1.57.5"
+  },
+  "devDependencies": {
+    "@tsconfig/svelte": "^5.0.8"
+  }
+}

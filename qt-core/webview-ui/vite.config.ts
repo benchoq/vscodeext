@@ -25,7 +25,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      '@shared': path.resolve(__dirname, '../src/webview/shared')
+      '@shared': path.resolve(__dirname, '../src/webview/shared'),
+      '@qtshared': path.resolve(__dirname, '../../shared')
     }
   },
   server: {

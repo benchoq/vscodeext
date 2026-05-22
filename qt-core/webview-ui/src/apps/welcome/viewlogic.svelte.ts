@@ -3,7 +3,7 @@
 
 import _ from 'lodash';
 
-import { vscode } from '@/apps/vscode';
+import { vscode } from '@qtshared/webview/vscode';
 import { CommandId } from '@shared/message';
 import {
   type ActionId,

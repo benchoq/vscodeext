@@ -4,7 +4,7 @@
 import _ from 'lodash';
 import { tick } from 'svelte';
 
-import { vscode } from '@/apps/vscode';
+import { vscode } from '@qtshared/webview/vscode';
 import { CommandId, type CommandReply } from '@shared/message';
 import {
   isRccTag,

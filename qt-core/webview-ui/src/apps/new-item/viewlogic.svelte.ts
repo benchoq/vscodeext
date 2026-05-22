@@ -4,7 +4,7 @@
 import { z } from 'zod';
 
 import * as texts from '@/apps/texts';
-import { vscode } from '@/apps/vscode';
+import { vscode } from '@qtshared/webview/vscode';
 import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
 import { CommandId, isErrorResponse } from '@shared/message';
 import { isPreset, isPresetArray } from './types.svelte';
