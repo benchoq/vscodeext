@@ -9,7 +9,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import P from 'flowbite-svelte/P.svelte';
   import Dropdown from 'flowbite-svelte/Dropdown.svelte';
 
-  import { textOrFallback } from '@/utils/utils';
+  import { textOrFallback } from '@qtshared/webview/utils/utils';
   import type { PickerItem } from './types.svelte';
 
   let {

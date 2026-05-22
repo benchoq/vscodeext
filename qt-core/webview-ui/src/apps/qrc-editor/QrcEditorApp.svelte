@@ -6,7 +6,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
 
-  import '@/styles/app.css';
+  import '@qtshared/webview/styles/app.css';
   import * as texts from '@/apps/texts';
   import DropMask from '@/comps/DropMask.svelte';
   import { DragDropHandler } from '@/comps/DragDropHandler.svelte';

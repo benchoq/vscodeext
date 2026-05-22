@@ -8,7 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import Row from '@/comps/Row.svelte';
   import Column from '@/comps/Column.svelte';
-  import * as format from '@/utils/format'
+  import * as format from '@qtshared/webview/utils/format'
   import {
     isBlogArticle,
     type RssSource,

@@ -6,8 +6,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  import '@/styles/app.css';
-  import { focusAnyChild } from '@/utils/utils';
+  import '@qtshared/webview/styles/app.css';
+  import { focusAnyChild } from '@qtshared/webview/utils/utils';
   import { onAppMount } from './viewlogic.svelte';
   import Wizard from './Wizard.svelte';
 

@@ -6,7 +6,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { type Component } from 'svelte';
   import { ChevronDown } from '@lucide/svelte';
-  import { textOrFallback } from '@/utils/utils';
+  import { textOrFallback } from '@qtshared/webview/utils/utils';
 
   let {
     text = '-',
