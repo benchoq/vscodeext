@@ -7,7 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { onMount } from 'svelte';
   import { ExternalLink, Settings } from '@lucide/svelte';
 
-  import '@/styles/app.css';
+  import '@qtshared/webview/styles/app.css';
   import IconButton from '@/comps/IconButton.svelte';
   import QmlTraceConfigDialog from './QmlTraceConfigDialog.svelte';
   import { qmltrace as texts } from '@/apps/texts';

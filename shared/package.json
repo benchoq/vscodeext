@@ -6,6 +6,11 @@
     "@types/vscode-webview": "^1.57.5"
   },
   "devDependencies": {
-    "@tsconfig/svelte": "^5.0.8"
+    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.3.0",
+    "@tsconfig/svelte": "^5.0.8",
+    "flowbite": "^4.0.2",
+    "flowbite-svelte": "^1.33.1",
+    "tailwindcss": "^4.3.0"
   }
 }
