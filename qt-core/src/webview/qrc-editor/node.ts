@@ -13,7 +13,7 @@ import {
   FileTag,
   isFileTag,
   QrcNodePos
-} from '@/webview/shared/qrc-types';
+} from '@qtshared/webview/qrc-types';
 import { QrcDoc } from './doc';
 import * as utils from './utils';
 

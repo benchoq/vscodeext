@@ -1,7 +1,7 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import { TagPrefix, ExEntry, ExCategory } from '@/webview/shared/ex-browser';
+import { TagPrefix, ExEntry, ExCategory } from '@qtshared/webview/ex-browser';
 import * as catHelpers from './helpers-category';
 
 export function filterByCategory(source: ExEntry[], category: ExCategory) {

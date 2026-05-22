@@ -5,7 +5,7 @@ import _ from 'lodash';
 import axios from 'axios';
 
 import { createLogger } from 'qt-lib';
-import { isCatalog, type CourseData } from '@/webview/shared/courses';
+import { isCatalog, type CourseData } from '@qtshared/webview/courses';
 import * as consts from './constants';
 
 const logger = createLogger('courses-data-manager');

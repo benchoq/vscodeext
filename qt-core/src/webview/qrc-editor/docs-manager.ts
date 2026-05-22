@@ -3,10 +3,10 @@
 
 import * as vscode from 'vscode';
 
-import { QrcDocChangeEvent } from '@/webview/shared/qrc-types';
+import { QrcDocChangeEvent } from '@qtshared/webview/qrc-types';
 import { defaultQrcLines } from './xml-io';
 import { QrcDoc } from './doc';
-import { CommandId } from '../shared/message';
+import { CommandId } from '@qtshared/webview/message';
 
 export class QrcDocsManager {
   private readonly _allDocs = new Map<string, QrcDoc>();

@@ -5,7 +5,7 @@ import {
   type ExtInfo,
   type BlogArticle,
   type VideoEntry
-} from '@shared/welcome';
+} from '@qtshared/webview/welcome';
 
 export const data = $state({
   ext: [] as ExtInfo[],

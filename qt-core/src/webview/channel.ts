@@ -8,7 +8,7 @@ import {
   CommandId,
   ErrorResponse,
   Issue
-} from '@/webview/shared/message';
+} from '@qtshared/webview/message';
 
 export class WebviewChannel {
   private readonly _view: vscode.Webview;

@@ -11,8 +11,8 @@ import {
   CommandId,
   CommandHandler,
   IsCommand
-} from '@/webview/shared/message';
-import { isCourseType } from '@/webview/shared/courses';
+} from '@qtshared/webview/message'
+import { isCourseType } from '@qtshared/webview/courses';
 import { CoursesDataManager } from './data-manager';
 import * as consts from './constants';
 

@@ -7,7 +7,7 @@ import {
   ExEntry,
   ExCategory,
   ExCategoryType
-} from '@/webview/shared/ex-browser';
+} from '@qtshared/webview/ex-browser';
 import { exBrowser as texts } from '@/texts';
 import * as consts from './constants';
 

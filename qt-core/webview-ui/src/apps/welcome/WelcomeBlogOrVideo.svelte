@@ -14,7 +14,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     type RssSource,
     type VideoEntry,
     type BlogArticle,
-  } from '@shared/welcome';
+  } from '@qtshared/webview/welcome';
 
   import EmptyState from '@/comps/EmptyState.svelte';
   import ImageTextCard from '@/comps/ImageTextCard.svelte';

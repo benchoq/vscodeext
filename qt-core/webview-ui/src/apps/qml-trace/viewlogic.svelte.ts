@@ -4,7 +4,7 @@
 import _ from 'lodash';
 
 import { vscode } from '@qtshared/webview/vscode';
-import { CommandId } from '@shared/message';
+import { CommandId } from '@qtshared/webview/message';
 import { data } from './states.svelte';
 
 export async function onAppMount() {

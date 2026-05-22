@@ -6,13 +6,13 @@ import * as vscode from 'vscode';
 
 import { createLogger } from 'qt-lib';
 import { WebviewChannel } from '@/webview/channel';
-import { DataType } from '@/webview/shared/welcome';
+import { DataType } from '@qtshared/webview/welcome';
 import {
   Command,
   CommandId,
   CommandHandler,
   IsCommand
-} from '@/webview/shared/message';
+} from '@qtshared/webview/message';
 import { WelcomePageDataManager } from './data-manager';
 import * as consts from './constants';
 

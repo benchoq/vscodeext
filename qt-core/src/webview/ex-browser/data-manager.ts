@@ -10,7 +10,7 @@ import {
   ExCategory,
   ExPackagePoolDir,
   ExResolvedPaths
-} from '@/webview/shared/ex-browser';
+} from '@qtshared/webview/ex-browser';
 import { fsDir, fsFile } from '@/fs-utils';
 import * as consts from './constants';
 import * as catHelpers from './helpers-category';

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import { InputIssue } from '@/comps/types.svelte';
-import { type ErrorResponse } from '@shared/message';
+import { type ErrorResponse } from '@qtshared/webview/message';
 
 export type EventType =
   | 'inputChanged'

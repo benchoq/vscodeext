@@ -11,9 +11,9 @@ import {
   CommandId,
   CommandHandler,
   IsCommand
-} from '@/webview/shared/message';
+} from '@qtshared/webview/message';
 import { WebviewChannel } from '@/webview/channel';
-import { QmlTraceCommandReply } from '@/webview/shared/qml-trace';
+import { QmlTraceCommandReply } from '@qtshared/webview/qml-trace';
 import { QmlTraceDoc } from './doc';
 import * as texts from '@/texts';
 

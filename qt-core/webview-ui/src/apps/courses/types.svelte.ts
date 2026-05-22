@@ -7,7 +7,7 @@ import {
   isCourseLevel,
   type CourseData,
   type CourseLevel
-} from '@shared/courses';
+} from '@qtshared/webview/courses';
 
 export type SortBy =
   | 'name'

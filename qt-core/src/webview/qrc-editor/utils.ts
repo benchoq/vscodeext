@@ -11,7 +11,7 @@ import {
   isQResourceTag,
   isFileTag,
   FileTag
-} from '@/webview/shared/qrc-types';
+} from '@qtshared/webview/qrc-types';
 
 export function makeUniqueName(name: string, alreadyUsed: Set<string>): string {
   if (!alreadyUsed.has(name)) {

@@ -15,7 +15,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     ArrowLeftToLine,
   } from '@lucide/svelte';
 
-  import { type ExEntry } from '@shared/ex-browser';
+  import { type ExEntry } from '@qtshared/webview/ex-browser';
   import Overlay from '@/comps/Overlay.svelte';
   import Separator from '@/comps/Separator.svelte';
   import IconButton from '@/comps/IconButton.svelte';

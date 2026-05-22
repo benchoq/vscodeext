@@ -11,7 +11,7 @@
     "moduleDetection": "force",
     "paths": {
       "@/*": ["./src/*"],
-      "@shared/*": ["../src/webview/shared/*"],
+      // "@shared/*": ["../src/webview/shared/*"],
       "@qtshared/*": ["../../shared/*"]
     }
   },

@@ -6,7 +6,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { Check } from '@lucide/svelte';
 
-  import { type ExEntry } from '@shared/ex-browser';
+  import { type ExEntry } from '@qtshared/webview/ex-browser';
   import ExThumbnail from './ExThumbnail.svelte';
   import { ui } from './states.svelte';
   import { exBrowser as texts } from '@/apps/texts';

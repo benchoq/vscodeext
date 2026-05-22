@@ -12,14 +12,14 @@ import {
   CommandId,
   CommandHandler,
   IsCommand
-} from '@/webview/shared/message';
+} from '@qtshared/webview/message';
 import {
   isExEntry,
   isExPackage,
   isExCategory,
   isExNewProjectArgs,
   ExBrowserViewConfig
-} from '@/webview/shared/ex-browser';
+} from '@qtshared/webview/ex-browser';
 import { getNewProjectBaseDir } from '@/qtcli/commands';
 import { QtcliRestClient, QtcliRestError } from '@/qtcli/rest';
 import * as texts from '@/texts';

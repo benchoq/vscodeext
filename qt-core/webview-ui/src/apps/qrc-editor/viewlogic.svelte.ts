@@ -5,12 +5,12 @@ import _ from 'lodash';
 import { tick } from 'svelte';
 
 import { vscode } from '@qtshared/webview/vscode';
-import { CommandId, type CommandReply } from '@shared/message';
+import { CommandId, type CommandReply } from '@qtshared/webview/message';
 import {
   isRccTag,
   isQrcDocChangeEvent,
   type QrcDocChangeEvent
-} from '@shared/qrc-types';
+} from '@qtshared/webview/qrc-types';
 import {
   GroupNodeWrapper,
   FileNodeWrapper,

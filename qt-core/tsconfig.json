@@ -11,7 +11,7 @@
     "outDir": "out",
     "lib": ["ES2020"],
     "sourceMap": true,
-    "rootDirs": ["src", "test"],
+    "rootDirs": ["src", "test", ".."],
     "strict": true /* enable all strict type-checking options */,
     "noImplicitOverride": true,
     "noUncheckedIndexedAccess": true,
@@ -24,7 +24,8 @@
     "noUnusedParameters": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@cmd/*": ["./src/commands/*"]
+      "@cmd/*": ["./src/commands/*"],
+      "@qtshared/*": ["../shared/*"]
     }
   },
   "include": ["src/**/*", "test/**/*"],

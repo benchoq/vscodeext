@@ -1,8 +1,6 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import { isArray } from 'lodash';
-
 // extension information
 export interface ExtInfo {
   id: string;
@@ -29,7 +27,7 @@ export function isExtInfo(x: unknown): x is ExtInfo {
 }
 
 export function isExtInfoArray(x: unknown): x is ExtInfo[] {
-  return isArray(x) && x.every(isExtInfo);
+  return Array.isArray(x) && x.every(isExtInfo);
 }
 
 // blog article
@@ -59,7 +57,7 @@ export function isBlogArticle(x: unknown): x is BlogArticle {
 }
 
 export function isBlogArticleArray(x: unknown): x is BlogArticle[] {
-  return isArray(x) && x.every(isBlogArticle);
+  return Array.isArray(x) && x.every(isBlogArticle);
 }
 
 // video
@@ -87,7 +85,7 @@ export function isVideoEntry(x: unknown): x is VideoEntry {
 }
 
 export function isVideoEntryArray(x: unknown): x is VideoEntry[] {
-  return isArray(x) && x.every(isVideoEntry);
+  return Array.isArray(x) && x.every(isVideoEntry);
 }
 
 // others

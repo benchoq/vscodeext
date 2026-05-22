@@ -5,7 +5,7 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 
 import { fsDir, fsFile } from '@/fs-utils';
-import { ExEntry, ExResolvedPaths } from '@/webview/shared/ex-browser';
+import { ExEntry, ExResolvedPaths } from '@qtshared/webview/ex-browser';
 import * as helpers from './helpers';
 import * as consts from './constants';
 

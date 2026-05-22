@@ -10,7 +10,7 @@ import {
   DataType,
   VideoEntry,
   BlogArticle
-} from '@/webview/shared/welcome';
+} from '@qtshared/webview/welcome';
 import * as consts from './constants';
 
 interface RssCache {

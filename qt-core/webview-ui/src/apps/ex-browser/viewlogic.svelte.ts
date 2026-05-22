@@ -16,9 +16,9 @@ import {
   isExCategoryArray,
   isExBrowserViewConfig,
   isExResolvedPathsRecord
-} from "@shared/ex-browser";
+} from "@qtshared/webview/ex-browser";
 import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
-import { CommandId, isErrorResponse } from "@shared/message";
+import { CommandId, isErrorResponse } from "@qtshared/webview/message";
 import { data, ui, type OverlayName } from './states.svelte';
 
 export async function onAppMount() {

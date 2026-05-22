@@ -9,7 +9,7 @@ import axios, { AxiosRequestConfig, isAxiosError } from 'axios';
 
 import { createLogger } from 'qt-lib';
 import { findQtcliExePath } from '@/qtcli/commands';
-import { isErrorResponse, Issue } from '@/webview/shared/message';
+import { isErrorResponse, Issue } from '@qtshared/webview/message';
 
 const logger = createLogger('qtcli');
 

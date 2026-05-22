@@ -14,14 +14,14 @@ import {
   CommandId,
   CommandHandler,
   IsCommand
-} from '@/webview/shared/message';
+} from '@qtshared/webview/message';
 import {
   RccTag,
   QResourceTag,
   FileTag,
   QrcDocChangeEvent,
   QrcCommandReplyType
-} from '@/webview/shared/qrc-types';
+} from '@qtshared/webview/qrc-types';
 import { QrcNode } from './node';
 import { makeUniqueName } from './utils';
 import { QrcDocsManager } from './docs-manager';

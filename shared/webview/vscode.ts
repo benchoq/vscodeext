@@ -7,7 +7,7 @@ import {
   CommandId,
   type CommandReply,
   OneWayCommandIds
-} from '@shared/message';
+} from '@qtshared/webview/message';
 
 class VSCodeApiWrapper {
   private readonly _api: WebviewApi<unknown> | undefined;

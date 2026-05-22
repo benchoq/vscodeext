@@ -7,7 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { Flame } from '@lucide/svelte';
 
   import * as theme from '@/apps/theme.svelte';
-  import { type CourseLevel } from '@shared/courses';
+  import { type CourseLevel } from '@qtshared/webview/courses';
 
   let {
     level = undefined as (CourseLevel | undefined),

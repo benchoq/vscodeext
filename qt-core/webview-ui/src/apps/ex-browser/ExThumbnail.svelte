@@ -6,7 +6,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  import { type ExEntry } from '@shared/ex-browser';
+  import { type ExEntry } from '@qtshared/webview/ex-browser';
   import * as viewlogic from './viewlogic.svelte';
 
   let {

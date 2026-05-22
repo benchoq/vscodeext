@@ -6,7 +6,7 @@ import { XMLParser } from 'fast-xml-parser';
 import type { JPathOrMatcher } from 'fast-xml-parser';
 
 import { fsFile } from '@/fs-utils';
-import { ExEntry } from '@/webview/shared/ex-browser';
+import { ExEntry } from '@qtshared/webview/ex-browser';
 import * as consts from './constants';
 
 const textNode = '_text';

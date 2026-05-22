@@ -11,7 +11,7 @@ import { QtcliRestClient, QtcliRestError } from '@/qtcli/rest';
 import { openFilesUnder, openUri } from '@/qtcli/common';
 import { getNewProjectBaseDir, setDefaultProjectDir } from '@/qtcli/commands';
 import { WebviewChannel } from '@/webview/channel';
-import { Command, CommandId, IsCommand } from '@/webview/shared/message';
+import { Command, CommandId, IsCommand } from '@qtshared/webview/message';
 import { GlobalStateManager } from '@/state';
 import type { NewItemPanel } from './panel';
 

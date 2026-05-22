@@ -27,7 +27,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { data, ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
   import { type SortBy } from './types.svelte';
-  import type { CourseLevel, CourseType } from '@shared/courses';
+  import type { CourseLevel, CourseType } from '@qtshared/webview/courses';
 
   let value = $derived(ui.filter.query);
   const emptyRawData = $derived(data.raw.length === 0);

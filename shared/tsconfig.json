@@ -10,7 +10,7 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "paths": {
-      "@shared/*": ["../qt-core/src/webview/shared/*"]
+      // "@shared/*": ["../qt-core/src/webview/shared/*"]
     }
   },
   "include": [

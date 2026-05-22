@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import { vscode } from '@qtshared/webview/vscode';
-import { CommandId } from '@shared/message';
+import { CommandId } from '@qtshared/webview/message';
 import {
   type CourseType,
   type CourseLevel,
   isCourseDataArray,
-} from '@shared/courses';
+} from '@qtshared/webview/courses';
 
 import {
   Course,

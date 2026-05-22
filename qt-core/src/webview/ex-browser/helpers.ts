@@ -15,7 +15,7 @@ import {
   ExNewProjectArgs,
   ExPackagePoolDir,
   ExBrowserViewConfig
-} from '@/webview/shared/ex-browser';
+} from '@qtshared/webview/ex-browser';
 import { fsDir } from '@/fs-utils';
 
 type Context = vscode.ExtensionContext;

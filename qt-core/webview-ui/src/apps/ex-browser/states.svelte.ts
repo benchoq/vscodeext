@@ -6,7 +6,7 @@ import {
   type ExPackage,
   type ExCategory,
   type ExResolvedPaths
-} from "@shared/ex-browser";
+} from "@qtshared/webview/ex-browser";
 
 import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';

@@ -13,7 +13,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     TriangleAlert
   } from '@lucide/svelte';
 
-  import { type ExtInfo } from '@shared/welcome';
+  import { type ExtInfo } from '@qtshared/webview/welcome';
   import Row from '@/comps/Row.svelte';
   import Column from '@/comps/Column.svelte';
   import Overlay from '@/comps/Overlay.svelte';

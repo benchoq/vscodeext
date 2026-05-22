@@ -11,7 +11,7 @@ import {
   FileTag,
   isRccTag,
   isAttributes
-} from '@/webview/shared/qrc-types';
+} from '@qtshared/webview/qrc-types';
 import { cleanTagDeep } from './utils';
 
 const xmlOptions = {
