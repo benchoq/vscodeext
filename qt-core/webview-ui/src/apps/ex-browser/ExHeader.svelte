@@ -7,7 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import Button from 'flowbite-svelte/Button.svelte';
   import { ChevronRight, Search, X, Tag } from '@lucide/svelte';
 
-  import IconButton from '@/comps/IconButton.svelte';
+  import IconButton from '@qtshared/webview/comps/IconButton.svelte';
   import { data, ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
   import { exBrowser as texts } from '@/apps/texts';

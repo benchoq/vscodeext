@@ -8,8 +8,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import '@qtshared/webview/styles/app.css';
   import * as texts from '@/apps/texts';
-  import DropMask from '@/comps/DropMask.svelte';
-  import { DragDropHandler } from '@/comps/DragDropHandler.svelte';
+  import DropMask from '@qtshared/webview/comps/DropMask.svelte';
+  import { DragDropHandler } from '@qtshared/webview/comps/DragDropHandler.svelte';
 
   import QrcView from './QrcView.svelte';
   import QrcPropInput from './QrcPropInput.svelte';

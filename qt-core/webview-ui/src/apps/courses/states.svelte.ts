@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import { type CourseType, type CourseLevel } from '@qtshared/webview/courses';
-import GridFlow from '@/comps/GridFlow.svelte';
-import { TaskBusyRunner } from '@/comps/TaskBusyRunner.svelte';
+import GridFlow from '@qtshared/webview/comps/GridFlow.svelte';
+import { TaskBusyRunner } from '@qtshared/webview/comps/TaskBusyRunner.svelte';
 
 import { type SortBy, type Course } from './types.svelte';
 

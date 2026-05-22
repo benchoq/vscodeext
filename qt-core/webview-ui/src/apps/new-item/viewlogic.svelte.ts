@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 import * as texts from '@/apps/texts';
 import { vscode } from '@qtshared/webview/vscode';
-import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
+import * as NewItemForm from '@qtshared/webview/comps/NewItemForm.logic.svelte';
 import { CommandId, isErrorResponse } from '@qtshared/webview/message';
 import { isPreset, isPresetArray } from './types.svelte';
 import { data, input, ui } from './states.svelte';

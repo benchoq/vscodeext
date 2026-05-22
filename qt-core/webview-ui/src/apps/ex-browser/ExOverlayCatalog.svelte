@@ -7,12 +7,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import Tooltip from 'flowbite-svelte/Tooltip.svelte';
   import { Package, Funnel, ExternalLink, Info } from '@lucide/svelte';
 
-  import Overlay from '@/comps/Overlay.svelte';
-  import Separator from '@/comps/Separator.svelte';
-  import IconButton from '@/comps/IconButton.svelte';
-  import Row from '@/comps/Row.svelte';
-  import Column from '@/comps/Column.svelte';
-  import IconSection from '@/comps/IconSection.svelte';
+  import Overlay from '@qtshared/webview/comps/Overlay.svelte';
+  import Separator from '@qtshared/webview/comps/Separator.svelte';
+  import IconButton from '@qtshared/webview/comps/IconButton.svelte';
+  import Row from '@qtshared/webview/comps/Row.svelte';
+  import Column from '@qtshared/webview/comps/Column.svelte';
+  import IconSection from '@qtshared/webview/comps/IconSection.svelte';
   import { exBrowser as texts } from '@/apps/texts';
   import { data, ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';

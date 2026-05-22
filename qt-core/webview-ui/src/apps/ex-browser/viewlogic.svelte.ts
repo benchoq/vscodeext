@@ -17,7 +17,7 @@ import {
   isExBrowserViewConfig,
   isExResolvedPathsRecord
 } from "@qtshared/webview/ex-browser";
-import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
+import * as NewItemForm from '@qtshared/webview/comps/NewItemForm.logic.svelte';
 import { CommandId, isErrorResponse } from "@qtshared/webview/message";
 import { data, ui, type OverlayName } from './states.svelte';
 

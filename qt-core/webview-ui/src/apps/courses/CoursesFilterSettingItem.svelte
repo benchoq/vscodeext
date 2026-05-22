@@ -7,7 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { type Snippet } from 'svelte';
   import { Check } from '@lucide/svelte';
 
-  import Row from '@/comps/Row.svelte';
+  import Row from '@qtshared/webview/comps/Row.svelte';
 
   let {
     pos = 'between' as ('first' | 'between' | 'last'),

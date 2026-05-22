@@ -16,12 +16,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     CalendarArrowDown,
   } from '@lucide/svelte';
 
-  import Row from '@/comps/Row.svelte';
-  import Column from '@/comps/Column.svelte';
-  import Picker from '@/comps/Picker.svelte';
-  import IconButton from '@/comps/IconButton.svelte';
-  import SearchInput from '@/comps/SearchInput.svelte';
-  import { type PickerItem } from '@/comps/types.svelte';
+  import Row from '@qtshared/webview/comps/Row.svelte';
+  import Column from '@qtshared/webview/comps/Column.svelte';
+  import Picker from '@qtshared/webview/comps/Picker.svelte';
+  import IconButton from '@qtshared/webview/comps/IconButton.svelte';
+  import SearchInput from '@qtshared/webview/comps/SearchInput.svelte';
+  import { type PickerItem } from '@qtshared/webview/comps/types.svelte';
   import { courses as texts } from '@/apps/texts';
 
   import { data, ui } from './states.svelte';

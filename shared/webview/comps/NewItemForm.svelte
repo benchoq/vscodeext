@@ -10,9 +10,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { Check, FolderOpen } from '@lucide/svelte';
 
   import * as texts from '@/apps/texts';
-  import IconButton from '@/comps/IconButton.svelte';
-  import SplitButton from '@/comps/SplitButton.svelte';
-  import InputWithIssue from '@/comps/InputWithIssue.svelte';
+  import IconButton from '@qtshared/webview/comps/IconButton.svelte';
+  import SplitButton from '@qtshared/webview/comps/SplitButton.svelte';
+  import InputWithIssue from '@qtshared/webview/comps/InputWithIssue.svelte';
   import { type NewItemFormController } from './NewItemForm.logic.svelte';
 
   let {

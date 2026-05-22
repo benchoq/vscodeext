@@ -7,9 +7,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { type Component } from 'svelte';
   import { MessageCircleMore, Users, Star } from '@lucide/svelte';
 
-  import Row from '@/comps/Row.svelte';
-  import Column from '@/comps/Column.svelte';
-  import IconSection from '@/comps/IconSection.svelte';
+  import Row from '@qtshared/webview/comps/Row.svelte';
+  import Column from '@qtshared/webview/comps/Column.svelte';
+  import IconSection from '@qtshared/webview/comps/IconSection.svelte';
   import * as format from '@qtshared/webview/utils/format';
 
   import { ui } from './states.svelte';

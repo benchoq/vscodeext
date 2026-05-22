@@ -14,11 +14,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   } from '@lucide/svelte';
 
   import { type ExtInfo } from '@qtshared/webview/welcome';
-  import Row from '@/comps/Row.svelte';
-  import Column from '@/comps/Column.svelte';
-  import Overlay from '@/comps/Overlay.svelte';
-  import Separator from '@/comps/Separator.svelte';
-  import IconButton from '@/comps/IconButton.svelte';
+  import Row from '@qtshared/webview/comps/Row.svelte';
+  import Column from '@qtshared/webview/comps/Column.svelte';
+  import Overlay from '@qtshared/webview/comps/Overlay.svelte';
+  import Separator from '@qtshared/webview/comps/Separator.svelte';
+  import IconButton from '@qtshared/webview/comps/IconButton.svelte';
   import { welcome as texts } from '@/apps/texts';
 
   import { data, ui } from './states.svelte';

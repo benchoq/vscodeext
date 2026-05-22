@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "@lucide/svelte": "^1.16.0",
     "@types/vscode-webview": "^1.57.5"
   },
   "devDependencies": {

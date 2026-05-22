@@ -6,10 +6,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { ArrowLeftToLine } from '@lucide/svelte';
 
-  import Column from '@/comps/Column.svelte';
-  import Overlay from '@/comps/Overlay.svelte';
-  import Separator from '@/comps/Separator.svelte';
-  import IconButton from '@/comps/IconButton.svelte';
+  import Column from '@qtshared/webview/comps/Column.svelte';
+  import Overlay from '@qtshared/webview/comps/Overlay.svelte';
+  import Separator from '@qtshared/webview/comps/Separator.svelte';
+  import IconButton from '@qtshared/webview/comps/IconButton.svelte';
   import { courses as texts } from '@/apps/texts';
 
   import CoursesDetailsBody from './CoursesDetailsBody.svelte';

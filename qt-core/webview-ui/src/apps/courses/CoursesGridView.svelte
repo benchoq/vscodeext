@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import GridFlow from '@/comps/GridFlow.svelte';
+  import GridFlow from '@qtshared/webview/comps/GridFlow.svelte';
 
   import CoursesGridItem from './CoursesGridItem.svelte';
   import { data, ui } from './states.svelte';

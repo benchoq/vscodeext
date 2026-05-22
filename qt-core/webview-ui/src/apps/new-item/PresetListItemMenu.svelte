@@ -8,7 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import * as texts from '@/apps/texts';
   import { ui } from './states.svelte';
-  import PickerList from '@/comps/PickerList.svelte';
+  import PickerList from '@qtshared/webview/comps/PickerList.svelte';
 
   let { open = false, onClosed = () => {} } = $props();
 

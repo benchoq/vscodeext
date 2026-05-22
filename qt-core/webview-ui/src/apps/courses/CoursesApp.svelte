@@ -8,7 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import '@qtshared/webview/styles/app.css';
   import * as texts from '@/apps/texts';
-  import LoadingMask from '@/comps/LoadingMask.svelte';
+  import LoadingMask from '@qtshared/webview/comps/LoadingMask.svelte';
 
   import CoursesGridView from './CoursesGridView.svelte';
   import CoursesAppHeader from './CoursesAppHeader.svelte';

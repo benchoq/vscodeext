@@ -4,8 +4,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import Flow from '@/comps/Flow.svelte';
-  import Overlay from '@/comps/Overlay.svelte';
+  import Flow from '@qtshared/webview/comps/Flow.svelte';
+  import Overlay from '@qtshared/webview/comps/Overlay.svelte';
 
   import { ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';

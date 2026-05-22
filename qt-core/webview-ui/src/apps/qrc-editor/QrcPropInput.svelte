@@ -8,7 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { List } from '@lucide/svelte';
 
   import * as texts from '@/apps/texts';
-  import InputWithIssue from '@/comps/InputWithIssue.svelte';
+  import InputWithIssue from '@qtshared/webview/comps/InputWithIssue.svelte';
   import { ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
   import type { QrcPropName } from './types.svelte';

@@ -4,8 +4,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import Picker from '@/comps/Picker.svelte';
-  import type { PickerItem } from '@/comps/types.svelte';
+  import Picker from '@qtshared/webview/comps/Picker.svelte';
+  import type { PickerItem } from '@qtshared/webview/comps/types.svelte';
   import type { PresetPromptStep } from './types.svelte';
 
   let {

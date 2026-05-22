@@ -5,7 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import * as texts from '@/apps/texts';
-  import LoadingMask from '@/comps/LoadingMask.svelte';
+  import LoadingMask from '@qtshared/webview/comps/LoadingMask.svelte';
   import { ui } from './states.svelte';
   import { onModalClosed } from './viewlogic.svelte';
   import WizardAllDialogs from './WizardAllDialogs.svelte';

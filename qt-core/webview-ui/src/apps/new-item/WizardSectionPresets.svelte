@@ -7,7 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import P from 'flowbite-svelte/P.svelte';
 
   import * as texts from '@/apps/texts';
-  import SectionLabel from '@/comps/SectionLabel.svelte';
+  import SectionLabel from '@qtshared/webview/comps/SectionLabel.svelte';
   import { data } from './states.svelte';
   import PresetList from './PresetList.svelte';
   import PresetTypeSelector from './PresetTypeSelector.svelte';

@@ -12,9 +12,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     BrushCleaning,
    } from "@lucide/svelte";
 
-  import Row from '@/comps/Row.svelte';
-  import Column from '@/comps/Column.svelte';
-  import IconButton from "@/comps/IconButton.svelte";
+  import Row from '@qtshared/webview/comps/Row.svelte';
+  import Column from '@qtshared/webview/comps/Column.svelte';
+  import IconButton from "@qtshared/webview/comps/IconButton.svelte";
   import { qmltrace as texts } from '@/apps/texts';
   import { data, ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';

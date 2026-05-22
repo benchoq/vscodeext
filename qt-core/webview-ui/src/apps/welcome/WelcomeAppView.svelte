@@ -6,9 +6,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { Check, TriangleAlert } from '@lucide/svelte';
 
-  import Row from '@/comps/Row.svelte';
-  import Column from '@/comps/Column.svelte';
-  import IconButton from '@/comps/IconButton.svelte';
+  import Row from '@qtshared/webview/comps/Row.svelte';
+  import Column from '@qtshared/webview/comps/Column.svelte';
+  import IconButton from '@qtshared/webview/comps/IconButton.svelte';
   import { welcome as texts } from '@/apps/texts';
 
   import WelcomeGetStarted from './WelcomeGetStarted.svelte';

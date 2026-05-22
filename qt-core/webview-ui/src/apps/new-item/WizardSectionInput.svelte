@@ -4,8 +4,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import SectionLabel from '@/comps/SectionLabel.svelte';
-  import NewItemForm from '@/comps/NewItemForm.svelte';
+  import SectionLabel from '@qtshared/webview/comps/SectionLabel.svelte';
+  import NewItemForm from '@qtshared/webview/comps/NewItemForm.svelte';
   import * as texts from '@/apps/texts';
   import { data, input } from './states.svelte';
 </script>

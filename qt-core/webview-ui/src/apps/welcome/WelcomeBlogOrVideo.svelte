@@ -6,8 +6,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { ChevronRight } from '@lucide/svelte';
 
-  import Row from '@/comps/Row.svelte';
-  import Column from '@/comps/Column.svelte';
+  import Row from '@qtshared/webview/comps/Row.svelte';
+  import Column from '@qtshared/webview/comps/Column.svelte';
   import * as format from '@qtshared/webview/utils/format'
   import {
     isBlogArticle,
@@ -16,8 +16,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     type BlogArticle,
   } from '@qtshared/webview/welcome';
 
-  import EmptyState from '@/comps/EmptyState.svelte';
-  import ImageTextCard from '@/comps/ImageTextCard.svelte';
+  import EmptyState from '@qtshared/webview/comps/EmptyState.svelte';
+  import ImageTextCard from '@qtshared/webview/comps/ImageTextCard.svelte';
   import { welcome as texts } from '@/apps/texts';
 
   import { data } from './states.svelte';

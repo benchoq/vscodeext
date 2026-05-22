@@ -8,7 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import Tooltip from 'flowbite-svelte/Tooltip.svelte';
   import { Ellipsis } from '@lucide/svelte';
 
-  import TruncatableLabel from '@/comps/TruncatableLabel.svelte';
+  import TruncatableLabel from '@qtshared/webview/comps/TruncatableLabel.svelte';
   import PresetListItemMenu from './PresetListItemMenu.svelte';
   import { data } from './states.svelte';
   import { PresetWrapper } from './types.svelte';

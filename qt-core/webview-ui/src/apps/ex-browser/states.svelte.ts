@@ -8,8 +8,8 @@ import {
   type ExResolvedPaths
 } from "@qtshared/webview/ex-browser";
 
-import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
-import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
+import * as NewItemForm from '@qtshared/webview/comps/NewItemForm.logic.svelte';
+import * as VscodeThemeMonitor from '@qtshared/webview/comps/VscodeThemeMonitor.svelte';
 
 export type OverlayName = 'catalog' | 'details' | 'tagCloud';
 

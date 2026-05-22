@@ -6,8 +6,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { Timer } from '@lucide/svelte';
 
-  import Column from '@/comps/Column.svelte';
-  import QtShapeButton from '@/comps/QtShapeButton.svelte';
+  import Column from '@qtshared/webview/comps/Column.svelte';
+  import QtShapeButton from '@qtshared/webview/comps/QtShapeButton.svelte';
   import * as theme from '@/apps/theme.svelte';
 
   import CoursesGridItemFooter from './CoursesGridItemFooter.svelte';
