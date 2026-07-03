@@ -18,6 +18,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   function onClicked() {
     viewlogic.selectExample(example);
   }
+
+  function addSpaceBeforeUppercase(str: string): string {
+    // 'QtQuickControls' => 'Qt Quick Controls'
+    // 'QMLTestRunner' => 'QML Test Runner'
+    return str
+      .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+      .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2');
+  }
 </script>
 
 <button
@@ -29,8 +37,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       card w-full h-full
       ${example === ui.selected.example ? 'selected' : ''}
     `}>
-      <div class='thumbnail'>
-        <ExThumbnail {example} />
+      <div class='thumbnail'><ExThumbnail {example} /></div>
+      <div class='badge'>
+        {addSpaceBeforeUppercase(example.module)}
       </div>
       <div class='title'>{example.name}</div>
       <div class='separator'></div>
@@ -71,6 +80,41 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   :global(.card.selected) {
     border-color: var(--qt-accent-info);
     background: rgba(0,122,204,0.09);
+  }
+
+  :global(.badge) {
+    height: 16px;
+    padding: 0 6px;
+    border-radius: 3px;
+    background: rgba(0,0,0,0.62);
+    color: #f2f2f2;
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    pointer-events: none;
+    backdrop-filter: blur(4px);
+    /* -webkit-backdrop-filter: blur(4px); */
+    max-width: calc(100% - 16px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    /* z-index: 2;
+    height: 16px;
+    padding: 0 6px;
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 16px;
+    white-space: nowrap;
+    max-width: calc(100% - 16px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none; */
   }
 
   :global(.thumbnail) {
