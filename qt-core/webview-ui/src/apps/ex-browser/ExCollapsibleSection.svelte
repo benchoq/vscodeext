@@ -4,8 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { ChevronDown } from "@lucide/svelte";
-
+  import ChevronRight from '@/icons/ChevronRight.svelte';
   import { type ExCategory } from '@shared/ex-browser';
   import ExGridView from './ExGridView.svelte';
   import { data } from './states.svelte';
@@ -37,30 +36,59 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div class="flex flex-col">
   <button
-    class={`
-      flex items-center justify-between py-2 pr-5 select-none
-      sticky top-0 z-1 bg-[var(--qt-bg-elevated)]
-    `}
+    class='header'
     onclick={() => expanded = !expanded}
   >
-    <div class="flex items-center gap-2">
-      <ChevronDown class={expanded ? 'rotate-0' : '-rotate-90'} />
-      <span class="text-xs font-semibold tracking-wide text-muted uppercase">
-        {category?.name ?? ''}
-      </span>
+    <div class={`header-chevron ${expanded ? 'rotate-0' : '-rotate-90'}`}>
+      <ChevronRight />
     </div>
-
-    <span class="text-xs text-muted">
-      {category?.count ?? 0}
-    </span>
+    <span class='header-text'>{category?.name ?? ''}</span>
+    <span class="text-xs text-muted">{category?.count ?? 0}</span>
   </button>
 
   {#if expanded}
     <ExGridView {examples}/>
-    <!-- <div class="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4 pb-4">
-      {#each items as item (item.id)}
-        <ExampleCard {item} />
-      {/each}
-    </div> -->
   {/if}
 </div>
+
+<style>
+  :global(.header) {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 0;
+    margin-bottom: 10px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid var(--qt-stroke-subtle);
+    position: sticky;
+    top: 0;
+    background: var(--qt-bg-default);
+    z-index: 10;
+  }
+
+  :global(.header-chevron) {
+    color: var(--qt-text-muted);
+    transition: transform 150ms;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    transform: rotate(90deg);
+  }
+
+  :global(.header-text) {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--qt-text-muted);
+    flex: 1;
+    text-align: start;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  :global(.header:hover .header-text) {
+    color: var(--qt-text-default);
+  }
+</style>

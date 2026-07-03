@@ -97,6 +97,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         `}
         onclick={async () => {
           await viewlogic.selectCategory(cat);
+          viewlogic.setOverlayVisible('catalog', false);
         }}
       >
         <div class="flex-1">{cat.name}</div>
