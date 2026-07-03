@@ -29,13 +29,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <div
     bind:this={ui.grid}
     class='
-      qt-surface
       h-full overflow-auto
       grid
       grid-flow-dense
-      grid-cols-[repeat(auto-fill,210px)]
-      auto-rows-[140px]
-      gap-10 p-4
+      grid-cols-[repeat(auto-fill,minmax(232px,1fr))]
+      auto-rows-[220px]
+      gap-[10px]
       select-none
     '
     tabindex="0"
