@@ -4,15 +4,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { type ExEntry } from '@shared/ex-browser';
+
   import EmptyState from '@/comps/EmptyState.svelte';
   import ExGridViewItem from './ExGridViewItem.svelte';
   import { data, ui } from './states.svelte';
   import { exBrowser as texts } from '@/apps/texts';
 
+  let {
+    examples = [] as ExEntry[],
+  } = $props();
+
   function onScroll() {
     ui.overlays.details.collapsed = true;
   }
-
 </script>
 
 {#if data.packages.length === 0}
@@ -47,7 +52,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       }
     }}
   >
-    {#each data.examples as example (example)}
+    {#each examples as example (example)}
       <ExGridViewItem {example}/>
     {/each}
   </div>

@@ -1,3 +1,8 @@
+/*
+Copyright (C) 2026 The Qt Company Ltd.
+SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+*/
+
 :root {
   --qt-bg-default: var(--vscode-editor-background, #1e1e1e);
   --qt-bg-subtle: var(--vscode-sideBar-background, #252526);
@@ -22,12 +27,3 @@
   --qt-spacing-m:  8px;
   --qt-spacing-xl: 16px;
 }
-
-/*
-.header {
- padding: 8px 14px 8px 14px;
-}
-
-.catalog-button {
- border-radius: var(--qt-radius-s);
-} */

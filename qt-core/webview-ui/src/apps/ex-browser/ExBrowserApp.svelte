@@ -7,9 +7,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { onMount, onDestroy } from 'svelte';
 
   import '@/styles/app.css';
+  import ExCollapsibleSection from './ExCollapsibleSection.svelte';
   import ExHeader from './ExHeader.svelte';
-  import ExGridView from './ExGridView.svelte';
   import ExOverlaysContainer from './ExOverlaysContainer.svelte';
+  import { data } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
 
   onMount(() => viewlogic.onAppMount());
@@ -20,7 +21,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <ExHeader />
 
   <div class='grow min-h-0 relative'>
-    <ExGridView />
+    {#each data.categories as category (category)}
+      {#if category.type !== 'all'}
+        <ExCollapsibleSection {category} />
+      {/if}
+    {/each}
+
     <ExOverlaysContainer />
   </div>
 </div>
