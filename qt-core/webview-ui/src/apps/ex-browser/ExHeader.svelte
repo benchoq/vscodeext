@@ -173,6 +173,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     gap: 6px;
   }
 
+  :global(.tag-button:hover) {
+    border-color: var(--qt-stroke-muted);
+  }
+
   :global(.search-input) {
     width: 100%;
     height: 28px;
@@ -256,6 +260,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     cursor: pointer;
     white-space: nowrap;
     transition: border-color 100ms;
+  }
+
+  :global(.breadcrumb-wrapper:hover) {
+    border-color: var(--qt-stroke-muted);
   }
 
   :global(.breadcrumb-wrapper[aria-expanded="true"]) {
