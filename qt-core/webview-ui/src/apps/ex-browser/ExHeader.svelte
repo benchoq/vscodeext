@@ -4,11 +4,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import Button from 'flowbite-svelte/Button.svelte';
-
   import './app-styles.css';
 
-  // import IconButton from '@/comps/IconButton.svelte';
+  import { Grid, List } from '@/icons';
   import { data, ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
   import { exBrowser as texts } from '@/apps/texts';
@@ -96,8 +94,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <!-- snippets -->
 {#snippet CatalogButton()}
-  <Button
-    class='button-base tag-button flex flex-row items-center'
+  <button
+    class='breadcrumb-wrapper'
     aria-expanded={ui.overlays.catalog.visible}
     disabled={data.packages.length === 0}
     onclick={() => {
@@ -105,23 +103,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }}
   >
     {#if data.packages.length === 0 || !hasValidSelection}
-      -
+      <p class='breadcrumb-text'>-</p>
     {:else}
-      <div class='flex flex-row items-center gap-[6px]'>
-        <p>Categories</p>
-        <p>›</p>
-        <p>{ui.selected.package?.name ?? ''}</p>
-        <p>›</p>
-        <p>{ui.filter.category?.name ?? ''}</p>
-        <p class='count-badge'>{countText}</p>
-        <p>▾</p>
-      </div>
+      <p class='breadcrumb-text bold'>Categories</p>
+      <p class='breadcrumb-separator'>›</p>
+      <p class='breadcrumb-text'>{ui.selected.package?.name ?? ''}</p>
+      <p class='breadcrumb-separator'>›</p>
+      <p class='breadcrumb-text active'>{ui.filter.category?.name ?? ''}</p>
+      <p class='count-badge'>{countText}</p>
+      <p class='breadcrumb-separator'>▾</p>
     {/if}
-  </Button>
+  </button>
 {/snippet}
 
 {#snippet TagButton()}
-  <Button
+  <button
     class='button-base tag-button flex flex-row items-center'
     aria-expanded={ui.overlays.tagCloud.visible}
     disabled={(ui.filter.category?.tags.length ?? 0) === 0}
@@ -132,7 +128,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   >
     # Tags
     <p class='count-badge'>{tagsCountText}</p>
-  </Button>
+  </button>
 {/snippet}
 
 {#snippet SearchInput()}
@@ -166,20 +162,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#snippet ViewModeButtons()}
   <div class='flex flex-row tool-button-wrapper'>
-    <button title="Card view" class='tool-button active'>
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="pointer-events:none">
-        <rect x="1" y="1" width="6" height="6" rx="1"></rect><rect x="9" y="1" width="6" height="6" rx="1"></rect>
-        <rect x="1" y="9" width="6" height="6" rx="1"></rect><rect x="9" y="9" width="6" height="6" rx="1"></rect>
-      </svg>
-    </button>
-
-    <button title="List view" class='tool-button'>
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="pointer-events:none">
-        <rect x="1" y="2.5" width="2" height="2" rx="0.5"></rect><rect x="5" y="3" width="10" height="1" rx="0.5"></rect>
-        <rect x="1" y="7" width="2" height="2" rx="0.5"></rect><rect x="5" y="7.5" width="10" height="1" rx="0.5"></rect>
-        <rect x="1" y="11.5" width="2" height="2" rx="0.5"></rect><rect x="5" y="12" width="10" height="1" rx="0.5"></rect>
-      </svg>
-    </button>
+    <button title="Card view" class='tool-button active'><Grid /></button>
+    <button title="List view" class='tool-button'><List /></button>
   </div>
 {/snippet}
 
@@ -215,6 +199,48 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   :global(.button-base[aria-expanded="true"]) {
     border-color: var(--qt-accent-info);
+  }
+
+  /* breadcrumb */
+  :global(.breadcrumb-text) {
+    color: var(--qt-text-muted);
+    font-size: 12px;
+  }
+
+  :global(.breadcrumb-text.bold) {
+    font-weight: 600;
+  }
+
+  :global(.breadcrumb-text.active) {
+    color: var(--qt-text-default);
+    font-weight: 500;
+  }
+
+  :global(.breadcrumb-separator) {
+    color: var(--qt-text-muted);
+    opacity: 0.5;
+    font-size: 11px;
+  }
+
+  :global(.breadcrumb-wrapper) {
+    height: 28px;
+    padding: 0 10px;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 6px;
+
+    color: var(--qt-text-default);
+    background: var(--qt-bg-input);
+    border: 1px solid var(--qt-stroke-subtle);
+    border-radius: var(--qt-radius-s);
+
+    font-size: 13px;
+    font-family: inherit;
+
+    cursor: pointer;
+    white-space: nowrap;
+    transition: border-color 100ms;
   }
 
   /* badge */
