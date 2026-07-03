@@ -85,7 +85,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   })
 </script>
 
-<div class="w-full flex flex-row gap-2 header">
+<div class="w-full flex flex-row gap-[6px] header">
   {@render CatalogButton()}
   {@render TagButton()}
   {@render SearchInput()}
@@ -140,7 +140,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <input
       bind:value
       type="text"
-      class='qt-input w-full h-full !pl-10'
+      class='search-input'
       {placeholder}
       disabled={data.packages.length === 0}
       oninput={() => { triggerUpdate(500); }}
@@ -161,21 +161,36 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 {#snippet ViewModeButtons()}
-  <div class='flex flex-row tool-button-wrapper'>
+  <div class='tool-button-wrapper'>
     <button title="Card view" class='tool-button active'><Grid /></button>
     <button title="List view" class='tool-button'><List /></button>
   </div>
 {/snippet}
 
 <style>
-  :global(.catalog-button) {
+  :global(.tag-button) {
     color: var(--qt-text-muted);
     gap: 6px;
   }
 
-  :global(.tag-button) {
-    color: var(--qt-text-muted);
-    gap: 6px;
+  :global(.search-input) {
+    width: 100%;
+    height: 28px;
+    padding: 0 26px 0 29px;
+
+    color: var(--vscode-input-foreground, var(--qt-text-default));
+    background: var(--qt-bg-input);
+    border: 1px solid var(--vscode-input-border, transparent);
+    border-radius: var(--qt-radius-s);
+    outline: none;
+
+    font-family: inherit;
+    font-size: 13px;
+  }
+
+  :global(.search-input:focus) {
+    border-color: var(--qt-accent-info);
+    box-shadow: none;
   }
 
   /* button */
@@ -243,6 +258,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     transition: border-color 100ms;
   }
 
+  :global(.breadcrumb-wrapper[aria-expanded="true"]) {
+    border-color: var(--qt-accent-info);
+  }
+
   /* badge */
   :global(.count-badge) {
     height: 14px;
@@ -261,7 +280,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   /* tool button */
   :global(.tool-button) {
     width: 26px;
-    height: 24px;
     padding: 0;
     display: flex;
     align-items: center;
@@ -294,6 +312,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     flex-shrink: 0;
     border: 1px solid var(--qt-stroke-subtle);
     border-radius: var(--qt-radius-s);
+    overflow: hidden;
   }
 
 </style>
