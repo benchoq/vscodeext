@@ -162,8 +162,31 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#snippet ViewModeButtons()}
   <div class='tool-button-wrapper'>
-    <button title="Card view" class='tool-button active'><Grid /></button>
-    <button title="List view" class='tool-button'><List /></button>
+    <button
+      class={`
+        tool-button
+        ${ui.selected.viewMode === 'grid' ? 'active' : ''}
+      `}
+      title="Card view"
+      onclick={() => {
+        ui.selected.viewMode = 'grid';
+      }}
+    >
+      <Grid />
+    </button>
+
+    <button
+      class={`
+        tool-button
+        ${ui.selected.viewMode === 'list' ? 'active' : ''}
+      `}
+      title="List view"
+      onclick={() => {
+        ui.selected.viewMode = 'list';
+      }}
+    >
+      <List />
+    </button>
   </div>
 {/snippet}
 
@@ -288,6 +311,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   /* tool button */
   :global(.tool-button) {
     width: 26px;
+    height: 26px;
     padding: 0;
     display: flex;
     align-items: center;

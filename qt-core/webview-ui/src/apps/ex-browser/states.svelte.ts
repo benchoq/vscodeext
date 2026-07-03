@@ -11,6 +11,7 @@ import {
 import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 
+export type ViewMode = 'grid' | 'list';
 export type OverlayName = 'catalog' | 'details' | 'tagCloud';
 
 export const data = $state({
@@ -26,7 +27,8 @@ export const ui = $state({
 
   selected: {
     example: undefined as ExEntry | undefined,
-    package: undefined as ExPackage | undefined
+    package: undefined as ExPackage | undefined,
+    viewMode: 'grid' as ViewMode
   },
 
   filter: {

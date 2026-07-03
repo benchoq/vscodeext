@@ -7,7 +7,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import ChevronRight from '@/icons/ChevronRight.svelte';
   import { type ExCategory } from '@shared/ex-browser';
   import ExGridView from './ExGridView.svelte';
-  import { data } from './states.svelte';
+  import ExListView from './ExListView.svelte';
+  import { data, ui } from './states.svelte';
 
   let {
     category = undefined as ExCategory | undefined,
@@ -47,7 +48,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </button>
 
   {#if expanded}
-    <ExGridView {examples}/>
+    {#if ui.selected.viewMode === 'grid'}
+      <ExGridView {examples} />
+    {:else}
+      <ExListView {examples} />
+    {/if}
   {/if}
 </div>
 

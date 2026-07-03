@@ -27,7 +27,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 </script>
 
-<div class='w-screen h-screen p-2 flex flex-col gap-2 relative'>
+<div class='w-screen h-screen p-2 flex flex-col relative'>
   <ExHeader />
 
   <div class='sections'>
