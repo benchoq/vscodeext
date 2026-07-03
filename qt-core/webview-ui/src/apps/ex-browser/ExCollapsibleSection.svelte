@@ -32,29 +32,30 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         return [];
     }
   });
-
 </script>
 
-<div class="flex flex-col">
-  <button
-    class='header'
-    onclick={() => expanded = !expanded}
-  >
-    <div class={`header-chevron ${expanded ? 'rotate-0' : '-rotate-90'}`}>
-      <ChevronRight />
-    </div>
-    <span class='header-text'>{category?.name ?? ''}</span>
-    <span class="text-xs text-muted">{category?.count ?? 0}</span>
-  </button>
+{#if examples.length !== 0}
+  <div class="flex flex-col">
+    <button
+      class='header'
+      onclick={() => expanded = !expanded}
+    >
+      <div class={`header-chevron ${expanded ? 'rotate-0' : '-rotate-90'}`}>
+        <ChevronRight />
+      </div>
+      <span class='header-text'>{category?.name ?? ''}</span>
+      <span class="text-xs text-muted">{examples.length}</span>
+    </button>
 
-  {#if expanded}
-    {#if ui.selected.viewMode === 'grid'}
-      <ExGridView {examples} />
-    {:else}
-      <ExListView {examples} />
+    {#if expanded}
+      {#if ui.selected.viewMode === 'grid'}
+        <ExGridView {examples} />
+      {:else}
+        <ExListView {examples} />
+      {/if}
     {/if}
-  {/if}
-</div>
+  </div>
+{/if}
 
 <style>
   :global(.header) {
