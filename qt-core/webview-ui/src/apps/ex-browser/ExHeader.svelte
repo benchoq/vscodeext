@@ -5,7 +5,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import Button from 'flowbite-svelte/Button.svelte';
-  import { Search, X } from '@lucide/svelte';
 
   import './app-styles.css';
 
@@ -17,7 +16,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let value = $derived(ui.filter.query);
   let timer: ReturnType<typeof setTimeout>;
 
-  const SearchOrX = $derived(value.trim().length === 0 ? Search : X);
   const hasValidSelection = $derived.by(() => {
     return (ui.selected.package?.name ?? '')
       && (ui.filter.category?.name ?? '');
@@ -54,7 +52,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     triggerUpdate(0);
   }
 
-  function triggerUpdate(delay = 500) {
+  function triggerUpdate(delay = 200) {
     clearTimeout(timer);
     timer = setTimeout(() => {
       viewlogic.setQuery(value);
@@ -92,7 +90,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div class="w-full flex flex-row gap-2 header">
   {@render CatalogButton()}
   {@render TagButton()}
-  {@render KeywordInput()}
+  {@render SearchInput()}
+  {@render ViewModeButtons()}
 </div>
 
 <!-- snippets -->
@@ -110,12 +109,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {:else}
       <div class='flex flex-row items-center gap-[6px]'>
         <p>Categories</p>
-        {@render DecorationText('›')}
+        <p>›</p>
         <p>{ui.selected.package?.name ?? ''}</p>
-        {@render DecorationText('›')}
+        <p>›</p>
         <p>{ui.filter.category?.name ?? ''}</p>
         <p class='count-badge'>{countText}</p>
-        {@render DecorationText('▾')}
+        <p>▾</p>
       </div>
     {/if}
   </Button>
@@ -136,45 +135,77 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </Button>
 {/snippet}
 
-{#snippet KeywordInput()}
-  <div class={`
-    relative w-full h-full flex-grow flex flex-row items-center gap-2
-  `}>
-    <button
-      class='absolute left-4 top-1/2 -translate-y-1/2'
-      disabled={data.packages.length === 0}
-      onclick={clear}
-    >
-      <SearchOrX />
-    </button>
+{#snippet SearchInput()}
+  <div class='relative w-full h-full flex-grow flex flex-row items-center gap-2'>
+    <div class='absolute left-4 top-1/2 -translate-y-1/2'>
+      <p>⌕</p>
+    </div>
 
     <input
       bind:value
       type="text"
-      class='qt-input w-full h-full !pl-12'
+      class='qt-input w-full h-full !pl-10'
       {placeholder}
       disabled={data.packages.length === 0}
       oninput={() => { triggerUpdate(500); }}
       onkeydown={onKeydown}
       onfocusin={onFocusIn}
     />
+
+    <div
+      class='absolute right-4 top-1/2 -translate-y-1/2'
+      class:invisible={value.trim().length === 0}
+      style:font-size='13px'
+    >
+      <button onclick={clear} class='cursor-pointer'>
+        X
+      </button>
+    </div>
   </div>
 {/snippet}
 
-{#snippet DecorationText(t: string)}
-  <p>{t}</p>
+{#snippet ViewModeButtons()}
+  <div class='flex flex-row tool-button-wrapper'>
+    <button title="Card view" class='tool-button active'>
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="pointer-events:none">
+        <rect x="1" y="1" width="6" height="6" rx="1"></rect><rect x="9" y="1" width="6" height="6" rx="1"></rect>
+        <rect x="1" y="9" width="6" height="6" rx="1"></rect><rect x="9" y="9" width="6" height="6" rx="1"></rect>
+      </svg>
+    </button>
+
+    <button title="List view" class='tool-button'>
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="pointer-events:none">
+        <rect x="1" y="2.5" width="2" height="2" rx="0.5"></rect><rect x="5" y="3" width="10" height="1" rx="0.5"></rect>
+        <rect x="1" y="7" width="2" height="2" rx="0.5"></rect><rect x="5" y="7.5" width="10" height="1" rx="0.5"></rect>
+        <rect x="1" y="11.5" width="2" height="2" rx="0.5"></rect><rect x="5" y="12" width="10" height="1" rx="0.5"></rect>
+      </svg>
+    </button>
+  </div>
 {/snippet}
 
 <style>
+  :global(.catalog-button) {
+    color: var(--qt-text-muted);
+    gap: 6px;
+  }
+
+  :global(.tag-button) {
+    color: var(--qt-text-muted);
+    gap: 6px;
+  }
+
+  /* button */
   :global(.button-base) {
     height: 28px;
     padding: 0 10px;
+
     color: var(--qt-text-default);
     background: var(--qt-bg-input);
     border: 1px solid var(--qt-stroke-subtle);
     border-radius: var(--qt-radius-s);
-    white-space: nowrap;
 
+    line-height: 1.4;
+    white-space: nowrap;
     transition: border-color 100ms;
   }
 
@@ -186,25 +217,57 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     border-color: var(--qt-accent-info);
   }
 
-  :global(.catalog-button) {
-    color: var(--qt-text-muted);
-    gap: 6px;
-  }
-
-  :global(.tag-button) {
-    color: var(--qt-text-muted);
-    gap: 6px;
-  }
-
+  /* badge */
   :global(.count-badge) {
     height: 14px;
     padding: 0 5px;
+
     color: var(--qt-text-muted);
     background: var(--qt-bg-elevated);
     border: 1px solid var(--qt-stroke-subtle);
     border-radius: 7px;
-    white-space: nowrap;
+
     font-size: 9px;
     font-weight: 600;
+    white-space: nowrap;
   }
+
+  /* tool button */
+  :global(.tool-button) {
+    width: 26px;
+    height: 24px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--qt-text-muted);
+    background: none;
+    border: none;
+
+    cursor: pointer;
+    transition: background 100ms, color 100ms;
+  }
+
+  :global(.tool-button:hover) {
+    color: var(--qt-text-default);
+    background: var(--qt-hover-bg);
+  }
+
+  :global(.tool-button.active) {
+    color: var(--qt-accent-active);
+    background: rgba(0, 122, 204, 0.15);
+  }
+
+  :global(.tool-button + .tool-button) {
+    border-left: 1px solid var(--qt-stroke-subtle);
+  }
+
+  :global(.tool-button-wrapper) {
+    display: flex;
+    flex-shrink: 0;
+    border: 1px solid var(--qt-stroke-subtle);
+    border-radius: var(--qt-radius-s);
+  }
+
 </style>
