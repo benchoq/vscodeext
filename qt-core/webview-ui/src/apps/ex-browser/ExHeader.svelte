@@ -85,11 +85,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   })
 </script>
 
-<div class="w-full flex flex-row gap-[6px] header">
-  {@render CatalogButton()}
-  {@render TagButton()}
-  {@render SearchInput()}
-  {@render ViewModeButtons()}
+<div class="w-full header-wrapper">
+  <div class="w-full flex flex-row gap-[6px]">
+    {@render CatalogButton()}
+    {@render TagButton()}
+    {@render SearchInput()}
+    {@render ViewModeButtons()}
+  </div>
 </div>
 
 <!-- snippets -->
@@ -191,6 +193,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 <style>
+  :global(.header-wrapper) {
+    background: var(--qt-bg-subtle);
+    border-bottom: 1px solid var(--qt-stroke-subtle);
+    padding: 8px 14px 8px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    position: relative;
+  }
   :global(.tag-button) {
     color: var(--qt-text-muted);
     gap: 6px;
