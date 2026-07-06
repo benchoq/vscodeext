@@ -36,9 +36,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   :global(.sections) {
-    flex: 1;
+    /* flex: 1;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: hidden; */
     padding: 0 14px 24px;
     min-width: 0;
   }

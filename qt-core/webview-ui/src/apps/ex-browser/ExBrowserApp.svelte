@@ -22,13 +22,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <ExHeader />
 
   <div class='flex flex-row flex-1 min-h-0'>
-    <ExBody />
+    <div class='flex-1 overflow-x-hidden overflow-y-auto'>
+      <ExBody />
+    </div>
 
-    <div class={`
-      panel
-      ${ui.overlays.details.visible ? 'open' : ''}
-      bg-blue-400
-    `}>
+    <div class={`panel ${ui.overlays.details.visible ? 'open' : ''}`}>
       <ExDetailsPanel />
     </div>
   </div>
@@ -39,13 +37,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <style>
   :global(.panel) {
     width: 0;
-    /* flex-shrink: 0; */
-    /* overflow: hidden; */
-    /* border-left: 1px solid transparent; */
-    /* background: var(--qt-bg-subtle); */
+    overflow: hidden;
+    border-left: 1px solid transparent;
+    background: var(--qt-bg-subtle);
     transition: width 220ms cubic-bezier(.4,0,.2,1), border-color 220ms;
-    /* display: flex; */
-    /* flex-direction: column; */
   }
 
   :global(.panel.open) {
