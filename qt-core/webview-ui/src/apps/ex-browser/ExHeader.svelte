@@ -197,12 +197,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     background: var(--qt-bg-subtle);
     border-bottom: 1px solid var(--qt-stroke-subtle);
     padding: 8px 14px 8px;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    position: relative;
+    /* flex-shrink: 0; */
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* gap: 7px; */
+    /* position: relative; */
   }
+
   :global(.tag-button) {
     color: var(--qt-text-muted);
     gap: 6px;

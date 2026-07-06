@@ -9,7 +9,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import '@/styles/app.css';
   import Row from '@/comps/Row.svelte';
   import Column from '@/comps/Column.svelte';
-  import ExDetailsPanel from './ExDetailsPanel.svelte';
+  // import ExDetailsPanel from './ExDetailsPanel.svelte';
   import ExCollapsibleSection from './ExCollapsibleSection.svelte';
   import { data, ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
@@ -24,19 +24,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     return [ui.filter.category];
   });
-
 </script>
 
-<Row class='w-full'>
-  <Column class='sections !gap-[14px]'>
-    {#each categories as category (category)}
-      {#if category.type !== 'all'}
-        <ExCollapsibleSection {category} />
-      {/if}
-    {/each}
-  </Column>
-  <ExDetailsPanel />
-</Row>
+<Column class='sections !gap-[14px]'>
+  {#each categories as category (category)}
+    {#if category.type !== 'all'}
+      <ExCollapsibleSection {category} />
+    {/if}
+  {/each}
+</Column>
 
 <style>
   :global(.sections) {
