@@ -9,6 +9,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import Row from '@/comps/Row.svelte';
   import Column from '@/comps/Column.svelte';
   import ExThumbnail from './ExThumbnail.svelte';
+  import ExDetailsSectionMeta from './ExDetailsSectionMeta.svelte';
 
   const example = $derived(ui.selected.example);
 </script>
@@ -48,6 +49,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#snippet Details()}
   <span class='section-header'>Details</span>
+  <ExDetailsSectionMeta />
 {/snippet}
 
 {#snippet Separator()}
@@ -131,4 +133,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     display: flex;
     align-items: stretch;
   }
+
+  :global(.detail-row-title) {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--qt-text-muted);
+    min-width: 60px;
+    flex-shrink: 0;
+    line-height: 18px;
+  }
+
+  :global(.empty-value) {
+    font-size: 11px;
+    color: var(--qt-text-muted);
+    font-style: italic;
+  }
+
 </style>
