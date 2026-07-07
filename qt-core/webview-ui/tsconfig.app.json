@@ -19,5 +19,5 @@
     "src/**/*.js",
     "src/**/*.svelte",
     "../src/webview/shared/*.ts"
-  ]
+, "src/apps/ex-browser/ExDetailsSectionMetasvelte"  ]
 }

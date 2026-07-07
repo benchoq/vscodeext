@@ -10,7 +10,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import Column from '@/comps/Column.svelte';
   import ExThumbnail from './ExThumbnail.svelte';
   import ExDetailsSectionMeta from './ExDetailsSectionMeta.svelte';
-
+  import ExDetailsSectionActions from './ExDetailsSectionActions.svelte';
   const example = $derived(ui.selected.example);
 </script>
 
@@ -45,6 +45,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#snippet Actions()}
   <span class='section-header'>Actions</span>
+  <ExDetailsSectionActions />
 {/snippet}
 
 {#snippet Details()}
