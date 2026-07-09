@@ -9,6 +9,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   --qt-bg-elevated: var(--vscode-editorWidget-background, #2d2d2d);
   --qt-bg-input: var(--vscode-input-background, #3c3c3c);
 
+  --qt-hover-bg: var(--vscode-list-hoverBackground, #2a2d2e);
+
   --qt-stroke-subtle: var(--vscode-sideBar-border, rgba(204,204,204,0.18));
   --qt-stroke-muted: var(--vscode-input-border, #6b6b6b);
 
@@ -27,10 +29,104 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   --qt-spacing-m:  8px;
   --qt-spacing-xl: 16px;
 
-  /* not sure */
+  --qt-font-size-3xs: 9px;
+  --qt-font-size-2xs: 10px;
+  --qt-font-size-xs: 11px;
+  --qt-font-size-s: 12px;
+  --qt-font-size-m: 13px;
+
+  --qt-font-weight-bold: 600;
+  --qt-font-weight-active: 500;
+
+  /* possibly the common thing */
   --qt-easing-base: cubic-bezier(.4, 0, .2, 1);
+  --qt-duration-fast: 100ms;
   --qt-duration-base: 220ms;
 
   /* app-specific */
   --app-panel-width: 320px;
+}
+
+
+/* button */
+.qt-push-button {
+  height: 28px;
+  padding: 0 10px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 6px;
+
+  color: var(--qt-text-muted);
+  background: var(--qt-bg-input);
+  border: 1px solid var(--qt-stroke-subtle);
+  border-radius: var(--qt-radius-s);
+
+  font-size: var(--qt-font-size-m);
+  font-family: inherit;
+  line-height: 1.4;
+
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color var(--qt-duration-fast);
+}
+
+.qt-push-button:hover {
+  color: var(--qt-text-default);
+  border-color: var(--qt-stroke-muted);
+}
+
+.qt-push-button[aria-expanded="true"] {
+  border-color: var(--qt-accent-info);
+}
+
+/* tool button */
+.qt-tool-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--qt-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition:
+    background var(--qt-duration-fast),
+    color var(--qt-duration-fast);
+}
+
+.qt-tool-button:hover {
+  color: var(--qt-text-default);
+  background: var(--qt-hover-bg);
+}
+
+.qt-tool-button.active {
+  color: var(--qt-accent-active);
+  /* background: rgba(0, 122, 204, 0.15); TODO: check this with designer */
+  background: color-mix(in srgb, var(--qt-accent-active) 20%, transparent);
+}
+
+.qt-tool-button + .qt-tool-button {
+  border-left: 1px solid var(--qt-stroke-subtle);
+}
+
+.qt-tool-button-group {
+  flex-shrink: 0;
+  border: 1px solid var(--qt-stroke-subtle);
+  border-radius: var(--qt-radius-s);
+  overflow: hidden;
+}
+
+
+/* badge */
+.count-badge {
+  padding: 0 5px;
+  color: var(--qt-text-muted);
+  background: var(--qt-bg-elevated);
+  border: 1px solid var(--qt-stroke-subtle);
+  border-radius: 7px;
+  font-size: 9px;
+  font-weight: 600;
+  white-space: nowrap;
 }
