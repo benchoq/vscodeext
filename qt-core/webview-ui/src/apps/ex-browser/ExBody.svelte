@@ -4,18 +4,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte';
-
-  import '@/styles/app.css';
-  import Row from '@/comps/Row.svelte';
-  import Column from '@/comps/Column.svelte';
-  // import ExDetailsPanel from './ExDetailsPanel.svelte';
   import ExCollapsibleSection from './ExCollapsibleSection.svelte';
   import { data, ui } from './states.svelte';
-  import * as viewlogic from './viewlogic.svelte';
-
-  onMount(() => viewlogic.onAppMount());
-  onDestroy(() => viewlogic.onAppDestroy());
 
   const categories = $derived.by(() => {
     if (!ui.filter.category || ui.filter.category.type === 'all') {
@@ -26,20 +16,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   });
 </script>
 
-<Column class='sections !gap-[14px]'>
+<div class='flex flex-col min-w-0 sections'>
   {#each categories as category (category)}
     {#if category.type !== 'all'}
       <ExCollapsibleSection {category} />
     {/if}
   {/each}
-</Column>
+</div>
 
 <style>
-  :global(.sections) {
-    /* flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden; */
+  .sections {
     padding: 0 14px 24px;
-    min-width: 0;
   }
 </style>

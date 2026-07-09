@@ -26,4 +26,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   --qt-spacing-s:  6px;
   --qt-spacing-m:  8px;
   --qt-spacing-xl: 16px;
+
+  /* not sure */
+  --qt-easing-base: cubic-bezier(.4, 0, .2, 1);
+  --qt-duration-base: 220ms;
+
+  /* app-specific */
+  --app-panel-width: 320px;
 }

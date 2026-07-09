@@ -7,6 +7,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { onMount, onDestroy } from 'svelte';
 
   import '@/styles/app.css';
+  import './styles.css';
+
   import ExHeader from './ExHeader.svelte';
   import ExBody from './ExBody.svelte';
   import ExDetailsPanel from './ExDetailsPanel.svelte';
@@ -26,7 +28,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <ExBody />
     </div>
 
-    <div class={`panel ${ui.overlays.details.visible ? 'open' : ''}`}>
+    <div
+      class='panel overflow-hidden'
+      class:open={ui.overlays.details.visible}
+    >
       <ExDetailsPanel />
     </div>
   </div>
@@ -35,16 +40,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  :global(.panel) {
+  .panel {
     width: 0;
-    overflow: hidden;
     border-left: 1px solid transparent;
     background: var(--qt-bg-subtle);
-    transition: width 220ms cubic-bezier(.4,0,.2,1), border-color 220ms;
+    transition:
+      width var(--qt-duration-base) var(--qt-easing-base),
+      border-color var(--qt-duration-base);
   }
 
-  :global(.panel.open) {
-    width: 320px;
+  .panel.open {
+    width: var(--app-panel-width);
     border-left-color: var(--qt-stroke-subtle);
   }
 </style>
