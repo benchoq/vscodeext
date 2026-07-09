@@ -10,7 +10,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import './styles.css';
 
   import ExHeader from './ExHeader.svelte';
-  import ExBody from './ExBody.svelte';
+  import ExMainView from './ExMainView.svelte';
   import ExDetailsPanel from './ExDetailsPanel.svelte';
   import ExOverlaysContainer from './ExOverlaysContainer.svelte';
   import * as viewlogic from './viewlogic.svelte';
@@ -25,7 +25,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   <div class='flex flex-row flex-1 min-h-0'>
     <div class='flex-1 overflow-x-hidden overflow-y-auto'>
-      <ExBody />
+      <ExMainView />
     </div>
 
     <div
