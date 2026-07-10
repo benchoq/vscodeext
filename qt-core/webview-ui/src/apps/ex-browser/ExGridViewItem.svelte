@@ -6,7 +6,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { Tag } from '@/icons';
   import { type ExEntry } from '@shared/ex-browser';
-  import Column from '@/comps/Column.svelte';
   import ExThumbnail from './ExThumbnail.svelte';
   import { ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
@@ -29,37 +28,45 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <button
-  class='w-full h-full !border-none relative group'
+  class='w-full h-full group'
   onclick={onClicked}
 >
   {#if example}
-    <Column class={`
-      card w-full h-full
-      ${example === ui.selected.example ? 'selected' : ''}
-    `}>
+    <div
+      class='card w-full h-full flex flex-col relative'
+      class:selected={example === ui.selected.example}
+    >
       <div class='thumbnail'><ExThumbnail {example} /></div>
-      <div class='badge'>
+      <div class='
+        qt-badge app-card-badge
+        absolute top-[8px] left-[8px]
+      '>
         {addSpaceBeforeUppercase(example.module)}
       </div>
-      <div class='title'>{example.name}</div>
-      <div class='separator'></div>
-      <div class='tags-container'>
-        <div class='tag-icon'><Tag size={20}/></div>
+      <div class='card-title'>{example.name}</div>
+      <div class='qt-separator'></div>
+      <div class='card-tags-container'>
+        <div class='card-tag-icon'>
+          <Tag size={20}/>
+        </div>
+
         {#each example?.tags as tag (tag)}
-          <div class='tag'>{tag}</div>
+          <div class='qt-badge app-tag-badge'>{tag}</div>
         {/each}
       </div>
-    </Column>
+    </div>
   {/if}
 </button>
 
 <style>
-  :global(.card) {
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(3px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card {
     min-height: 220px;
     padding: var(--qt-spacing-xl);
-    display: flex;
-    position: relative;
-    flex-direction: column;
     gap: var(--qt-spacing-m);
 
     background: var(--qt-bg-elevated);
@@ -68,66 +75,29 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     cursor: pointer;
     overflow: hidden;
-    transition: border-color 120ms, background 120ms;
+
     animation: cardIn 160ms ease both;
+    transition: border-color 120ms, background 120ms;
   }
 
-  :global(.card:hover) {
-    border-color: var(--qt-stroke-muted);
+  .card:hover {
     background: var(--qt-hover-bg);
+    border-color: var(--qt-stroke-muted);
   }
 
-  :global(.card.selected) {
-    border-color: var(--qt-accent-info);
+  .card.selected {
     background: rgba(0,122,204,0.09);
+    border-color: var(--qt-accent-info);
   }
 
-  :global(.badge) {
-    height: 16px;
-    padding: 0 6px;
-    border-radius: 3px;
-    background: rgba(0,0,0,0.62);
-    color: #f2f2f2;
-    font-size: 9px;
-    font-weight: 600;
-    line-height: 16px;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    pointer-events: none;
-    backdrop-filter: blur(4px);
-    /* -webkit-backdrop-filter: blur(4px); */
-    max-width: calc(100% - 16px);
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    /* z-index: 2;
-    height: 16px;
-    padding: 0 6px;
-    border-radius: 3px;
-    font-size: 9px;
-    font-weight: 600;
-    line-height: 16px;
-    white-space: nowrap;
-    max-width: calc(100% - 16px);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    pointer-events: none; */
-  }
-
-  :global(.thumbnail) {
+  .thumbnail {
     flex: 1;
     min-height: 110px;
-    border-radius: var(--qt-radius-m);
-    overflow: hidden;
     background: var(--qt-bg-default);
-    display: flex;
-    align-items: stretch;
+    overflow: hidden;
   }
 
-  :global(.title) {
+  .card-title {
     font-size: 13px;
     font-weight: 500;
     color: var(--qt-text-default);
@@ -138,13 +108,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     text-align: start;
   }
 
-  :global(.separator) {
-    height: 1px;
-    background: var(--qt-stroke-subtle);
-    flex-shrink: 0;
-  }
-
-  :global(.tags-container) {
+  .tags-container {
     display: flex;
     align-items: center;
     gap: 4px;
@@ -154,7 +118,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     min-height: 20px;
   }
 
-  :global(.tag-icon) {
+  .tag-icon {
     font-size: 14px;
     color: var(--qt-text-muted);
     flex-shrink: 0;
@@ -163,30 +127,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     align-items: center;
     margin-right: 1px;
     opacity: 0.7;
-  }
-
-  :global(.tag) {
-    display: inline-flex;
-    align-items: center;
-    height: 20px;
-    padding: 0 6px;
-    border-radius: var(--qt-radius-s);
-    background: var(--qt-bg-input);
-    color: var(--qt-text-muted);
-    border: 1px solid transparent;
-    font-size: 10px;
-    font-weight: 600;
-    line-height: 12px;
-    letter-spacing: 0;
-    white-space: nowrap;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background 80ms, border-color 80ms, color 80ms;
-    text-decoration: none;
-  }
-
-  :global(.tag:hover) {
-    background: var(--qt-hover-bg);
-    color: var(--qt-text-default);
   }
 </style>

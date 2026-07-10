@@ -22,7 +22,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }}
 >
   <p class='tags-text'># Tags</p>
-  <p class='count-badge'>{count}</p>
+  <p class='qt-badge app-header-badge'>{count}</p>
 </button>
 
 <style>

@@ -30,7 +30,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <button
-  class='breadcrumb qt-push-button flex flex-row'
+  class='qt-push-button flex flex-row'
   aria-expanded={ui.overlays.catalog.visible}
   disabled={data.packages.length === 0}
   onclick={() => {
@@ -38,41 +38,41 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }}
 >
   {#if valid}
-    <p class='header-bc-title'>Categories</p>
-    <p class='header-bc-chevron-right'>{charRightChevron}</p>
-    <p class='header-bc-version'>{ui.selected.package?.name ?? ''}</p>
-    <p class='header-bc-chevron-right'>{charRightChevron}</p>
-    <p class='header-bc-category'>{ui.filter.category?.name ?? ''}</p>
-    <p class='count-badge'>{countText}</p>
-    <p class='header-bc-down-arrow'>{charDownArrow}</p>
+    <p class='breadcrumb-title'>Categories</p>
+    <p class='breadcrumb-chevron-right'>{charRightChevron}</p>
+    <p class='breadcrumb-version'>{ui.selected.package?.name ?? ''}</p>
+    <p class='breadcrumb-chevron-right'>{charRightChevron}</p>
+    <p class='breadcrumb-category'>{ui.filter.category?.name ?? ''}</p>
+    <p class='qt-badge app-header-badge'>{countText}</p>
+    <p class='breadcrumb-down-arrow'>{charDownArrow}</p>
   {:else}
     <p class='breadcrumb-title'>-</p>
   {/if}
 </button>
 
 <style>
-  .header-bc-title {
+  .breadcrumb-title {
     color: var(--qt-text-muted);
     font-weight: var(--qt-font-weight-bold);
   }
 
-  .header-bc-version {
+  .breadcrumb-version {
     color: var(--qt-text-muted);
     font-size: var(--qt-font-size-s);
   }
 
-  .header-bc-category {
+  .breadcrumb-category {
     color: var(--qt-text-default);
     font-weight: var(--qt-font-weight-active);
   }
 
-  .header-bc-chevron-right {
+  .breadcrumb-chevron-right {
     color: var(--qt-text-muted);
     font-size: var(--qt-font-size-xs);
     opacity: 0.5;
   }
 
-  .header-bc-down-arrow {
+  .breadcrumb-down-arrow {
     color: var(--qt-text-muted);
     font-size: var(--qt-font-size-xs);
   }

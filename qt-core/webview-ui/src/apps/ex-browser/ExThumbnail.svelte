@@ -27,7 +27,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   $effect(() => {
-    void example; // re-run when example changes
+    void example; // to re-run when example changes
     srcPromise = undefined;
     if (!lazyLoading) {
       fetchSrc();
