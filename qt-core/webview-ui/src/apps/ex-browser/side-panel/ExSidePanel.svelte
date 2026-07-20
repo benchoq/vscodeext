@@ -4,11 +4,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { ui } from './states.svelte';
+  import { ui } from '../states.svelte';
 
   import Row from '@/comps/Row.svelte';
   import Column from '@/comps/Column.svelte';
-  import ExThumbnail from './ExThumbnail.svelte';
+  import ExThumbnail from '../others/ExThumbnail.svelte';
   import ExDetailsSectionMeta from './ExDetailsSectionMeta.svelte';
   import ExDetailsSectionActions from './ExDetailsSectionActions.svelte';
   const example = $derived(ui.selected.example);

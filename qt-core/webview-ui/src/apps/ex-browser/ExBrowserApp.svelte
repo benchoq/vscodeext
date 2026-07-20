@@ -9,10 +9,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import '@/styles/app.css';
   import './styles.css';
 
-  import ExHeader from './ExHeader.svelte';
-  import ExMainView from './ExMainView.svelte';
-  import ExSidePanel from './ExSidePanel.svelte';
-  import ExOverlaysContainer from './ExOverlaysContainer.svelte';
+  import ExHeader from './header/ExHeader.svelte';
+  import ExMainView from './main/ExMainView.svelte';
+  import ExSidePanel from './side-panel/ExSidePanel.svelte';
+  import ExOverlaysContainer from './popups/ExOverlaysContainer.svelte';
   import * as viewlogic from './viewlogic.svelte';
   import { ui } from './states.svelte';
 
@@ -36,7 +36,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </div>
   </div>
 
-  <ExOverlaysContainer />
+  <div class='z-100'>
+    <ExOverlaysContainer />
+  </div>
 </div>
 
 <style>

@@ -26,3 +26,20 @@ export function portal(node: HTMLElement, target: HTMLElement | string = documen
     }
   };
 }
+
+export function clickOutside(el: HTMLElement, cb: (ev: MouseEvent) => void) {
+  function onclick(ev: MouseEvent) {
+    const target = ev.target;
+    if (el && target instanceof Node && !el.contains(target)) {
+      cb(ev);
+    }
+  }
+
+  document.addEventListener('click', onclick, true);
+
+  return {
+    destroy() {
+      document.removeEventListener('click', onclick, true);
+    }
+  };
+}

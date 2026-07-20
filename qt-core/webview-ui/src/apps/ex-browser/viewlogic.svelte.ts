@@ -162,11 +162,6 @@ export function setOverlayVisible(name: OverlayName, visible: boolean) {
   }
 
   switch (name) {
-    case 'catalog': {
-      ui.overlays.tagCloud.visible = false;
-      break;
-    }
-
     case 'tagCloud': {
       const o = ui.overlays.tagCloud;
       if (visible && o.refRect) {
@@ -178,7 +173,7 @@ export function setOverlayVisible(name: OverlayName, visible: boolean) {
           left: ${r.left}px;
           width: 700px;
         `
-        ui.overlays.catalog.visible = false;
+        // ui.overlays.catalog.visible = false;
       }
       break;
     }

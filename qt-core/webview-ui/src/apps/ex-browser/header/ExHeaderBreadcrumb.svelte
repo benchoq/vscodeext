@@ -4,8 +4,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { data, ui } from './states.svelte';
-  import * as viewlogic from './viewlogic.svelte';
+  import { data, ui } from '../states.svelte';
+  import * as viewlogic from '../viewlogic.svelte';
 
   const charDownArrow = '▾';
   const charRightChevron = '›';
@@ -30,6 +30,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <button
+  bind:this={ui.overlays.catalog.refEl}
   class='qt-push-button flex flex-row'
   aria-expanded={ui.overlays.catalog.visible}
   disabled={data.packages.length === 0}

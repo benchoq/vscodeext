@@ -6,10 +6,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { Folder, FileTag } from '@/icons';
 
-  import { ui } from './states.svelte';
+  // import { ui } from '../states.svelte';
   import Column from '@/comps/Column.svelte';
 
-  const example = $derived(ui.selected.example);
+  // const example = $derived(ui.selected.example);
 </script>
 
 <Column>

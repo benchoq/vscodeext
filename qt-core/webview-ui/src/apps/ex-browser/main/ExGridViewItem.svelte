@@ -6,9 +6,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { Tag } from '@/icons';
   import { type ExEntry } from '@shared/ex-browser';
-  import ExThumbnail from './ExThumbnail.svelte';
-  import { ui } from './states.svelte';
-  import * as viewlogic from './viewlogic.svelte';
+  import ExThumbnail from '../others/ExThumbnail.svelte';
+  import { ui } from '../states.svelte';
+  import * as viewlogic from '../viewlogic.svelte';
 
   let {
     example = undefined as ExEntry | undefined,

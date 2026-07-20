@@ -1,0 +1,90 @@
+<!--
+Copyright (C) 2026 The Qt Company Ltd.
+SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+-->
+
+<script lang="ts">
+  import { Funnel } from '@lucide/svelte';
+
+  // import Overlay from '@/comps/Overlay.svelte';
+  import Separator from '@/comps/Separator.svelte';
+  import Column from '@/comps/Column.svelte';
+  import IconSection from '@/comps/IconSection.svelte';
+  import { exBrowser as texts } from '@/apps/texts';
+
+  import { data, ui } from '../states.svelte';
+  import * as viewlogic from '../viewlogic.svelte';
+
+  const itemClass = 'w-full text-left whitespace-nowrap !py-1';
+</script>
+
+<Column gap={false} class='min-w-[200px]'>
+  <IconSection icon={Funnel} text={texts.catalog.categories} class='mb-2' />
+  {#each data.categories as cat, i (cat)}
+    {@const prev = data.categories[i - 1]}
+    {@const typeChanged = i > 0 && prev?.type !== cat.type}
+
+    <Separator class='my-2' visible={typeChanged && cat.type === 'general'}/>
+    <button
+      class={`
+        ${itemClass} flex flex-row gap-10
+        ${(cat !== ui.filter.category) ? 'qt-item' : 'qt-item-selected'}
+      `}
+      onclick={async () => {
+        await viewlogic.selectCategory(cat);
+        viewlogic.setOverlayVisible('catalog', false);
+      }}
+    >
+      <div class="flex-1">{cat.name}</div>
+      <div>{cat.count}</div>
+    </button>
+  {/each}
+</Column>
+
+<style>
+  .panel {
+    /* width: 480px; */
+    background: var(--qt-bg-subtle);
+    border: 1px solid var(--qt-stroke-subtle);
+    border-radius: var(--qt-radius-m);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+    overflow: hidden;
+  }
+
+  .header {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--qt-stroke-subtle);
+
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .header-title {
+    color: var(--qt-text-default);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .header-close {
+    padding: 2px 4px;
+
+    color: var(--qt-text-muted);
+    background: none;
+    border: none;
+    border-radius: var(--qt-radius-s);
+
+    font-size: 14px;
+    line-height: 1;
+
+    cursor: pointer;
+    transition:
+      color var(--qt-duration-fast),
+      background var(--qt-duration-fast);
+  }
+
+  .header-close:hover {
+    color: var(--qt-text-default);
+    background: var(--qt-icon-hover-bg);
+  }
+</style>

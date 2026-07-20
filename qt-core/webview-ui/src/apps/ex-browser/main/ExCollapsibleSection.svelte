@@ -8,7 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { type ExCategory } from '@shared/ex-browser';
   import ExGridView from './ExGridView.svelte';
   import ExListView from './ExListView.svelte';
-  import { data, ui } from './states.svelte';
+  import { data, ui } from '../states.svelte';
 
   let {
     category = undefined as ExCategory | undefined,
@@ -58,7 +58,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/if}
 
 <style>
-  :global(.header) {
+  .header {
     display: flex;
     align-items: center;
     gap: 7px;

@@ -17,8 +17,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import IconButton from '@/comps/IconButton.svelte';
   import { exBrowser as texts } from '@/apps/texts';
 
-  import { data, ui } from './states.svelte';
-  import * as viewlogic from './viewlogic.svelte';
+  import { data, ui } from '../states.svelte';
+  import * as viewlogic from '../viewlogic.svelte';
 
   const example = $derived(ui.selected.example);
   const resolvedPaths = $derived.by(() => {

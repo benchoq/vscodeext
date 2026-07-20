@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { ui } from './states.svelte';
+  import { ui } from '../states.svelte';
 
   const example = $derived(ui.selected.example);
 </script>

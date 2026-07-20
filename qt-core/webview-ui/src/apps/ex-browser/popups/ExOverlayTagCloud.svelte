@@ -7,8 +7,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import Flow from '@/comps/Flow.svelte';
   import Overlay from '@/comps/Overlay.svelte';
 
-  import { ui } from './states.svelte';
-  import * as viewlogic from './viewlogic.svelte';
+  import { ui } from '../states.svelte';
+  import * as viewlogic from '../viewlogic.svelte';
   import { exBrowser as texts } from '@/apps/texts';
 
   const overlay = $derived(ui.overlays.tagCloud);

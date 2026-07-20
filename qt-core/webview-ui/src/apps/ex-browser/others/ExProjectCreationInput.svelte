@@ -10,9 +10,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { cubicOut, cubicIn } from 'svelte/easing';
 
   import NewItemForm from '@/comps/NewItemForm.svelte';
-  import { ui } from './states.svelte';
+  import { ui } from '../states.svelte';
   import { exBrowser as texts } from '@/apps/texts';
-  import * as viewlogic from './viewlogic.svelte';
+  import * as viewlogic from '../viewlogic.svelte';
 </script>
 
 <div

@@ -38,7 +38,8 @@ export const ui = $state({
 
   overlays: {
     catalog: {
-      visible: false
+      visible: false,
+      refEl: undefined as HTMLElement | undefined,
     },
 
     details: {

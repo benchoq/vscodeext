@@ -25,11 +25,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import IconSection from '@/comps/IconSection.svelte';
   import { exBrowser as texts } from '@/apps/texts';
 
-  import ExThumbnail from './ExThumbnail.svelte';
-  import ExProjectFileList from './ExProjectFileList.svelte';
-  import ExProjectCreationInput from './ExProjectCreationInput.svelte';
-  import { data, ui } from './states.svelte';
-  import * as viewlogic from './viewlogic.svelte';
+  import ExThumbnail from '../others/ExThumbnail.svelte';
+  import ExProjectFileList from '../others/ExProjectFileList.svelte';
+  import ExProjectCreationInput from '../others/ExProjectCreationInput.svelte';
+  import { data, ui } from '../states.svelte';
+  import * as viewlogic from '../viewlogic.svelte';
 
   let example = $derived(ui.selected.example);
   const overlay = $derived(ui.overlays.details);

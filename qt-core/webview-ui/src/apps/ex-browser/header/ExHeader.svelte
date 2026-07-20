@@ -5,7 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { Grid, List } from '@/icons';
-  import { ui } from './states.svelte';
+  import { ui } from '../states.svelte';
   import ExHeaderTags from './ExHeaderTags.svelte';
   import ExHeaderBreadcrumb from './ExHeaderBreadcrumb.svelte';
   import ExHeaderSearchInput from './ExHeaderSearchInput.svelte';
