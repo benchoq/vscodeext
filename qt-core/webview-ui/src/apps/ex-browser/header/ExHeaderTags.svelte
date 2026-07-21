@@ -13,11 +13,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <button
+  bind:this={ui.overlays.tagCloud.refEl}
   class='qt-push-button flex flex-row items-center gap-[6px] shrink-0'
   aria-expanded={ui.overlays.tagCloud.visible}
   disabled={(ui.filter.category?.tags.length ?? 0) === 0}
-  onclick={(e: MouseEvent) => {
-    ui.overlays.tagCloud.refRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+  onclick={() => {
     viewlogic.setOverlayVisible('tagCloud', !ui.overlays.tagCloud.visible);
   }}
 >

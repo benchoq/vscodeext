@@ -157,32 +157,11 @@ export async function resolveImageUrl(example: ExEntry) {
 
 export function setOverlayVisible(name: OverlayName, visible: boolean) {
   const overlay = ui.overlays[name];
-  if (!overlay || overlay.visible === visible) {
-    return;
+  if (overlay && (overlay.visible !== visible)) {
+    overlay.visible = visible;
   }
 
-  switch (name) {
-    case 'tagCloud': {
-      const o = ui.overlays.tagCloud;
-      if (visible && o.refRect) {
-        const gap = 6;
-        const r = o.refRect;
-        o.position = `
-          position: fixed;
-          top: ${r.bottom + gap}px;
-          left: ${r.left}px;
-          width: 700px;
-        `
-        // ui.overlays.catalog.visible = false;
-      }
-      break;
-    }
-
-    default:
-      break;
-  }
-
-  overlay.visible = visible;
+  console.log("-----------", name);
 }
 
 export async function onNewProjectFormEvent(type: NewItemForm.EventType, args?: unknown) {

@@ -5,6 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { clickOutside } from '@/utils/actions';
+  import ExTagsPopup from './ExTagsPopup.svelte';
   import ExOverlayCatalog from './ExOverlayCatalog.svelte';
   // import ExOverlayDetails from './ExOverlayDetails.svelte';
   // import ExOverlayTagCloud from './ExOverlayTagCloud.svelte';
@@ -14,6 +15,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const yoffset = 5;
   const catalogRefRect = $derived.by(() => {
     const r = ui.overlays.catalog?.refEl?.getBoundingClientRect();
+    return {
+      top: (r?.bottom ?? 0),
+      left: (r?.left ?? 0)
+    }
+  })
+
+  const tagsRefRect = $derived.by(() => {
+    const r = ui.overlays.tagCloud.refEl?.getBoundingClientRect();
     return {
       top: (r?.bottom ?? 0),
       left: (r?.left ?? 0)
@@ -38,18 +47,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </div>
 {/if}
 
-<!--
-{#if ui.overlays.details.visible}
-  <div class={`
-    absolute top-0 transition-x duration-200
-    ${ui.overlays.details.alignLeft
-      ? `left-0 translate-x-0`
-      : 'left-full -translate-x-full' }
-  `}>
-    <ExOverlayDetails />
-  </div>
-{/if} -->
-<!--
 {#if ui.overlays.tagCloud.visible && (ui.filter.category?.tags.length ?? 0) !== 0}
-  <ExOverlayTagCloud />
-{/if} -->
+  <div
+    class='fixed'
+    style={`
+      top: ${tagsRefRect.top + yoffset}px;
+      left: ${tagsRefRect.left}px;
+    `}
+    use:clickOutside={(ev: MouseEvent) => {
+      ev.stopPropagation();
+      viewlogic.setOverlayVisible('tagCloud', false);
+    }}
+  >
+    <ExTagsPopup />
+  </div>
+{/if}

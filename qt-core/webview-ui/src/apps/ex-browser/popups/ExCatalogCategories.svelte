@@ -25,8 +25,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <p class='item-count'>{cat.count}</p>
     </button>
   {/each}
-  </div>
-
+</div>
 
 <style>
   .item-count {
