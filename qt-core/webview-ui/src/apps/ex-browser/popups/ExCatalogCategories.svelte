@@ -10,11 +10,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div class='flex flex-col'>
-  <p class='title'>{texts.catalog.categories}</p>
+  <p class='ex-catalog-section-title'>{texts.catalog.categories}</p>
 
   {#each data.categories as cat (cat)}
     <button
-      class='item flex flex-row'
+      class='ex-catalog-list-item flex flex-row'
       class:active={cat === ui.filter.category}
       onclick={async () => {
         await viewlogic.selectCategory(cat);
@@ -29,49 +29,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 
 <style>
-  .title {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--qt-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 4px 12px 8px;
-  }
-
-  .item {
-    display: flex;
-    align-items: center;
-    padding: 5px 12px;
-    font-size: 13px;
-    color: var(--qt-text-muted);
-    cursor: pointer;
-    transition: background 80ms, color 80ms;
-  }
-
-  .item.active {
-    background: var(--qt-selected-bg);
-    color: var(--qt-selected-fg);
-  }
-
-  .item:hover {
-    background: var(--qt-hover-bg);
-    color: var(--qt-text-default);
-  }
-
   .item-name {
-    display: flex;
     flex: 1;
+    display: flex;
     align-items: center;
     font-size: 13px;
-    color: var(--qt-text-muted);
     cursor: pointer;
-    transition: background 80ms, color 80ms;
+    transition: var(--transition-fast);
   }
 
   .item-count {
-    font-size: 11px;
-    color: inherit;
     opacity: 0.65;
+    font-size: 11px;
     font-variant-numeric: tabular-nums;
     margin-left: 8px;
   }

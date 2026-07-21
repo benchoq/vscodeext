@@ -13,7 +13,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div class='flex flex-col'>
-  <p class='title'>{texts.catalog.versions}</p>
+  <p class='ex-catalog-section-title'>{texts.catalog.versions}</p>
 
   {#each data.packages as p, i (p)}
     {@const prev = data.packages[i-1]}
@@ -23,7 +23,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     />
 
     <button
-      class='item'
+      class='ex-catalog-list-item'
       class:active={ui.selected.package === p}
       title={p.poolDir.fsPath}
       onclick={async () => {
@@ -37,32 +37,4 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {p.subDir}
     </button>
   {/each}
-  </div>
-
-<style>
-  .title {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--qt-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 4px 12px 8px;
-  }
-
-  .item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 12px;
-    font-size: 13px;
-    color: var(--qt-text-muted);
-    cursor: pointer;
-    border-radius: 0;
-    transition: background 80ms, color 80ms;
-  }
-
-  .item.active {
-    background: var(--qt-accent-info);
-    color: var(--qt-button-fg);
-  }
-</style>
+</div>
