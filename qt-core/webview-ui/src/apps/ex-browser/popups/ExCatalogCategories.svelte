@@ -2,89 +2,77 @@
 Copyright (C) 2026 The Qt Company Ltd.
 SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
-
 <script lang="ts">
-  import { Funnel } from '@lucide/svelte';
-
-  // import Overlay from '@/comps/Overlay.svelte';
-  import Separator from '@/comps/Separator.svelte';
-  import Column from '@/comps/Column.svelte';
-  import IconSection from '@/comps/IconSection.svelte';
   import { exBrowser as texts } from '@/apps/texts';
 
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
-
-  const itemClass = 'w-full text-left whitespace-nowrap !py-1';
 </script>
 
-<Column gap={false} class='min-w-[200px]'>
-  <IconSection icon={Funnel} text={texts.catalog.categories} class='mb-2' />
-  {#each data.categories as cat, i (cat)}
-    {@const prev = data.categories[i - 1]}
-    {@const typeChanged = i > 0 && prev?.type !== cat.type}
+<div class='flex flex-col'>
+  <p class='title'>{texts.catalog.categories}</p>
 
-    <Separator class='my-2' visible={typeChanged && cat.type === 'general'}/>
+  {#each data.categories as cat (cat)}
     <button
-      class={`
-        ${itemClass} flex flex-row gap-10
-        ${(cat !== ui.filter.category) ? 'qt-item' : 'qt-item-selected'}
-      `}
+      class='item flex flex-row'
+      class:active={cat === ui.filter.category}
       onclick={async () => {
         await viewlogic.selectCategory(cat);
         viewlogic.setOverlayVisible('catalog', false);
       }}
     >
-      <div class="flex-1">{cat.name}</div>
-      <div>{cat.count}</div>
+      <p class='item-name'>{cat.name}</p>
+      <p class='item-count'>{cat.count}</p>
     </button>
   {/each}
-</Column>
+  </div>
+
 
 <style>
-  .panel {
-    /* width: 480px; */
-    background: var(--qt-bg-subtle);
-    border: 1px solid var(--qt-stroke-subtle);
-    border-radius: var(--qt-radius-m);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
-    overflow: hidden;
-  }
-
-  .header {
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--qt-stroke-subtle);
-
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-  }
-
-  .header-title {
-    color: var(--qt-text-default);
-    font-size: 13px;
+  .title {
+    font-size: 11px;
     font-weight: 600;
-  }
-
-  .header-close {
-    padding: 2px 4px;
-
     color: var(--qt-text-muted);
-    background: none;
-    border: none;
-    border-radius: var(--qt-radius-s);
-
-    font-size: 14px;
-    line-height: 1;
-
-    cursor: pointer;
-    transition:
-      color var(--qt-duration-fast),
-      background var(--qt-duration-fast);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 12px 8px;
   }
 
-  .header-close:hover {
+  .item {
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    font-size: 13px;
+    color: var(--qt-text-muted);
+    cursor: pointer;
+    transition: background 80ms, color 80ms;
+  }
+
+  .item.active {
+    background: var(--qt-selected-bg);
+    color: var(--qt-selected-fg);
+  }
+
+  .item:hover {
+    background: var(--qt-hover-bg);
     color: var(--qt-text-default);
-    background: var(--qt-icon-hover-bg);
+  }
+
+  .item-name {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    font-size: 13px;
+    color: var(--qt-text-muted);
+    cursor: pointer;
+    transition: background 80ms, color 80ms;
+  }
+
+  .item-count {
+    font-size: 11px;
+    color: inherit;
+    opacity: 0.65;
+    font-variant-numeric: tabular-nums;
+    margin-left: 8px;
   }
 </style>

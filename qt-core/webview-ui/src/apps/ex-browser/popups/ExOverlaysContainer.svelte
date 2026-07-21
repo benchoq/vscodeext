@@ -28,8 +28,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     style={`
       top: ${catalogRefRect.top + yoffset}px;
       left: ${catalogRefRect.left}px;
-      width: 700px;
-      height: 500px;
     `}
     use:clickOutside={(ev: MouseEvent) => {
       ev.stopPropagation();

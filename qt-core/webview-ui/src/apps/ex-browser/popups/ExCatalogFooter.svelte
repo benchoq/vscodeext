@@ -5,54 +5,71 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import Tooltip from 'flowbite-svelte/Tooltip.svelte';
-  import { ExternalLink, Info } from '@lucide/svelte';
-
-  // import Overlay from '@/comps/Overlay.svelte';
-  import IconButton from '@/comps/IconButton.svelte';
-  import Row from '@/comps/Row.svelte';
   import { exBrowser as texts } from '@/apps/texts';
 
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
   const poolDirPath = $derived(ui.selected.package?.poolDir.fsPath);
+  const charInfo = 'ⓘ';
+  const charOpenExternal = '↗';
 </script>
 
-<Row class='items-center'>
-  <Info />
+<div class='footer'>
+  <p class='info'>{charInfo}</p>
   <Tooltip class='qt-tooltip text-left' placement='bottom' data-placement='bottom'>
     {texts.catalog.locationInfo}
   </Tooltip>
 
-  <div class={`
-    qt-label grow
-    text-left whitespace-nowrap overflow-hidden overflow-ellipsis
-  `}>
-    {texts.catalog.location}: {poolDirPath ?? '-'}
+  <div class='location'>
+    {poolDirPath ?? '-'}
   </div>
 
-  <IconButton
-    flat square
-    class='!border-none !w-0'
-    icon={ExternalLink}
-    tooltip={texts.catalog.revealLocationTooltip}
-    tooltipPlacement='top-end'
-    onClicked={() => {
+  <button
+    class='external-link'
+    title={texts.catalog.revealLocationTooltip}
+    onclick={() => {
       if (poolDirPath) {
         viewlogic.openFolder(poolDirPath);
       }
     }}
-  />
-</Row>
+  >
+    {charOpenExternal}
+  </button>
+</div>
 
 <style>
-  .panel {
-    /* width: 480px; */
-    background: var(--qt-bg-subtle);
-    border: 1px solid var(--qt-stroke-subtle);
-    border-radius: var(--qt-radius-m);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
-    overflow: hidden;
+  .footer {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 8px;
   }
 
+  .info {
+    color: var(--qt-text-muted);
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .location {
+    flex: 1;
+    font-size: 11px;
+    color: var(--qt-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .external-link {
+    background: none;
+    border: none;
+    color: var(--qt-text-muted);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: var(--qt-radius-s);
+    flex-shrink: 0;
+    transition: color 80ms;
+  }
 </style>

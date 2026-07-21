@@ -164,11 +164,11 @@ export const exBrowser = {
     title: 'Catalog',
     versions: 'Qt versions',
     categories: 'Categories',
-    locationInfo: 'Examples come from the Qt installation folder and'
-      + 'any additional paths configured in settings.'
-      + 'To add more, open the Command Palette and search for \'Qt: Register Qt\''
-      + 'or edit settings manually.',
-    location: 'Location',
+    locationInfo: ['Examples come from the Qt installation folder and',
+      'any additional paths configured in settings.',
+      'To add more, open the Command Palette and search for \'Qt: Register Qt\'',
+      'or edit settings manually.',
+    ].join(' '),
     revealLocationTooltip: 'Reveal folder in the file manager'
   },
 

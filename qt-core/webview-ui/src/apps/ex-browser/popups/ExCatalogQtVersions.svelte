@@ -4,20 +4,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  // import Overlay from '@/comps/Overlay.svelte';
   import Separator from '@/comps/Separator.svelte';
-  import Column from '@/comps/Column.svelte';
-  import IconSection from '@/comps/IconSection.svelte';
   import { exBrowser as texts } from '@/apps/texts';
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
   let loading = $state(false);
-  const itemClass = 'w-full text-left whitespace-nowrap !py-1';
 </script>
 
-<Column gap={false} class='min-w-[180px]'>
-  <IconSection text={texts.catalog.versions} class='mb-2' />
+<div class='flex flex-col'>
+  <p class='title'>{texts.catalog.versions}</p>
+
   {#each data.packages as p, i (p)}
     {@const prev = data.packages[i-1]}
     <Separator
@@ -25,10 +22,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       visible={i!== 0 && prev.poolDir.sourceType !== p.poolDir.sourceType}
     />
 
-    <button class={`
-      ${itemClass}
-      ${ui.selected.package !== p ? 'qt-item' : 'qt-item-selected'}
-    `}
+    <button
+      class='item'
+      class:active={ui.selected.package === p}
       title={p.poolDir.fsPath}
       onclick={async () => {
         if (!loading) {
@@ -41,52 +37,32 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {p.subDir}
     </button>
   {/each}
-</Column>
+  </div>
 
 <style>
-  .panel {
-    /* width: 480px; */
-    background: var(--qt-bg-subtle);
-    border: 1px solid var(--qt-stroke-subtle);
-    border-radius: var(--qt-radius-m);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
-    overflow: hidden;
-  }
-
-  .header {
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--qt-stroke-subtle);
-
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-  }
-
-  .header-title {
-    color: var(--qt-text-default);
-    font-size: 13px;
+  .title {
+    font-size: 11px;
     font-weight: 600;
-  }
-
-  .header-close {
-    padding: 2px 4px;
-
     color: var(--qt-text-muted);
-    background: none;
-    border: none;
-    border-radius: var(--qt-radius-s);
-
-    font-size: 14px;
-    line-height: 1;
-
-    cursor: pointer;
-    transition:
-      color var(--qt-duration-fast),
-      background var(--qt-duration-fast);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 12px 8px;
   }
 
-  .header-close:hover {
-    color: var(--qt-text-default);
-    background: var(--qt-icon-hover-bg);
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: var(--qt-text-muted);
+    cursor: pointer;
+    border-radius: 0;
+    transition: background 80ms, color 80ms;
+  }
+
+  .item.active {
+    background: var(--qt-accent-info);
+    color: var(--qt-button-fg);
   }
 </style>
