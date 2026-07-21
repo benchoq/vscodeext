@@ -38,3 +38,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </button>
   {/each}
 </div>
+
+<style>
+  .ex-catalog-list-item.active {
+    background: var(--qt-accent-info);
+    color: var(--qt-button-fg);
+  }
+</style>

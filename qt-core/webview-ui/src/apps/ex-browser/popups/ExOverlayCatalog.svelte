@@ -25,16 +25,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   .panel {
-    width: 480px;
+    width: var(--catalog-panel-width);
     background: var(--qt-bg-subtle);
-    border: 1px solid var(--qt-stroke-subtle);
+    border: var(--popup-border);
     border-radius: var(--qt-radius-m);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+    box-shadow: var(--popup-shadow);
     overflow: hidden;
   }
 
   .body {
-    border-top: 1px solid var(--qt-stroke-subtle);
+    border-top: var(--catalog-section-separator);
   }
 
   .versions {
@@ -47,16 +47,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     max-height: 340px;
     padding: 6px 0;
     overflow-y: auto;
-    border-left: 1px solid var(--qt-stroke-subtle);
+    border-left: var(--catalog-section-separator);
   }
 
   .footer {
-    border-top: 1px solid var(--qt-stroke-subtle);
+    border-top: var(--catalog-section-separator);
     display: flex;
     align-items: center;
-    /* gap: 8px; */
     padding: 8px 14px;
-    border-top: 1px solid var(--qt-stroke-subtle);
     background: var(--qt-bg-default);
     flex-shrink: 0;
   }

@@ -21,7 +21,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         viewlogic.setOverlayVisible('catalog', false);
       }}
     >
-      <p class='item-name'>{cat.name}</p>
+      <p class='flex flex-1'>{cat.name}</p>
       <p class='item-count'>{cat.count}</p>
     </button>
   {/each}
@@ -29,19 +29,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 
 <style>
-  .item-name {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    font-size: 13px;
-    cursor: pointer;
-    transition: var(--transition-fast);
-  }
-
   .item-count {
+    margin-left: 8px;
     opacity: 0.65;
     font-size: 11px;
     font-variant-numeric: tabular-nums;
-    margin-left: 8px;
   }
 </style>

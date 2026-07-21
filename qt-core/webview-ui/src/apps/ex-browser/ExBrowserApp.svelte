@@ -20,7 +20,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   onDestroy(() => viewlogic.onAppDestroy());
 </script>
 
-<div class='w-screen h-screen flex flex-col overflow-hidden'>
+<div class='ex-browser-scope w-screen h-screen flex flex-col overflow-hidden'>
   <ExHeader />
 
   <div class='flex flex-row flex-1 min-h-0'>
