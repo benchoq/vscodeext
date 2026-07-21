@@ -7,7 +7,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { onMount, onDestroy } from 'svelte';
 
   import '@/styles/app.css';
-  import './styles.css';
+  import '@/styles/tokens.css';
+
+  import './components.css';
+  import './app.css';
 
   import ExHeader from './header/ExHeader.svelte';
   import ExMainView from './main/ExMainView.svelte';
@@ -52,7 +55,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   .panel.open {
-    width: var(--app-panel-width);
+    width: var(--side-panel-width);
     border-left-color: var(--qt-stroke-subtle);
   }
 </style>

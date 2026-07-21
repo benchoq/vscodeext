@@ -1,0 +1,99 @@
+/*
+Copyright (C) 2026 The Qt Company Ltd.
+SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+*/
+
+.app-header-badge {
+  color: var(--qt-text-muted);
+  background: var(--qt-bg-elevated);
+  border: 1px solid var(--qt-stroke-subtle);
+  border-radius: 7px;
+}
+
+.app-card-badge {
+  height: 16px;
+  max-width: calc(100% - 16px);
+  color: #f2f2f2;
+  background: rgba(0,0,0,0.62);
+  border: none;
+  border-radius: 3px;
+
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  text-overflow: ellipsis;
+
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  overflow: hidden;
+}
+
+.app-tag-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--qt-radius-s);
+  background: var(--qt-bg-input);
+  color: var(--qt-text-muted);
+  border: 1px solid transparent;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 12px;
+  letter-spacing: 0;
+  white-space: nowrap;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 80ms, border-color 80ms, color 80ms;
+  text-decoration: none;
+}
+
+.app-tag-badge:hover {
+  background: var(--qt-hover-bg);
+  color: var(--qt-text-default);
+}
+
+.ex-browser-scope {
+  --transition-fast: background 80ms, border-color 80ms, color 80ms;
+  --popup-border: 1px solid var(--qt-stroke-subtle);
+  --popup-shadow: 0 8px 24px rgba(0,0,0,0.45);
+
+  --catalog-panel-width: 480px;
+  --catalog-section-separator: 1px solid var(--qt-stroke-subtle);
+
+  --tags-panel-width: 380px;
+  --tags-panel-max-height: 300px;
+
+  --side-panel-width: 320px;
+}
+
+.ex-catalog-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--qt-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 12px 8px;
+}
+
+.ex-catalog-list-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--qt-text-muted);
+  cursor: pointer;
+  border-radius: 0;
+  transition: var(--transition-fast);
+}
+
+.ex-catalog-list-item:hover {
+  background: var(--qt-hover-bg);
+  color: var(--qt-text-default);
+}
+
+.ex-catalog-list-item.active {
+  background: var(--qt-selected-bg);
+  color: var(--qt-selected-fg);
+}

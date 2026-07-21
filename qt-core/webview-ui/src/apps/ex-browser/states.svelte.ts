@@ -52,8 +52,6 @@ export const ui = $state({
     tagCloud: {
       visible: false,
       refEl: undefined as HTMLElement | undefined,
-      // position: '',
-      // refRect: undefined as (DOMRect | undefined),
     }
   },
 
