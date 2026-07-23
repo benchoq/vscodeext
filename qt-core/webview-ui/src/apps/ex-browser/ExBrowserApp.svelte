@@ -9,7 +9,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import '@/styles/app.css';
   import '@/styles/tokens.css';
 
-  import './components.css';
   import './app.css';
 
   import ExHeader from './header/ExHeader.svelte';
@@ -23,7 +22,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   onDestroy(() => viewlogic.onAppDestroy());
 </script>
 
-<div class='ex-browser-scope w-screen h-screen flex flex-col overflow-hidden'>
+<div class='ex-browser-app w-screen h-screen flex flex-col overflow-hidden'>
   <ExHeader />
 
   <div class='flex flex-row flex-1 min-h-0'>

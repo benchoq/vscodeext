@@ -107,7 +107,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     line-height: 18px;
     text-align: start;
   }
-
+/*
   .tags-container {
     display: flex;
     align-items: center;
@@ -127,5 +127,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     align-items: center;
     margin-right: 1px;
     opacity: 0.7;
-  }
+  } */
 </style>

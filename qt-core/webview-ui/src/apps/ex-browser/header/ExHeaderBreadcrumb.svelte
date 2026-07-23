@@ -4,11 +4,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import * as chars from '@/utils/chars';
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
-
-  const charDownArrow = '▾';
-  const charRightChevron = '›';
 
   const valid = $derived.by(() => {
     return (ui.selected.package?.name ?? '')
@@ -31,50 +29,47 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <button
   bind:this={ui.overlays.catalog.refEl}
-  class='qt-push-button flex flex-row'
+  class='ex-browser-push-button ex-header-breadcrumb flex flex-row'
   aria-expanded={ui.overlays.catalog.visible}
   disabled={data.packages.length === 0}
   onclick={() => {
     viewlogic.setOverlayVisible('catalog', !ui.overlays.catalog.visible);
   }}
 >
+  <p class='title'>
+    {valid ? 'Categories' : '-'}
+  </p>
+
   {#if valid}
-    <p class='breadcrumb-title'>Categories</p>
-    <p class='breadcrumb-chevron-right'>{charRightChevron}</p>
-    <p class='breadcrumb-version'>{ui.selected.package?.name ?? ''}</p>
-    <p class='breadcrumb-chevron-right'>{charRightChevron}</p>
-    <p class='breadcrumb-category'>{ui.filter.category?.name ?? ''}</p>
-    <p class='qt-badge app-header-badge'>{countText}</p>
-    <p class='breadcrumb-down-arrow'>{charDownArrow}</p>
-  {:else}
-    <p class='breadcrumb-title'>-</p>
+    <p class='icons opacity-50'>{chars.rightChevron}</p>
+    <p class='version'>{ui.selected.package?.name ?? ''}</p>
+    <p class='icons opacity-50'>{chars.rightChevron}</p>
+    <p class='category'>{ui.filter.category?.name ?? ''}</p>
+    <p class='ex-browser-badge'>{countText}</p>
+    <p class='icons'>{chars.downArrow}</p>
   {/if}
 </button>
 
 <style>
-  .breadcrumb-title {
-    color: var(--qt-text-muted);
-    font-weight: var(--qt-font-weight-bold);
-  }
+  .ex-header-breadcrumb {
+    & .title {
+      color: var(--qt-text-muted);
+      font-weight: var(--qt-font-weight-bold);
+    }
 
-  .breadcrumb-version {
-    color: var(--qt-text-muted);
-    font-size: var(--qt-font-size-s);
-  }
+    & .version {
+      color: var(--qt-text-muted);
+      font-size: var(--qt-font-size-s);
+    }
 
-  .breadcrumb-category {
-    color: var(--qt-text-default);
-    font-weight: var(--qt-font-weight-active);
-  }
+    & .category {
+      color: var(--qt-text-default);
+      font-weight: var(--qt-font-weight-active);
+    }
 
-  .breadcrumb-chevron-right {
-    color: var(--qt-text-muted);
-    font-size: var(--qt-font-size-xs);
-    opacity: 0.5;
-  }
-
-  .breadcrumb-down-arrow {
-    color: var(--qt-text-muted);
-    font-size: var(--qt-font-size-xs);
+    & .icons {
+      color: var(--qt-text-muted);
+      font-size: var(--qt-font-size-xs);
+    }
   }
 </style>

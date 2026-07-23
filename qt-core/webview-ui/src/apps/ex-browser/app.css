@@ -3,26 +3,103 @@ Copyright (C) 2026 The Qt Company Ltd.
 SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 */
 
-
-.ex-browser-scope {
+/* app-wide variables */
+.ex-browser-app {
   --transition-fast: background 80ms, border-color 80ms, color 80ms;
   --popup-border: 1px solid var(--qt-stroke-subtle);
   --popup-shadow: 0 8px 24px rgba(0,0,0,0.45);
 
-  --catalog-panel-width: 480px;
+  --catalog-popup-width: 480px;
   --catalog-section-separator: 1px solid var(--qt-stroke-subtle);
 
-  --tags-panel-width: 380px;
-  --tags-panel-max-height: 300px;
+  --tags-popup-width: 380px;
+  --tags-popup-max-height: 300px;
 
   --side-panel-width: 320px;
 }
 
-.ex-header-badge {
+/* app-wide (but possibly global) components */
+.ex-browser-push-button {
+  height: 28px;
+  padding: 0 10px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 6px;
+
   color: var(--qt-text-muted);
-  background: var(--qt-bg-elevated);
+  background: var(--qt-bg-input);
   border: 1px solid var(--qt-stroke-subtle);
-  border-radius: 7px;
+  border-radius: var(--qt-radius-s);
+
+  font-size: var(--qt-font-size-m);
+  font-family: inherit;
+  line-height: 1.4;
+
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color var(--qt-duration-fast);
+
+  &:hover {
+    color: var(--qt-text-default);
+    border-color: var(--qt-stroke-muted);
+  }
+
+  &[aria-expanded='true'] {
+    border-color: var(--qt-accent-info);
+  }
+}
+
+.ex-browser-button-group {
+  flex-shrink: 0;
+  border: 1px solid var(--qt-stroke-subtle);
+  border-radius: var(--qt-radius-s);
+  overflow: hidden;
+}
+
+.ex-browser-tool-button {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--qt-text-muted);
+  background: none;
+  border: 1px solid var(--qt-stroke-subtle);
+  border-radius: var(--qt-radius-s);
+  cursor: pointer;
+  transition:
+    background var(--qt-duration-fast),
+    color var(--qt-duration-fast);
+
+  &:hover {
+    color: var(--qt-text-default);
+    background: var(--qt-hover-bg);
+  }
+
+  &[aria-pressed='true'] {
+    color: var(--qt-accent-active);
+    /* background: rgba(0, 122, 204, 0.15); TODO: check this with designer */
+    background: color-mix(in srgb, var(--qt-accent-active) 20%, transparent);
+  }
+
+  .ex-browser-button-group & {
+    border: none;
+    border-radius: 0;
+  }
+}
+
+.ex-browser-tool-button + .ex-browser-tool-button {
+  border-left: 1px solid var(--qt-stroke-subtle);
+}
+
+.ex-browser-badge {
+  padding: 0 5px;
+  font-size: 9px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .ex-card-badge {
@@ -68,6 +145,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   color: var(--qt-text-default);
 }
 
+/* component-wide */
 .ex-catalog-section {
   & .title {
     font-size: 11px;

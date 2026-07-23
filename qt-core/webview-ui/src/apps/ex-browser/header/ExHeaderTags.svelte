@@ -14,7 +14,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <button
   bind:this={ui.overlays.tagCloud.refEl}
-  class='qt-push-button flex flex-row items-center gap-[6px] shrink-0'
+  class='ex-browser-push-button flex flex-row'
   aria-expanded={ui.overlays.tagCloud.visible}
   disabled={(ui.filter.category?.tags.length ?? 0) === 0}
   onclick={() => {

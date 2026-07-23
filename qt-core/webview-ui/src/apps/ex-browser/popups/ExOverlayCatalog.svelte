@@ -25,7 +25,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   .panel {
-    width: var(--catalog-panel-width);
+    width: var(--catalog-popup-width);
     background: var(--qt-bg-subtle);
     border: var(--popup-border);
     border-radius: var(--qt-radius-m);

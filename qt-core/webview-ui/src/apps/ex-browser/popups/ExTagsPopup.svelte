@@ -36,8 +36,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   .tag-panel {
-    width: var(--tags-panel-width);
-    max-height: var(--tags-panel-max-height);
+    width: var(--tags-popup-width);
+    max-height: var(--tags-popup-max-height);
 
     background: var(--qt-bg-subtle);
     border: 1px solid var(--qt-stroke-muted);

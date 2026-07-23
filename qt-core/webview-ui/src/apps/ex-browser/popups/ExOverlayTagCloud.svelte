@@ -32,7 +32,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     class='p-2'
     titleClass='h-[32px] qt-label highlight'
     backgroundClass='!opacity-95'
-    style={ui.overlays.tagCloud.position}
     onCloseClicked={() => {
       viewlogic.setOverlayVisible('tagCloud', false);
     }}

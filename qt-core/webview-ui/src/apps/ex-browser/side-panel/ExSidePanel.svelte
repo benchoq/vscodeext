@@ -93,7 +93,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     color: var(--qt-text-default);
   }
 
-  :global(.name) {
+  :global(.namee) {
     font-size: 14px;
     font-weight: 600;
     color: var(--qt-text-default);
