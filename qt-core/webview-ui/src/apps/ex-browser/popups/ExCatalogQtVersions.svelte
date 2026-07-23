@@ -12,8 +12,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let loading = $state(false);
 </script>
 
-<div class='flex flex-col'>
-  <p class='ex-catalog-section-title'>{texts.catalog.versions}</p>
+<div class='ex-catalog-section flex flex-col'>
+  <p class='title'>{texts.catalog.versions}</p>
 
   {#each data.packages as p, i (p)}
     {@const prev = data.packages[i-1]}
@@ -23,7 +23,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     />
 
     <button
-      class='ex-catalog-list-item'
+      class='item'
       class:active={ui.selected.package === p}
       title={p.poolDir.fsPath}
       onclick={async () => {
@@ -40,7 +40,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  .ex-catalog-list-item.active {
+  .ex-catalog-section .item.active {
     background: var(--qt-accent-info);
     color: var(--qt-button-fg);
   }

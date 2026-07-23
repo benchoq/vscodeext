@@ -3,14 +3,29 @@ Copyright (C) 2026 The Qt Company Ltd.
 SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 */
 
-.app-header-badge {
+
+.ex-browser-scope {
+  --transition-fast: background 80ms, border-color 80ms, color 80ms;
+  --popup-border: 1px solid var(--qt-stroke-subtle);
+  --popup-shadow: 0 8px 24px rgba(0,0,0,0.45);
+
+  --catalog-panel-width: 480px;
+  --catalog-section-separator: 1px solid var(--qt-stroke-subtle);
+
+  --tags-panel-width: 380px;
+  --tags-panel-max-height: 300px;
+
+  --side-panel-width: 320px;
+}
+
+.ex-header-badge {
   color: var(--qt-text-muted);
   background: var(--qt-bg-elevated);
   border: 1px solid var(--qt-stroke-subtle);
   border-radius: 7px;
 }
 
-.app-card-badge {
+.ex-card-badge {
   height: 16px;
   max-width: calc(100% - 16px);
   color: #f2f2f2;
@@ -28,7 +43,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   overflow: hidden;
 }
 
-.app-tag-badge {
+.ex-tag-badge {
   display: inline-flex;
   align-items: center;
   height: 20px;
@@ -48,52 +63,39 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   text-decoration: none;
 }
 
-.app-tag-badge:hover {
+.ex-tag-badge:hover {
   background: var(--qt-hover-bg);
   color: var(--qt-text-default);
 }
 
-.ex-browser-scope {
-  --transition-fast: background 80ms, border-color 80ms, color 80ms;
-  --popup-border: 1px solid var(--qt-stroke-subtle);
-  --popup-shadow: 0 8px 24px rgba(0,0,0,0.45);
+.ex-catalog-section {
+  & .title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--qt-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+      padding: 4px 12px 8px;
+  }
 
-  --catalog-panel-width: 480px;
-  --catalog-section-separator: 1px solid var(--qt-stroke-subtle);
+  & .item {
+    padding: 6px 12px;
+    font-size: 13px;
+    color: var(--qt-text-muted);
+    text-align: left;
+    cursor: pointer;
+    border: none;
+    border-radius: 0;
+    transition: var(--transition-fast);
 
-  --tags-panel-width: 380px;
-  --tags-panel-max-height: 300px;
+    &:hover {
+      background: var(--qt-hover-bg);
+      color: var(--qt-text-default);
+    }
 
-  --side-panel-width: 320px;
-}
-
-.ex-catalog-section-title {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--qt-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 4px 12px 8px;
-}
-
-.ex-catalog-list-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  font-size: 13px;
-  color: var(--qt-text-muted);
-  cursor: pointer;
-  border-radius: 0;
-  transition: var(--transition-fast);
-}
-
-.ex-catalog-list-item:hover {
-  background: var(--qt-hover-bg);
-  color: var(--qt-text-default);
-}
-
-.ex-catalog-list-item.active {
-  background: var(--qt-selected-bg);
-  color: var(--qt-selected-fg);
+    &.active {
+      background: var(--qt-selected-bg);
+      color: var(--qt-selected-fg);
+    }
+  }
 }

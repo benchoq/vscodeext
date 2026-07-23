@@ -38,7 +38,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     >
       <div class='thumbnail'><ExThumbnail {example} /></div>
       <div class='
-        qt-badge app-card-badge
+        qt-badge ex-card-badge
         absolute top-[8px] left-[8px]
       '>
         {addSpaceBeforeUppercase(example.module)}
@@ -51,7 +51,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         </div>
 
         {#each example?.tags as tag (tag)}
-          <div class='qt-badge app-tag-badge'>{tag}</div>
+          <div class='qt-badge ex-tag-badge'>{tag}</div>
         {/each}
       </div>
     </div>
