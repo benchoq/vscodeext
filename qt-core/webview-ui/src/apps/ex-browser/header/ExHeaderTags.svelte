@@ -29,15 +29,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   [data-comp-root] {
-    & > [data-hash] {
-      font-size: 13px;
-      line-height: 1;
-      margin-bottom: 1px;
-    }
-
-    & > [data-title] {
-      color: var(--qt-text-muted);
-      font-size: 12px;
-    }
+    color: var(--qt-text-muted);
+    font-size: 12px;
   }
 </style>
