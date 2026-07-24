@@ -29,7 +29,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <button
   bind:this={ui.overlays.catalog.refEl}
-  class='ex-header-breadcrumb inline-flex'
+  class='
+    ex-header-breadcrumb qt-button
+    inline-flex
+  '
   aria-expanded={ui.overlays.catalog.visible}
   disabled={data.packages.length === 0}
   onclick={() => {
@@ -40,7 +43,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <span data-title>Categories</span>
     <span data-version>{ui.selected.package?.name ?? ''}</span>
     <span data-category>{ui.filter.category?.name ?? ''}</span>
-    <span data-count>{countText}</span>
+    <span class='qt-counter-badge'>{countText}</span>
     <span data-arrow>{chars.downArrow}</span>
   {:else}
     <span data-title>-</span>
@@ -48,11 +51,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </button>
 
 <style lang='postcss'>
-  @reference "../app.css";
-
   .ex-header-breadcrumb {
-    @apply ex-browser-push-button;
-
     & > [data-title] {
       color: var(--qt-text-muted);
       font-size: 12px;
@@ -68,10 +67,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       color: var(--qt-text-default);
       font-size: 12px;
       font-weight: 500;
-    }
-
-    & > [data-count] {
-      @apply ex-browser-counter-badge;
     }
 
     & > [data-arrow] {

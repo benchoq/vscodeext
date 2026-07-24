@@ -71,7 +71,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <input
     bind:value
     type='text'
-    class='search-input w-full'
+    class='ex-header-search-input w-full'
     {placeholder}
     disabled={data.packages.length === 0}
     oninput={() => { triggerUpdate(500); }}
@@ -91,7 +91,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  .search-input {
+  .ex-header-search-input {
     height: 28px;
     padding: 0 26px 0 29px;
 
@@ -103,10 +103,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     font-family: inherit;
     font-size: 13px;
-  }
 
-  .search-input:focus {
-    border-color: var(--qt-accent-info);
-    box-shadow: none;
+    &:hover {
+      border-color: var(--qt-stroke-muted);
+      color: var(--qt-text-default);
+    }
+
+    &:focus {
+      border-color: var(--qt-accent-info);
+      box-shadow: none;
+    }
   }
 </style>

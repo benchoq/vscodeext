@@ -1,0 +1,45 @@
+/*
+Copyright (C) 2026 The Qt Company Ltd.
+SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+*/
+
+.qt-button {
+  height: 28px;
+  padding: 0 10px;
+  border-radius: var(--qt-radius-s);
+  background: var(--qt-bg-input);
+  border: 1px solid var(--qt-stroke-subtle);
+  color: var(--qt-text-default);
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color 100ms, color 100ms;
+
+  &:hover {
+    border-color: var(--qt-stroke-muted);
+    color: var(--qt-text-default);
+  }
+
+  &[aria-expanded='true'] {
+    border-color: var(--qt-accent-info);
+  }
+}
+
+.qt-counter-badge {
+  height: 14px;
+  padding: 0 5px;
+  border-radius: 7px;
+  background: var(--qt-bg-elevated);
+  border: 1px solid var(--qt-stroke-subtle);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--qt-text-muted);
+  display: inline-flex;
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+}

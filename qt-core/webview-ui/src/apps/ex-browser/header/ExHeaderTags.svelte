@@ -14,7 +14,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <button
   bind:this={ui.overlays.tagCloud.refEl}
-  class='ex-header-tags inline-flex'
+  class='
+    ex-header-tags qt-button
+    inline-flex
+  '
   aria-expanded={ui.overlays.tagCloud.visible}
   disabled={(ui.filter.category?.tags.length ?? 0) === 0}
   onclick={() => {
@@ -23,22 +26,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 >
   <span data-hash>#</span>
   <span data-title>Tags</span>
-  <span data-count>{count}</span>
+  <span class='qt-counter-badge'>{count}</span>
 </button>
 
 <style lang='postcss'>
-  @reference "../app.css";
-
   .ex-header-tags {
-    @apply ex-browser-push-button;
-
-    /* TODO: simplify */
-    padding: 0 9px;
-    font-size: 11px;
-    font-weight: 500;
-    gap: 5px;
-    transition: border-color 80ms, color 80ms;
-
     & > [data-hash] {
       font-size: 13px;
       line-height: 1;
@@ -49,11 +41,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       color: var(--qt-text-muted);
       font-size: 12px;
     }
-
-    & > [data-count] {
-      @apply ex-browser-counter-badge;
-      padding: 0 4px; /* TODO: simplify */
-    }
   }
-
 </style>
