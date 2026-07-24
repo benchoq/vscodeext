@@ -14,6 +14,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   --tags-popup-width: 380px;
   --tags-popup-max-height: 300px;
 
+  --card-min-width: 232px;
   --card-min-height: 220px;
   --card-thumbnail-min-height: 110px;
 
@@ -27,7 +28,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     color: var(--qt-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-      padding: 4px 12px 8px;
+    padding: 4px 12px 8px;
   }
 
   & .item {

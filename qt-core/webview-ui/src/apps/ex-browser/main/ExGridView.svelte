@@ -39,10 +39,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   [data-comp-grid] {
-    grid-template-columns: repeat(auto-fill,minmax(232px,1fr));
-    grid-auto-rows: 220px;
+    grid-template-columns: repeat(auto-fill,minmax(var(--card-min-width),1fr));
+    grid-auto-rows: var(--card-min-height);
     gap: 10px;
-    overflow: auto;
+    overflow: hidden;
     user-select: none;
   }
 </style>

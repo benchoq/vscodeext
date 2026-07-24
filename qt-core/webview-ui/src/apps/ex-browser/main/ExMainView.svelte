@@ -17,9 +17,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div data-comp-root class='flex flex-col'>
-  {#each categories as category (category)}
-    {#if category.type !== 'all'}
-      <ExCollapsibleSection {category} />
+  {#each categories as cat (cat)}
+    {#if cat.type === 'general'}
+      <ExCollapsibleSection category={cat} />
     {/if}
   {/each}
 </div>

@@ -46,7 +46,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       data-chevron
       style:transform={expanded ? 'rotate(90deg)' : 'rotate(0deg)'}
     >
-      <ChevronRight />
+      <ChevronRight size={16} />
     </div>
     <span data-text>{category?.name ?? ''}</span>
     <span data-count>{examples.length}</span>
@@ -63,34 +63,30 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   [data-comp-header] {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 5px 0;
-    margin-bottom: 10px;
-    cursor: pointer;
-    user-select: none;
-    border-bottom: 1px solid var(--qt-stroke-subtle);
-    position: sticky;
     top: 0;
-    background: var(--qt-bg-default);
+    position: sticky;
     z-index: 10;
+    padding: 5px 0;
+    margin-top: 6px;
+    margin-bottom: 10px;
+
+    color: var(--qt-text-muted);
+    background: var(--qt-bg-default);
+    border-bottom: 1px solid var(--qt-stroke-subtle);
+
+    gap: 7px;
+    align-items: center;
+    user-select: none;
+    cursor: pointer;
 
     & > [data-chevron] {
-      color: var(--qt-text-muted);
       transition: transform 150ms;
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-      display: inline-flex;
-      align-items: center;
     }
 
     & > [data-text] {
       flex: 1;
       font-size: 11px;
       font-weight: 600;
-      color: var(--qt-text-muted);
       text-align: start;
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -102,7 +98,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     & > [data-count] {
       font-size: 10px;
-      color: var(--qt-text-muted);
       font-variant-numeric: tabular-nums;
     }
   }

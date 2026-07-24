@@ -50,25 +50,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   [data-comp-root] {
-    & > [data-title] {
-      color: var(--qt-text-muted);
-      font-size: 12px;
-      font-weight: 600;
-    }
+    color: var(--qt-text-muted);
+    font-size: 12px;
 
-    & > [data-version] {
-      color: var(--qt-text-muted);
-      font-size: 12px;
+    & > [data-title] {
+      font-weight: 600;
     }
 
     & > [data-category] {
       color: var(--qt-text-default);
-      font-size: 12px;
       font-weight: 500;
     }
 
     & > [data-arrow] {
-      color: var(--qt-text-muted);
       font-size: 9px;
       margin-left: 2px;
     }
@@ -77,7 +71,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     & > [data-category]::before {
       content: '›';
       margin-right: 6px;
-      color: var(--qt-text-muted);
       font-size: 11px;
       opacity: 0.5;
     }
