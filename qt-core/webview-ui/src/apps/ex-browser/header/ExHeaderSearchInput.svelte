@@ -4,13 +4,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import * as chars from '@/utils/chars';
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
   import { exBrowser as texts } from '@/apps/texts';
 
   let value = $derived(ui.filter.query);
   let timer: ReturnType<typeof setTimeout>;
-  const charSearchIcon = '⌕';
 
   const placeholder = $derived.by(() => {
     if (!ui.filter.category
@@ -62,16 +62,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   })
 </script>
 
-
-<div class='relative w-full h-full flex-grow flex flex-row items-center gap-2'>
-  <div class='absolute left-4 top-1/2 -translate-y-1/2'>
-    {charSearchIcon}
+<div class='qt-search-input w-full relative'>
+  <div data-decorations class='magnifier'>
+    {chars.magnifier}
   </div>
 
   <input
     bind:value
     type='text'
-    class='qt-input w-full'
+    class='w-full'
     {placeholder}
     disabled={data.packages.length === 0}
     oninput={() => { triggerUpdate(500); }}
@@ -79,13 +78,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     onfocusin={onFocusIn}
   />
 
-  <div
-    class='absolute right-4 top-1/2 -translate-y-1/2'
+  <button
+    data-decorations
+    class='clear'
     class:invisible={value.trim().length === 0}
-    style:font-size='13px'
+    onclick={clear}
   >
-    <button onclick={clear} class='cursor-pointer'>
-      X
-    </button>
-  </div>
+    &times;
+  </button>
 </div>

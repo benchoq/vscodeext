@@ -5,18 +5,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import Tooltip from 'flowbite-svelte/Tooltip.svelte';
+  import * as chars from '@/utils/chars';
   import { exBrowser as texts } from '@/apps/texts';
 
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
   const poolDirPath = $derived(ui.selected.package?.poolDir.fsPath);
-  const charInfo = 'ⓘ';
-  const charOpenExternal = '↗';
 </script>
 
 <div class='footer'>
-  <p class='info'>{charInfo}</p>
+  <p class='info'>{chars.info}</p>
   <Tooltip class='qt-tooltip text-left' placement='bottom' data-placement='bottom'>
     {texts.catalog.locationInfo}
   </Tooltip>
@@ -34,7 +33,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       }
     }}
   >
-    {charOpenExternal}
+    {chars.openExternal}
   </button>
 </div>
 
