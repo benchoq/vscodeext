@@ -29,10 +29,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <button
   bind:this={ui.overlays.catalog.refEl}
-  class='
-    ex-header-breadcrumb qt-button
-    inline-flex
-  '
+  data-comp-root
+  class='qt-button inline-flex'
   aria-expanded={ui.overlays.catalog.visible}
   disabled={data.packages.length === 0}
   onclick={() => {
@@ -50,8 +48,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {/if}
 </button>
 
-<style lang='postcss'>
-  .ex-header-breadcrumb {
+<style>
+  [data-comp-root] {
     & > [data-title] {
       color: var(--qt-text-muted);
       font-size: 12px;

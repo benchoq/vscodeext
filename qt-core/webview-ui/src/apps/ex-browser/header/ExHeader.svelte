@@ -20,12 +20,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   });
 </script>
 
-<div class="ex-header flex flex-col shrink-0 gap-[7px]">
+<div data-comp-root class="flex flex-col shrink-0 gap-[7px]">
   <div class="flex flex-row gap-[6px]">
     <ExHeaderBreadcrumb />
     <ExHeaderTags />
     <ExHeaderSearchInput />
-    <div class='ex-browser-button-group flex flex-row'>
+    <div class='qt-button-group flex flex-row'>
       {@render ViewModeButton('grid')}
       {@render ViewModeButton('list')}
     </div>
@@ -46,7 +46,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <!-- snippets -->
 {#snippet ViewModeButton(mode: 'grid' | 'list')}
   <button
-    class='ex-browser-tool-button'
+    class='qt-tool-button'
     aria-pressed={ui.selected.viewMode === mode}
     onclick={() => {
       ui.selected.viewMode = mode;
@@ -61,10 +61,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 <style>
-  .ex-header {
+  [data-comp-root] {
     padding: 8px 14px;
     background: var(--qt-bg-subtle);
     border-bottom: 1px solid var(--qt-stroke-subtle);
   }
-
 </style>

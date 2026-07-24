@@ -14,10 +14,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <button
   bind:this={ui.overlays.tagCloud.refEl}
-  class='
-    ex-header-tags qt-button
-    inline-flex
-  '
+  data-comp-root
+  class='qt-button inline-flex'
   aria-expanded={ui.overlays.tagCloud.visible}
   disabled={(ui.filter.category?.tags.length ?? 0) === 0}
   onclick={() => {
@@ -29,8 +27,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <span class='qt-counter-badge'>{count}</span>
 </button>
 
-<style lang='postcss'>
-  .ex-header-tags {
+<style>
+  [data-comp-root] {
     & > [data-hash] {
       font-size: 13px;
       line-height: 1;

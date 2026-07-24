@@ -19,49 +19,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 }
 
 /* app-wide (but possibly global) components */
-.ex-browser-button-group {
-  flex-shrink: 0;
-  border: 1px solid var(--qt-stroke-subtle);
-  border-radius: var(--qt-radius-s);
-  overflow: hidden;
-}
 
-.ex-browser-tool-button {
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--qt-text-muted);
-  background: none;
-  border: 1px solid var(--qt-stroke-subtle);
-  border-radius: var(--qt-radius-s);
-  cursor: pointer;
-  transition:
-    background var(--qt-duration-fast),
-    color var(--qt-duration-fast);
-
-  &:hover {
-    color: var(--qt-text-default);
-    background: var(--qt-hover-bg);
-    border-color: var(--qt-stroke-muted);
-  }
-
-  &[aria-pressed='true'] {
-    color: var(--qt-accent-active);
-    /* background: rgba(0, 122, 204, 0.15); TODO: check this with designer */
-    background: color-mix(in srgb, var(--qt-accent-active) 20%, transparent);
-  }
-
-  .ex-browser-button-group & {
-    border: none;
-    border-radius: 0;
-  }
-}
-
-.ex-browser-tool-button + .ex-browser-tool-button {
-  border-left: 1px solid var(--qt-stroke-subtle);
-}
 
 .ex-card-badge {
   height: 16px;
