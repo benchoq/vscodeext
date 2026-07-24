@@ -34,31 +34,35 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   });
 </script>
 
-{#if examples.length !== 0}
-  <div class="flex flex-col">
-    <button
-      class='header'
-      onclick={() => expanded = !expanded}
+<div class="flex flex-col">
+  <button
+    data-comp-header
+    class='flex flex-row'
+    onclick={() => {
+      expanded = !expanded;
+    }}
+  >
+    <div
+      data-chevron
+      style:transform={expanded ? 'rotate(90deg)' : 'rotate(0deg)'}
     >
-      <div class={`header-chevron ${expanded ? 'rotate-0' : '-rotate-90'}`}>
-        <ChevronRight />
-      </div>
-      <span class='header-text'>{category?.name ?? ''}</span>
-      <span class="text-xs text-muted">{examples.length}</span>
-    </button>
+      <ChevronRight />
+    </div>
+    <span data-text>{category?.name ?? ''}</span>
+    <span data-count>{examples.length}</span>
+  </button>
 
-    {#if expanded}
-      {#if ui.selected.viewMode === 'grid'}
-        <ExGridView {examples} />
-      {:else}
-        <ExListView {examples} />
-      {/if}
+  {#if expanded}
+    {#if ui.selected.viewMode === 'grid'}
+      <ExGridView {examples} />
+    {:else}
+      <ExListView {examples} />
     {/if}
-  </div>
-{/if}
+  {/if}
+</div>
 
 <style>
-  .header {
+  [data-comp-header] {
     display: flex;
     align-items: center;
     gap: 7px;
@@ -71,30 +75,35 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     top: 0;
     background: var(--qt-bg-default);
     z-index: 10;
-  }
 
-  :global(.header-chevron) {
-    color: var(--qt-text-muted);
-    transition: transform 150ms;
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    transform: rotate(90deg);
-  }
+    & > [data-chevron] {
+      color: var(--qt-text-muted);
+      transition: transform 150ms;
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+    }
 
-  :global(.header-text) {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--qt-text-muted);
-    flex: 1;
-    text-align: start;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
+    & > [data-text] {
+      flex: 1;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--qt-text-muted);
+      text-align: start;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
 
-  :global(.header:hover .header-text) {
-    color: var(--qt-text-default);
+    &:hover [data-text] {
+      color: var(--qt-text-default);
+    }
+
+    & > [data-count] {
+      font-size: 10px;
+      color: var(--qt-text-muted);
+      font-variant-numeric: tabular-nums;
+    }
   }
 </style>

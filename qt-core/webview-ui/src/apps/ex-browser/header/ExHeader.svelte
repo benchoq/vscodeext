@@ -25,6 +25,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <ExHeaderBreadcrumb />
     <ExHeaderTags />
     <ExHeaderSearchInput />
+
     <div class='qt-button-group flex flex-row'>
       {@render ViewModeButton('grid')}
       {@render ViewModeButton('list')}

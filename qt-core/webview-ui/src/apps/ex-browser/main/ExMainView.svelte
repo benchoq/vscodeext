@@ -16,7 +16,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   });
 </script>
 
-<div class='flex flex-col min-w-0 sections'>
+<div data-comp-root class='flex flex-col'>
   {#each categories as category (category)}
     {#if category.type !== 'all'}
       <ExCollapsibleSection {category} />
@@ -25,7 +25,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  .sections {
+  [data-comp-root] {
+    min-width: 0;
     padding: 0 14px 24px;
   }
 </style>

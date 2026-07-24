@@ -63,7 +63,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 
-<div data-comp-root class='relative w-full h-full flex-grow flex flex-row items-center gap-2'>
+<div class='relative w-full h-full flex-grow flex flex-row items-center gap-2'>
   <div class='absolute left-4 top-1/2 -translate-y-1/2'>
     {charSearchIcon}
   </div>
@@ -71,7 +71,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <input
     bind:value
     type='text'
-    class='w-full'
+    class='qt-input w-full'
     {placeholder}
     disabled={data.packages.length === 0}
     oninput={() => { triggerUpdate(500); }}
@@ -89,31 +89,3 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </button>
   </div>
 </div>
-
-<style>
-  [data-comp-root] {
-    & > input {
-      height: 28px;
-      padding: 0 26px 0 29px;
-
-      color: var(--vscode-input-foreground, var(--qt-text-default));
-      background: var(--qt-bg-input);
-      border: 1px solid var(--vscode-input-border, transparent);
-      border-radius: var(--qt-radius-s);
-      outline: none;
-
-      font-family: inherit;
-      font-size: 13px;
-
-      &:hover {
-        border-color: var(--qt-stroke-muted);
-        color: var(--qt-text-default);
-      }
-
-      &:focus {
-        border-color: var(--qt-accent-info);
-        box-shadow: none;
-      }
-    }
-  }
-</style>

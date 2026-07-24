@@ -4,8 +4,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { Tag } from '@/icons';
   import { type ExEntry } from '@shared/ex-browser';
+  import ExTagsList from '../others/ExTagsList.svelte';
   import ExThumbnail from '../others/ExThumbnail.svelte';
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
@@ -14,7 +14,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     example = undefined as ExEntry | undefined,
   } = $props();
 
-  function onClicked() {
+  function selectExample() {
     viewlogic.selectExample(example);
   }
 
@@ -27,36 +27,29 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-<button
-  class='w-full h-full group'
-  onclick={onClicked}
->
-  {#if example}
-    <div
-      class='card w-full h-full flex flex-col relative'
-      class:selected={example === ui.selected.example}
-    >
-      <div class='thumbnail'><ExThumbnail {example} /></div>
-      <div class='
-        qt-badge ex-card-badge
-        absolute top-[8px] left-[8px]
-      '>
-        {addSpaceBeforeUppercase(example.module)}
-      </div>
-      <div class='card-title'>{example.name}</div>
-      <div class='qt-separator'></div>
-      <div class='card-tags-container'>
-        <div class='card-tag-icon'>
-          <Tag size={20}/>
-        </div>
-
-        {#each example?.tags as tag (tag)}
-          <div class='qt-badge ex-tag-badge'>{tag}</div>
-        {/each}
-      </div>
+{#if example}
+  <div
+    data-comp-card
+    class='w-full h-full group flex flex-col relative'
+    class:selected={example === ui.selected.example}
+    role='button'
+    tabindex='0'
+    onclick={selectExample}
+    onkeydown={(e) => {
+      if (e.key === 'Enter') {
+        selectExample();
+      }
+    }}
+  >
+    <div data-thumbnail><ExThumbnail {example} /></div>
+    <div data-module-tag class='absolute top-[8px] left-[8px]'>
+      {addSpaceBeforeUppercase(example.module)}
     </div>
-  {/if}
-</button>
+    <div data-name>{example.name}</div>
+    <div class='qt-separator'></div>
+    <ExTagsList tags={example?.tags ?? []} />
+  </div>
+{/if}
 
 <style>
   @keyframes cardIn {
@@ -64,68 +57,71 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  .card {
-    min-height: 220px;
-    padding: var(--qt-spacing-xl);
-    gap: var(--qt-spacing-m);
-
+  [data-comp-card] {
     background: var(--qt-bg-elevated);
     border: 1px solid var(--qt-stroke-subtle);
     border-radius: var(--qt-radius-s);
-
+    padding: var(--qt-spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--qt-spacing-m);
     cursor: pointer;
+    position: relative;
     overflow: hidden;
-
-    animation: cardIn 160ms ease both;
     transition: border-color 120ms, background 120ms;
-  }
+    min-height: var(--card-min-height);
+    animation: cardIn 160ms ease both;
 
-  .card:hover {
-    background: var(--qt-hover-bg);
-    border-color: var(--qt-stroke-muted);
-  }
+    &:hover {
+      background: var(--qt-hover-bg);
+      border-color: var(--qt-stroke-muted);
+    }
 
-  .card.selected {
-    background: rgba(0,122,204,0.09);
-    border-color: var(--qt-accent-info);
-  }
+    &.selected {
+      background: rgba(0,122,204,0.09);
+      border-color: var(--qt-accent-info);
+    }
 
-  .thumbnail {
-    flex: 1;
-    min-height: 110px;
-    background: var(--qt-bg-default);
-    overflow: hidden;
-  }
+    & > [data-module-tag] {
+      height: 16px;
+      padding: 0 6px;
+      border-radius: 3px;
+      background: rgba(0,0,0,0.62);
+      color: #f2f2f2;
+      font-size: 9px;
+      font-weight: 600;
+      line-height: 16px;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      pointer-events: none;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      max-width: calc(100% - 16px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-  .card-title {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--qt-text-default);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 18px;
-    text-align: start;
-  }
-/*
-  .tags-container {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex-shrink: 0;
-    flex-wrap: nowrap;
-    overflow: hidden;
-    min-height: 20px;
-  }
+    & > [data-thumbnail] {
+      flex: 1;
+      min-height: var(--card-thumbnail-min-height);
+      background: var(--qt-bg-default);
+      overflow: hidden;
+    }
 
-  .tag-icon {
-    font-size: 14px;
-    color: var(--qt-text-muted);
-    flex-shrink: 0;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    margin-right: 1px;
-    opacity: 0.7;
-  } */
+    & > [data-name] {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--qt-text-default);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 18px;
+
+      display: flex;
+      align-items: center;
+      min-height: 20px;
+      flex-shrink: 0;
+    }
+  }
 </style>
