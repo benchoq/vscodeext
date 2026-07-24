@@ -29,47 +29,64 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <button
   bind:this={ui.overlays.catalog.refEl}
-  class='ex-browser-push-button ex-header-breadcrumb flex flex-row'
+  class='ex-header-breadcrumb inline-flex'
   aria-expanded={ui.overlays.catalog.visible}
   disabled={data.packages.length === 0}
   onclick={() => {
     viewlogic.setOverlayVisible('catalog', !ui.overlays.catalog.visible);
   }}
 >
-  <p class='title'>
-    {valid ? 'Categories' : '-'}
-  </p>
-
   {#if valid}
-    <p class='icons opacity-50'>{chars.rightChevron}</p>
-    <p class='version'>{ui.selected.package?.name ?? ''}</p>
-    <p class='icons opacity-50'>{chars.rightChevron}</p>
-    <p class='category'>{ui.filter.category?.name ?? ''}</p>
-    <p class='ex-browser-badge'>{countText}</p>
-    <p class='icons'>{chars.downArrow}</p>
+    <span data-title>Categories</span>
+    <span data-version>{ui.selected.package?.name ?? ''}</span>
+    <span data-category>{ui.filter.category?.name ?? ''}</span>
+    <span data-count>{countText}</span>
+    <span data-arrow>{chars.downArrow}</span>
+  {:else}
+    <span data-title>-</span>
   {/if}
 </button>
 
-<style>
+<style lang='postcss'>
+  @reference "../app.css";
+
   .ex-header-breadcrumb {
-    & .title {
+    @apply ex-browser-push-button;
+
+    & > [data-title] {
       color: var(--qt-text-muted);
-      font-weight: var(--qt-font-weight-bold);
+      font-size: 12px;
+      font-weight: 600;
     }
 
-    & .version {
+    & > [data-version] {
       color: var(--qt-text-muted);
-      font-size: var(--qt-font-size-s);
+      font-size: 12px;
     }
 
-    & .category {
+    & > [data-category] {
       color: var(--qt-text-default);
-      font-weight: var(--qt-font-weight-active);
+      font-size: 12px;
+      font-weight: 500;
     }
 
-    & .icons {
+    & > [data-count] {
+      @apply ex-browser-counter-badge;
+    }
+
+    & > [data-arrow] {
       color: var(--qt-text-muted);
-      font-size: var(--qt-font-size-xs);
+      font-size: 9px;
+      margin-left: 2px;
+    }
+
+    & > [data-version]::before,
+    & > [data-category]::before {
+      content: '›';
+      margin-right: 6px;
+      color: var(--qt-text-muted);
+      font-size: 11px;
+      opacity: 0.5;
     }
   }
 </style>

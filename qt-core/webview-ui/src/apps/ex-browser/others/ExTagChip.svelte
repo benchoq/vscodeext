@@ -14,7 +14,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#if text.length > 0}
   <button
-    class='ex-tag-chip inline-flex flex-row gap-[4px]'
+    class='ex-tag-chip inline-flex items-center gap-[4px]'
     onclick={() => {
       onClicked();
     }}
@@ -24,29 +24,26 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {:else}
       <span data-hash>#</span>
       <span data-name>{text}</span>
-      <span data-close>x</span>
+      <span data-close>&times;</span>
     {/if}
   </button>
 {/if}
 
 <style>
   .ex-tag-chip {
+    --chip-color: 0, 122, 204;
+
     height: 20px;
     padding: 0 5px 0 7px;
     border-radius: var(--qt-radius-s);
-    background: rgba(0,122,204,0.22);
-    border: 1px solid rgba(0,122,204,0.55);
+    background: rgba(var(--chip-color), 0.22);
+    border: 1px solid rgba(var(--chip-color), 0.55);
     color: var(--qt-accent-active);
-    font-weight: 600;
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    font-family: inherit;
-    white-space: nowrap;
     transition: background 80ms;
 
     &:hover {
-      background: rgba(0,122,204,0.35);
+      background: rgba(var(--chip-color), 0.35);
     }
 
     & > [data-hash] {
@@ -57,12 +54,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     & > [data-name] {
       font-size: 10px;
+      font-weight: 600;
       letter-spacing: 0;
+      white-space: nowrap;
     }
 
     & > [data-close]{
       opacity: 0.55;
-      font-size: 11px;
+      font-size: 15px;
       line-height: 1;
       margin-top: -0.5px;
     }

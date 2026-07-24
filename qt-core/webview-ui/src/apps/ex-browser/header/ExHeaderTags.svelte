@@ -14,20 +14,46 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <button
   bind:this={ui.overlays.tagCloud.refEl}
-  class='ex-browser-push-button flex flex-row'
+  class='ex-header-tags inline-flex'
   aria-expanded={ui.overlays.tagCloud.visible}
   disabled={(ui.filter.category?.tags.length ?? 0) === 0}
   onclick={() => {
     viewlogic.setOverlayVisible('tagCloud', !ui.overlays.tagCloud.visible);
   }}
 >
-  <p class='tags-text'># Tags</p>
-  <p class='qt-badge app-header-badge'>{count}</p>
+  <span data-hash>#</span>
+  <span data-title>Tags</span>
+  <span data-count>{count}</span>
 </button>
 
-<style>
-  .tags-text {
-    color: var(--qt-text-muted);
-    font-size: var(--qt-font-size-s);
+<style lang='postcss'>
+  @reference "../app.css";
+
+  .ex-header-tags {
+    @apply ex-browser-push-button;
+
+    /* TODO: simplify */
+    padding: 0 9px;
+    font-size: 11px;
+    font-weight: 500;
+    gap: 5px;
+    transition: border-color 80ms, color 80ms;
+
+    & > [data-hash] {
+      font-size: 13px;
+      line-height: 1;
+      margin-bottom: 1px;
+    }
+
+    & > [data-title] {
+      color: var(--qt-text-muted);
+      font-size: 12px;
+    }
+
+    & > [data-count] {
+      @apply ex-browser-counter-badge;
+      padding: 0 4px; /* TODO: simplify */
+    }
   }
+
 </style>
