@@ -79,9 +79,7 @@ export async function selectCategory(category?: ExCategory | string) {
 
 export async function selectExample(example: ExEntry | undefined) {
   ui.selected.example = example;
-  ui.overlays.details.visible = (example !== undefined);
-  ui.overlays.details.collapsed = false;
-  ui.overlays.details.expanded = false;
+  ui.sideBar.visible = (example !== undefined);
 }
 
 export async function setQuery(q: string) {
@@ -110,11 +108,6 @@ export function hasTagInQuery(tag: string) {
 }
 
 export function setNewProjectFormVisible(visible: boolean) {
-  if (ui.overlays.details.expanded === visible) {
-    return;
-  }
-
-  ui.overlays.details.expanded = visible;
   if (visible) {
     ui.input.validate();
   }
@@ -193,8 +186,6 @@ export async function onNewProjectFormEvent(type: NewItemForm.EventType, args?: 
           saveProjectDir: ui.input.states.saveProjectDir,
           openIn: String(ui.input.states.openIn)
         } as ExNewProjectArgs);
-
-        ui.overlays.details.expanded = false;
       }
       break;
   }
@@ -282,6 +273,5 @@ function validateQuery(query: string): string {
 
 function clearSelectedExample() {
   ui.selected.example = undefined;
-  ui.overlays.details.visible = false;
 }
 

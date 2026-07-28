@@ -172,7 +172,7 @@ export const exBrowser = {
     revealLocationTooltip: 'Reveal folder in the file manager'
   },
 
-  tagCloud: {
+  tags: {
     title: 'Available tags'
   },
 

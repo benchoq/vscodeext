@@ -13,13 +13,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <button
-  bind:this={ui.overlays.tagCloud.refEl}
+  bind:this={ui.overlays.tags.refEl}
   data-comp-root
   class='qt-button inline-flex'
-  aria-expanded={ui.overlays.tagCloud.visible}
+  aria-expanded={ui.overlays.tags.visible}
   disabled={(ui.filter.category?.tags.length ?? 0) === 0}
   onclick={() => {
-    viewlogic.setOverlayVisible('tagCloud', !ui.overlays.tagCloud.visible);
+    viewlogic.setOverlayVisible('tags', !ui.overlays.tags.visible);
   }}
 >
   <span data-hash>#</span>

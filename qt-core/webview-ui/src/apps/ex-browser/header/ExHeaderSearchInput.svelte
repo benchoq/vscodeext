@@ -38,17 +38,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     switch (e.key) {
       case 'Enter':
         triggerUpdate(0);
-        viewlogic.setOverlayVisible('tagCloud', false);
+        viewlogic.setOverlayVisible('tags', false);
         break;
 
       case ' ':
       case 'Escape':
       case 'Backspace':
-        viewlogic.setOverlayVisible('tagCloud', false);
+        viewlogic.setOverlayVisible('tags', false);
         break;
 
       case '#':
-        viewlogic.setOverlayVisible('tagCloud', true);
+        viewlogic.setOverlayVisible('tags', true);
         break;
     }
   }

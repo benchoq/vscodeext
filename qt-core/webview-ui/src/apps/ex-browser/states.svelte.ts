@@ -12,7 +12,7 @@ import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 
 export type ViewMode = 'grid' | 'list';
-export type OverlayName = 'catalog' | 'details' | 'tagCloud';
+export type OverlayName = 'catalog' | 'tags';
 
 export const data = $state({
   packages: [] as ExPackage[],
@@ -36,20 +36,17 @@ export const ui = $state({
     category: undefined as ExCategory | undefined,
   },
 
+  sideBar: {
+    visible: false
+  },
+
   overlays: {
     catalog: {
       visible: false,
       refEl: undefined as HTMLElement | undefined,
     },
 
-    details: {
-      visible: false,
-      collapsed: false,
-      alignLeft: false,
-      expanded: false,
-    },
-
-    tagCloud: {
+    tags: {
       visible: false,
       refEl: undefined as HTMLElement | undefined,
     }

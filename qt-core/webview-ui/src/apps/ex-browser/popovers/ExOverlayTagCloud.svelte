@@ -11,7 +11,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from '../viewlogic.svelte';
   import { exBrowser as texts } from '@/apps/texts';
 
-  const overlay = $derived(ui.overlays.tagCloud);
+  const overlay = $derived(ui.overlays.tags);
 </script>
 
 <button
@@ -19,21 +19,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   aria-label="close"
   onclick={(e: MouseEvent) => {
     if (e.target === e.currentTarget) {
-      viewlogic.setOverlayVisible('tagCloud', false);
+      viewlogic.setOverlayVisible('tags', false);
     }
   }}
 >
 
   <Overlay
     bind:collapsed={overlay.visible}
-    title={`${texts.tagCloud.title} (${(ui.filter.category?.tags.length ?? 0)})`}
+    title={`${texts.tags.title} (${(ui.filter.category?.tags.length ?? 0)})`}
     useDropShadow={true}
     collapsible={false}
     class='p-2'
     titleClass='h-[32px] qt-label highlight'
     backgroundClass='!opacity-95'
     onCloseClicked={() => {
-      viewlogic.setOverlayVisible('tagCloud', false);
+      viewlogic.setOverlayVisible('tags', false);
     }}
   >
     <Flow>

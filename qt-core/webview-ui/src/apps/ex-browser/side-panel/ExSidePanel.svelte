@@ -29,7 +29,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <button
       class='title-close'
       onclick={() => {
-        ui.overlays.details.visible = false;
+        ui.sideBar.visible = false;
       }}
     >
       x

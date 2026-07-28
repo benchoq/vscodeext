@@ -14,7 +14,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import ExHeader from './header/ExHeader.svelte';
   import ExMainView from './main/ExMainView.svelte';
   import ExSidePanel from './side-panel/ExSidePanel.svelte';
-  import ExOverlaysContainer from './popups/ExOverlaysContainer.svelte';
+  import ExAllPopovers from './popovers/ExAllPopovers.svelte';
   import * as viewlogic from './viewlogic.svelte';
   import { ui } from './states.svelte';
 
@@ -32,14 +32,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     <div
       class='panel overflow-hidden'
-      class:open={ui.overlays.details.visible}
+      class:open={ui.sideBar.visible}
     >
       <ExSidePanel />
     </div>
   </div>
 
   <div class='z-100'>
-    <ExOverlaysContainer />
+    <ExAllPopovers />
   </div>
 </div>
 

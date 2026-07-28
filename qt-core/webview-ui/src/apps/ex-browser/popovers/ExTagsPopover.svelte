@@ -8,6 +8,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from '../viewlogic.svelte';
 </script>
 
+<svelte:options runes={true} />
+
 <div class='tag-panel flex flex-col'>
   <div class='tag-input-wrapper'>
     <input
