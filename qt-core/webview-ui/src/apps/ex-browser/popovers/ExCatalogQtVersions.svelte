@@ -12,8 +12,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let loading = $state(false);
 </script>
 
-<div class='ex-catalog-section flex flex-col'>
-  <p class='title'>{texts.catalog.versions}</p>
+<div class='qt-item-list flex flex-col'>
+  <span class='title'>{texts.catalog.versions}</span>
 
   {#each data.packages as p, i (p)}
     {@const prev = data.packages[i-1]}
@@ -40,7 +40,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  .ex-catalog-section .item.active {
+  .qt-item-list .item.active {
     background: var(--qt-accent-info);
     color: var(--qt-button-fg);
   }

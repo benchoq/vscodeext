@@ -8,53 +8,47 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 </script>
 
-<div class='header flex flex-row'>
-  <div class='header-title'>Catalog</div>
-  <div class='grow'></div>
+<div data-comp-root class='flex flex-row'>
+  <div data-title>Catalog</div>
   <button
-    class='header-close'
+    data-close-button
     onclick={() => {
       viewlogic.setOverlayVisible('catalog', false);
     }}
   >
-    x
+    &times;
   </button>
 </div>
 
 <style>
-  .header {
+  [data-comp-root] {
     padding: 10px 14px;
-
     align-items: center;
     justify-content: space-between;
     flex-shrink: 0;
+
+    & > [data-title] {
+      color: var(--qt-text-default);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    & > [data-close-button] {
+      background: none;
+      border: none;
+      color: var(--qt-text-muted);
+      font-size: 20px;
+      font-weight: 200;
+      cursor: pointer;
+      padding: 0px 4px 2px;
+      border-radius: var(--qt-radius-s);
+      line-height: 1;
+      transition: color 80ms, background 80ms;
+
+      &:hover {
+        color: var(--qt-text-default);
+        background: var(--qt-icon-hover-bg);
+      }
   }
-
-  .header-title {
-    color: var(--qt-text-default);
-    font-size: 13px;
-    font-weight: 600;
-  }
-
-  .header-close {
-    padding: 2px 4px;
-
-    color: var(--qt-text-muted);
-    background: none;
-    border: none;
-    border-radius: var(--qt-radius-s);
-
-    font-size: 14px;
-    line-height: 1;
-
-    cursor: pointer;
-    transition:
-      color var(--qt-duration-fast),
-      background var(--qt-duration-fast);
-  }
-
-  .header-close:hover {
-    color: var(--qt-text-default);
-    background: var(--qt-icon-hover-bg);
-  }
+}
 </style>

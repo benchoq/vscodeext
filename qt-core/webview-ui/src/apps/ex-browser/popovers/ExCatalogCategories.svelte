@@ -9,8 +9,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from '../viewlogic.svelte';
 </script>
 
-<div class='ex-catalog-section flex flex-col'>
-  <p class='title'>{texts.catalog.categories}</p>
+<div class='qt-item-list flex flex-col'>
+  <span class='title'>{texts.catalog.categories}</span>
 
   {#each data.categories as cat (cat)}
     <button
@@ -21,15 +21,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         viewlogic.setOverlayVisible('catalog', false);
       }}
     >
-      <p class='flex-1'>{cat.name}</p>
-      <p class='item-count'>{cat.count}</p>
+      <span class='flex-1'>{cat.name}</span>
+      <span data-count>{cat.count}</span>
     </button>
   {/each}
 </div>
 
 <style>
-  .item-count {
-    margin-left: 8px;
+  [data-count] {
     opacity: 0.65;
     font-size: 11px;
     font-variant-numeric: tabular-nums;

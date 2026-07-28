@@ -14,18 +14,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const poolDirPath = $derived(ui.selected.package?.poolDir.fsPath);
 </script>
 
-<div class='footer'>
-  <p class='info'>{chars.info}</p>
-  <Tooltip class='qt-tooltip text-left' placement='bottom' data-placement='bottom'>
+<div data-comp-root class='flex-1 flex flex-row'>
+  <span data-info>{chars.info}</span>
+
+  <!-- TODO: style Tooltip -->
+  <Tooltip class='text-left' placement='bottom' data-placement='bottom'>
     {texts.catalog.locationInfo}
   </Tooltip>
 
-  <div class='location'>
+  <span data-location class='flex-1'>
     {poolDirPath ?? '-'}
-  </div>
-
+  </span>
   <button
-    class='external-link'
+    data-ext-link
     title={texts.catalog.revealLocationTooltip}
     onclick={() => {
       if (poolDirPath) {
@@ -38,37 +39,32 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  .footer {
-    display: flex;
-    flex: 1;
+  [data-comp-root] {
     align-items: center;
     gap: 8px;
-  }
-
-  .info {
     color: var(--qt-text-muted);
-    font-size: 13px;
     flex-shrink: 0;
-  }
 
-  .location {
-    flex: 1;
-    font-size: 11px;
-    color: var(--qt-text-muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+    & > [data-location] {
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-  .external-link {
-    background: none;
-    border: none;
-    color: var(--qt-text-muted);
-    font-size: 14px;
-    cursor: pointer;
-    padding: 2px 4px;
-    border-radius: var(--qt-radius-s);
-    flex-shrink: 0;
-    transition: color 80ms;
+    & > [data-info] {
+      font-size: 13px;
+    }
+
+    & > [data-ext-link] {
+      font-size: 14px;
+      cursor: pointer;
+      padding: 2px 4px;
+      transition: color 80ms;
+
+      &:hover {
+        color: var(--qt-text-default);
+      }
+    }
   }
 </style>
