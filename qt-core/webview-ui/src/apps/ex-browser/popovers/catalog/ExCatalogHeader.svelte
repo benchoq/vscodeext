@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import * as viewlogic from '../viewlogic.svelte';
+  import * as viewlogic from '../../viewlogic.svelte';
 
 </script>
 

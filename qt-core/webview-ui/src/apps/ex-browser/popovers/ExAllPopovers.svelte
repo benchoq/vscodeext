@@ -8,7 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import { clickOutside } from '@/utils/actions';
   import ExTagsPopover from './ExTagsPopover.svelte';
-  import ExCatalogPopover from './ExCatalogPopover.svelte';
+  import ExCatalogPopover from './catalog/ExCatalogPopover.svelte';
   import * as viewlogic from '../viewlogic.svelte';
   import { data, ui, type OverlayName } from '../states.svelte';
 
@@ -21,13 +21,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const popovers = $derived.by(() => {
     return {
       catalog: {
-        component: ExCatalogPopover as Component,
+        component: ExCatalogPopover,
         pos: calcAnchorPos(ui.overlays.catalog.refEl),
         visible: (ui.overlays.catalog.visible && data.packages.length !== 0)
       },
 
       tags: {
-        component: ExTagsPopover as Component,
+        component: ExTagsPopover,
         pos: calcAnchorPos(ui.overlays.tags.refEl),
         visible: (ui.overlays.tags.visible && (ui.filter.category?.tags.length ?? 0) !== 0)
       }
@@ -45,8 +45,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-{@render Popover('catalog')}
 {@render Popover('tags')}
+{@render Popover('catalog')}
 
 {#snippet Popover(name: OverlayName)}
   {@const info = popovers[name]}

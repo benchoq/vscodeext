@@ -4,53 +4,63 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { type ExActionTypes } from "@shared/ex-browser";
+  import * as chars from '@/utils/chars'
   import { Folder, FileTag } from '@/icons';
+  import * as viewlogic from '../viewlogic.svelte';
 
-  // import { ui } from '../states.svelte';
-  import Column from '@/comps/Column.svelte';
+  function onClicked(a: ExActionTypes) {
+    // TODO: supply args
+    viewlogic.runExAction(a);
+  }
 
-  // const example = $derived(ui.selected.example);
 </script>
 
-<Column>
-  <button class='action-wrapper'>
-    <FileTag size={14} />
-    <div>CMakeLists.txt</div>
-    <span class="detail-link-arr">›</span>
-  </button>
+<div data-comp-root class='flex flex-col'>
+  {@render LinkButton('file-open', FileTag, 'CMakeLists.txt',)}
+  {@render LinkButton('project-reveal', Folder, 'Show in Finder')}
+</div>
 
-  <button class='action-wrapper'>
-    <Folder size={14} />
-    <div>Show in Finder</div>
-    <span class="detail-link-arr">›</span>
+{#snippet LinkButton(a: ExActionTypes, Icon: typeof Folder, text: string)}
+  <button
+    data-link
+    class='flex flex-row'
+    onclick={() => {
+      onClicked(a);
+    }}
+  >
+    <Icon size={14} />
+    <span>{text}</span>
+    <span data-chevron>{chars.rightChevron}</span>
   </button>
-</Column>
+{/snippet}
 
 <style>
-  :global(.action-wrapper) {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    width: 100%;
-    /* padding: 5px 2px; */
-    background: none;
-    border: none;
-    color: var(--qt-text-muted);
-    font-family: inherit;
-    font-size: 12px;
-    cursor: pointer;
-    text-align: left;
-    border-radius: 3px;
-    transition: color 80ms;
-  }
+  [data-comp-root] {
+    & > [data-link] {
+      align-items: center;
+      gap: 7px;
+      width: 100%;
+      padding: 5px 2px;
+      background: none;
+      border: none;
+      color: var(--qt-text-muted);
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: left;
+      border-radius: 3px;
+      transition: color 80ms;
 
-  :global(.action-wrapper:hover) {
-    color: var(--qt-accent-info);
-  }
+      &:hover {
+        color: var(--qt-accent-info);
+      }
 
-  :global(.detail-link-arr) {
-    margin-left: auto;
-    opacity: 0.5;
-    font-size: 14px;
+      [data-chevron] {
+        margin-left: auto;
+        opacity: 0.5;
+        font-size: 14px;
+      }
+    }
   }
 </style>

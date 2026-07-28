@@ -8,8 +8,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as chars from '@/utils/chars';
   import { exBrowser as texts } from '@/apps/texts';
 
-  import { ui } from '../states.svelte';
-  import * as viewlogic from '../viewlogic.svelte';
+  import { ui } from '../../states.svelte';
+  import * as viewlogic from '../../viewlogic.svelte';
 
   const poolDirPath = $derived(ui.selected.package?.poolDir.fsPath);
 </script>
@@ -44,6 +44,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     gap: 8px;
     color: var(--qt-text-muted);
     flex-shrink: 0;
+    padding: 8px 14px;
+    background: var(--qt-bg-default);
 
     & > [data-location] {
       font-size: 11px;

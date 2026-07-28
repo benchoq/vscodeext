@@ -48,7 +48,7 @@ export const ui = $state({
 
     tags: {
       visible: false,
-      refEl: undefined as HTMLElement | undefined,
+      refEl: undefined as HTMLElement | undefined
     }
   },
 

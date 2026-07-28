@@ -153,8 +153,6 @@ export function setOverlayVisible(name: OverlayName, visible: boolean) {
   if (overlay && (overlay.visible !== visible)) {
     overlay.visible = visible;
   }
-
-  console.log("-----------", name);
 }
 
 export async function onNewProjectFormEvent(type: NewItemForm.EventType, args?: unknown) {

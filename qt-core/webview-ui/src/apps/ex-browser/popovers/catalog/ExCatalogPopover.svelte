@@ -10,52 +10,47 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import ExCatalogCategories from './ExCatalogCategories.svelte';
 </script>
 
-<div class='panel flex flex-col'>
+<svelte:options runes={true} />
+
+<div data-comp-root class='flex flex-col'>
   <ExCatalogHeader />
 
-  <div class='body flex flex-row'>
-    <div class='versions'><ExCatalogQtVersions /></div>
-    <div class='categories'><ExCatalogCategories /></div>
+  <div data-section class='flex flex-row'>
+    <div data-versions><ExCatalogQtVersions /></div>
+    <div data-categories class='flex-1'><ExCatalogCategories /></div>
   </div>
 
-  <div class='footer flex'>
+  <div data-section>
     <ExCatalogFooter />
   </div>
 </div>
 
 <style>
-  .panel {
+  [data-comp-root] {
     width: var(--catalog-popup-width);
     background: var(--qt-bg-subtle);
     border: var(--popup-border);
     border-radius: var(--qt-radius-m);
     box-shadow: var(--popup-shadow);
     overflow: hidden;
-  }
 
-  .body {
-    border-top: var(--catalog-section-separator);
-  }
+    & > [data-section] {
+      max-height: 340px;
+      border-top: var(--catalog-section-separator);
 
-  .versions {
-    width: 160px;
-    padding: 6px 0;
-  }
+      & > [data-versions] {
+        width: 160px;
+        padding: 6px 0;
+        min-height: 0;
+        overflow-y: auto;
+      }
 
-  .categories {
-    flex: 1;
-    max-height: 340px;
-    padding: 6px 0;
-    overflow-y: auto;
-    border-left: var(--catalog-section-separator);
-  }
-
-  .footer {
-    border-top: var(--catalog-section-separator);
-    display: flex;
-    align-items: center;
-    padding: 8px 14px;
-    background: var(--qt-bg-default);
-    flex-shrink: 0;
+      & > [data-categories] {
+        border-left: var(--catalog-section-separator);
+        padding: 6px 0;
+        min-height: 0;
+        overflow-y: auto;
+      }
+    }
   }
 </style>
