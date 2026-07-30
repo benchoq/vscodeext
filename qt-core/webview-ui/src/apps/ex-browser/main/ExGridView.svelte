@@ -12,10 +12,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let {
     examples = [] as ExEntry[],
   } = $props();
-
-  function onScroll() {
-    ui.overlays.details.collapsed = true;
-  }
 </script>
 
 <div
@@ -23,14 +19,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   data-comp-grid
   class='grid grid-flow-dense'
   role='grid'
-  tabindex="0"
-  onkeydown={() => {}}
-  onscroll={onScroll}
-  onclick={(e) => {
-    if (e.target === e.currentTarget) {
-      ui.overlays.details.visible = false;
-    }
-  }}
 >
   {#each examples as example (example)}
     <ExGridViewItem {example}/>

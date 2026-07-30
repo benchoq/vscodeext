@@ -4,71 +4,51 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { type Snippet } from 'svelte';
   import ChevronRight from '@/icons/ChevronRight.svelte';
-  import { type ExCategory } from '@shared/ex-browser';
-  import ExGridView from './ExGridView.svelte';
-  import ExListView from './ExListView.svelte';
-  import { data, ui } from '../states.svelte';
 
   let {
-    category = undefined as ExCategory | undefined,
-    expanded = $bindable(true)
+    title = '',
+    count = 0,
+    expanded = $bindable(true),
+    children = undefined as (Snippet | undefined)
   } = $props();
-
-  const examples = $derived.by(() => {
-    switch (category?.type) {
-      case 'featured':
-        return data.examples.filter((ex) => ex.highlighted);
-
-      case 'general': {
-        const name = category?.name.trim() ?? '';
-        return data.examples.filter((ex) => ex.categories.includes(name));
-      }
-
-      case 'all':
-        return data.examples;
-
-      default:
-        return [];
-    }
-  });
 </script>
 
-<div class="flex flex-col">
+<div data-comp-root class="flex flex-col">
   <button
-    data-comp-header
+    data-header
     class='flex flex-row'
     onclick={() => {
       expanded = !expanded;
     }}
   >
-    <div
+    <span
       data-chevron
       style:transform={expanded ? 'rotate(90deg)' : 'rotate(0deg)'}
     >
       <ChevronRight size={16} />
-    </div>
-    <span data-text>{category?.name ?? ''}</span>
-    <span data-count>{examples.length}</span>
+    </span>
+    <span data-text>{title}</span>
+    <span data-count>{count}</span>
   </button>
 
   {#if expanded}
-    {#if ui.selected.viewMode === 'grid'}
-      <ExGridView {examples} />
-    {:else}
-      <ExListView {examples} />
-    {/if}
+    {@render children?.()}
   {/if}
 </div>
 
 <style>
-  [data-comp-header] {
+  [data-comp-root] {
+    gap: 10px;
+  }
+
+  [data-header] {
     top: 0;
     position: sticky;
-    z-index: 10;
-    padding: 5px 0;
-    margin-top: 6px;
-    margin-bottom: 10px;
+    z-index: 1;
+    padding: 5px 0px;
+    margin-top: 16px;
 
     color: var(--qt-text-muted);
     background: var(--qt-bg-default);
