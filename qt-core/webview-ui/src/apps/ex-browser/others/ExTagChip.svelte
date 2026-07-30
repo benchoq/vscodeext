@@ -31,19 +31,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   .ex-tag-chip {
-    --chip-color: 0, 122, 204;
-
     height: 20px;
     padding: 0 5px 0 7px;
     border-radius: var(--qt-radius-s);
-    background: rgba(var(--chip-color), 0.22);
-    border: 1px solid rgba(var(--chip-color), 0.55);
+    background: var(--accent-blue-a22);
+    border: 1px solid var(--accent-blue-a55);
     color: var(--qt-accent-active);
     cursor: pointer;
     transition: background var(--duration-short);
 
     &:hover {
-      background: rgba(var(--chip-color), 0.35);
+      background: var(--accent-blue-a35);
     }
 
     & > [data-hash] {

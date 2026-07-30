@@ -26,7 +26,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       }}
     >
       <div data-title>{example.name}</div>
-      <ExTagsList tags={example?.tags ?? []} />
+      <ExTagsList
+        tags={example?.tags ?? []}
+        size={13}
+      />
       <div class='grow'></div>
       <div data-category>{example.categories.join(', ')}</div>
     </button>
@@ -57,7 +60,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
       &.selected {
         border-color: var(--qt-accent-info);
-        background: rgba(0,122,204,0.09);
+        background: var(--accent-blue-a9);
       }
 
       & > [data-title] {

@@ -31,7 +31,28 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   --duration-long: 220ms;
 
   /* others */
+  /* simplify */
+  --font-size-3xs: 9px;
+  --font-size-2xs: 10px;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 13px;
+  --font-size-lg: 14px;
+  --font-size-xl: 15px;
+  --font-size-3xl: 20px;
+
+  /* simplify */
+  --font-weight-extra-light: 200;
+  --font-weight-medium: 500;
+  --font-weight-semi-bold: 600;
+
+  /* TODO: simplify */
   --accent-blue: rgb(0,122,204);
+  --accent-blue-a9: color-mix(in srgb, var(--accent-blue) 9%, transparent);
+  --accent-blue-a15: color-mix(in srgb, var(--accent-blue) 15%, transparent);
+  --accent-blue-a22: color-mix(in srgb, var(--accent-blue) 22%, transparent);
+  --accent-blue-a35: color-mix(in srgb, var(--accent-blue) 35%, transparent);
+  --accent-blue-a55: color-mix(in srgb, var(--accent-blue) 55%, transparent);
 }
 
 body {

@@ -30,7 +30,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   /* Accent */
   --qt-accent-info:            var(--vscode-focusBorder,                       #007acc);
   --qt-accent-hover:           var(--vscode-button-hoverBackground,            #1177bb);
-  --qt-accent-active:          var(--vscode-textLink-foreground,               #3794ff);
+  --qt-accent-active:          var(--vscode-textLink-foreground,               hwb(212 22% 0%));
 
   /* List states */
   --qt-hover-bg:               var(--vscode-list-hoverBackground,              #2a2d2e);

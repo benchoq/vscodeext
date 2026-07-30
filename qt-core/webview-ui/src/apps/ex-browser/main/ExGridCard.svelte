@@ -72,7 +72,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }
 
     &.selected {
-      background: color-mix(in srgb, var(--accent-blue) 9%, transparent);
+      background: var(--accent-blue-a9);
       border-color: var(--qt-accent-info);
     }
 

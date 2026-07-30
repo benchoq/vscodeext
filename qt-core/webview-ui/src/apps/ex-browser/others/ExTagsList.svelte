@@ -9,12 +9,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   let {
     tags = [] as string[],
+    size = 20
   } = $props();
 </script>
 
 <div data-comp-root class='flex'>
   <div data-icon>
-    <Tag size={20}/>
+    <Tag {size}/>
   </div>
 
   {#each tags as tag (tag)}
@@ -77,8 +78,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       }
 
       &.selected {
-        background: rgba(0,122,204,0.22);
-        border-color: rgba(0,122,204,0.55);
+        background: var(--accent-blue-a22);
+        border-color: var(--accent-blue-a55);
         color: var(--qt-accent-active);
       }
     }
