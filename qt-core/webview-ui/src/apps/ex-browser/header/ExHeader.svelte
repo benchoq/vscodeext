@@ -4,7 +4,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { Grid, List } from '@/icons';
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
@@ -12,59 +11,52 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import ExHeaderTags from './ExHeaderTags.svelte';
   import ExHeaderBreadcrumb from './ExHeaderBreadcrumb.svelte';
   import ExHeaderSearchInput from './ExHeaderSearchInput.svelte';
+  import ExHeaderViewModeButtons from './ExHeaderViewModeButtons.svelte';
 
   const tags = $derived.by(() => {
-    return ui.filter.query.split(' ').map((e) => {
-      return e.startsWith("#") ? e.substring(1) : e;
-    })
+    return ui.filter.query.split(' ')
+      .map((e) => { return e.startsWith("#") ? e.substring(1) : e; })
+      .filter((e) => e.length !== 0);
   });
 </script>
 
-<div data-comp-root class="flex flex-col shrink-0 gap-[7px]">
-  <div class="flex flex-row gap-[6px]">
+<div data-comp-root class="flex flex-col">
+  <div data-filter class="flex flex-row">
     <ExHeaderBreadcrumb />
     <ExHeaderTags />
     <ExHeaderSearchInput />
+    <ExHeaderViewModeButtons />
+  </div>
 
-    <div class='qt-button-group flex flex-row'>
-      {@render ViewModeButton('grid')}
-      {@render ViewModeButton('list')}
+  {#if tags.length !== 0}
+    <div data-tags class="flex flex-wrap">
+      {#each tags as tag (tag)}
+        <ExTagChip
+          text={tag}
+          onClicked={() => {
+            viewlogic.toggleTagInQuery(tag);
+          }}
+        />
+      {/each}
     </div>
-  </div>
-
-  <div class="flex flex-wrap items-center gap-[5px]">
-    {#each tags as tag (tag)}
-      <ExTagChip
-        text={tag}
-        onClicked={() => {
-          viewlogic.toggleTagInQuery(tag);
-        }}
-      />
-    {/each}
-  </div>
+  {/if}
 </div>
-
-<!-- snippets -->
-{#snippet ViewModeButton(mode: 'grid' | 'list')}
-  <button
-    class='qt-tool-button'
-    aria-pressed={ui.selected.viewMode === mode}
-    onclick={() => {
-      ui.selected.viewMode = mode;
-    }}
-  >
-    {#if mode === 'grid'}
-      <Grid />
-    {:else}
-      <List />
-    {/if}
-  </button>
-{/snippet}
 
 <style>
   [data-comp-root] {
+    flex-shrink: 0;
+    gap: 7px;
     padding: 8px 14px;
     background: var(--qt-bg-subtle);
     border-bottom: 1px solid var(--qt-stroke-subtle);
+
+    & > [data-filter] {
+      gap: 6px;
+    }
+
+    & > [data-tags] {
+      align-items: center;
+      gap: 5px;
+    }
   }
 </style>

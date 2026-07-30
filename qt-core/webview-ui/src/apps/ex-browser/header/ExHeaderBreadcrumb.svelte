@@ -30,7 +30,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <button
   bind:this={ui.overlays.catalog.refEl}
   data-comp-root
-  class='qt-button inline-flex'
+  class='qt-button'
   aria-expanded={ui.overlays.catalog.visible}
   disabled={data.packages.length === 0}
   onclick={() => {

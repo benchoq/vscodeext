@@ -19,7 +19,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   gap: 6px;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: border-color 100ms, color 100ms;
+  transition: border-color 100ms;
 
   &:hover {
     border-color: var(--qt-stroke-muted);
