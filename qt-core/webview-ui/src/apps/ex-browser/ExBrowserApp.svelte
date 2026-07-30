@@ -9,6 +9,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import '@/styles/base.v2.css';
   import '@/styles/tokens.v2.css';
   import '@/styles/components.v2.css';
+  import './app.css';
 
   import ExHeader from './header/ExHeader.svelte';
   import ExMainView from './main/ExMainView.svelte';
@@ -47,25 +48,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   [data-app-root] {
-    /* variables for overall layout */
-    --popup-border: 1px solid var(--qt-stroke-subtle);
-    --popup-shadow: 0 8px 24px rgba(0,0,0,0.45);
-
-    --catalog-popup-width: 480px;
-    --catalog-section-separator: 1px solid var(--qt-stroke-subtle);
-
-    --tags-popup-width: 380px;
-    --tags-popup-max-height: 300px;
-
-    --card-min-width: 232px;
-    --card-min-height: 220px;
-    --card-thumbnail-min-height: 110px;
-
-    --side-panel-width: 320px;
-
-    /* others */
-    --transition-fast: background 80ms, border-color 80ms, color 80ms;
-
     overflow: hidden;
   }
 

@@ -1,0 +1,46 @@
+/*
+Copyright (C) 2026 The Qt Company Ltd.
+SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+*/
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* variables for overall layout */
+  --popover-border: 1px solid var(--qt-stroke-subtle);
+  --popover-shadow: 0 8px 24px rgba(0,0,0,0.45);
+
+  --catalog-popup-width: 480px;
+  --catalog-section-separator: 1px solid var(--qt-stroke-subtle);
+
+  --tags-popup-width: 380px;
+  --tags-popup-max-height: 300px;
+
+  --card-min-width: 232px;
+  --card-min-height: 220px;
+  --card-thumbnail-min-height: 110px;
+  --card-border: color-mix(in srgb, var(--qt-text-muted) 30%, transparent);
+
+  --side-panel-width: 320px;
+
+  /* others */
+  --transition-fast: background 80ms, border-color 80ms, color 80ms;
+}
+
+body {
+  background: var(--qt-bg-default);
+  color: var(--qt-text-default);
+  font-family: var(--vscode-font-family,
+    'Segoe UI Variable', 'Segoe UI', -apple-system, BlinkMacSystemFont,
+    'Inter', system-ui, sans-serif);
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
