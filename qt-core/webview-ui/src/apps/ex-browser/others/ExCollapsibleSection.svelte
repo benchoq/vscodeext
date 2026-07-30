@@ -60,7 +60,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     cursor: pointer;
 
     & > [data-chevron] {
-      transition: transform 150ms;
+      transition: transform var(--duration-base);
     }
 
     & > [data-text] {

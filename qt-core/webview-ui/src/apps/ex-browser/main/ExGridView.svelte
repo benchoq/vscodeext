@@ -6,7 +6,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { type ExEntry } from '@shared/ex-browser';
 
-  import ExGridViewItem from './ExGridViewItem.svelte';
+  import ExGridCard from './ExGridCard.svelte';
   import { ui } from '../states.svelte';
 
   let {
@@ -21,7 +21,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   role='grid'
 >
   {#each examples as example (example)}
-    <ExGridViewItem {example}/>
+    <ExGridCard {example}/>
   {/each}
 </div>
 

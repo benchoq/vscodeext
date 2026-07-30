@@ -50,7 +50,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       cursor: pointer;
       text-align: left;
       border-radius: 3px;
-      transition: color 80ms;
+      transition: color var(--duration-short);
 
       &:hover {
         color: var(--qt-accent-info);

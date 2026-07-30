@@ -19,7 +19,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   gap: 6px;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: border-color 100ms;
+  transition: border-color var(--duration-base);
 
   &:hover {
     border-color: var(--qt-stroke-muted);
@@ -49,9 +49,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   border: 1px solid var(--qt-stroke-subtle);
   border-radius: var(--qt-radius-s);
   cursor: pointer;
-  transition:
-    background var(--qt-duration-fast),
-    color var(--qt-duration-fast);
+  transition-property: color, background;
+  transition-duration: var(--duration-short);
 
   &:hover {
     color: var(--qt-text-default);
@@ -149,7 +148,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     cursor: pointer;
     border: none;
     border-radius: 0;
-    transition: var(--transition-fast);
+    transition-property: background, color;
+    transition-duration: var(--transition-fast);
 
     &:hover {
       background: var(--qt-hover-bg);

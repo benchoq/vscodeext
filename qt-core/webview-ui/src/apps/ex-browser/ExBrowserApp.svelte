@@ -50,9 +50,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     border-left: 1px solid transparent;
     background: var(--qt-bg-subtle);
     overflow: hidden;
-    transition:
-      width 220ms cubic-bezier(.4,0,.2,1),
-      border-color 220ms;
+    transition-property: width, border-color;
+    transition-duration: var(--duration-short);
+    transition-timing-function: cubic-bezier(.4,0,.2,1), ease;
 
     &.open {
       width: var(--side-panel-width);

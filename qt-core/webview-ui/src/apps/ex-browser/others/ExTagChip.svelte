@@ -40,7 +40,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     border: 1px solid rgba(var(--chip-color), 0.55);
     color: var(--qt-accent-active);
     cursor: pointer;
-    transition: background 80ms;
+    transition: background var(--duration-short);
 
     &:hover {
       background: rgba(var(--chip-color), 0.35);

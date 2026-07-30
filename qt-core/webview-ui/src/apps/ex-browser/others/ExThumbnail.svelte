@@ -11,8 +11,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   let {
     example = undefined as ExEntry | undefined,
-    class: className = '',
-    imageClass = '',
     lazyLoading = true,
     onLoaded = (() => {}) as (() => void) | undefined
   } = $props();
@@ -50,17 +48,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   onMount(fetchSrc);
 </script>
 
-<div bind:this={container} class={`w-full h-full ${className}`}>
+<div
+  bind:this={container}
+  data-comp-root
+  class='w-full h-full relative'
+>
   {#if example}
     {#await srcPromise then src}
       <img
         src={src}
         alt={example.imageUrl}
         title={example.description}
-        class={`
-          w-full h-full object-cover object-top
-          ${imageClass}
-        `}
+        class='w-full h-full absolute'
         onload={onLoaded}
       />
     {:catch _err}
@@ -70,3 +69,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {/await}
   {/if}
 </div>
+
+<style>
+  [data-comp-root] {
+    flex: 1;
+    min-height: var(--card-min-height);
+    border-radius: var(--qt-radius-m);
+    background: var(--qt-bg-default);
+    overflow: hidden;
+
+    & > img {
+      object-fit: cover;
+      object-position: top;
+    }
+  }
+</style>

@@ -61,10 +61,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   /* Spacing & radius — not theme-dependent */
   --qt-radius-s:   4px;
   --qt-radius-m:   8px;
+
   --qt-spacing-xs: 4px;
   --qt-spacing-s:  6px;
   --qt-spacing-m:  8px;
   --qt-spacing-xl: 16px;
-
-  --panel-width: 320px;
 }

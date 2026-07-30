@@ -67,7 +67,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       white-space: nowrap;
       cursor: pointer;
       font-family: inherit;
-      transition: background 80ms, border-color 80ms, color 80ms;
+      transition-property: background, border-color, color;
+      transition-duration: var(--duration-short);
       text-decoration: none;
 
       &:hover {

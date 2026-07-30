@@ -62,7 +62,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       font-size: 14px;
       cursor: pointer;
       padding: 2px 4px;
-      transition: color 80ms;
+      transition: color var(--duration-short);
 
       &:hover {
         color: var(--qt-text-default);

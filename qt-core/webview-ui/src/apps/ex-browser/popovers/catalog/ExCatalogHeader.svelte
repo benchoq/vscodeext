@@ -43,7 +43,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       padding: 0px 4px 2px;
       border-radius: var(--qt-radius-s);
       line-height: 1;
-      transition: color 80ms, background 80ms;
+      transition-property: color, background;
+      transition-duration: var(--duration-short);
 
       &:hover {
         color: var(--qt-text-default);

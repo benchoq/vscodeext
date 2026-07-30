@@ -85,7 +85,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     justify-content: center;
     font-size: 14px;
     padding: 0;
-    transition: background 80ms;
+    transition: background var(--duration-short);
   }
 
   :global(.title-close:hover) {

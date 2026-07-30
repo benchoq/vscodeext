@@ -11,7 +11,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from '../viewlogic.svelte';
 
   let {
-    example = undefined as ExEntry | undefined,
+    example
+  } : {
+    example: ExEntry
   } = $props();
 
   function selectExample() {
@@ -27,63 +29,56 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-{#if example}
-  <div
-    data-comp-card
-    class='w-full h-full group flex flex-col relative'
-    class:selected={example === ui.selected.example}
-    role='button'
-    tabindex='0'
-    onclick={selectExample}
-    onkeydown={(e) => {
-      if (e.key === 'Enter') {
-        selectExample();
-      }
-    }}
-  >
-    <div data-thumbnail><ExThumbnail {example} /></div>
-    <div data-module-tag class='absolute top-[8px] left-[8px]'>
-      {addSpaceBeforeUppercase(example.module)}
-    </div>
-    <div data-name>{example.name}</div>
-    <div class='qt-separator'></div>
-    <ExTagsList tags={example?.tags ?? []} />
+<div
+  data-comp-root
+  class='w-full h-full flex flex-col relative'
+  class:selected={example === ui.selected.example}
+  role='button'
+  tabindex='0'
+  onclick={selectExample}
+  onkeydown={(e) => {
+    if (e.key === 'Enter') {
+      selectExample();
+    }
+  }}
+>
+  <div data-thumbnail><ExThumbnail {example} /></div>
+  <div data-module-tag class='absolute'>
+    {addSpaceBeforeUppercase(example.module)}
   </div>
-{/if}
+  <div data-name>{example.name}</div>
+  <div class='qt-separator'></div>
+  <ExTagsList tags={example.tags ?? []} />
+</div>
 
 <style>
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(3px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  [data-comp-card] {
+  [data-comp-root] {
     background: var(--qt-bg-elevated);
     border: 1px solid var(--qt-stroke-subtle);
     border-radius: var(--qt-radius-s);
     padding: var(--qt-spacing-xl);
-    display: flex;
-    flex-direction: column;
     gap: var(--qt-spacing-m);
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: border-color 120ms, background 120ms;
+    transition-property: background, border-color;
+    transition-duration: var(--duration-long);
     min-height: var(--card-min-height);
-    animation: cardIn 160ms ease both;
+    animation: cardInAni 160ms ease both;
 
     &:hover {
       background: var(--qt-hover-bg);
-      border-color: var(--qt-stroke-muted);
+      border-color: color-mix(in srgb, var(--qt-text-muted) 60%, transparent);
     }
 
     &.selected {
-      background: rgba(0,122,204,0.09);
+      background: color-mix(in srgb, var(--accent-blue) 9%, transparent);
       border-color: var(--qt-accent-info);
     }
 
     & > [data-module-tag] {
-      height: 16px;
+      top: 8px;
+      left: 8px;
       padding: 0 6px;
       border-radius: 3px;
       background: rgba(0,0,0,0.62);
@@ -109,7 +104,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }
 
     & > [data-name] {
-      flex: 1;
       font-size: 13px;
       font-weight: 500;
       color: var(--qt-text-default);
@@ -117,11 +111,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       overflow: hidden;
       text-overflow: ellipsis;
       line-height: 18px;
-
-      display: flex;
-      align-items: center;
-      min-height: 20px;
-      flex-shrink: 0;
     }
+  }
+
+  @keyframes cardInAni {
+    from { opacity: 0; transform: translateY(3px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 </style>

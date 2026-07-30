@@ -47,7 +47,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       border: 1px solid var(--qt-stroke-subtle);
       cursor: pointer;
       background: var(--qt-bg-elevated);
-      transition: border-color 120ms, background 120ms;
+      transition-property: border-color, background;
+      transition-duration: var(--duration-base);
 
       &:hover {
         border-color: var(--qt-stroke-muted);
