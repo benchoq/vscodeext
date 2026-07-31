@@ -19,7 +19,7 @@ import {
 } from "@shared/ex-browser";
 import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
 import { CommandId, isErrorResponse } from "@shared/message";
-import { data, ui, type OverlayName } from './states.svelte';
+import { data, ui, type PopoverName } from './states.svelte';
 
 export async function onAppMount() {
   ui.input.onEvent(onNewProjectFormEvent);
@@ -151,10 +151,10 @@ export async function resolveImageUrl(example: ExEntry) {
   return webviewUrl;
 }
 
-export function setOverlayVisible(name: OverlayName, visible: boolean) {
-  const overlay = ui.overlays[name];
-  if (overlay && (overlay.visible !== visible)) {
-    overlay.visible = visible;
+export function setPopoverVisible(name: PopoverName, visible: boolean) {
+  const p = ui.popovers[name];
+  if (p && (p.visible !== visible)) {
+    p.visible = visible;
   }
 }
 

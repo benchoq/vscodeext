@@ -10,7 +10,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import ExTagsPopover from './ExTagsPopover.svelte';
   import ExCatalogPopover from './catalog/ExCatalogPopover.svelte';
   import * as viewlogic from '../viewlogic.svelte';
-  import { data, ui, type OverlayName } from '../states.svelte';
+  import { data, ui, type PopoverName } from '../states.svelte';
 
   interface Info {
     component: Component,
@@ -22,16 +22,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     return {
       catalog: {
         component: ExCatalogPopover,
-        pos: calcAnchorPos(ui.overlays.catalog.refEl),
-        visible: (ui.overlays.catalog.visible && data.packages.length !== 0)
+        pos: calcAnchorPos(ui.popovers.catalog.refEl),
+        visible: (ui.popovers.catalog.visible && data.packages.length !== 0)
       },
 
       tags: {
         component: ExTagsPopover,
-        pos: calcAnchorPos(ui.overlays.tags.refEl),
-        visible: (ui.overlays.tags.visible && (ui.filter.category?.tags.length ?? 0) !== 0)
+        pos: calcAnchorPos(ui.popovers.tags.refEl),
+        visible: (ui.popovers.tags.visible && (ui.filter.category?.tags.length ?? 0) !== 0)
       }
-    } as Record<OverlayName, Info>
+    } as Record<PopoverName, Info>
   });
 
 
@@ -48,7 +48,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {@render Popover('tags')}
 {@render Popover('catalog')}
 
-{#snippet Popover(name: OverlayName)}
+{#snippet Popover(name: PopoverName)}
   {@const info = popovers[name]}
 
   {#if info.visible}
@@ -58,7 +58,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       style:left={info.pos.left + 'px'}
       use:clickOutside={(ev: MouseEvent) => {
         ev.stopPropagation();
-        viewlogic.setOverlayVisible(name, false);
+        viewlogic.setPopoverVisible(name, false);
       }}
     >
       <info.component />

@@ -153,7 +153,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <button
         class='qt-border-radius cursor-pointer'
         onclick={() => {
-          viewlogic.setOverlayVisible('catalog', true);
+          viewlogic.setPopoverVisible('catalog', true);
         }}
       >
         {ui.selected.package?.name ?? '-'}

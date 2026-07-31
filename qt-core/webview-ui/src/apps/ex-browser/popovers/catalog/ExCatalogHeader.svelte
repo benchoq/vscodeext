@@ -13,7 +13,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <button
     data-close-button
     onclick={() => {
-      viewlogic.setOverlayVisible('catalog', false);
+      viewlogic.setPopoverVisible('catalog', false);
     }}
   >
     &times;

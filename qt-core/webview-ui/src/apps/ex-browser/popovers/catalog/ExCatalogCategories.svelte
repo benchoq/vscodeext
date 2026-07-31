@@ -18,7 +18,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       class:active={cat === ui.filter.category}
       onclick={async () => {
         await viewlogic.selectCategory(cat);
-        viewlogic.setOverlayVisible('catalog', false);
+        viewlogic.setPopoverVisible('catalog', false);
       }}
     >
       <span class='flex-1'>{cat.name}</span>

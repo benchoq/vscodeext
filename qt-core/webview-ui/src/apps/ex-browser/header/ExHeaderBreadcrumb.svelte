@@ -28,13 +28,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <button
-  bind:this={ui.overlays.catalog.refEl}
+  bind:this={ui.popovers.catalog.refEl}
   data-comp-root
   class='qt-button'
-  aria-expanded={ui.overlays.catalog.visible}
+  aria-expanded={ui.popovers.catalog.visible}
   disabled={data.packages.length === 0}
   onclick={() => {
-    viewlogic.setOverlayVisible('catalog', !ui.overlays.catalog.visible);
+    viewlogic.setPopoverVisible('catalog', !ui.popovers.catalog.visible);
   }}
 >
   {#if valid}

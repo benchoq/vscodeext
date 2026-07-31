@@ -12,7 +12,7 @@ import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 
 export type ViewMode = 'grid' | 'list';
-export type OverlayName = 'catalog' | 'tags';
+export type PopoverName = 'catalog' | 'tags';
 
 export const data = $state({
   packages: [] as ExPackage[],
@@ -41,7 +41,7 @@ export const ui = $state({
     visible: false
   },
 
-  overlays: {
+  popovers: {
     catalog: {
       visible: false,
       refEl: undefined as HTMLElement | undefined,
