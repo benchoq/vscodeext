@@ -40,8 +40,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {#each ui.filter.category?.tags as tag (tag)}
       <button
         class='item flex flex-row'
+        class:active={viewlogic.isTagSelected(tag)}
         onclick={async () => {
-          await viewlogic.toggleTagInQuery(tag);
+          await viewlogic.toggleTag(tag);
         }}
       >
         <span data-hash>#</span>
@@ -130,6 +131,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         & > [data-count] {
           font-size: 10px;
           color: var(--qt-text-muted);
+        }
+
+        &.active {
+          background: var(--accent-blue-a18);
+          color: var(--qt-accent-active);
         }
       }
     }

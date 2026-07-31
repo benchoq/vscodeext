@@ -21,10 +21,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {#each tags as tag (tag)}
     <button
       data-text
-      class:selected={viewlogic.hasTagInQuery(tag)}
+      class:selected={viewlogic.isTagSelected(tag)}
       onclick={(e: MouseEvent) => {
         e.stopPropagation();
-        viewlogic.toggleTagInQuery(tag);
+        viewlogic.toggleTag(tag);
       }}
     >
       {tag}

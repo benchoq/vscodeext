@@ -4,20 +4,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { ui } from '../states.svelte';
-  import * as viewlogic from '../viewlogic.svelte';
-
-  import ExTagChip from '../others/ExTagChip.svelte';
-  import ExHeaderTags from './ExHeaderTags.svelte';
+  import ExHeaderTags from './ExHeaderTagButton.svelte';
   import ExHeaderBreadcrumb from './ExHeaderBreadcrumb.svelte';
   import ExHeaderSearchInput from './ExHeaderSearchInput.svelte';
+  import ExHeaderSelectedTags from './ExHeaderSelectedTags.svelte';
   import ExHeaderViewModeButtons from './ExHeaderViewModeButtons.svelte';
-
-  const tags = $derived.by(() => {
-    return ui.filter.query.split(' ')
-      .map((e) => { return e.startsWith("#") ? e.substring(1) : e; })
-      .filter((e) => e.length !== 0);
-  });
 </script>
 
 <div data-comp-root class="flex flex-col">
@@ -28,18 +19,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <ExHeaderViewModeButtons />
   </div>
 
-  {#if tags.length !== 0}
-    <div data-tags class="flex flex-wrap">
-      {#each tags as tag (tag)}
-        <ExTagChip
-          text={tag}
-          onClicked={() => {
-            viewlogic.toggleTagInQuery(tag);
-          }}
-        />
-      {/each}
-    </div>
-  {/if}
+  <ExHeaderSelectedTags />
 </div>
 
 <style>
@@ -52,11 +32,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     & > [data-filter] {
       gap: 6px;
-    }
-
-    & > [data-tags] {
-      align-items: center;
-      gap: 5px;
     }
   }
 </style>

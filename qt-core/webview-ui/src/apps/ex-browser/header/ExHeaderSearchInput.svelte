@@ -9,7 +9,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from '../viewlogic.svelte';
   import { exBrowser as texts } from '@/apps/texts';
 
-  let value = $derived(ui.filter.query);
+  let value = $derived(ui.filter.searchInput);
   let timer: ReturnType<typeof setTimeout>;
 
   const placeholder = $derived.by(() => {
@@ -30,7 +30,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   function triggerUpdate(delay = 200) {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      viewlogic.setQuery(value);
+      viewlogic.setSearchInput(value);
     }, delay);
   }
 

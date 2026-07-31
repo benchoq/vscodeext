@@ -187,11 +187,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
           {#each example.tags as tag (tag)}
             <button
               class={`
-                ${viewlogic.hasTagInQuery(tag) ? 'qt-button' : 'qt-button-flat'}
+                ${viewlogic.isTagSelected(tag) ? 'qt-button' : 'qt-button-flat'}
                 px-2 py-0.5 cursor-pointer
               `}
               onclick={() => {
-                void viewlogic.toggleTagInQuery(tag);
+                void viewlogic.toggleTag(tag);
               }}
             >
               {tag}

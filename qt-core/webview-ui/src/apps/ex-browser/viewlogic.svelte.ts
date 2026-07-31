@@ -53,7 +53,8 @@ export async function selectPackage(p: ExPackage) {
   data.resolvedPaths =
     isExResolvedPathsRecord(resolvedPaths) ? resolvedPaths : {};
 
-  ui.filter.query = '';
+  ui.filter.tags = [];
+  ui.filter.searchInput = '';
   ui.filter.category = findCategoryByName('all');
   ui.selected.package = p;
   ui.selected.example = undefined;
@@ -82,29 +83,31 @@ export async function selectExample(example: ExEntry | undefined) {
   ui.sideBar.visible = (example !== undefined);
 }
 
-export async function setQuery(q: string) {
-  const v = validateQuery(q);
-
-  if (ui.filter.query !== v) {
-    ui.filter.query = v;
+export async function setSearchInput(s: string) {
+  if (ui.filter.searchInput !== s) {
+    ui.filter.searchInput = s;
     await loadExamples();
   }
 }
 
-export async function toggleTagInQuery(tag: string) {
-  const token = TagPrefix + tag;
-  const q = !hasTagInQuery(tag)
-    ? `${ui.filter.query} ${token}`
-    : ui.filter.query.replace(token, '').trim();
+export async function toggleTag(rawTag: string) {
+  const trimmed = rawTag.trim();
+  if (trimmed.length === 0) {
+    return;
+  }
 
-  await setQuery(q);
+  if (isTagSelected(trimmed)) {
+    ui.filter.tags = ui.filter.tags.filter(t => t !== trimmed);
+  } else {
+    ui.filter.tags.push(trimmed);
+  }
+
+  await loadExamples();
 }
 
-export function hasTagInQuery(tag: string) {
-  const token = TagPrefix + tag;
-  return ui.filter.query
-    .split(' ')
-    .some(t => t.trim() === token);
+export function isTagSelected(rawTag: string) {
+  const t = rawTag.trim();
+  return t.length === 0 ? false : ui.filter.tags.includes(rawTag);
 }
 
 export function setNewProjectFormVisible(visible: boolean) {
@@ -226,7 +229,7 @@ async function loadPackages() {
 
 async function loadExamples(reason: 'selectPackage' | '' = '') {
   const r = await vscode.post(CommandId.ExBrowserGetExamples, {
-    query: ui.filter.query,
+    query: createFilterQuery(ui.filter.searchInput, ui.filter.tags),
     category: $state.snapshot(ui.filter.category),
   });
 
@@ -256,20 +259,18 @@ function findCategoryByName(name: string) {
   });
 }
 
-function validateQuery(query: string): string {
-  const tokens: string[] = [];
+function createFilterQuery(keywords: string, tags: string[]) {
+  const tagsJoined = tags
+    .map((e) => {
+      const t = e.trim();
+      return t.length === 0 ? '' : (TagPrefix + t);
+    })
+    .filter((e) => e.length !== 0)
+    .join(' ');
 
-  query.split(' ').forEach((s) => {
-    s = s.trim();
-    if (s.length !== 0 && s !== TagPrefix) {
-      tokens.push(s);
-    }
-  });
-
-  return tokens.join(' ');
+  return `${keywords} ${tagsJoined}`;
 }
 
 function clearSelectedExample() {
   ui.selected.example = undefined;
 }
-
