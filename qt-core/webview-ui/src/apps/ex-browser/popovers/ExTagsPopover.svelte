@@ -54,24 +54,30 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </button>
   </div>
 
-  <div
-    data-list-section
-    class='qt-item-list flex flex-col'
-  >
-    {#each tags as tag (tag)}
-      <button
-        class='item flex flex-row'
-        class:active={viewlogic.isTagSelected(tag)}
-        onclick={async () => {
-          await viewlogic.toggleTag(tag);
-        }}
-      >
-        <span data-hash>#</span>
-        <span data-name class='flex-1'>{tag}</span>
-        <span data-count>10</span>
-    </button>
-    {/each}
-  </div>
+  {#if tags.length !== 0}
+    <div
+      data-list-section
+      class='qt-item-list flex flex-col'
+    >
+      {#each tags as tag (tag)}
+        <button
+          class='item flex flex-row'
+          class:active={viewlogic.isTagSelected(tag)}
+          onclick={async () => {
+            await viewlogic.toggleTag(tag);
+          }}
+        >
+          <span data-hash>#</span>
+          <span data-name class='flex-1'>{tag}</span>
+          <span data-count>10</span>
+      </button>
+      {/each}
+    </div>
+  {:else}
+    <div data-no-match>
+      No tags match
+    </div>
+  {/if}
 </div>
 
 <style>
@@ -159,6 +165,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
           color: var(--qt-accent-active);
         }
       }
+    }
+
+    [data-no-match] {
+      padding: 16px;
+      font-size: 11px;
+      color: var(--qt-text-muted);
+      text-align: center;
     }
   }
 </style>
