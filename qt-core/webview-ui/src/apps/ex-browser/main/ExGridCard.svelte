@@ -5,6 +5,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { type ExEntry } from '@shared/ex-browser';
+   import * as utils from '@/utils/utils';
+
   import ExTagsList from '../others/ExTagsList.svelte';
   import ExThumbnail from '../others/ExThumbnail.svelte';
   import { ui } from '../states.svelte';
@@ -18,14 +20,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   function selectExample() {
     viewlogic.selectExample(example);
-  }
-
-  function addSpaceBeforeUppercase(str: string): string {
-    // 'QtQuickControls' => 'Qt Quick Controls'
-    // 'QMLTestRunner' => 'QML Test Runner'
-    return str
-      .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
-      .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2');
   }
 </script>
 
@@ -44,7 +38,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 >
   <div data-thumbnail><ExThumbnail {example} /></div>
   <div data-module-tag class='absolute'>
-    {addSpaceBeforeUppercase(example.module)}
+    {utils.addSpaceBeforeUppercase(example.module)}
   </div>
   <div data-name>{example.name}</div>
   <div class='qt-separator'></div>

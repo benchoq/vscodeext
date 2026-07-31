@@ -4,14 +4,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import * as utils from '@/utils/utils';
+  import ExTagChip from '../others/ExTagChip.svelte';
   import { ui } from '../states.svelte';
 
   const example = $derived(ui.selected.example);
+
 </script>
 
 <div class='grid grid-cols-[max-content_1fr]'>
   <div data-title>Qt</div>
-  <div data-value>{ui.selected.package?.name}</div>
+  <div data-value>
+    {utils.extractQtVersion(ui.selected.package?.name ?? '')}
+  </div>
 
   <div data-title>Category</div>
   <div data-value>
@@ -21,7 +26,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </div>
 
   <div data-title>Module</div>
-  <div data-value>{example?.module ?? ''}</div>
+  <div data-value>
+    {utils.addSpaceBeforeUppercase(example?.module ?? '')}
+  </div>
 
   <div data-title>Location</div>
   <div data-value data-is-path>{example?.projectPath ?? ''}</div>
@@ -35,7 +42,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {:else}
       <div class='flex flex-wrap gap-x-2'>
         {#each example?.tags as tag (tag)}
-          <div>{tag}</div>
+          <ExTagChip text={tag} plain={true} />
         {/each}
       </div>
     {/if}

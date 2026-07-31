@@ -6,6 +6,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   let {
     text = '',
+    type = 'plain' as 'blue' | 'gray' | 'hallow',
     plain = false,
     onClicked = () => {}
   } = $props();
@@ -14,7 +15,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#if text.length > 0}
   <button
-    class='ex-tag-chip inline-flex items-center gap-[4px]'
+    data-root
+    class='inline-flex'
     onclick={() => {
       onClicked();
     }}
@@ -30,7 +32,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/if}
 
 <style>
-  .ex-tag-chip {
+  [data-root] {
     height: 20px;
     padding: 0 5px 0 7px;
     border-radius: var(--qt-radius-s);
@@ -38,6 +40,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     border: 1px solid var(--accent-blue-a55);
     color: var(--qt-accent-active);
     cursor: pointer;
+    align-items: center;
+    gap: 4px;
     transition: background var(--duration-short);
 
     &:hover {
