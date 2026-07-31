@@ -14,7 +14,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div data-comp-root class='flex flex-wrap'>
-  <div data-icon>
+  <div data-icon class='flex'>
     <Tag {size}/>
   </div>
 
@@ -45,7 +45,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       color: var(--qt-text-muted);
       flex-shrink: 0;
       line-height: 1;
-      display: flex;
       align-items: center;
       margin-right: 1px;
       opacity: 0.7;

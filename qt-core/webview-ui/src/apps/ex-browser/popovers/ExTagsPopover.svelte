@@ -130,7 +130,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       border-top: 1px solid var(--qt-stroke-subtle);
       overflow-y: auto;
       padding: 8px 10px;
-      display: flex;
       gap: 5px;
       align-content: flex-start;
 

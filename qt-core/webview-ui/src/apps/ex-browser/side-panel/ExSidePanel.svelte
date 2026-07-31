@@ -27,7 +27,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <Row>
     <span class='title flex-1'>Example Details</span>
     <button
-      class='title-close'
+      class='title-close flex'
       onclick={() => {
         ui.sideBar.visible = false;
       }}
@@ -80,7 +80,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     color: var(--qt-text-muted);
     cursor: pointer;
     border-radius: var(--qt-radius-s);
-    display: flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
@@ -131,7 +130,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     background: var(--qt-bg-default);
     margin-bottom: 12px;
     position: relative;
-    display: flex;
     align-items: stretch;
   }
 

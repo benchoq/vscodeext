@@ -20,6 +20,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {#each examples as example (example)}
     <button
       data-item
+      class='flex'
       class:selected={example === ui.selected.example}
       onclick={() => {
         viewlogic.selectExample(example);
@@ -41,7 +42,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     gap: 2px;
 
     & > [data-item] {
-      display: flex;
       align-items: center;
       gap: 10px;
       padding: 0 10px;
