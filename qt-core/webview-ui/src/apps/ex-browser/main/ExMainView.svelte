@@ -37,9 +37,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {@const View = (ui.selected.viewMode === 'grid')
         ? ExGridView : ExListView
       }
-      <ExCollapsibleSection title={category?.name ?? ''} {count}>
-        <View {examples} />
-      </ExCollapsibleSection>
+
+      {#if examples.length !== 0}
+        <ExCollapsibleSection title={category?.name ?? ''} {count}>
+          <View {examples} />
+        </ExCollapsibleSection>
+      {/if}
     {/if}
   {/each}
 </div>
