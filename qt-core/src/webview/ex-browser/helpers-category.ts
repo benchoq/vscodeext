@@ -54,7 +54,7 @@ export class CategoriesCollector {
 
 class CategoryBuilder {
   private _count = 0;
-  private readonly _tags = new Set<string>();
+  private readonly _tagCounts = new Map<string, number>();
 
   public constructor(
     private readonly _name: string,
@@ -68,18 +68,22 @@ class CategoryBuilder {
       example.tags.forEach((t) => {
         const candidate = t.trim();
         if (candidate) {
-          this._tags.add(candidate);
+          this._tagCounts.set(candidate, (this._tagCounts.get(candidate) ?? 0) + 1);
         }
       });
     }
   }
 
   public build(): ExCategory {
+    const tags = _.sortBy(Array.from(this._tagCounts.keys()));
+    const tagCounts = Object.fromEntries(this._tagCounts);
+
     return {
       type: this._type,
       name: this._name,
-      tags: _.sortBy(Array.from(this._tags)),
-      count: this._count
+      tags,
+      count: this._count,
+      tagCounts
     };
   }
 

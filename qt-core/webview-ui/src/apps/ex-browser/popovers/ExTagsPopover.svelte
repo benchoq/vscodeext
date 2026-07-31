@@ -19,6 +19,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       : all.filter((tag) => tag.includes(v));
   })
 
+  function findTagCount(tag: string) {
+    return ui.filter.category?.tagCounts[tag] ?? 0;
+  }
+
   function clearSearchInput() {
     ui.popovers.tags.searchInput = '';
     inputEl?.focus();
@@ -68,7 +72,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         >
           <span data-hash>#</span>
           <span data-name class='flex-1'>{tag}</span>
-          <span data-count>10</span>
+          <span data-count>{findTagCount(tag)}</span>
       </button>
       {/each}
     </div>

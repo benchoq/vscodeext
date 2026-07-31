@@ -133,6 +133,7 @@ export interface ExCategory {
   name: string;
   tags: string[];
   count: number;
+  tagCounts: Record<string, number>;
 }
 
 export function isExCategory(x: unknown): x is ExCategory {
@@ -147,7 +148,10 @@ export function isExCategory(x: unknown): x is ExCategory {
     typeof o.name === 'string' &&
     Array.isArray(o.tags) &&
     o.tags.every((t) => typeof t === 'string') &&
-    typeof o.count === 'number'
+    typeof o.count === 'number' &&
+    typeof o.tagCounts === 'object' &&
+    o.tagCounts !== null &&
+    Object.values(o.tagCounts).every((v) => typeof v === 'number')
   );
 }
 
