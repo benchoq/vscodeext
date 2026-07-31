@@ -6,6 +6,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { onMount } from 'svelte';
 
+  import ExCloseButton from '../others/ExCloseButton.svelte';
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
@@ -47,6 +48,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       placeholder='Filter tags...'
     />
 
+
+    <div
+      data-close-button
+      class:invisible={ui.popovers.tags.searchInput.trim().length === 0}
+    >
+      <ExCloseButton onClicked={clearSearchInput} />
+    </div>
+<!--
     <button
       data-decorations
       class='clear !right-[18px]'
@@ -54,7 +63,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       onclick={clearSearchInput}
     >
       &times;
-  </button>
+  </button> -->
   </div>
 
   {#if tags.length !== 0}
@@ -175,5 +184,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       color: var(--qt-text-muted);
       text-align: center;
     }
+  }
+
+  [data-close-button] {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
   }
 </style>

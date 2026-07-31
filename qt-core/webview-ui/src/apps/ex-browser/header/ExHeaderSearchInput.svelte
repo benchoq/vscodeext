@@ -5,9 +5,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import * as chars from '@/utils/chars';
+  import { exBrowser as texts } from '@/apps/texts';
+
+  import ExCloseButton from '../others/ExCloseButton.svelte';
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
-  import { exBrowser as texts } from '@/apps/texts';
 
   let value = $derived(ui.filter.searchInput);
   let timer: ReturnType<typeof setTimeout>;
@@ -56,12 +58,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     onkeydown={onKeydown}
   />
 
-  <button
-    data-decorations
-    class='clear'
+  <div
+    data-close-button
     class:invisible={value.trim().length === 0}
-    onclick={clear}
   >
-    &times;
-  </button>
+    <ExCloseButton onClicked={() => clear()} />
+  </div>
+
 </div>
+
+<style>
+  [data-close-button] {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+  }
+</style>

@@ -10,21 +10,24 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div class='grid grid-cols-[max-content_1fr]'>
-  <div class='detail-title detail-separator'>Qt</div>
-  <div class='detail-value detail-separator'>{ui.selected.package?.name}</div>
+  <div data-title>Qt</div>
+  <div data-value>{ui.selected.package?.name}</div>
 
-  <div class='detail-title detail-separator'>Category</div>
-  <div class='detail-value detail-separator'>
+  <div data-title>Category</div>
+  <div data-value>
     {#each example?.categories as cat (cat)}
       <div>{cat}</div>
     {/each}
   </div>
 
-  <div class='detail-title detail-separator'>Module</div>
-  <div class='detail-value detail-separator'>{example?.module ?? ''}</div>
+  <div data-title>Module</div>
+  <div data-value>{example?.module ?? ''}</div>
 
-  <div class='detail-title detail-separator'>Tag</div>
-  <div class='detail-value detail-separator'>
+  <div data-title>Location</div>
+  <div data-value data-is-path>{example?.projectPath ?? ''}</div>
+
+  <div data-title>Tags</div>
+  <div data-value>
     {#if (example?.tags.length ?? 0) === 0}
       <div class='empty-value'>
         No tags
@@ -40,7 +43,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  :global(.detail-title) {
+  [data-title] {
     padding: 3px 0px;
     font-size: 11px;
     font-weight: 500;
@@ -48,17 +51,25 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     min-width: 60px;
     flex-shrink: 0;
     line-height: 18px;
+    border-bottom: 1px solid var(--qt-stroke-subtle);
   }
 
-  :global(.detail-value) {
+  [data-value] {
     padding: 3px 0px;
     font-size: 11px;
     color: var(--qt-text-default);
     line-height: 18px;
     word-break: break-word;
-  }
-
-  :global(.detail-separator) {
     border-bottom: 1px solid var(--qt-stroke-subtle);
+
+    &[data-is-path] {
+      direction: rtl;
+      text-align: left;
+      unicode-bidi: embed;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 11px;
+    }
   }
 </style>

@@ -117,12 +117,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       left: 10px;
       font-size: 13px;
     }
-
-    &.clear {
-      right: 10px;
-      font-size: 20px;
-      font-weight: 200;
-    }
   }
 }
 
