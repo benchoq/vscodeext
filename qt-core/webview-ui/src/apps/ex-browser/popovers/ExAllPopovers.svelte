@@ -49,19 +49,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {@render Popover('catalog')}
 
 {#snippet Popover(name: PopoverName)}
-  {@const info = popovers[name]}
+  {@const p = popovers[name]}
 
-  {#if info.visible}
+  {#if p.visible}
     <div
       class='fixed'
-      style:top={info.pos.top + 'px'}
-      style:left={info.pos.left + 'px'}
+      style:top={p.pos.top + 'px'}
+      style:left={p.pos.left + 'px'}
       use:clickOutside={(ev: MouseEvent) => {
         ev.stopPropagation();
         viewlogic.setPopoverVisible(name, false);
       }}
     >
-      <info.component />
+      <p.component />
     </div>
   {/if}
 {/snippet}

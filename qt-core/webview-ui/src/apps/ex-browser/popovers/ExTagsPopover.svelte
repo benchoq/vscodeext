@@ -9,11 +9,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
-  let value = $state('');
   let inputEl: HTMLElement | undefined = undefined;
 
   const tags = $derived.by(() => {
-    const v = value.trim();
+    const v = ui.popovers.tags.searchInput.trim();
     const all = ui.filter.category?.tags ?? [];
     return (v.length === 0)
       ? all
@@ -21,7 +20,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   })
 
   function clearSearchInput() {
-    value = '';
+    ui.popovers.tags.searchInput = '';
     inputEl?.focus();
   }
 
@@ -37,7 +36,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div data-comp-root class='flex flex-col'>
   <div data-search-section class='qt-search-input relative'>
     <input
-      bind:value
+      bind:value={ui.popovers.tags.searchInput}
       bind:this={inputEl}
       type='text'
       class='flex-1 w-full'
@@ -47,7 +46,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <button
       data-decorations
       class='clear !right-[18px]'
-      class:invisible={value.trim().length === 0}
+      class:invisible={ui.popovers.tags.searchInput.trim().length === 0}
       onclick={clearSearchInput}
     >
       &times;
