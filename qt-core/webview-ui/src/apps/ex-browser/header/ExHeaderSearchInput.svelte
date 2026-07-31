@@ -52,14 +52,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         break;
     }
   }
-
-  function onFocusIn() {
-    viewlogic.setOverlayVisible('catalog', false);
-  }
-
-  $effect(() => {
-    value = ui.filter.query;
-  })
 </script>
 
 <div class='qt-search-input w-full relative'>
@@ -75,7 +67,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     disabled={data.packages.length === 0}
     oninput={() => { triggerUpdate(500); }}
     onkeydown={onKeydown}
-    onfocusin={onFocusIn}
   />
 
   <button

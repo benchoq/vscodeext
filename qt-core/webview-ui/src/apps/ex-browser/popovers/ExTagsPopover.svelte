@@ -9,7 +9,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
+  let value = $state('');
   let inputEl: HTMLElement | undefined = undefined;
+
+  const tags = $derived.by(() => {
+    const v = value.trim();
+    const all = ui.filter.category?.tags ?? [];
+    return (v.length === 0)
+      ? all
+      : all.filter((tag) => tag.includes(v));
+  })
+
+  function clearSearchInput() {
+    value = '';
+    inputEl?.focus();
+  }
 
   onMount(() => {
     requestAnimationFrame(() => {
@@ -21,23 +35,30 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <svelte:options runes={true} />
 
 <div data-comp-root class='flex flex-col'>
-  <div
-    data-search-section
-    class='flex flex-row'
-  >
+  <div data-search-section class='qt-search-input relative'>
     <input
+      bind:value
       bind:this={inputEl}
       type='text'
-      class='flex-1'
+      class='flex-1 w-full'
       placeholder='Filter tags...'
     />
+
+    <button
+      data-decorations
+      class='clear !right-[18px]'
+      class:invisible={value.trim().length === 0}
+      onclick={clearSearchInput}
+    >
+      &times;
+  </button>
   </div>
 
   <div
     data-list-section
     class='qt-item-list flex flex-col'
   >
-    {#each ui.filter.category?.tags as tag (tag)}
+    {#each tags as tag (tag)}
       <button
         class='item flex flex-row'
         class:active={viewlogic.isTagSelected(tag)}
@@ -77,7 +98,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         color: var(--qt-text-default);
         font-family: inherit;
         font-size: 11px;
-        padding: 0 8px;
+        padding: 0 26px 0 8px;
         outline: none;
 
         &:hover {
