@@ -19,21 +19,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   });
 
   function findExamples(category?: ExCategory) {
-    switch (category?.type) {
-      case 'featured':
-        return data.examples.filter((ex) => ex.highlighted);
-
-      case 'general': {
-        const name = category?.name.trim() ?? '';
-        return data.examples.filter((ex) => ex.categories.includes(name));
-      }
-
-      case 'all':
-        return data.examples;
-
-      default:
-        return [];
+    if (category?.type === 'general') {
+      const name = category?.name.trim() ?? '';
+      return data.examples.filter((ex) => ex.categories.includes(name));
     }
+
+    return category?.type === 'all' ? data.examples : [];
   }
 
 </script>

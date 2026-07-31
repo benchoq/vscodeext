@@ -15,20 +15,14 @@ const categoryScores: Map<string, number> = createCategoryScores();
 
 export class CategoriesCollector {
   private readonly _all: CategoryBuilder;
-  private readonly _featured: CategoryBuilder;
   private readonly _general = new Map<string, CategoryBuilder>();
 
   public constructor() {
     this._all = new CategoryBuilder(texts.specialCategory.all, 'all');
-    this._featured = new CategoryBuilder(
-      texts.specialCategory.featured,
-      'featured'
-    );
   }
 
   public collectFrom(example: ExEntry) {
     this._all.reflect(example);
-    this._featured.reflect(example);
 
     example.categories.forEach((c) => {
       const collector = this._findGeneralCategoryBuilder(c);
@@ -45,7 +39,6 @@ export class CategoriesCollector {
 
     return [
       this._all.build(),
-      this._featured.build(),
       ...sortCategories(generals)
     ];
   }
@@ -91,16 +84,7 @@ class CategoryBuilder {
   }
 
   private _isRelevant(example: ExEntry) {
-    switch (this._type) {
-      case 'all':
-        return true;
-
-      case 'featured':
-        return example.highlighted;
-
-      default:
-        return example.categories.includes(this._name);
-    }
+    return this._type === 'all' || example.categories.includes(this._name);
   }
 }
 

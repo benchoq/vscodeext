@@ -122,10 +122,10 @@ export function isExPackage(x: unknown): x is ExPackage {
 }
 
 // category
-export type ExCategoryType = 'general' | 'all' | 'featured';
+export type ExCategoryType = 'general' | 'all';
 
 export function isExCategoryType(x: unknown): x is ExCategoryType {
-  return x === 'general' || x === 'all' || x === 'featured';
+  return x === 'general' || x === 'all';
 }
 
 export interface ExCategory {

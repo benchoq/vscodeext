@@ -13,7 +13,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   } = $props();
 </script>
 
-<div data-comp-root class='flex'>
+<div data-comp-root class='flex flex-wrap'>
   <div data-icon>
     <Tag {size}/>
   </div>
@@ -37,7 +37,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     align-items: center;
     gap: 4px;
     flex-shrink: 0;
-    flex-wrap: nowrap;
     overflow: hidden;
     min-height: 20px;
 
