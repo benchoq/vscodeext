@@ -35,21 +35,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   function onKeydown(e: KeyboardEvent) {
-    switch (e.key) {
-      case 'Enter':
-        triggerUpdate(0);
-        viewlogic.setOverlayVisible('tags', false);
-        break;
-
-      case ' ':
-      case 'Escape':
-      case 'Backspace':
-        viewlogic.setOverlayVisible('tags', false);
-        break;
-
-      case '#':
-        viewlogic.setOverlayVisible('tags', true);
-        break;
+    if (e.key === 'Enter') {
+      triggerUpdate(0);
     }
   }
 </script>
@@ -65,7 +52,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     class='w-full'
     {placeholder}
     disabled={data.packages.length === 0}
-    oninput={() => { triggerUpdate(500); }}
+    oninput={() => { triggerUpdate(200); }}
     onkeydown={onKeydown}
   />
 
