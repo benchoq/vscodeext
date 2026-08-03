@@ -29,7 +29,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 </script>
 
-<div data-comp-root class='flex flex-col'>
+<div data-comp-root class='flex-1 min-w-0 flex flex-col'>
   {#each categories as category (category)}
     {#if category.type === 'general'}
       {@const examples = findExamples(category)}
@@ -49,10 +49,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   [data-comp-root] {
-    min-width: 0;
-    flex: 1;
     padding: 0px 14px 14px;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden auto;
   }
 </style>

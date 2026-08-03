@@ -4,10 +4,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { ui } from '../states.svelte';
+  import ExTagList from '../others/ExTagList.svelte';
+
   import ExHeaderTags from './ExHeaderTagButton.svelte';
   import ExHeaderBreadcrumb from './ExHeaderBreadcrumb.svelte';
   import ExHeaderSearchInput from './ExHeaderSearchInput.svelte';
-  import ExHeaderSelectedTags from './ExHeaderSelectedTags.svelte';
   import ExHeaderViewModeButtons from './ExHeaderViewModeButtons.svelte';
 </script>
 
@@ -19,7 +21,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <ExHeaderViewModeButtons />
   </div>
 
-  <ExHeaderSelectedTags />
+  {#if ui.filter.tags.length}
+    <ExTagList
+      usage='header'
+      tags={ui.filter.tags}
+    />
+  {/if}
 </div>
 
 <style>

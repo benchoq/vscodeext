@@ -18,7 +18,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div data-comp-root class="flex flex-col">
   <button
     data-header
-    class='flex flex-row'
+    class='sticky flex flex-row items-center'
     onclick={() => {
       expanded = !expanded;
     }}
@@ -29,7 +29,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     >
       <ChevronRight size={16} />
     </span>
-    <span data-text>{title}</span>
+    <span data-text class='flex-1'>{title}</span>
     <span data-count>{count}</span>
   </button>
 
@@ -45,7 +45,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   [data-header] {
     top: 0;
-    position: sticky;
     z-index: 1;
     padding: 5px 0px;
     margin-top: 16px;
@@ -55,16 +54,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     border-bottom: 1px solid var(--qt-stroke-subtle);
 
     gap: 7px;
-    align-items: center;
-    user-select: none;
     cursor: pointer;
+    user-select: none;
 
     & > [data-chevron] {
       transition: transform var(--duration-base);
     }
 
     & > [data-text] {
-      flex: 1;
       font-size: 11px;
       font-weight: 600;
       text-align: start;

@@ -5,36 +5,34 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang='ts'>
   let {
+    size = '20px',
     onClicked = () => {}
   } = $props();
 </script>
 
 <button
-  data-close-button
+  data-comp-root
+  class='inline-block items-center justify-center'
+  style:width={size}
+  style:height={size}
   onclick={() => onClicked()}
 >
   &times;
 </button>
 
 <style>
-  [data-close-button] {
-    width: 20px;
-    height: 20px;
+  [data-comp-root] {
     color: var(--qt-text-muted);
-    cursor: pointer;
     border-radius: var(--qt-radius-s);
-    align-items: center;
-    justify-content: center;
     font-size: 20px;
     font-weight: 200;
-    padding: 0;
     line-height: 1;
-    display: inline-block;
+    cursor: pointer;
     transition: background var(--duration-short);
 
     &:hover {
-      background: var(--qt-icon-hover-bg);
       color: var(--qt-text-default);
+      background: var(--qt-icon-hover-bg);
     }
   }
 </style>

@@ -16,9 +16,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div
   bind:this={ui.grid}
-  data-comp-grid
+  data-comp-root
   class='grid grid-flow-dense'
-  role='grid'
 >
   {#each examples as example (example)}
     <ExGridCard {example}/>
@@ -26,9 +25,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  [data-comp-grid] {
-    grid-template-columns: repeat(auto-fill,minmax(var(--card-min-width),1fr));
+  [data-comp-root] {
     grid-auto-rows: var(--card-min-height);
+    grid-template-columns: repeat(auto-fill,minmax(var(--card-min-width),1fr));
     gap: 10px;
     overflow: hidden;
     user-select: none;

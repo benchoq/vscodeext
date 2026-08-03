@@ -5,8 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { type ExEntry } from '@shared/ex-browser';
-
-  import ExTagsList from '../others/ExTagsList.svelte';
+  import ExTagList from '../others/ExTagList.svelte';
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
@@ -20,17 +19,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {#each examples as example (example)}
     <button
       data-item
-      class='flex'
+      class='flex items-center'
       class:selected={example === ui.selected.example}
       onclick={() => {
         viewlogic.selectExample(example);
       }}
     >
       <div data-title>{example.name}</div>
-      <ExTagsList
-        tags={example?.tags ?? []}
-        size={13}
-      />
+      {#if example.tags.length}
+        <ExTagList
+          usage='list'
+          tags={example.tags}
+        />
+      {/if}
       <div class='grow'></div>
       <div data-category>{example.categories.join(', ')}</div>
     </button>
@@ -42,43 +43,42 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     gap: 2px;
 
     & > [data-item] {
-      align-items: center;
-      gap: 10px;
-      padding: 0 10px;
       height: 36px;
-      border-radius: var(--qt-radius-s);
-      border: 1px solid var(--qt-stroke-subtle);
-      cursor: pointer;
+      padding: 0 10px;
       background: var(--qt-bg-elevated);
+      border: 1px solid var(--qt-stroke-subtle);
+      border-radius: var(--qt-radius-s);
+      gap: 10px;
+      cursor: pointer;
       transition-property: border-color, background;
       transition-duration: var(--duration-base);
 
       &:hover {
-        border-color: var(--qt-stroke-muted);
         background: var(--qt-hover-bg);
+        border-color: var(--qt-stroke-muted);
       }
 
       &.selected {
-        border-color: var(--qt-accent-info);
         background: var(--accent-blue-a9);
+        border-color: var(--qt-accent-info);
       }
 
       & > [data-title] {
+        color: var(--qt-text-default);
         flex-shrink: 1;
         font-size: 13px;
         font-weight: 500;
-        color: var(--qt-text-default);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
 
       & > [data-category] {
+        color: var(--qt-text-muted);
         margin-left: auto;
         flex-shrink: 0;
         font-size: 10px;
         font-weight: 600;
-        color: var(--qt-text-muted);
         white-space: nowrap;
         opacity: 0.8;
       }

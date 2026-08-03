@@ -5,9 +5,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { type ExEntry } from '@shared/ex-browser';
-   import * as utils from '@/utils/utils';
+  import * as utils from '@/utils/utils';
 
-  import ExTagsList from '../others/ExTagsList.svelte';
+  import ExTagList from '../others/ExTagList.svelte';
   import ExThumbnail from '../others/ExThumbnail.svelte';
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
@@ -42,7 +42,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </div>
   <div data-name>{example.name}</div>
   <div class='qt-separator'></div>
-  <ExTagsList tags={example.tags ?? []} />
+  <ExTagList
+    usage='card'
+    tags={example.tags}
+  />
 </div>
 
 <style>

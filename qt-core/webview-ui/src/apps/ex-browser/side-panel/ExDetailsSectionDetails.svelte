@@ -5,8 +5,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import * as utils from '@/utils/utils';
-  import ExTagChip from '../others/ExTagChip.svelte';
   import { ui } from '../states.svelte';
+  import ExTagList from '../others/ExTagList.svelte';
 
   const example = $derived(ui.selected.example);
 
@@ -35,17 +35,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   <div data-title>Tags</div>
   <div data-value>
-    {#if (example?.tags.length ?? 0) === 0}
-      <div class='empty-value'>
-        No tags
-      </div>
-    {:else}
-      <div class='flex flex-wrap gap-x-2'>
-        {#each example?.tags as tag (tag)}
-          <ExTagChip text={tag} plain={true} />
-        {/each}
-      </div>
-    {/if}
+    <ExTagList
+      usage='details'
+      tags={example?.tags}
+    />
   </div>
 </div>
 
