@@ -7,6 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from '../states.svelte';
 
   import ExThumbnail from '../others/ExThumbnail.svelte';
+  import ExSeparator from '../others/ExSeparator.svelte';
   import ExCloseButton from '../others/ExCloseButton.svelte';
   import ExDetailsSectionDetails from './ExDetailsSectionDetails.svelte';
   import ExDetailsSectionActions from './ExDetailsSectionActions.svelte';
@@ -26,9 +27,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <div data-name>{example?.name ?? ''}</div>
     <div data-desc>{example?.description}</div>
   </div>
+  <ExSeparator />
 
   <div data-section-header>Actions</div>
   <ExDetailsSectionActions />
+  <ExSeparator />
 
   <div data-section-header>Details</div>
   <ExDetailsSectionDetails />
@@ -88,7 +91,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     text-transform: uppercase;
     letter-spacing: 0.07em;
     margin: 10px 0 10px;
-    padding: 10px 0 0;
-    border-top: 1px solid var(--qt-stroke-subtle);
   }
 </style>

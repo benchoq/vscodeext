@@ -9,6 +9,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import ExTagList from '../others/ExTagList.svelte';
   import ExThumbnail from '../others/ExThumbnail.svelte';
+  import ExSeparator from '../others/ExSeparator.svelte';
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
@@ -41,7 +42,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {utils.addSpaceBeforeUppercase(example.module)}
   </div>
   <div data-name>{example.name}</div>
-  <div class='qt-separator'></div>
+  <ExSeparator />
   <ExTagList
     usage='card'
     tags={example.tags}

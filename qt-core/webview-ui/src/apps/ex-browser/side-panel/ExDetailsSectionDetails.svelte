@@ -7,6 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as utils from '@/utils/utils';
   import { ui } from '../states.svelte';
   import ExTagList from '../others/ExTagList.svelte';
+  import ExSeparator from '../others/ExSeparator.svelte';
 
   const example = $derived(ui.selected.example);
 
@@ -17,6 +18,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <div data-value>
     {utils.extractQtVersion(ui.selected.package?.name ?? '')}
   </div>
+  <div class='col-span-2'><ExSeparator /></div>
 
   <div data-title>Category</div>
   <div data-value>
@@ -24,14 +26,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <div>{cat}</div>
     {/each}
   </div>
+  {@render Separator()}
 
   <div data-title>Module</div>
   <div data-value>
     {utils.addSpaceBeforeUppercase(example?.module ?? '')}
   </div>
+  {@render Separator()}
 
   <div data-title>Location</div>
   <div data-value data-is-path>{example?.projectPath ?? ''}</div>
+  {@render Separator()}
 
   <div data-title>Tags</div>
   <div data-value>
@@ -42,6 +47,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </div>
 </div>
 
+{#snippet Separator()}
+  <div class='col-span-2'><ExSeparator /></div>
+{/snippet}
+
 <style>
   [data-title] {
     padding: 3px 0px;
@@ -51,7 +60,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     min-width: 60px;
     flex-shrink: 0;
     line-height: 18px;
-    border-bottom: 1px solid var(--qt-stroke-subtle);
+    /* border-bottom: 1px solid var(--qt-stroke-subtle); */
   }
 
   [data-value] {
@@ -60,7 +69,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     color: var(--qt-text-default);
     line-height: 18px;
     word-break: break-word;
-    border-bottom: 1px solid var(--qt-stroke-subtle);
+    /* border-bottom: 1px solid var(--qt-stroke-subtle); */
 
     &[data-is-path] {
       direction: rtl;
