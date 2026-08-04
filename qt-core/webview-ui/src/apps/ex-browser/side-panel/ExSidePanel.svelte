@@ -8,7 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import ExThumbnail from '../others/ExThumbnail.svelte';
   import ExSeparator from '../others/ExSeparator.svelte';
-  import ExCloseButton from '../others/ExCloseButton.svelte';
+  import ExToolButton from '../others/ExToolButton.svelte';
   import ExDetailsSectionDetails from './ExDetailsSectionDetails.svelte';
   import ExDetailsSectionActions from './ExDetailsSectionActions.svelte';
   const example = $derived(ui.selected.example);
@@ -17,7 +17,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div data-comp-root class='flex flex-col'>
   <div data-title-bar class='flex flex-row'>
     <span data-text>Example Details</span>
-    <ExCloseButton onClicked={() => { ui.sideBar.visible = false; }} />
+    <ExToolButton onClicked={() => {
+      ui.sideBar.visible = false;
+    }}>
+      &times;
+    </ExToolButton>
   </div>
 
   <div data-info>

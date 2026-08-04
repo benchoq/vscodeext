@@ -4,6 +4,7 @@
 export { default as Tag } from './Tag.svelte';
 export { default as Grid } from './Grid.svelte';
 export { default as List } from './List.svelte';
+export { default as ExtLink } from './ExtLink.svelte';
 export { default as FileTag } from './FileTag.svelte';
 export { default as Folder } from './Folder.svelte';
 export { default as FolderPlus } from './FolderPlus.svelte';

@@ -4,39 +4,102 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { type ExActionTypes } from "@shared/ex-browser";
-  import * as chars from '@/utils/chars'
-  import { Folder, FileTag } from '@/icons';
+  import ExToolButton from '../others/ExToolButton.svelte';
+  import { FolderOpen, ChevronRight, FileTag, ExtLink } from '@/icons';
   import * as viewlogic from '../viewlogic.svelte';
-
-  function onClicked(a: ExActionTypes) {
-    // TODO: supply args
-    viewlogic.runExAction(a);
-  }
-
 </script>
 
 <div data-comp-root class='flex flex-col'>
-  {@render LinkButton('file-open', FileTag, 'CMakeLists.txt',)}
-  {@render LinkButton('project-reveal', Folder, 'Show in Finder')}
-</div>
-
-{#snippet LinkButton(a: ExActionTypes, Icon: typeof Folder, text: string)}
   <button
-    data-link
+    data-button
+    data-primary
     class='flex flex-row'
     onclick={() => {
-      onClicked(a);
+      viewlogic.runExAction('project-open');
     }}
   >
-    <Icon size={14} />
-    <span>{text}</span>
-    <span data-chevron>{chars.rightChevron}</span>
+    <FolderOpen size={14} />
+    Open example
   </button>
-{/snippet}
+
+  <button
+    data-button
+    class='flex flex-row'
+    onclick={() => {
+    }}
+  >
+    <ChevronRight size={14} />
+    Use as a template
+  </button>
+
+  <div class='flex flex-row items-center justify-center'>
+    <button
+      data-button
+      data-flat
+      class='flex flex-row grow'
+      onclick={() => {
+        viewlogic.runExAction('doc-open-internal');
+      }}
+    >
+      <FileTag />
+      Read the documentation
+      <div class='grow'></div>
+    </button>
+
+    <ExToolButton
+      onClicked={() => {
+        viewlogic.runExAction('doc-open-external');
+      }}
+    >
+      <ExtLink size={12}/>
+    </ExToolButton>
+  </div>
+</div>
 
 <style>
   [data-comp-root] {
+    gap: 6px;
+  }
+
+  [data-button] {
+    align-items: center;
+    gap: 7px;
+    padding: 5px 11px;
+    color: var(--qt-button-secondary-fg);
+    background: var(--qt-button-secondary-bg);
+    border: none;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+
+    &:hover {
+      background: var(--qt-button-secondary-hover);
+    }
+
+    &[data-primary] {
+      color: var(--qt-button-fg);
+      background: var(--qt-button-primary-bg);
+
+      &:hover {
+        background: var(--qt-button-primary-hover);
+      }
+    }
+
+    &[data-flat] {
+      color: var(--qt-text-muted);
+      background: none;
+      padding: 5px 2px;
+
+      &:hover {
+        color: var(--qt-accent-info);
+      }
+    }
+  }
+  /* [data-comp-root] {
     & > [data-link] {
       align-items: center;
       gap: 7px;
@@ -62,5 +125,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         font-size: 14px;
       }
     }
-  }
+  } */
 </style>

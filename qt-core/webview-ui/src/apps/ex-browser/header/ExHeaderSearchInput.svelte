@@ -7,7 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as chars from '@/utils/chars';
   import { exBrowser as texts } from '@/apps/texts';
 
-  import ExCloseButton from '../others/ExCloseButton.svelte';
+  import ExToolButton from '../others/ExToolButton.svelte';
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
@@ -62,7 +62,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-close-button
     class:invisible={value.trim().length === 0}
   >
-    <ExCloseButton onClicked={() => clear()} />
+    <ExToolButton onClicked={() => clear()}>
+      &times;
+    </ExToolButton>
   </div>
 </div>
 

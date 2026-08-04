@@ -4,20 +4,23 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang='ts'>
+  import { type Snippet } from 'svelte';
+
   let {
     size = '20px',
-    onClicked = () => {}
+    children = undefined as (Snippet | undefined),
+    onClicked = (_: MouseEvent) => {}
   } = $props();
 </script>
 
 <button
   data-comp-root
-  class='inline-block items-center justify-center'
+  class='flex items-center justify-center'
   style:width={size}
   style:height={size}
-  onclick={() => onClicked()}
+  onclick={(e: MouseEvent) => onClicked(e)}
 >
-  &times;
+  {@render children?.()}
 </button>
 
 <style>
