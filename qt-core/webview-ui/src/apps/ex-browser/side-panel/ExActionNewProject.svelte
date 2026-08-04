@@ -4,6 +4,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { slide, fade } from 'svelte/transition';
+  import { cubicOut, cubicIn } from 'svelte/easing';
+
   import { ChevronRight } from '@/icons';
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
@@ -29,7 +32,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </button>
 
   {#if ui.sideBar.expanded}
-    <ExActionNewProjectInput />
+    <div
+      class='flex flex-col'
+      in:fade={{ duration:500, easing:cubicOut }}
+      out:slide={{ duration:150, easing:cubicIn }}
+    >
+      <ExActionNewProjectInput />
+    </div>
   {/if}
 </div>
 
