@@ -11,12 +11,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   const width = $derived.by(() => {
     const r = ui.popovers.openExample.refEl?.getBoundingClientRect();
-    console.log(r);
-    if (!r) {
-      return 100;
-    }
-
-    return r.width;
+    return r ? r.width : 100;
   });
 </script>
 

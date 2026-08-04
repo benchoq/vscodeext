@@ -11,8 +11,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div class='flex flex-row items-center justify-center'>
   <button
-    data-button
-    class='flex flex-row grow'
+    class='qt-button-v2 flex flex-row grow'
     onclick={() => {
       viewlogic.runExAction('doc-open-internal');
     }}
@@ -32,33 +31,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  [data-button] {
-    align-items: center;
-    gap: 7px;
-    padding: 5px 11px;
-    color: var(--qt-button-secondary-fg);
-    background: var(--qt-button-secondary-bg);
-    border: none;
-    font-family: inherit;
-    font-size: 12px;
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .qt-button-v2 {
     text-align: left;
-
-    &:hover {
-      background: var(--qt-button-secondary-hover);
-    }
-
-    &[data-flat] {
-      color: var(--qt-text-muted);
-      background: none;
-      padding: 5px 2px;
-
-      &:hover {
-        color: var(--qt-accent-info);
-      }
-    }
   }
 </style>

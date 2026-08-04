@@ -40,7 +40,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   /* Buttons */
   --qt-button-primary-bg:      var(--vscode-button-background,                 #0e639c);
   --qt-button-primary-hover:   var(--vscode-button-hoverBackground,            #1177bb);
-  --qt-button-fg:              var(--vscode-button-foreground,                 #ffffff);
+  --qt-button-primary-fg:      var(--vscode-button-foreground,                 #ffffff);
   --qt-button-secondary-bg:    var(--vscode-button-secondaryBackground,        #3a3d41);
   --qt-button-secondary-hover: var(--vscode-button-secondaryHoverBackground,   #45494e);
   --qt-button-secondary-fg:    var(--vscode-button-secondaryForeground,        #cccccc);

@@ -4,6 +4,38 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 */
 
 /* buttons */
+@utility qt-button-base {
+  gap: 7px;
+  padding: 5px 10px;
+  color: var(--qt-button-secondary-fg);
+  background: var(--qt-button-secondary-bg);
+  border: none;
+  font-size: 12px;
+  font-family: inherit;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--qt-button-secondary-hover);
+  }
+}
+
+.qt-button-v2 {
+  @apply qt-button-base;
+
+  &[data-variant='primary'] {
+    color: var(--qt-button-primary-fg);
+    background: var(--qt-button-primary-bg);
+
+    &:hover {
+      background: var(--qt-button-primary-hover);
+    }
+  }
+}
+
 .qt-button {
   height: 28px;
   padding: 0 10px;
