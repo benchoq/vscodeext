@@ -4,16 +4,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 </script>
 
 <button
+  bind:this={ui.popovers.openExample.refEl}
   data-button
   data-primary
   class='flex flex-row items-center justify-center'
   style:height='31px'
   onclick={() => {
-    viewlogic.runExAction('project-open');
+    viewlogic.setPopoverVisible('openExample', true);
   }}
 >
   Open example

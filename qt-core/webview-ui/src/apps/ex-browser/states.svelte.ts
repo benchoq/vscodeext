@@ -12,7 +12,7 @@ import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 
 export type ViewMode = 'grid' | 'list';
-export type PopoverName = 'catalog' | 'tags';
+export type PopoverName = 'catalog' | 'tags' | 'openExample';
 
 export const data = $state({
   packages: [] as ExPackage[],
@@ -52,6 +52,11 @@ export const ui = $state({
       visible: false,
       refEl: undefined as HTMLElement | undefined,
       searchInput: '',
+    },
+
+    openExample: {
+      visible: false,
+      refEl: undefined as HTMLElement | undefined,
     }
   },
 

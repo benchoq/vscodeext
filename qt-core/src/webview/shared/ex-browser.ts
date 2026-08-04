@@ -195,9 +195,11 @@ export function isExBrowserViewConfig(x: unknown): x is ExBrowserViewConfig {
   return isExNewProjectArgs(o.newProject);
 }
 
+// TODO: rename
 export type ExActionTypes =
   | 'file-open'
   | 'project-open'
+  | 'project-open-as-workspace'
   | 'project-open-file'
   | 'project-reveal'
   | 'project-create'

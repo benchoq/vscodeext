@@ -9,12 +9,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { clickOutside } from '@/utils/actions';
   import ExTagsPopover from './ExTagsPopover.svelte';
   import ExCatalogPopover from './catalog/ExCatalogPopover.svelte';
+  import ExOpenPopover from './ExOpenPopover.svelte';
   import * as viewlogic from '../viewlogic.svelte';
   import { data, ui, type PopoverName } from '../states.svelte';
 
   interface Info {
     component: Component,
     pos: { top: number, left: number },
+    offset: number,
     visible: boolean
   }
 
@@ -23,23 +25,31 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       catalog: {
         component: ExCatalogPopover,
         pos: calcAnchorPos(ui.popovers.catalog.refEl),
+        offset: 5,
         visible: (ui.popovers.catalog.visible && data.packages.length !== 0)
       },
 
       tags: {
         component: ExTagsPopover,
         pos: calcAnchorPos(ui.popovers.tags.refEl),
+        offset: 5,
         visible: (ui.popovers.tags.visible && (ui.filter.category?.tags.length ?? 0) !== 0)
+      },
+
+      openExample: {
+        component: ExOpenPopover,
+        pos: calcAnchorPos(ui.popovers.openExample.refEl),
+        offset: 3,
+        visible: (ui.popovers.openExample.visible && ui.selected.example)
       }
     } as Record<PopoverName, Info>
   });
 
 
   function calcAnchorPos(refEl?: HTMLElement) {
-    const yoffset = 5;
     const r = refEl?.getBoundingClientRect();
     return {
-      top: (r?.bottom ?? 0) + yoffset,
+      top: (r?.bottom ?? 0),
       left: (r?.left ?? 0)
     };
   }
@@ -47,6 +57,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {@render Popover('tags')}
 {@render Popover('catalog')}
+{@render Popover('openExample')}
 
 {#snippet Popover(name: PopoverName)}
   {@const p = popovers[name]}
@@ -54,7 +65,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {#if p.visible}
     <div
       class='fixed'
-      style:top={p.pos.top + 'px'}
+      style:top={(p.pos.top + p.offset) + 'px'}
       style:left={p.pos.left + 'px'}
       use:clickOutside={(ev: MouseEvent) => {
         ev.stopPropagation();
