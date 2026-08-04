@@ -7,11 +7,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import type { Component } from 'svelte';
 
   import { clickOutside } from '@/utils/actions';
-  import ExTagsPopover from './ExTagsPopover.svelte';
-  import ExCatalogPopover from './catalog/ExCatalogPopover.svelte';
-  import ExOpenPopover from './ExOpenPopover.svelte';
-  import * as viewlogic from '../viewlogic.svelte';
-  import { data, ui, type PopoverName } from '../states.svelte';
+  import ExTagsPopover from './header/popovers/ExTagsPopover.svelte';
+  import ExCatalogPopover from './header/popovers/ExCatalogPopover.svelte';
+  import ExOpenPopover from './side-panel/ExOpenPopover.svelte';
+  import * as viewlogic from './viewlogic.svelte';
+  import { data, ui, type PopoverName } from './states.svelte';
 
   interface Info {
     component: Component,
