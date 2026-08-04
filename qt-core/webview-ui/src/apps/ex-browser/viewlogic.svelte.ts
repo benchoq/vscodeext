@@ -57,8 +57,8 @@ export async function selectPackage(p: ExPackage) {
   ui.filter.searchInput = '';
   ui.filter.category = findCategoryByName('all');
   ui.selected.package = p;
-  ui.selected.example = undefined;
   ui.imageUrlCache.clear();
+  selectExample(undefined);
 
   if (ui.grid) {
     ui.grid.scrollTop = 0;
@@ -240,7 +240,7 @@ async function loadExamples(reason: 'selectPackage' | '' = '') {
   }
 
   if (reason === 'selectPackage') {
-    clearSelectedExample();
+    selectExample(undefined);
     return;
   }
 
@@ -250,7 +250,7 @@ async function loadExamples(reason: 'selectPackage' | '' = '') {
     });
 
     if (!hit) {
-      clearSelectedExample();
+      selectExample(undefined);
     }
   }
 }
@@ -271,8 +271,4 @@ function createFilterQuery(keywords: string, tags: string[]) {
     .join(' ');
 
   return `${keywords} ${tagsJoined}`;
-}
-
-function clearSelectedExample() {
-  ui.selected.example = undefined;
 }
