@@ -8,6 +8,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from '../viewlogic.svelte';
 
   const example = $derived(ui.selected.example);
+  const filesSorted = $derived.by(() => {
+    return [...(example?.filesToOpen ?? [])].sort();
+  })
   const resolvedPaths = $derived.by(() => {
     const id = ui.selected.example?.projectPath;
     return id ? data.resolvedPaths[id] : undefined;
@@ -36,9 +39,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       viewlogic.runExAction('project-open-file');
     })}
 
-    {#each example.filesToOpen as file (file)}
-    {@const exists = (resolvedPaths?.filesToOpen[file] !== undefined)}
-    {#if exists}
+    {#each filesSorted as file (file)}
+    {@const exists = resolvedPaths?.filesToOpen[file] !== undefined}
+      {#if exists}
         {@render FileButton(shortenPath(file), () => {
           viewlogic.runExAction('file-open', { file });
         })}

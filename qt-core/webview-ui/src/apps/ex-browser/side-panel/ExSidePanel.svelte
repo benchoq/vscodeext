@@ -8,17 +8,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import ExSeparator from '../others/ExSeparator.svelte';
   import ExToolButton from '../others/ExToolButton.svelte';
-  import ExDetailsSectionDetails from './ExDetailsSectionDetails.svelte';
-  // import ExDetailsSectionActions from './ExDetailsSectionActions.svelte';
 
+  import ExThumbnailAndDesc from './ExThumbnailAndDesc.svelte';
+  import ExSidePanelSectionTitle from './ExSidePanelSectionTitle.svelte';
   import ExActionDocs from './ExActionDocs.svelte';
-  import ExDetailsActionOpen from './ExActionOpen.svelte';
-  import ExDetailsActionNewProject from './ExActionNewProject.svelte';
-
-  import ExDetailsThumbnailAndDesc from './ExDetailsThumbnailAndDesc.svelte';
-  import ExDetailsSectionTitle from './ExDetailsSectionTitle.svelte';
-
-  // const example = $derived(ui.selected.example);
+  import ExActionOpen from './ExActionOpen.svelte';
+  import ExActionNewProject from './ExActionNewProject.svelte';
+  import ExDetailsTable from './ExDetailsTable.svelte';
 </script>
 
 <div data-comp-root class='flex flex-col'>
@@ -31,19 +27,22 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </ExToolButton>
   </div>
 
-  <ExDetailsThumbnailAndDesc />
+  <ExThumbnailAndDesc />
   <ExSeparator margin='10px 0px'/>
 
   <div data-section class='flex flex-col'>
-    <ExDetailsSectionTitle title='Actions' />
-    <ExDetailsActionOpen />
-    <ExDetailsActionNewProject />
+    <ExSidePanelSectionTitle title='Actions' />
+    <ExActionOpen />
+    <ExActionNewProject />
     <ExActionDocs />
   </div>
 
   <ExSeparator margin='10px 0px'/>
-  <ExDetailsSectionTitle title='Details' />
-  <ExDetailsSectionDetails />
+
+  <div data-section class='flex flex-col'>
+    <ExSidePanelSectionTitle title='Details' />
+    <ExDetailsTable />
+  </div>
 </div>
 
 <style>
