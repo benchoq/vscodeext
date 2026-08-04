@@ -17,6 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-header] {
     font-size: 12px;
     font-weight: 400;
+    margin: 5px 0px;
     color: var(--qt-text-muted);
     text-transform: uppercase;
   }

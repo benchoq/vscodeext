@@ -12,23 +12,23 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div class='flex flex-row items-center justify-center'>
   <button
     data-button
-    data-flat
     class='flex flex-row grow'
     onclick={() => {
       viewlogic.runExAction('doc-open-internal');
     }}
   >
     <FileTag />
-    Read the documentation
-  </button>
+    <span class='flex-1'>Read the documentation</span>
 
-  <ExToolButton
-    onClicked={() => {
-      viewlogic.runExAction('doc-open-external');
-    }}
-  >
-    <ExtLink size={12}/>
-  </ExToolButton>
+    <ExToolButton
+      onClicked={(e: MouseEvent) => {
+        e.stopPropagation();
+        viewlogic.runExAction('doc-open-external');
+      }}
+    >
+      <ExtLink size={12}/>
+    </ExToolButton>
+  </button>
 </div>
 
 <style>

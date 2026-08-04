@@ -4,7 +4,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { FileText } from '@/icons';
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
@@ -51,15 +50,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {#snippet FileButton(file: string, onClicked: () => void)}
   <button
     data-button
-    data-flat
     class='flex flex-row grow'
     onclick={onClicked}
   >
-    <FileText />
     {file}
   </button>
 {/snippet}
-
 
 <style>
   [data-comp-root] {
@@ -67,14 +63,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-button] {
-    align-items: center;
-    gap: 7px;
-    padding: 5px 2px;
-    color: var(--qt-button-secondary-fg);
-    background: var(--qt-button-secondary-bg);
+    color: var(--qt-text-default);
+    background: none;
+    line-height: 18px;
+    word-break: break-word;
+
     border: none;
     font-family: inherit;
-    font-size: 12px;
+    font-size: 11px;
     cursor: pointer;
     white-space: nowrap;
     overflow: hidden;
@@ -82,17 +78,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     text-align: left;
 
     &:hover {
-      background: var(--qt-button-secondary-hover);
-    }
-
-    &[data-flat] {
-      color: var(--qt-text-muted);
-      background: none;
-      padding: 5px 2px;
-
-      &:hover {
-        color: var(--qt-accent-info);
-      }
+      color: var(--qt-accent-info);
     }
   }
 </style>
