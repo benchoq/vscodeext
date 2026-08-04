@@ -11,9 +11,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import ExDetailsSectionDetails from './ExDetailsSectionDetails.svelte';
   // import ExDetailsSectionActions from './ExDetailsSectionActions.svelte';
 
+  import ExActionDocs from './ExActionDocs.svelte';
   import ExDetailsActionOpen from './ExActionOpen.svelte';
   import ExDetailsActionNewProject from './ExActionNewProject.svelte';
-  import ExActionDocs from './ExActionDocs.svelte';
+  import ExActionFileLists from './ExActionFileLists.svelte';
 
   import ExDetailsThumbnailAndDesc from './ExDetailsThumbnailAndDesc.svelte';
   import ExDetailsSectionTitle from './ExDetailsSectionTitle.svelte';
@@ -39,6 +40,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <ExDetailsActionOpen />
     <ExDetailsActionNewProject />
     <ExActionDocs />
+    <ExActionFileLists />
     <ExSeparator margin='10px 0px'/>
   </div>
 

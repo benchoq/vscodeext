@@ -5,18 +5,33 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { ChevronRight } from '@/icons';
-
+  import { ui } from '../states.svelte';
+  import * as viewlogic from '../viewlogic.svelte';
+  import ExActionNewProjectInput from './ExActionNewProjectInput.svelte';
 </script>
 
-<button
-  data-button
-  class='flex flex-row'
-  onclick={() => {
-  }}
->
-  <ChevronRight size={14} />
-  Use as a template
-</button>
+<div class='flex flex-col'>
+  <button
+    data-button
+    class='flex flex-row'
+    onclick={() => {
+      viewlogic.setNewProjectFormVisible(!ui.sideBar.expanded);
+    }}
+  >
+    <span
+      data-chevron
+      style:transform={ui.sideBar.expanded ? 'rotate(90deg)' : 'rotate(0deg)'}
+    >
+      <ChevronRight size={16} />
+    </span>
+
+    Use as a template
+  </button>
+
+  {#if ui.sideBar.expanded}
+    <ExActionNewProjectInput />
+  {/if}
+</div>
 
 <style>
  [data-button] {
@@ -37,5 +52,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     &:hover {
       background: var(--qt-button-secondary-hover);
     }
+  }
+
+  [data-chevron] {
+    transition: transform var(--duration-base);
   }
 </style>

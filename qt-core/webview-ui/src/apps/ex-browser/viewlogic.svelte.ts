@@ -111,6 +111,8 @@ export function isTagSelected(rawTag: string) {
 }
 
 export function setNewProjectFormVisible(visible: boolean) {
+  ui.sideBar.expanded = visible;
+
   if (visible) {
     ui.input.validate();
   }

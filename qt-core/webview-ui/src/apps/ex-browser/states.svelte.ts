@@ -38,7 +38,8 @@ export const ui = $state({
   },
 
   sideBar: {
-    visible: false
+    visible: false,
+    expanded: false
   },
 
   popovers: {
