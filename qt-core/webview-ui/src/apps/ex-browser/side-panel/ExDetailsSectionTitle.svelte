@@ -5,20 +5,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   let {
-    margin = '0px'
+    title = ''
   } = $props();
 </script>
 
-<div
-  data-comp-root
-  style:margin={margin}
->
+<div data-header>
+  {title}
 </div>
 
 <style>
-  [data-comp-root] {
-    height: 1px;
-    background: var(--qt-stroke-subtle);
-    flex-shrink: 0;
+  [data-header] {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--qt-text-muted);
+    text-transform: uppercase;
   }
 </style>

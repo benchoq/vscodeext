@@ -4,22 +4,35 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import ExDetailsActionOpen from './ExActionOpen.svelte';
-  import ExDetailsActionNewProject from './ExActionNewProject.svelte';
-  import ExActionDocs from './ExActionDocs.svelte';
+  import ExToolButton from '../others/ExToolButton.svelte';
+  import { FileTag, ExtLink } from '@/icons';
+  import * as viewlogic from '../viewlogic.svelte';
 </script>
 
-<div data-comp-root class='flex flex-col'>
-  <ExDetailsActionOpen />
-  <ExDetailsActionNewProject />
-  <ExActionDocs />
+<div class='flex flex-row items-center justify-center'>
+  <button
+    data-button
+    data-flat
+    class='flex flex-row grow'
+    onclick={() => {
+      viewlogic.runExAction('doc-open-internal');
+    }}
+  >
+    <FileTag />
+    Read the documentation
+    <div class='grow'></div>
+  </button>
+
+  <ExToolButton
+    onClicked={() => {
+      viewlogic.runExAction('doc-open-external');
+    }}
+  >
+    <ExtLink size={12}/>
+  </ExToolButton>
 </div>
 
 <style>
-  [data-comp-root] {
-    gap: 6px;
-  }
-/*
   [data-button] {
     align-items: center;
     gap: 7px;
@@ -39,15 +52,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       background: var(--qt-button-secondary-hover);
     }
 
-    &[data-primary] {
-      color: var(--qt-button-fg);
-      background: var(--qt-button-primary-bg);
-
-      &:hover {
-        background: var(--qt-button-primary-hover);
-      }
-    }
-
     &[data-flat] {
       color: var(--qt-text-muted);
       background: none;
@@ -57,5 +61,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         color: var(--qt-accent-info);
       }
     }
-  } */
+  }
 </style>

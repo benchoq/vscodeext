@@ -4,22 +4,23 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import ExDetailsActionOpen from './ExActionOpen.svelte';
-  import ExDetailsActionNewProject from './ExActionNewProject.svelte';
-  import ExActionDocs from './ExActionDocs.svelte';
+  import { FolderOpen } from '@/icons';
+  import * as viewlogic from '../viewlogic.svelte';
 </script>
 
-<div data-comp-root class='flex flex-col'>
-  <ExDetailsActionOpen />
-  <ExDetailsActionNewProject />
-  <ExActionDocs />
-</div>
+<button
+  data-button
+  data-primary
+  class='flex flex-row'
+  onclick={() => {
+    viewlogic.runExAction('project-open');
+  }}
+>
+  <FolderOpen size={14} />
+  Open example
+</button>
 
 <style>
-  [data-comp-root] {
-    gap: 6px;
-  }
-/*
   [data-button] {
     align-items: center;
     gap: 7px;
@@ -47,15 +48,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         background: var(--qt-button-primary-hover);
       }
     }
-
-    &[data-flat] {
-      color: var(--qt-text-muted);
-      background: none;
-      padding: 5px 2px;
-
-      &:hover {
-        color: var(--qt-accent-info);
-      }
-    }
-  } */
+  }
 </style>
