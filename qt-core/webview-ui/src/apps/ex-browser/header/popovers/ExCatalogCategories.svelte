@@ -22,15 +22,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       }}
     >
       <span class='flex-1'>{cat.name}</span>
-      <span data-count>{cat.count}</span>
+      <span data-role='count'>{cat.count}</span>
     </button>
   {/each}
 </div>
 
 <style>
-  [data-count] {
+  [data-role='count'] {
     opacity: 0.65;
-    font-size: 11px;
-    font-variant-numeric: tabular-nums;
   }
 </style>

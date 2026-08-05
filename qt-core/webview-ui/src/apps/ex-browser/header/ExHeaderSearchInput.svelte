@@ -58,19 +58,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     onkeydown={onKeydown}
   />
 
-  <div
-    data-close-button
-    class:invisible={value.trim().length === 0}
-  >
-    <ExCloseButton onClicked={() => clear()} />
+  <div class='absolute top-1/2 -translate-y-1/2 right-[5px]'>
+    <ExCloseButton
+      visible={value.trim().length !== 0}
+      onClicked={() => clear()}
+    />
   </div>
 </div>
-
-<style>
-  [data-close-button] {
-    position: absolute;
-    top: 50%;
-    right: 5px;
-    transform: translateY(-50%);
-  }
-</style>

@@ -38,7 +38,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <svelte:options runes={true} />
 
-<div data-comp-root class='flex flex-col'>
+<div data-comp-root data-area='tags-popover' class='flex flex-col'>
   <div data-search-section class='qt-search-input relative'>
     <input
       bind:value={ui.popovers.tags.searchInput}
@@ -48,11 +48,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       placeholder='Filter tags...'
     />
 
-    <div
-      data-close-button
-      class:invisible={ui.popovers.tags.searchInput.trim().length === 0}
-    >
-      <ExCloseButton onClicked={clearSearchInput} />
+    <div class='absolute top-1/2 -translate-y-1/2 right-[12px]'>
+      <ExCloseButton
+        visible={ui.popovers.tags.searchInput.trim().length !== 0}
+        onClicked={clearSearchInput}
+      />
     </div>
   </div>
 
@@ -69,16 +69,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
             await viewlogic.toggleTag(tag);
           }}
         >
-          <span data-hash>#</span>
-          <span data-name class='flex-1'>{tag}</span>
-          <span data-count>{findTagCount(tag)}</span>
+          <span data-role='hash'>#</span>
+          <span data-role='name' class='flex-1'>{tag}</span>
+          <span data-role='count'>{findTagCount(tag)}</span>
       </button>
       {/each}
     </div>
   {:else}
-    <div data-no-match>
-      No tags match
-    </div>
+    <span data-role='no-match'>No tags match</span>
   {/if}
 </div>
 
@@ -104,8 +102,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         border: 1px solid transparent;
         border-radius: var(--qt-radius-s);
         color: var(--qt-text-default);
-        font-family: inherit;
-        font-size: 11px;
         padding: 0 26px 0 8px;
         outline: none;
 
@@ -141,24 +137,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         border: none;
         border-radius: var(--qt-radius-s);
         color: var(--qt-text-default);
-        font-size: 12px;
         cursor: pointer;
-        text-align: left;
         transition: background var(--duration-short);
         flex-shrink: 0;
 
         &:hover {
           background: var(--qt-hover-bg);
-        }
-
-        & > [data-hash] {
-          font-size: 11px;
-          opacity: 0.5;
-        }
-
-        & > [data-count] {
-          font-size: 10px;
-          color: var(--qt-text-muted);
         }
 
         &.active {
@@ -167,19 +151,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         }
       }
     }
-
-    [data-no-match] {
-      padding: 16px;
-      font-size: 11px;
-      color: var(--qt-text-muted);
-      text-align: center;
-    }
   }
 
-  [data-close-button] {
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    transform: translateY(-50%);
+  [data-role='hash'] {
+    opacity: 0.5;
+  }
+
+  [data-role='count'] {
+    color: var(--qt-text-muted);
+  }
+
+  [data-role='no-match'] {
+    padding: 16px;
+    color: var(--qt-text-muted);
   }
 </style>

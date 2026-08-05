@@ -9,6 +9,52 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     font-size: 13px;
     font-weight: 600;
   }
+
+  & [data-role='footer-icon-info'] {
+    font-size: 13px;
+  }
+
+  & [data-role='footer-location'] {
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  & [data-role='count'] {
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+[data-area='tags-popover'] {
+  & [data-role='title'] {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  & [data-role='hash'] {
+    font-size: 11px;
+  }
+
+  & [data-role='name'] {
+    font-size: 12px;
+    text-align: left;
+  }
+
+  & [data-role='count'] {
+    font-size: 10px;
+  }
+
+  & input {
+    font-size: 11px;
+    font-family: inherit;
+  }
+
+  & [data-role='no-match'] {
+    font-size: 11px;
+    text-align: center;
+  }
 }
 
 [data-area='breadcrumb'] {

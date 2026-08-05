@@ -14,6 +14,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import ExActionOpen from './ExActionOpen.svelte';
   import ExActionNewProject from './ExActionNewProject.svelte';
   import ExDetailsTable from './ExDetailsTable.svelte';
+
+  function close() {
+    ui.sideBar.visible = false;
+  }
 </script>
 
 <div data-comp-root data-area='side-panel' class='flex flex-col'>
@@ -22,9 +26,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       Example Details
     </span>
 
-    <ExCloseButton onClicked={() => {
-      ui.sideBar.visible = false;
-    }} />
+    <ExCloseButton onClicked={close} />
   </div>
 
   <ExThumbnailAndDesc />

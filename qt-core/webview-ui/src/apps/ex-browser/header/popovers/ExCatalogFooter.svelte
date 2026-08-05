@@ -4,10 +4,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import Tooltip from 'flowbite-svelte/Tooltip.svelte';
+  // import Tooltip from 'flowbite-svelte/Tooltip.svelte';
   import * as chars from '@/utils/chars';
-  import { exBrowser as texts } from '@/apps/texts';
 
+  import ExToolButton from '../../others/ExToolButton.svelte';
   import { ui } from '../../states.svelte';
   import * as viewlogic from '../../viewlogic.svelte';
 
@@ -15,27 +15,28 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div data-comp-root class='flex-1 flex flex-row'>
-  <span data-info>{chars.info}</span>
+  <span data-role='footer-icon-info'>
+    {chars.info}
+  </span>
 
   <!-- TODO: style Tooltip -->
-  <Tooltip class='text-left' placement='bottom' data-placement='bottom'>
+  <!-- <Tooltip class='text-left' placement='bottom' data-placement='bottom'>
     {texts.catalog.locationInfo}
-  </Tooltip>
+  </Tooltip> -->
 
-  <span data-location class='flex-1'>
+  <span data-role='footer-location' class='flex-1'>
     {poolDirPath ?? '-'}
   </span>
-  <button
-    data-ext-link
-    title={texts.catalog.revealLocationTooltip}
-    onclick={() => {
+
+  <ExToolButton
+    onClicked={() => {
       if (poolDirPath) {
         viewlogic.openFolder(poolDirPath);
       }
     }}
   >
     {chars.openExternal}
-  </button>
+  </ExToolButton>
 </div>
 
 <style>
@@ -46,27 +47,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     flex-shrink: 0;
     padding: 8px 14px;
     background: var(--qt-bg-default);
-
-    & > [data-location] {
-      font-size: 11px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    & > [data-info] {
-      font-size: 13px;
-    }
-
-    & > [data-ext-link] {
-      font-size: 14px;
-      cursor: pointer;
-      padding: 2px 4px;
-      transition: color var(--duration-short);
-
-      &:hover {
-        color: var(--qt-text-default);
-      }
-    }
   }
 </style>
