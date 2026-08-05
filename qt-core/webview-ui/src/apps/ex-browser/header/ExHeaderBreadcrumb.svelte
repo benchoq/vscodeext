@@ -52,7 +52,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     height: 28px;
     color: var(--qt-text-muted);
     text-overflow: unset;
-    transition: border-color var(--duration-base);
+    border-radius: var(--qt-radius-s);
 
     & > [data-title] {
       font-weight: 600;

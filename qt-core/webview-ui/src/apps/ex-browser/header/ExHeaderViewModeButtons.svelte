@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { Grid, List } from '@/icons';
+  import * as icons from '@/icons';
   import { ui } from '../states.svelte';
 </script>
 
@@ -13,11 +13,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {@render ModeButton('list')}
 </div>
 
-<!-- snippets -->
 {#snippet ModeButton(mode: 'grid' | 'list')}
-  {@const Comp = mode === 'grid' ? Grid : List}
+  {@const Comp = mode === 'grid' ? icons.Grid : icons.List}
   <button
-    class='qt-tool-button'
+    class='qt-button flex items-center justify-center'
     aria-pressed={ui.selected.viewMode === mode}
     onclick={() => {
       ui.selected.viewMode = mode;
@@ -26,3 +25,29 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <Comp />
   </button>
 {/snippet}
+
+<style>
+  .qt-button {
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    background: none;
+
+    &:hover {
+      color: var(--qt-text-default);
+      background: var(--qt-hover-bg);
+    }
+
+    &[aria-pressed='true'] {
+      color: var(--qt-accent-active);
+      background: var(--accent-blue-a15);
+    }
+  }
+
+  .qt-button + .qt-button {
+    border-left: 1px solid var(--qt-stroke-subtle);
+  }
+</style>
+
