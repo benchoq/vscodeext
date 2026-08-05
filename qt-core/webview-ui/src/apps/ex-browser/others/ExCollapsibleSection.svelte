@@ -15,7 +15,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   } = $props();
 </script>
 
-<div data-comp-root class="flex flex-col">
+<div data-comp-root data-area='main-view' class="flex flex-col">
   <button
     data-header
     class='sticky flex flex-row items-center'
@@ -29,8 +29,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     >
       <ChevronRight size={16} />
     </span>
-    <span data-text class='flex-1'>{title}</span>
-    <span data-count>{count}</span>
+    <span data-role='section-title' class='flex-1'>{title}</span>
+    <span data-role='section-count'>{count}</span>
   </button>
 
   {#if expanded}
@@ -39,6 +39,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
+  [data-role='section-title']:hover {
+    color: var(--qt-text-default);
+  }
+
   [data-comp-root] {
     gap: 10px;
   }
@@ -59,23 +63,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     & > [data-chevron] {
       transition: transform var(--duration-base);
-    }
-
-    & > [data-text] {
-      font-size: 11px;
-      font-weight: 600;
-      text-align: start;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    &:hover [data-text] {
-      color: var(--qt-text-default);
-    }
-
-    & > [data-count] {
-      font-size: 10px;
-      font-variant-numeric: tabular-nums;
     }
   }
 </style>

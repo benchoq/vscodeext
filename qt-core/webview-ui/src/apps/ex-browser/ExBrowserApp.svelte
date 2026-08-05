@@ -7,6 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { onMount, onDestroy } from 'svelte';
 
   import '@/styles/components.v2.css';
+  import './typography.css';
   import './app.css';
 
   import ExHeader from './header/ExHeader.svelte';

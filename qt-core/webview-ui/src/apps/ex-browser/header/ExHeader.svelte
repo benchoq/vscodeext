@@ -13,7 +13,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div data-comp-root class="flex flex-col">
-  <div data-filter class="flex flex-row">
+  <div data-filter-row class="flex flex-row">
     <ExHeaderBreadcrumbAndTags />
     <ExHeaderSearchInput />
     <ExHeaderViewModeButtons />
@@ -34,9 +34,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     padding: 8px 14px;
     background: var(--qt-bg-subtle);
     border-bottom: 1px solid var(--qt-stroke-subtle);
+  }
 
-    & > [data-filter] {
-      gap: 6px;
-    }
+  [data-filter-row] {
+    gap: 6px;
   }
 </style>

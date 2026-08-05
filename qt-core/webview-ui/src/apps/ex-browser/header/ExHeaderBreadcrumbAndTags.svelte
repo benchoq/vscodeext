@@ -34,6 +34,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <!-- breadcrumb -->
 <button
   bind:this={catalog.refEl}
+  data-area='breadcrumb'
   class='qt-button flex flex-row'
   aria-expanded={catalog.visible}
   disabled={data.packages.length === 0}
@@ -42,11 +43,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }}
 >
   {#if valid}
-    <span data-title>Categories</span>
-    <span data-version>{ui.selected.package?.name ?? ''}</span>
-    <span data-category>{ui.filter.category?.name ?? ''}</span>
+    <span data-role='title'>Categories</span>
+    <span data-role='qt-version'>{ui.selected.package?.name ?? ''}</span>
+    <span data-role='current-category'>{ui.filter.category?.name ?? ''}</span>
     <span class='qt-badge'>{catalogCount}</span>
-    <span data-down-arrow>{chars.downArrow}</span>
+    <span data-role='expand-arrow'>{chars.downArrow}</span>
   {:else}
     <span data-title>-</span>
   {/if}
@@ -62,11 +63,26 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     viewlogic.setPopoverVisible('tags', !tags.visible);
   }}
 >
-  # Tags
+  <span># Tags</span>
   <span class='qt-badge'>{tagsCount}</span>
 </button>
 
 <style>
+  [data-role='current-category'] {
+    color: var(--qt-text-default);
+  }
+
+  [data-role='expand-arrow'] {
+    margin-left: 2px;
+  }
+
+  [data-role='qt-version']::before,
+  [data-role='current-category']::before {
+    content: '›';
+    margin-right: 6px;
+    opacity: 0.5;
+  }
+
   .qt-button {
     height: 28px;
     color: var(--qt-text-muted);
@@ -75,28 +91,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     &[aria-expanded='true'] {
       border-color: var(--qt-accent-info);
-    }
-
-    & > [data-title] {
-      font-weight: 600;
-    }
-
-    & > [data-category] {
-      color: var(--qt-text-default);
-      font-weight: 500;
-    }
-
-    & > [data-down-arrow] {
-      font-size: 9px;
-      margin-left: 2px;
-    }
-
-    & > [data-version]::before,
-    & > [data-category]::before {
-      content: '›';
-      margin-right: 6px;
-      font-size: 11px;
-      opacity: 0.5;
     }
   }
 </style>

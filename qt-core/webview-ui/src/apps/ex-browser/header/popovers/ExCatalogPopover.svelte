@@ -12,7 +12,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <svelte:options runes={true} />
 
-<div data-comp-root class='flex flex-col'>
+<div data-comp-root data-area='catalog-popover' class='flex flex-col'>
   <ExCatalogHeader />
 
   <div data-section class='flex flex-row'>

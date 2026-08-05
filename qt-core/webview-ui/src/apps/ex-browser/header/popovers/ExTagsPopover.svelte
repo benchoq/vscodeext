@@ -6,7 +6,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  import ExToolButton from '../../others/ExToolButton.svelte';
+  import ExCloseButton from '../../others/ExCloseButton.svelte';
   import { ui } from '../../states.svelte';
   import * as viewlogic from '../../viewlogic.svelte';
 
@@ -52,19 +52,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       data-close-button
       class:invisible={ui.popovers.tags.searchInput.trim().length === 0}
     >
-      <ExToolButton onClicked={clearSearchInput}>
-        &times;
-      </ExToolButton>
+      <ExCloseButton onClicked={clearSearchInput} />
     </div>
-<!--
-    <button
-      data-decorations
-      class='clear !right-[18px]'
-      class:invisible={ui.popovers.tags.searchInput.trim().length === 0}
-      onclick={clearSearchInput}
-    >
-      &times;
-  </button> -->
   </div>
 
   {#if tags.length !== 0}

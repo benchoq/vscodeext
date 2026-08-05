@@ -27,9 +27,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-comp-root] {
     color: var(--qt-text-muted);
     border-radius: var(--qt-radius-s);
-    font-size: 20px;
-    font-weight: 200;
-    line-height: 1;
     cursor: pointer;
     transition: background var(--duration-short);
 

@@ -25,15 +25,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         viewlogic.selectExample(example);
       }}
     >
-      <div data-title>{example.name}</div>
+      <span data-role='list-name'>{example.name}</span>
       {#if example.tags.length}
         <ExTagList
           usage='list'
           tags={example.tags}
         />
       {/if}
-      <div class='grow'></div>
-      <div data-category>{example.categories.join(', ')}</div>
+      <span data-role='list-category'>{example.categories.join(', ')}</span>
     </button>
   {/each}
 </div>
@@ -62,26 +61,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         background: var(--accent-blue-a9);
         border-color: var(--qt-accent-info);
       }
-
-      & > [data-title] {
-        color: var(--qt-text-default);
-        flex-shrink: 1;
-        font-size: 13px;
-        font-weight: 500;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      & > [data-category] {
-        color: var(--qt-text-muted);
-        margin-left: auto;
-        flex-shrink: 0;
-        font-size: 10px;
-        font-weight: 600;
-        white-space: nowrap;
-        opacity: 0.8;
-      }
     }
+  }
+
+  [data-role='list-name'] {
+    color: var(--qt-text-default);
+  }
+
+  [data-role='list-category'] {
+    color: var(--qt-text-muted);
+    margin-left: auto;
+    opacity: 0.8;
   }
 </style>

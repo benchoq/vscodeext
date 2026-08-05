@@ -38,10 +38,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }}
 >
   <div data-thumbnail><ExThumbnail {example} /></div>
-  <div data-module-tag class='absolute'>
+  <div data-role='card-module' class='absolute'>
     {utils.addSpaceBeforeUppercase(example.module)}
   </div>
-  <div data-name>{example.name}</div>
+  <div data-role='card-name'>{example.name}</div>
   <ExSeparator />
   <ExTagList
     usage='card'
@@ -50,6 +50,23 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
+  [data-role='card-name'] {
+    color: var(--qt-text-default);
+  }
+
+  [data-role='card-module'] {
+    top: 8px;
+    left: 8px;
+    padding: 0 6px;
+    pointer-events: none;
+    color: #f2f2f2;
+    background: rgba(0,0,0,0.62);
+    border-radius: 3px;
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
   [data-comp-root] {
     padding: var(--qt-spacing-xl);
     background: var(--qt-bg-elevated);
@@ -74,41 +91,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       border-color: var(--qt-accent-info);
     }
 
-    & > [data-module-tag] {
-      top: 8px;
-      left: 8px;
-      padding: 0 6px;
-      color: #f2f2f2;
-      background: rgba(0,0,0,0.62);
-      border-radius: 3px;
-      font-size: 9px;
-      font-weight: 600;
-      line-height: 16px;
-      letter-spacing: 0.02em;
-      white-space: nowrap;
-      pointer-events: none;
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      max-width: calc(100% - 16px);
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
     & > [data-thumbnail] {
       flex: 1;
       min-height: var(--card-thumbnail-min-height);
       background: var(--qt-bg-default);
       overflow: hidden;
-    }
-
-    & > [data-name] {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--qt-text-default);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 18px;
     }
   }
 

@@ -1,0 +1,103 @@
+
+/*
+Copyright (C) 2026 The Qt Company Ltd.
+SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+*/
+
+[data-area='catalog-popover'] {
+  & [data-role='title'] {
+    font-size: 13px;
+    font-weight: 600;
+  }
+}
+
+[data-area='breadcrumb'] {
+  & [data-role='title'] {
+    font-weight: 600;
+  }
+
+  & [data-role='category'] {
+    font-weight: 500;
+  }
+
+  & [data-role='expand-arrow'] {
+    font-size: 9px;
+  }
+
+  & [data-role='qt-version']::before,
+  & [data-role='current-category']::before {
+    font-size: 11px;
+  }
+}
+
+[data-area='main-view'] {
+  & [data-role='section-title'] {
+    font-size: 11px;
+    font-weight: 600;
+    text-align: start;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  & [data-role='section-count'] {
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  & [data-role='list-name'],
+  & [data-role='card-name'] {
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 18px;
+  }
+
+  & [data-role='list-category'] {
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  & [data-role='card-module'] {
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+[data-area='side-panel'] {
+  & [data-role='title'] {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  & [data-role='name'] {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  & [data-role='desc'] {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  & [data-role='section-header'] {
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+}
+
+[data-role='close-button'] {
+  font-size: 20px;
+  font-weight: 200;
+}
