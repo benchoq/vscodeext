@@ -35,9 +35,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   .qt-button {
     width: 26px;
     height: 26px;
+    padding: 0;
     border: none;
     border-radius: 0;
-    padding: 0;
     background: none;
 
     &:hover {

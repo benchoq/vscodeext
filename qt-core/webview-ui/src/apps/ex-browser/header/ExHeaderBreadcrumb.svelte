@@ -29,7 +29,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <button
   bind:this={ui.popovers.catalog.refEl}
-  class='qt-button'
+  data-usage='header'
+  class='qt-button flex flex-row'
   aria-expanded={ui.popovers.catalog.visible}
   disabled={data.packages.length === 0}
   onclick={() => {
@@ -40,8 +41,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <span data-title>Categories</span>
     <span data-version>{ui.selected.package?.name ?? ''}</span>
     <span data-category>{ui.filter.category?.name ?? ''}</span>
-    <span class='qt-counter-badge'>{countText}</span>
-    <span data-arrow>{chars.downArrow}</span>
+    <span class='qt-badge'>{countText}</span>
+    <span data-down-arrow>{chars.downArrow}</span>
   {:else}
     <span data-title>-</span>
   {/if}
@@ -49,11 +50,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   .qt-button {
-    height: 28px;
-    color: var(--qt-text-muted);
-    text-overflow: unset;
-    border-radius: var(--qt-radius-s);
-
     &[aria-expanded='true'] {
       border-color: var(--qt-accent-info);
     }
@@ -67,7 +63,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       font-weight: 500;
     }
 
-    & > [data-arrow] {
+    & > [data-down-arrow] {
       font-size: 9px;
       margin-left: 2px;
     }

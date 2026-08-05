@@ -14,6 +14,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <button
   bind:this={ui.popovers.tags.refEl}
+  data-usage='header'
   class='qt-button inline-flex'
   aria-expanded={ui.popovers.tags.visible}
   disabled={(ui.filter.category?.tags.length ?? 0) === 0}
@@ -21,20 +22,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     viewlogic.setPopoverVisible('tags', !ui.popovers.tags.visible);
   }}
 >
-  <span data-hash>#</span>
-  <span data-title>Tags</span>
-  <span class='qt-counter-badge'>{count}</span>
+  # Tags
+  <span class='qt-badge'>{count}</span>
 </button>
-
-<style>
-  .qt-button {
-    height: 28px;
-    color: var(--qt-text-muted);
-    text-overflow: unset;
-    border-radius: var(--qt-radius-s);
-
-    &[aria-expanded='true'] {
-      border-color: var(--qt-accent-info);
-    }
-  }
-</style>

@@ -67,3 +67,17 @@ body {
     'Inter', system-ui, sans-serif);
   line-height: 1.4;
 }
+
+/* components overrides */
+.qt-button {
+  &[data-usage='header'] {
+    height: 28px;
+    color: var(--qt-text-muted);
+    border-radius: var(--qt-radius-s);
+    text-overflow: unset;
+
+    &[aria-expanded='true'] {
+      border-color: var(--qt-accent-info);
+    }
+  }
+}
