@@ -59,6 +59,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   --qt-icon-hover-bg:          var(--vscode-toolbar-hoverBackground,           rgba(90,93,94,0.31));
 
   /* Spacing & radius — not theme-dependent */
+  --qt-radius-xs:  2px;
   --qt-radius-s:   4px;
   --qt-radius-m:   8px;
 

@@ -15,7 +15,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div class='flex flex-col'>
   <button
-    class='qt-button-v2 flex flex-row'
+    data-variant='secondary'
+    class='qt-button flex flex-row'
     onclick={() => {
       viewlogic.setNewProjectFormVisible(!ui.sideBar.expanded);
     }}
@@ -42,6 +43,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
+  .qt-button {
+    height: 24px;
+    border: none;
+  }
+
   [data-chevron] {
     transition: transform var(--duration-base);
   }

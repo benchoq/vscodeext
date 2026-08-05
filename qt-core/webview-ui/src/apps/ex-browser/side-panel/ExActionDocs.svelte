@@ -11,7 +11,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div class='flex flex-row items-center justify-center'>
   <button
-    class='qt-button-v2 flex flex-row grow'
+    data-variant='secondary'
+    class='qt-button flex flex-row grow'
     onclick={() => {
       viewlogic.runExAction('doc-open-internal');
     }}
@@ -31,7 +32,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  .qt-button-v2 {
+  .qt-button {
+    height: 24px;
     text-align: left;
+    border: none;
   }
 </style>

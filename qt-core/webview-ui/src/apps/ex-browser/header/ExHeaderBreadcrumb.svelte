@@ -29,7 +29,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <button
   bind:this={ui.popovers.catalog.refEl}
-  data-comp-root
   class='qt-button'
   aria-expanded={ui.popovers.catalog.visible}
   disabled={data.packages.length === 0}
@@ -49,9 +48,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </button>
 
 <style>
-  [data-comp-root] {
+  .qt-button {
+    height: 28px;
     color: var(--qt-text-muted);
-    font-size: 12px;
+    text-overflow: unset;
+    transition: border-color var(--duration-base);
 
     & > [data-title] {
       font-weight: 600;

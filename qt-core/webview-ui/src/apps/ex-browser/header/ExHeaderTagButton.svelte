@@ -14,7 +14,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <button
   bind:this={ui.popovers.tags.refEl}
-  data-comp-root
   class='qt-button inline-flex'
   aria-expanded={ui.popovers.tags.visible}
   disabled={(ui.filter.category?.tags.length ?? 0) === 0}
@@ -28,8 +27,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </button>
 
 <style>
-  [data-comp-root] {
+  .qt-button {
+    height: 28px;
     color: var(--qt-text-muted);
-    font-size: 12px;
+    text-overflow: unset;
+    transition: border-color var(--duration-base);
   }
 </style>
