@@ -32,5 +32,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     color: var(--qt-text-muted);
     text-overflow: unset;
     border-radius: var(--qt-radius-s);
+
+    &[aria-expanded='true'] {
+      border-color: var(--qt-accent-info);
+    }
   }
 </style>

@@ -8,7 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from '../states.svelte';
 </script>
 
-<div class='qt-button-group flex flex-row'>
+<div data-comp-root class='flex flex-row'>
   {@render ModeButton('grid')}
   {@render ModeButton('list')}
 </div>
@@ -27,6 +27,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 <style>
+  [data-comp-root] {
+    border: 1px solid var(--qt-stroke-subtle);
+    border-radius: var(--qt-radius-s);
+  }
+
   .qt-button {
     width: 26px;
     height: 26px;
