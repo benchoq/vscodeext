@@ -51,10 +51,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   [data-comp-root] {
+    padding: var(--qt-spacing-xl);
     background: var(--qt-bg-elevated);
     border: 1px solid var(--qt-stroke-subtle);
     border-radius: var(--qt-radius-s);
-    padding: var(--qt-spacing-xl);
     gap: var(--qt-spacing-m);
     cursor: pointer;
     position: relative;
@@ -78,9 +78,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       top: 8px;
       left: 8px;
       padding: 0 6px;
-      border-radius: 3px;
-      background: rgba(0,0,0,0.62);
       color: #f2f2f2;
+      background: rgba(0,0,0,0.62);
+      border-radius: 3px;
       font-size: 9px;
       font-weight: 600;
       line-height: 16px;

@@ -6,8 +6,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
 
-  import '@/styles/base.v2.css';
-  import '@/styles/tokens.v2.css';
   import '@/styles/components.v2.css';
   import './app.css';
 

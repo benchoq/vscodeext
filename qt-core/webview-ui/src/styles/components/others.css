@@ -1,0 +1,15 @@
+/*
+Copyright (C) 2026 The Qt Company Ltd.
+SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+*/
+
+.qt-badge {
+  padding: 0 5px;
+  color: var(--qt-text-muted);
+  background: var(--qt-bg-elevated);
+  border-radius: 7px;
+  border: 1px solid var(--qt-stroke-subtle);
+  font-size: 9px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}

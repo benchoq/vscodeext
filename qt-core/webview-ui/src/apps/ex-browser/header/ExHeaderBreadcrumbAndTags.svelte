@@ -14,42 +14,65 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       && (data.packages.length !== 0);
   });
 
-  const countText = $derived.by(() => {
+  const catalog = $derived(ui.popovers.catalog);
+  const catalogCount = $derived.by(() => {
     const count = ui.filter.category?.count ?? 0;
     const total = data.categories.find(c => c.type === 'all')?.count ?? 0;
     if (total === 0) {
       return '';
     }
 
-    return (count === total)
-      ? `${count} examples`
-      : `${count} / ${total}`
+    return (count === total) ? `${count} examples` : `${count} / ${total}`;
+  });
+
+  const tags = $derived(ui.popovers.tags);
+  const tagsCount = $derived.by(() => {
+    return (ui.filter.category?.tags.length ?? 0).toString();
   });
 </script>
 
+<!-- breadcrumb -->
 <button
-  bind:this={ui.popovers.catalog.refEl}
-  data-usage='header'
+  bind:this={catalog.refEl}
   class='qt-button flex flex-row'
-  aria-expanded={ui.popovers.catalog.visible}
+  aria-expanded={catalog.visible}
   disabled={data.packages.length === 0}
   onclick={() => {
-    viewlogic.setPopoverVisible('catalog', !ui.popovers.catalog.visible);
+    viewlogic.setPopoverVisible('catalog', !catalog.visible);
   }}
 >
   {#if valid}
     <span data-title>Categories</span>
     <span data-version>{ui.selected.package?.name ?? ''}</span>
     <span data-category>{ui.filter.category?.name ?? ''}</span>
-    <span class='qt-badge'>{countText}</span>
+    <span class='qt-badge'>{catalogCount}</span>
     <span data-down-arrow>{chars.downArrow}</span>
   {:else}
     <span data-title>-</span>
   {/if}
 </button>
 
+<!-- tags -->
+<button
+  bind:this={tags.refEl}
+  class='qt-button flex flex-row'
+  aria-expanded={tags.visible}
+  disabled={(ui.filter.category?.tags.length ?? 0) === 0}
+  onclick={() => {
+    viewlogic.setPopoverVisible('tags', !tags.visible);
+  }}
+>
+  # Tags
+  <span class='qt-badge'>{tagsCount}</span>
+</button>
+
 <style>
   .qt-button {
+    height: 28px;
+    color: var(--qt-text-muted);
+    border-radius: var(--qt-radius-s);
+    text-overflow: unset;
+
     &[aria-expanded='true'] {
       border-color: var(--qt-accent-info);
     }
