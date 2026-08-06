@@ -16,9 +16,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div
-  data-comp='side-panel'
   data-comp-root
-  class='flex flex-col'
+  data-comp='side-panel'
+  class='qt-dropdown flex flex-col'
   style:width={`${width}px;`}
 >
   {@render Item('Open in new window', 'project-open')}
@@ -42,10 +42,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   [data-comp-root] {
-    background: var(--qt-dropdown-bg);
-    border: 1px solid var(--qt-dropdown-border);
-    border-radius: 3px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.55);
     z-index: 200;
     padding: 2px 0;
   }

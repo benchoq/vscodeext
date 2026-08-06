@@ -13,3 +13,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
+
+.qt-popover {
+  background: var(--qt-bg-subtle);
+  border: 1px solid var(--qt-stroke-subtle);
+  border-radius: var(--qt-radius-m);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+}
+
+.qt-dropdown {
+  background: var(--qt-dropdown-bg);
+  border: 1px solid var(--qt-dropdown-border);
+  border-radius: 3px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.55);
+}

@@ -155,7 +155,9 @@ export const exBrowser = {
       'Examples are loaded from the installation root or additional qtpaths',
       'Adjust qt-core settings or check the directories.'
     ],
-    example: 'Adjust filter settings or try other Qt versions from the navigation menu'
+    example: [
+      'Adjust filter settings or try other Qt versions from the navigation menu'
+    ]
   },
 
   featuredBadge: 'Featured',

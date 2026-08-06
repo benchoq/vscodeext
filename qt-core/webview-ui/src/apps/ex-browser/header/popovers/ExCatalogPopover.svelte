@@ -12,7 +12,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <svelte:options runes={true} />
 
-<div data-comp-root data-comp='catalog-popover' class='flex flex-col'>
+<div
+  data-comp-root
+  data-comp='catalog-popover'
+  class='qt-popover flex flex-col'
+>
   <ExCatalogHeader />
 
   <div data-section class='flex flex-row'>
@@ -28,10 +32,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <style>
   [data-comp-root] {
     width: var(--catalog-popup-width);
-    background: var(--qt-bg-subtle);
-    border: var(--popover-border);
-    border-radius: var(--qt-radius-m);
-    box-shadow: var(--popover-shadow);
     overflow: hidden;
 
     & > [data-section] {

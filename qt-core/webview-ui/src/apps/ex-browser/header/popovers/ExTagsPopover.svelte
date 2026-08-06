@@ -38,7 +38,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <svelte:options runes={true} />
 
-<div data-comp-root data-comp='tags-popover' class='flex flex-col'>
+<div
+  data-comp-root
+  data-comp='tags-popover'
+  class='qt-popover flex flex-col'
+>
   <div data-search-section class='qt-search-input relative'>
     <input
       bind:value={ui.popovers.tags.searchInput}
@@ -85,10 +89,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     z-index: 200;
     width: 380px;
     max-height: 300px;
-    background: var(--qt-bg-subtle);
-    border: 1px solid var(--qt-stroke-muted);
-    border-radius: var(--qt-radius-m);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
     flex-direction: column;
     overflow: hidden;
 

@@ -5,18 +5,25 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { type ExCategory } from '@shared/ex-browser';
+  import EmptyState from '@/comps/EmptyState.svelte';
   import ExCollapsibleSection from '../others/ExCollapsibleSection.svelte';
   import ExGridView from './ExGridView.svelte';
   import ExListView from './ExListView.svelte';
+  import { exBrowser as texts } from '@/apps/texts';
   import { data, ui } from '../states.svelte';
 
-  const categories = $derived.by(() => {
-    if (!ui.filter.category || ui.filter.category.type === 'all') {
-      return data.categories;
-    }
+  const all = $derived.by(() => {
+    const categories =
+      (ui.filter.category && ui.filter.category.type !== 'all')
+      ? [ui.filter.category] : data.categories;
 
-    return [ui.filter.category];
-  });
+    return categories
+      .map((cat) => ({
+        category: cat,
+        examples: findExamples(cat)
+      }))
+      .filter((e) => e.examples.length !== 0);
+  })
 
   function findExamples(category?: ExCategory) {
     if (category?.type === 'general') {
@@ -26,25 +33,35 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     return category?.type === 'all' ? data.examples : [];
   }
-
 </script>
 
 <div data-comp-root class='flex-1 min-w-0 flex flex-col'>
-  {#each categories as category (category)}
-    {#if category.type === 'general'}
-      {@const examples = findExamples(category)}
-      {@const count = examples.length}
-      {@const View = (ui.selected.viewMode === 'grid')
-        ? ExGridView : ExListView
-      }
+  {#if all.length !== 0}
+    {#each all as { category, examples } (category)}
+      {#if category.type === 'general'}
+        {@const count = examples.length}
+        {@const View = (ui.selected.viewMode === 'grid')
+          ? ExGridView : ExListView
+        }
 
-      {#if examples.length !== 0}
         <ExCollapsibleSection title={category?.name ?? ''} {count}>
           <View {examples} />
         </ExCollapsibleSection>
       {/if}
-    {/if}
-  {/each}
+    {/each}
+  {:else}
+    {@const lines = (data.packages.length === 0)
+      ? texts.empty.package
+      : ((all.length === 0) ? (texts.empty.example) : [])
+    }
+
+    <EmptyState text={texts.empty.title} class='!gap-10'>
+      {#each lines as l (l) }
+        {l}<br>
+      {/each}
+    </EmptyState>
+
+  {/if}
 </div>
 
 <style>
