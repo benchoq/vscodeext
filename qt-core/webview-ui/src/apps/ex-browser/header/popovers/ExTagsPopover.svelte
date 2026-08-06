@@ -38,7 +38,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <svelte:options runes={true} />
 
-<div data-comp-root data-area='tags-popover' class='flex flex-col'>
+<div data-comp-root data-comp='tags-popover' class='flex flex-col'>
   <div data-search-section class='qt-search-input relative'>
     <input
       bind:value={ui.popovers.tags.searchInput}

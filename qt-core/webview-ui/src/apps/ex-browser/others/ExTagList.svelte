@@ -15,12 +15,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div
+  data-comp='tag-list'
   data-comp-root
   class='flex flex-row'
   class:flex-wrap={usage === 'details'}
 >
   {#if usage === 'card' || usage === 'list'}
-    <div data-icon class='flex'>
+    <div data-role='icon'>
       <Tag size={usage === 'card' ? 20 : 13}/>
     </div>
   {/if}
@@ -39,7 +40,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       />
     {/each}
   {:else}
-    <span data-no-tags>No tags</span>
+    <span data-role='no-tags'>No tags</span>
   {/if}
 </div>
 
@@ -50,19 +51,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     flex-shrink: 0;
     overflow: hidden;
     min-height: 20px;
+  }
 
-    & > [data-icon] {
-      font-size: 14px;
-      color: var(--qt-text-muted);
-      flex-shrink: 0;
-      line-height: 1;
-      align-items: center;
-      margin-right: 1px;
-      opacity: 0.7;
-    }
+  [data-role='no-tags'] {
+    color: var(--qt-text-muted);
+  }
 
-    & > [data-no-tags] {
-      color: var(--qt-text-muted);
-    }
+  [data-role='icon'] {
+    color: var(--qt-text-muted);
+    flex-shrink: 0;
+    align-items: center;
+    margin-right: 1px;
+    opacity: 0.7;
   }
 </style>

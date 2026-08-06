@@ -15,6 +15,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#if text.length > 0}
   <button
+    data-comp='tag-chip'
     data-root
     data-outline={outline}
     data-selected={selected}
@@ -24,74 +25,64 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }}
     >
     {#if !decorated}
-      <span data-text>{text}</span>
+      <span data-role='name'>{text}</span>
     {:else}
-      <span data-hash>#</span>
-      <span data-text>{text}</span>
-      <span data-close>&times;</span>
+      <span data-role='hash'>#</span>
+      <span data-role='name'>{text}</span>
+      <span data-role='close'>&times;</span>
     {/if}
   </button>
 {/if}
 
 <style>
-[data-root] {
-  align-items: center;
-  height: 20px;
-  padding: 0 6px;
-  border-radius: var(--qt-radius-s);
-  background: var(--qt-bg-input);
-  color: var(--qt-text-muted);
-  border: 1px solid transparent;
-  font-size: 10px;
-  font-weight: 600;
-  line-height: 12px;
-  font-family: inherit;
-  letter-spacing: 0;
-  white-space: nowrap;
-  cursor: pointer;
-  transition-property: background, border-color, color;
-  transition-duration: var(--duration-short);
-  text-decoration: none;
-  gap: 4px;
-
-  &:hover {
-    background: var(--qt-hover-bg);
-    color: var(--qt-text-default);
-  }
-
-  &[data-outline='true'] {
-    background: transparent;
-    border: 1px solid var(--qt-stroke-muted);
+  [data-root] {
+    align-items: center;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: var(--qt-radius-s);
+    background: var(--qt-bg-input);
     color: var(--qt-text-muted);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition-property: background, border-color, color;
+    transition-duration: var(--duration-short);
+    gap: 4px;
 
     &:hover {
       background: var(--qt-hover-bg);
-      border: 1px solid var(--qt-text-default);
       color: var(--qt-text-default);
     }
-  }
 
-  &[data-selected='true'] {
-    background: var(--accent-blue-a22);
-    border-color: var(--accent-blue-a55);
-    color: var(--qt-accent-active);
+    &[data-outline='true'] {
+      background: transparent;
+      border: 1px solid var(--qt-stroke-muted);
+      color: var(--qt-text-muted);
 
-    &:hover {
-      background: var(--accent-blue-a35);
+      &:hover {
+        background: var(--qt-hover-bg);
+        border: 1px solid var(--qt-text-default);
+        color: var(--qt-text-default);
+      }
+    }
+
+    &[data-selected='true'] {
+      background: var(--accent-blue-a22);
+      border-color: var(--accent-blue-a55);
+      color: var(--qt-accent-active);
+
+      &:hover {
+        background: var(--accent-blue-a35);
+      }
     }
   }
 
-  & [data-hash] {
+  [data-role='hash'] {
     opacity: 0.6;
-    font-size: 10px;
     margin-right: -2px;
   }
 
-  & [data-close] {
+  [data-role='close'] {
     opacity: 0.55;
-    font-size: 15px;
-    line-height: 1;
     margin-top: -0.5px;
   }
-}
 </style>

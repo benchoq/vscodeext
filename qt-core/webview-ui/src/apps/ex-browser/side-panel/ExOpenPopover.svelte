@@ -16,6 +16,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div
+  data-comp='side-panel'
   data-comp-root
   class='flex flex-col'
   style:width={`${width}px;`}
@@ -28,7 +29,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#snippet Item(text: string, action: ExActionTypes)}
   <button
-    data-item
+    data-role='open-example-item'
     onclick={() => {
       viewlogic.runExAction(action);
       viewlogic.setPopoverVisible('openExample', false);
@@ -49,17 +50,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     padding: 2px 0;
   }
 
-  [data-item] {
+  [data-role='open-example-item'] {
     gap: 8px;
     width: 100%;
     padding: 5px 10px;
     background: none;
     border: none;
     color: var(--qt-dropdown-fg);
-    font-family: inherit;
-    font-size: 12px;
     cursor: pointer;
-    text-align: left;
 
     &:hover {
       background: var(--qt-selected-bg);

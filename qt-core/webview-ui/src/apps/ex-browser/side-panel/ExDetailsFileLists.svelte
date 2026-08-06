@@ -52,7 +52,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#snippet FileButton(file: string, onClicked: () => void)}
   <button
-    data-button
+    data-role='project-file'
     class='flex flex-row grow'
     onclick={onClicked}
   >
@@ -65,20 +65,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     gap: 0px;
   }
 
-  [data-button] {
+  [data-role='project-file'] {
     color: var(--qt-text-default);
     background: none;
-    line-height: 18px;
-    word-break: break-word;
-
     border: none;
-    font-family: inherit;
-    font-size: 11px;
     cursor: pointer;
-    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: left;
 
     &:hover {
       color: var(--qt-accent-info);

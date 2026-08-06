@@ -34,7 +34,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <!-- breadcrumb -->
 <button
   bind:this={catalog.refEl}
-  data-area='breadcrumb'
+  data-comp='breadcrumb'
   class='qt-button flex flex-row'
   aria-expanded={catalog.visible}
   disabled={data.packages.length === 0}

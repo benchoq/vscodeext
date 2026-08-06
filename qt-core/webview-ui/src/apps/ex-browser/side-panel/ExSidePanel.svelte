@@ -20,7 +20,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-<div data-comp-root data-area='side-panel' class='flex flex-col'>
+<div data-comp-root data-comp='side-panel' class='flex flex-col'>
   <div data-title-bar class='flex flex-row'>
     <span data-role='title' class='flex-1'>
       Example Details

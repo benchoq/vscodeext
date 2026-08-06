@@ -9,7 +9,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const example = $derived(ui.selected.example);
 </script>
 
-<div data-area='side-panel'>
+<div data-comp='side-panel'>
   <div data-thumbnail>
     <ExThumbnail {example} />
   </div>

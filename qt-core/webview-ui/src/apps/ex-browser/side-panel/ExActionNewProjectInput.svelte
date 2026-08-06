@@ -36,16 +36,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div
+  data-comp='side-panel'
   data-comp-root
   class='
     grid gap-2
     grid-cols-[max-content_1fr]
     grid-rows-[repeat(3,min-content)]'
 >
-  <div data-field-name>Project Name</div>
+  <div data-role='new-project-field-name'>Project Name</div>
   <div>{@render NameInput()}</div>
 
-  <div data-field-name>Create in</div>
+  <div data-role='new-project-field-name'>Create in</div>
   <div>{@render WorkingDirInput()}</div>
 
   <!-- {@render FieldName(texts.wizard.name)}
@@ -100,8 +101,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     padding: 5px 0px;
   }
 
-  [data-field-name] {
-    font-size: 12px;
+  [data-role='new-project-field-name'] {
     color: var(--qt-text-muted);
   }
 </style>

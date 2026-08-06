@@ -20,6 +20,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       e.stopPropagation();
     }}
   >
-    <span data-role='close-button'>&times;</span>
+    <span data-comp='close-button'>&times;</span>
   </ExToolButton>
 {/if}

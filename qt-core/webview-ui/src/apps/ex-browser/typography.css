@@ -4,7 +4,7 @@ Copyright (C) 2026 The Qt Company Ltd.
 SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 */
 
-[data-area='catalog-popover'] {
+[data-comp='catalog-popover'] {
   & [data-role='title'] {
     font-size: 13px;
     font-weight: 600;
@@ -27,7 +27,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 }
 
-[data-area='tags-popover'] {
+[data-comp='tags-popover'] {
   & [data-role='title'] {
     font-size: 13px;
     font-weight: 600;
@@ -57,7 +57,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 }
 
-[data-area='breadcrumb'] {
+[data-comp='breadcrumb'] {
   & [data-role='title'] {
     font-weight: 600;
   }
@@ -76,7 +76,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 }
 
-[data-area='main-view'] {
+[data-comp='main-view'] {
   & [data-role='section-title'] {
     font-size: 11px;
     font-weight: 600;
@@ -117,7 +117,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 }
 
-[data-area='side-panel'] {
+[data-comp='side-panel'] {
   & [data-role='title'] {
     font-size: 10px;
     font-weight: 600;
@@ -141,9 +141,67 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     font-weight: 400;
     text-transform: uppercase;
   }
+
+  & [data-role='row-title'] {
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 18px;
+  }
+
+  & [data-role='row-value'] {
+    font-size: 11px;
+    line-height: 18px;
+    word-break: break-word;
+  }
+
+  & [data-role='project-file'] {
+    line-height: 18px;
+    word-break: break-word;
+    font-family: inherit;
+    font-size: 11px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+  }
+
+  & [data-role='open-example-item'] {
+    font-family: inherit;
+    font-size: 12px;
+    text-align: left;
+  }
+
+  & [data-role='new-project-field-name'] {
+    font-size: 12px;
+  }
 }
 
-[data-role='close-button'] {
+[data-comp='close-button'] {
   font-size: 20px;
   font-weight: 200;
+}
+
+[data-comp='tag-chip'] {
+  font-weight: 600;
+  line-height: 12px;
+  font-family: inherit;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-decoration: none;
+
+  & [data-role='name'],
+  & [data-role='hash'] {
+    font-size: 10px;
+  }
+
+  & [data-role='close'] {
+    font-size: 15px;
+    line-height: 1;
+  }
+}
+
+[data-comp='tag-list'] {
+  & [data-role='icon'] {
+    font-size: 14px;
+    line-height: 1;
+  }
 }

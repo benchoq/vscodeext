@@ -14,8 +14,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   } = $props();
 </script>
 
-<div data-title>{title}</div>
-<div data-value>
+<div data-role='row-title'>{title}</div>
+<div data-role='row-value'>
   {@render children?.()}
 </div>
 
@@ -26,21 +26,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/if}
 
 <style>
-  [data-title] {
+  [data-role='row-title'] {
     padding: 3px 0px;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--qt-text-muted);
     min-width: 60px;
+    color: var(--qt-text-muted);
     flex-shrink: 0;
-    line-height: 18px;
   }
 
-  [data-value] {
+  [data-role='row-value'] {
     padding: 3px 0px;
-    font-size: 11px;
     color: var(--qt-text-default);
-    line-height: 18px;
-    word-break: break-word;
   }
 </style>
