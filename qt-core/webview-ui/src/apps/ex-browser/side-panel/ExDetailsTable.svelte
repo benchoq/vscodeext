@@ -22,7 +22,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {utils.addSpaceBeforeUppercase(example?.module ?? '')}
   </TableRow>
 
-  <TableRow title='Project'>
+  <TableRow title='Files'>
     <ExDetailsFileLists />
   </TableRow>
 

@@ -69,7 +69,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <!-- working dir -->
   <div class='flex flex-col gap-[3px]'>
     <div data-role='input-field-name'>Create in</div>
-    <div class="w-full flex flex-row items-center gap-[3px]">
+    <div class="w-full flex flex-row items-center gap-[3px] relative">
       <ExValidationInput
         bind:value={states.workingDir}
         level={states.issues.workingDir.level}
@@ -78,7 +78,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       />
 
       <button
-        class='qt-button'
+        data-role='browse-dir'
+        data-validation={states.issues.workingDir.level}
+        class='qt-button h-full absolute top-1/2 -translate-y-1/2'
         onclick={() => {
           controller.fireEvent('browseClicked');
         }}
@@ -106,55 +108,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   .qt-button {
-    height: 28px;
-    padding: 0 7px;
-    border: none;
-    border-radius: var(--qt-radius-s);
+    &[data-role='browse-dir'] {
+      padding: 0 7px 0 0;
+      background: none;
+      border: none;
+      border-radius: 0;
+      right: 0px;
+
+      &[data-validation='error'],
+      &[data-validation='warning'] {
+        padding: 0 26px 0 0;
+      }
+    }
   }
 </style>
-
-<!-- snippets -->
-<!-- {#snippet FieldName(text: string)}
-  <P class={`qt-label flex items-center ${fieldNameClass}`}>
-    {text}
-  </P>
-{/snippet}
-
-{#snippet NameInput()}
-  <InputWithIssue
-    bind:this={elNameInput}
-    bind:value={states.name}
-    onInput={() => {
-      controller.fireEvent('inputChanged');
-    }}
-    level={states.issues.name.level}
-    message={states.issues.name.message}
-  />
-{/snippet}
-
-{#snippet WorkingDirInput()}
-  <div class="w-full grid grid-cols-[min-content_1fr] gap-0">
-    <IconButton
-      icon={FolderOpen}
-      class="qt-button px-2 py-0 rounded-r-none! -mr-0.5 focus:z-1 min-w-[36px]"
-      tooltip={texts.wizard.workingDirTooltip}
-      onClicked={() => {
-        controller.fireEvent('browseClicked');
-      }}
-      />
-
-    <InputWithIssue
-      bind:value={states.workingDir}
-      class="rounded-l-none!"
-      onInput={() => {
-        controller.fireEvent('inputChanged');
-      }}
-      level={states.issues.workingDir.level}
-      message={states.issues.workingDir.message}
-    />
-  </div>
-{/snippet}
--->
 
 {#snippet BottomControls()}
   <div class='flex flex-row gap-[3px]'>
@@ -175,45 +142,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     >
       {chars.downArrow}
     </button>
-
   </div>
-
-  <!-- <div class="flex flex-row gap-2">
-    {#if selectedType === 'project'}
-      <Checkbox
-        class="self-start qt-checkbox grow"
-        bind:checked={states.saveProjectDir}
-      >
-        {texts.wizard.workingDirSaveCheckbox}
-      </Checkbox>
-    {:else}
-      <div class="grow"></div>
-    {/if}
-
-    {#if selectedType === 'project'}
-      <SplitButton
-        text={texts.wizard.buttons.create}
-        icon={Check}
-        disabled={!states.acceptable}
-        options={openInOptions}
-        bind:selectedValue={states.openIn}
-        onClicked={() => {
-          controller.fireEvent('createClicked');
-        }}
-        onValueChanged={() => {
-          controller.fireEvent('openInChanged', states.openIn);
-        }}
-      />
-    {:else}
-      <IconButton
-        class={selectedType === 'project' ? '!rounded-r-none' : ''}
-        text={texts.wizard.buttons.create}
-        icon={Check}
-        disabled={!states.acceptable}
-        onClicked={() => {
-          controller.fireEvent('createClicked');
-        }}
-      />
-    {/if}
-  </div> -->
 {/snippet}
