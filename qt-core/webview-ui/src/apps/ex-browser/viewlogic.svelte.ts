@@ -79,8 +79,11 @@ export async function selectCategory(category?: ExCategory | string) {
 }
 
 export async function selectExample(example: ExEntry | undefined) {
-  ui.selected.example = example;
-  ui.sideBar.visible = (example !== undefined);
+  if (ui.selected.example !== example) {
+    ui.selected.example = example;
+    ui.sideBar.visible = (example !== undefined);
+    ui.sideBar.expanded = false;
+  }
 }
 
 export async function setSearchInput(s: string) {
