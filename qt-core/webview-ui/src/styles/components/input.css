@@ -4,6 +4,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 */
 
 .qt-input {
+  --error-color: red;
+  --warning-color: orange;
+
   color: var(--vscode-input-foreground, var(--qt-text-default));
   background: var(--qt-bg-input);
   border: 1px solid var(--vscode-input-border, transparent);
@@ -25,5 +28,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   &[type='text']::placeholder {
     color: var(--qt-text-muted);
+  }
+
+  &[data-validation='error'] {
+    border: 1px solid var(--error-color);
+  }
+
+  &[data-validation='warning'] {
+    border: 1px solid var(--warning-color);
   }
 }

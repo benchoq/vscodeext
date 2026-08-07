@@ -10,16 +10,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ChevronRight } from '@/icons';
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
+  import ExCloseButton from '../others/ExCloseButton.svelte';
   import ExActionNewProjectInput from './ExActionNewProjectInput.svelte';
+
+  function toggleOpen() {
+    viewlogic.setNewProjectFormVisible(!ui.sideBar.expanded);
+  }
 </script>
 
 <div class='flex flex-col'>
   <button
     data-variant='secondary'
     class='qt-button flex flex-row'
-    onclick={() => {
-      viewlogic.setNewProjectFormVisible(!ui.sideBar.expanded);
-    }}
+    onclick={toggleOpen}
   >
     <span
       data-chevron
@@ -28,12 +31,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <ChevronRight size={16} />
     </span>
 
-    Use as a template
+    <span>Use as a template</span>
+    <div class='grow'></div>
+
+    {#if ui.sideBar.expanded}
+      <ExCloseButton onClicked={toggleOpen} />
+    {/if}
   </button>
 
   {#if ui.sideBar.expanded}
     <div
-      class='flex flex-col'
       in:fade={{ duration:500, easing:cubicOut }}
       out:slide={{ duration:150, easing:cubicIn }}
     >
@@ -45,6 +52,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <style>
   .qt-button {
     height: 24px;
+    padding-right: 3px;
     border: none;
   }
 

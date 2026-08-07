@@ -5,31 +5,39 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { onMount } from 'svelte';
+  import * as icons from '@/icons';
+  import * as chars from '@/utils/chars';
   // import P from 'flowbite-svelte/P.svelte';
   // import Checkbox from 'flowbite-svelte/Checkbox.svelte';
-  import { FolderOpen } from '@lucide/svelte';
+  // import { FolderOpen } from '@lucide/svelte';
 
   // import * as texts from '@/apps/texts';
-  import IconButton from '@/comps/IconButton.svelte';
+  // import IconButton from '@/comps/IconButton.svelte';
   // import SplitButton from '@/comps/SplitButton.svelte';
   import { ui } from '../states.svelte';
-  import InputWithIssue from '@/comps/InputWithIssue.svelte';
+  // import InputWithIssue from '@/comps/InputWithIssue.svelte';
+  // import ExToolButton from '../others/ExToolButton.svelte';
+  import ExValidationInput from '../others/ExValidationInput.svelte';
   // import { type NewItemFormController } from '@/comps/NewItemForm.logic.svelte';
 
   let {
     controller = ui.input
   } = $props();
 
-  let elNameInput: InputWithIssue;
+  let compNameInput: ExValidationInput;
   const states = $derived(controller.states);
   // const openInOptions = [
     // { value: 'newWindow', label: texts.wizard.openInOptions.newWindow },
     // { value: 'addToWorkspace', label: texts.wizard.openInOptions.addToWorkspace }
   // ];
 
+  function onInput() {
+    controller.fireEvent('inputChanged');
+  }
+
   onMount(() => {
-    if (elNameInput) {
-      elNameInput.focus();
+    if (compNameInput) {
+      compNameInput.focus();
     }
   })
 
@@ -38,71 +46,62 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div
   data-comp='side-panel'
   data-comp-root
-  class='
-    grid gap-2
-    grid-cols-[max-content_1fr]
-    grid-rows-[repeat(3,min-content)]'
+  class='flex flex-col gap-[5px]'
 >
+  <span>
+    Keeps your changes out of the Qt install folder,
+    so a Qt update can’t overwrite them.
+  </span>
+
+  <!-- name -->
   <div data-role='input-field-name'>Project Name</div>
-  <div>{@render NameInput()}</div>
-
-  <div data-role='input-field-name'>Create in</div>
-  <div>{@render WorkingDirInput()}</div>
-
-  <!-- {@render FieldName(texts.wizard.name)}
-  {@render NameInput()}
-
-  {@render FieldName(texts.wizard.workingDir)}
-  {@render WorkingDirInput()}
-
-  <div></div>
-  {@render BottomControls()} -->
-</div>
-
-
-{#snippet NameInput()}
-  <InputWithIssue
-    bind:this={elNameInput}
+  <ExValidationInput
+    bind:this={compNameInput}
     bind:value={states.name}
-    onInput={() => {
-      controller.fireEvent('inputChanged');
-    }}
     level={states.issues.name.level}
     message={states.issues.name.message}
+    onInput={onInput}
   />
-{/snippet}
 
-
-{#snippet WorkingDirInput()}
-  <div class="w-full grid grid-cols-[min-content_1fr] gap-0">
-    <IconButton
-      icon={FolderOpen}
-      class="qt-button px-2 py-0 rounded-r-none! -mr-0.5 focus:z-1 min-w-[36px]"
-      // tooltip={texts.wizard.workingDirTooltip}
-      onClicked={() => {
-        controller.fireEvent('browseClicked');
-      }}
-      />
-
-    <InputWithIssue
+  <!-- working dir -->
+  <div data-role='input-field-name'>Create in</div>
+  <div class="w-full flex flex-row items-center gap-[3px]">
+    <ExValidationInput
       bind:value={states.workingDir}
-      class="rounded-l-none!"
-      onInput={() => {
-        controller.fireEvent('inputChanged');
-      }}
       level={states.issues.workingDir.level}
       message={states.issues.workingDir.message}
+      onInput={onInput}
     />
+
+    <button
+      class='qt-button'
+      onclick={() => {
+        controller.fireEvent('browseClicked');
+      }}
+    >
+      <icons.FolderOpen />
+    </button>
   </div>
-{/snippet}
+  <span>Use as default project directory</span>
+
+  {@render BottomControls()}
+</div>
 
 <style>
   [data-comp-root] {
-    padding: 5px 0px;
+    padding: 10px;
+    background: var(--qt-button-secondary-bg);
   }
 
   [data-role='input-field-name'] {
     color: var(--qt-text-muted);
+  }
+
+  .qt-button {
+    height: 28px;
+    padding: 0 7px;
+    border: none;
+    border-radius: var(--qt-radius-s);
   }
 </style>
 
@@ -147,9 +146,31 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     />
   </div>
 {/snippet}
+-->
 
 {#snippet BottomControls()}
-  <div class="flex flex-row gap-2">
+  <div class='flex flex-row gap-[3px]'>
+    <div class='grow'></div>
+    <button
+      data-variant='primary'
+      class='qt-button'
+      onclick={() => {
+        controller.fireEvent('createClicked');
+      }}
+    >
+      Create and open
+    </button>
+
+    <button
+      data-variant='primary'
+      class='qt-button w-[30px]'
+    >
+      {chars.downArrow}
+    </button>
+
+  </div>
+
+  <!-- <div class="flex flex-row gap-2">
     {#if selectedType === 'project'}
       <Checkbox
         class="self-start qt-checkbox grow"
@@ -186,5 +207,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         }}
       />
     {/if}
-  </div>
-{/snippet} -->
+  </div> -->
+{/snippet}
