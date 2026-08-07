@@ -58,12 +58,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     onkeydown={onKeydown}
   />
 
-  <div class='absolute top-1/2 -translate-y-1/2 right-[5px]'>
-    <ExCloseButton
-      visible={value.trim().length !== 0}
-      onClicked={() => clear()}
-    />
-  </div>
+  {#if value.trim().length}
+    <div class='absolute top-1/2 -translate-y-1/2 right-[5px]'>
+      <ExCloseButton onClicked={() => clear()} />
+    </div>
+  {/if}
 </div>
 
 <style>

@@ -52,12 +52,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       placeholder='Filter tags...'
     />
 
-    <div class='absolute top-1/2 -translate-y-1/2 right-[12px]'>
-      <ExCloseButton
-        visible={ui.popovers.tags.searchInput.trim().length !== 0}
-        onClicked={clearSearchInput}
-      />
-    </div>
+    {#if ui.popovers.tags.searchInput.trim().length}
+      <div class='absolute top-1/2 -translate-y-1/2 right-[12px]'>
+        <ExCloseButton onClicked={clearSearchInput} />
+      </div>
+    {/if}
   </div>
 
   {#if tags.length !== 0}
