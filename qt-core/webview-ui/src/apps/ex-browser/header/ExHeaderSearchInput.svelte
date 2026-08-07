@@ -43,15 +43,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-<div class='qt-search-input w-full relative'>
-  <div data-decorations class='magnifier'>
+<div class='w-full relative'>
+  <div data-role='search-icon' class='absolute top-1/2 -translate-1/2'>
     {chars.magnifier}
   </div>
 
   <input
     bind:value
     type='text'
-    class='w-full'
+    class='qt-input w-full'
     {placeholder}
     disabled={data.packages.length === 0}
     oninput={() => { triggerUpdate(200); }}
@@ -65,3 +65,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     />
   </div>
 </div>
+
+<style>
+  .qt-input {
+    height: 28px;
+    padding: 0 26px 0 29px;
+  }
+
+  [data-role='search-icon'] {
+    left: 15px;
+    color: var(--qt-text-muted);
+    background: none;
+    border: none;
+    font-size: 13px;
+    line-height: 1;
+  }
+</style>

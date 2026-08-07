@@ -43,12 +43,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   data-comp='tags-popover'
   class='qt-popover flex flex-col'
 >
-  <div data-search-section class='qt-search-input relative'>
+  <div data-search-section class='relative'>
     <input
       bind:value={ui.popovers.tags.searchInput}
       bind:this={inputEl}
       type='text'
-      class='flex-1 w-full'
+      class='qt-input w-full'
       placeholder='Filter tags...'
     />
 

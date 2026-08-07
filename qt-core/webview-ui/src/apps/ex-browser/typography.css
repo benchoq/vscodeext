@@ -170,7 +170,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     text-align: left;
   }
 
-  & [data-role='new-project-field-name'] {
+  & [data-role='input-field-name'] {
     font-size: 12px;
   }
 }
