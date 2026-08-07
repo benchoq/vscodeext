@@ -17,6 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from '../states.svelte';
   // import InputWithIssue from '@/comps/InputWithIssue.svelte';
   // import ExToolButton from '../others/ExToolButton.svelte';
+  import ExCheckBox from '../others/ExCheckBox.svelte';
   import ExValidationInput from '../others/ExValidationInput.svelte';
   // import { type NewItemFormController } from '@/comps/NewItemForm.logic.svelte';
 
@@ -46,7 +47,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div
   data-comp='side-panel'
   data-comp-root
-  class='flex flex-col gap-[5px]'
+  class='flex flex-col gap-[13px]'
 >
   <span>
     Keeps your changes out of the Qt install folder,
@@ -54,35 +55,42 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </span>
 
   <!-- name -->
-  <div data-role='input-field-name'>Project Name</div>
-  <ExValidationInput
-    bind:this={compNameInput}
-    bind:value={states.name}
-    level={states.issues.name.level}
-    message={states.issues.name.message}
-    onInput={onInput}
-  />
-
-  <!-- working dir -->
-  <div data-role='input-field-name'>Create in</div>
-  <div class="w-full flex flex-row items-center gap-[3px]">
+  <div class='flex flex-col gap-[3px]'>
+    <div data-role='input-field-name'>Project Name</div>
     <ExValidationInput
-      bind:value={states.workingDir}
-      level={states.issues.workingDir.level}
-      message={states.issues.workingDir.message}
+      bind:this={compNameInput}
+      bind:value={states.name}
+      level={states.issues.name.level}
+      message={states.issues.name.message}
       onInput={onInput}
     />
-
-    <button
-      class='qt-button'
-      onclick={() => {
-        controller.fireEvent('browseClicked');
-      }}
-    >
-      <icons.FolderOpen />
-    </button>
   </div>
-  <span>Use as default project directory</span>
+
+  <!-- working dir -->
+  <div class='flex flex-col gap-[3px]'>
+    <div data-role='input-field-name'>Create in</div>
+    <div class="w-full flex flex-row items-center gap-[3px]">
+      <ExValidationInput
+        bind:value={states.workingDir}
+        level={states.issues.workingDir.level}
+        message={states.issues.workingDir.message}
+        onInput={onInput}
+      />
+
+      <button
+        class='qt-button'
+        onclick={() => {
+          controller.fireEvent('browseClicked');
+        }}
+      >
+        <icons.FolderOpen />
+      </button>
+    </div>
+
+    <ExCheckBox
+      text='Use as default project directory'
+    />
+  </div>
 
   {@render BottomControls()}
 </div>

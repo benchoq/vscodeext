@@ -13,6 +13,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import ExCloseButton from '../others/ExCloseButton.svelte';
   import ExActionNewProjectInput from './ExActionNewProjectInput.svelte';
 
+  const isOpen = $derived(ui.sideBar.expanded);
+
   function toggleOpen() {
     viewlogic.setNewProjectFormVisible(!ui.sideBar.expanded);
   }
@@ -21,12 +23,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div class='flex flex-col'>
   <button
     data-variant='secondary'
+    data-active={isOpen}
     class='qt-button flex flex-row'
     onclick={toggleOpen}
   >
     <span
       data-chevron
-      style:transform={ui.sideBar.expanded ? 'rotate(90deg)' : 'rotate(0deg)'}
+      style:transform={isOpen ? 'rotate(90deg)' : 'rotate(0deg)'}
     >
       <ChevronRight size={16} />
     </span>
@@ -34,12 +37,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <span>Use as a template</span>
     <div class='grow'></div>
 
-    {#if ui.sideBar.expanded}
+    {#if isOpen}
       <ExCloseButton onClicked={toggleOpen} />
     {/if}
   </button>
 
-  {#if ui.sideBar.expanded}
+  {#if isOpen}
     <div
       in:fade={{ duration:500, easing:cubicOut }}
       out:slide={{ duration:150, easing:cubicIn }}
