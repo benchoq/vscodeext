@@ -4,29 +4,59 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
+  import { Plus, AppWindow } from '@lucide/svelte';
   import * as icons from '@/icons';
   import * as chars from '@/utils/chars';
-  // import P from 'flowbite-svelte/P.svelte';
-  // import Checkbox from 'flowbite-svelte/Checkbox.svelte';
-  // import { FolderOpen } from '@lucide/svelte';
+  import { clickOutside, portal } from '@/utils/actions';
 
-  // import * as texts from '@/apps/texts';
-  // import IconButton from '@/comps/IconButton.svelte';
-  // import SplitButton from '@/comps/SplitButton.svelte';
   import { ui } from '../states.svelte';
-  // import InputWithIssue from '@/comps/InputWithIssue.svelte';
-  // import ExToolButton from '../others/ExToolButton.svelte';
   import ExCheckBox from '../others/ExCheckBox.svelte';
   import ExValidationInput from '../others/ExValidationInput.svelte';
-  // import { type NewItemFormController } from '@/comps/NewItemForm.logic.svelte';
 
   let {
     controller = ui.input
   } = $props();
 
+  let menu = $state(undefined as HTMLElement | undefined);
+  let button: HTMLElement;
+  let menuStyle = $state('');
+  let menuText = $derived.by(() => {
+    return (ui.input.states.openIn === 'newWindow')
+      ? 'Create and open in new window'
+      : 'Create and add to workspace';
+  })
+
+  async function toggleMenu() {
+    showCreateOption = !showCreateOption;
+
+    if (showCreateOption) {
+      await tick();
+      const rect = button.getBoundingClientRect();
+      const menuWidth = menu?.getBoundingClientRect().width ?? 0;
+
+      menuStyle = `
+        position: fixed;
+        top: ${rect.bottom}px;
+        left: ${rect.right - menuWidth}px;
+      `;
+    }
+  }
+
+  function position(node: HTMLElement, anchor: HTMLElement) {
+    requestAnimationFrame(() => {
+      const a = anchor.getBoundingClientRect();
+      const n = node.getBoundingClientRect();
+
+      node.style.position = 'fixed';
+      node.style.top = `${a.bottom + 3}px`;
+      node.style.left = `${a.right - n.width}px`;
+    });
+  }
+
   let compNameInput: ExValidationInput;
   const states = $derived(controller.states);
+  let showCreateOption = $state(false);
   // const openInOptions = [
     // { value: 'newWindow', label: texts.wizard.openInOptions.newWindow },
     // { value: 'addToWorkspace', label: texts.wizard.openInOptions.addToWorkspace }
@@ -94,8 +124,65 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     />
   </div>
 
-  {@render BottomControls()}
+  {@render CreateButtonAndOptions()}
+
+  {#if showCreateOption}
+    <div
+      bind:this={menu}
+      use:portal
+      use:position={button}
+      use:clickOutside={(e: MouseEvent) => {
+        e.stopPropagation();
+        toggleMenu();
+      }}
+      class='qt-dropdown flex flex-col'
+      style={menuStyle}
+    >
+      {@render Item('Open in new window', 'newWindow')}
+      {@render Item('Add to workspace', 'addToWorkspace')}
+    </div>
+  {/if}
 </div>
+
+{#snippet CreateButtonAndOptions()}
+  <div class='flex flex-row gap-[3px]'>
+    <div class='grow'></div>
+    <button
+      data-variant='primary'
+      class='qt-button'
+      onclick={() => {
+        controller.fireEvent('createClicked');
+      }}
+    >
+      {menuText}
+    </button>
+
+    <button
+      bind:this={button}
+      data-variant='primary'
+      class='qt-button w-[30px]'
+      onclick={toggleMenu}
+    >
+      {chars.downArrow}
+    </button>
+  </div>
+{/snippet}
+
+{#snippet Item(text: string, openIn: 'newWindow' | 'addToWorkspace')}
+  {@const Icon = (openIn === 'newWindow') ? AppWindow : Plus}
+  <button
+    data-role='dropdown-item'
+    class='flex flex-row items-center'
+    onclick={() => {
+      controller.fireEvent('openInChanged', openIn);
+      ui.input.states.openIn = openIn;
+      showCreateOption = false;
+    }}
+  >
+    <Icon size={14} />
+    {text}
+  </button>
+{/snippet}
 
 <style>
   [data-comp-root] {
@@ -105,6 +192,22 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   [data-role='input-field-name'] {
     color: var(--qt-text-muted);
+  }
+
+  [data-role='dropdown-item'] {
+    gap: 8px;
+    width: 100%;
+    padding: 5px 10px;
+    background: none;
+    border: none;
+    color: var(--qt-dropdown-fg);
+    cursor: pointer;
+    text-align: left;
+
+    &:hover {
+      background: var(--qt-selected-bg);
+      color: var(--qt-selected-fg);
+    }
   }
 
   .qt-button {
@@ -122,25 +225,3 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }
   }
 </style>
-
-{#snippet BottomControls()}
-  <div class='flex flex-row gap-[3px]'>
-    <div class='grow'></div>
-    <button
-      data-variant='primary'
-      class='qt-button'
-      onclick={() => {
-        controller.fireEvent('createClicked');
-      }}
-    >
-      Create and open
-    </button>
-
-    <button
-      data-variant='primary'
-      class='qt-button w-[30px]'
-    >
-      {chars.downArrow}
-    </button>
-  </div>
-{/snippet}

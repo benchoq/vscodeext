@@ -1,29 +1,39 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-export function portal(node: HTMLElement, target: HTMLElement | string = document.body) {
+export function portal(node: HTMLElement, target: HTMLElement | string = 'body') {
   let targetEl: HTMLElement;
 
-  function resolveTarget(t: HTMLElement | string): HTMLElement {
-    return typeof t === 'string'
-      ? (document.querySelector(t) as HTMLElement)
-      : t;
+  function resolveTarget(target: HTMLElement | string): HTMLElement {
+    if (typeof target === 'string') {
+      const el = document.querySelector<HTMLElement>(target);
+
+      if (!el) {
+          throw new Error(`Portal target not found: ${target}`);
+      }
+
+      return el;
+    }
+
+    return target;
   }
 
-  function mount(t: HTMLElement | string) {
-    targetEl = resolveTarget(t);
-    targetEl?.appendChild(node);
+  function move(target: HTMLElement | string) {
+    const el = resolveTarget(target);
+
+    if (el !== targetEl) {
+        targetEl = el;
+        targetEl.appendChild(node);
+    }
   }
 
-  mount(target);
+  move(target);
 
   return {
-    update(newTarget: HTMLElement | string) {
-      mount(newTarget);
-    },
-    destroy() {
-      node.parentNode?.removeChild(node);
-    }
+      update: move,
+      destroy() {
+          node.remove();
+      }
   };
 }
 
