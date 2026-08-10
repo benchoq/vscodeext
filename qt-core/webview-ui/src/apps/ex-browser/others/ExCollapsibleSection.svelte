@@ -5,7 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { type Snippet } from 'svelte';
-  import ChevronRight from '@/icons/ChevronRight.svelte';
+  import * as icons from '@/icons';
 
   let {
     title = '',
@@ -27,7 +27,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       data-chevron
       style:transform={expanded ? 'rotate(90deg)' : 'rotate(0deg)'}
     >
-      <ChevronRight size={16} />
+      <icons.ChevronRight size={16} />
     </span>
     <span data-role='section-title' class='flex-1'>{title}</span>
     <span data-role='section-count'>{count}</span>

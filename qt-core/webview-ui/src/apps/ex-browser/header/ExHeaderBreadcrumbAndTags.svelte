@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import * as chars from '@/utils/chars';
+  import { Glyphs } from '@/icons';
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
@@ -47,7 +47,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <span data-role='qt-version'>{ui.selected.package?.name ?? ''}</span>
     <span data-role='current-category'>{ui.filter.category?.name ?? ''}</span>
     <span class='qt-badge'>{catalogCount}</span>
-    <span data-role='expand-arrow'>{chars.downArrow}</span>
+    <span data-role='expand-arrow'>
+      {Glyphs.triangleDown}
+    </span>
   {:else}
     <span data-title>-</span>
   {/if}

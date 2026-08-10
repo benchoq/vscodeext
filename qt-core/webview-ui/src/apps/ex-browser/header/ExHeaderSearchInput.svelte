@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import * as chars from '@/utils/chars';
+  import { Glyphs } from '@/icons';
   import { exBrowser as texts } from '@/apps/texts';
 
   import ExCloseButton from '../others/ExCloseButton.svelte';
@@ -45,7 +45,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div class='w-full relative'>
   <div data-role='search-icon' class='absolute top-1/2 -translate-1/2'>
-    {chars.magnifier}
+    {Glyphs.search}
   </div>
 
   <input

@@ -4,8 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  // import Tooltip from 'flowbite-svelte/Tooltip.svelte';
-  import * as chars from '@/utils/chars';
+  import { Glyphs } from '@/icons';
 
   import ExToolButton from '../../others/ExToolButton.svelte';
   import { ui } from '../../states.svelte';
@@ -16,7 +15,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div data-comp-root class='flex-1 flex flex-row'>
   <span data-role='footer-icon-info'>
-    {chars.info}
+    {Glyphs.info}
   </span>
 
   <!-- TODO: style Tooltip -->
@@ -35,7 +34,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       }
     }}
   >
-    {chars.openExternal}
+    {Glyphs.arrowRightTop}
   </ExToolButton>
 </div>
 

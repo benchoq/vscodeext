@@ -4,6 +4,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { Glyphs } from "@/icons";
+
   let {
     text = '',
     outline = false,
@@ -29,7 +31,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {:else}
       <span data-role='hash'>#</span>
       <span data-role='name'>{text}</span>
-      <span data-role='close'>&times;</span>
+      <span data-role='close'>
+        {Glyphs.multiplication}
+      </span>
     {/if}
   </button>
 {/if}
@@ -84,5 +88,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-role='close'] {
     opacity: 0.55;
     margin-top: -0.5px;
+    font-size: 10px;
   }
 </style>

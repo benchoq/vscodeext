@@ -7,7 +7,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { onMount, tick } from 'svelte';
   import { Check } from '@lucide/svelte';
   import * as icons from '@/icons';
-  import * as chars from '@/utils/chars';
   import { clickOutside, portal } from '@/utils/actions';
 
   import { ui } from '../states.svelte';
@@ -163,7 +162,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       disabled={!states.acceptable}
       onclick={toggleMenu}
     >
-      {chars.downArrow}
+      {icons.Glyphs.triangleDown}
     </button>
   </div>
 {/snippet}
