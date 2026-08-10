@@ -34,6 +34,7 @@ export const ui = $state({
   filter: {
     tags: [] as string[],
     searchInput: '',
+    searchInputEl: undefined as HTMLInputElement | undefined,
     category: undefined as ExCategory | undefined,
   },
 

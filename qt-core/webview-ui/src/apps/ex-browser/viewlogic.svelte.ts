@@ -26,16 +26,21 @@ export async function onAppMount() {
   ui.input.onValidate(validateNewProjectForm);
   ui.theme.monitor.start();
 
+
   await loadConfigs();
   await loadPackages();
 
   if (data.packages[0]) {
     await selectPackage(data.packages[0]);
   }
+
+  setEventListenerEnabled(true);
+  ui.filter.searchInputEl?.focus();
 }
 
 export async function onAppDestroy() {
   ui.theme.monitor.stop();
+  setEventListenerEnabled(false);
 }
 
 export async function selectPackage(p: ExPackage) {
@@ -274,4 +279,33 @@ function createFilterQuery(keywords: string, tags: string[]) {
     .join(' ');
 
   return `${keywords} ${tagsJoined}`;
+}
+
+function closeAllPopovers() {
+  setPopoverVisible('catalog', false);
+  setPopoverVisible('tags', false);
+  setPopoverVisible('openExample', false);
+}
+
+
+function onKeyDown(e: KeyboardEvent) {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'f') {
+    e.preventDefault();
+    e.stopPropagation();
+
+    closeAllPopovers();
+    ui.filter.searchInputEl?.focus();
+  }
+
+  if (e.key == 'Escape') {
+    closeAllPopovers();
+  }
+}
+
+function setEventListenerEnabled(enable: boolean) {
+  const callback = enable
+    ? document.addEventListener.bind(document)
+    : document.removeEventListener.bind(document);
+
+  callback('keydown', onKeyDown, { capture: true });
 }
