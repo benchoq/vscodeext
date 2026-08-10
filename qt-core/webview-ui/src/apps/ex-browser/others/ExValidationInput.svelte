@@ -5,7 +5,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { nanoid } from 'nanoid';
-  import { CircleMinus, Info } from '@lucide/svelte';
 
   let {
     value = $bindable(''),
@@ -18,7 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   const id = `input_${nanoid()}`;
   let focused = $state(false);
-  let forceShowAlert = $state(false);
+  let forceShowAlert = true; //$state(false);
   let hasIssue = $derived(message !== undefined && message.length > 0);
 
   export function focus() {
@@ -38,14 +37,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }
   }
 
-  function onAlertIconHover(e: MouseEvent) {
+  function onHoverEvent(e: MouseEvent) {
     forceShowAlert = e.type === 'mouseenter';
   }
 </script>
 
 <div class="w-full relative">
   {#if hasIssue && (focused || forceShowAlert)}
-    {@render AlertMessage()}
+    <div
+      data-role='alert-message'
+      data-validation={level}
+      class='qt-alert w-full absolute top-full z-10'
+    >
+      {message}
+    </div>
   {/if}
 
   <input
@@ -56,38 +61,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-validation={level}
     onblur={onFocusChange}
     onfocus={onFocusChange}
+    onmouseenter={onHoverEvent}
+    onmouseleave={onHoverEvent}
     oninput={() => { onInput(); }}
     onkeydown={onKeyDown}
     {...restProps}
   />
-
-  {#if hasIssue}
-    {@render AlertIcon(level)}
-  {/if}
 </div>
-
-<!-- snippets -->
-{#snippet AlertMessage()}
-  <div
-    data-role='alert-message'
-    class='w-full absolute top-full z-10'
-  >
-    {message}
-  </div>
-{/snippet}
-
-{#snippet AlertIcon(level: string)}
-{@const Icon = (level === 'error' ? CircleMinus : Info)}
-  <button
-    class='absolute top-1/2 -translate-y-1/2 right-[7px]'
-    data-role='alert-icon'
-    data-level={level}
-    onmouseenter={onAlertIconHover}
-    onmouseleave={onAlertIconHover}
-  >
-    <Icon size={14}/>
-  </button>
-{/snippet}
 
 <style>
   .qt-input {
@@ -103,19 +83,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-role='alert-message'] {
     padding: 5px;
     margin: -2px 0 0 0;
-    border: 1px solid red;
-    color: var(--qt-text-default);
-    background: color-mix(in srgb, red 85%, transparent);
-    opacity: 0.8;
-  }
-
-  [data-role='alert-icon'] {
-    &[data-level='error'] {
-      color: red;
-    }
-
-    &[data-level='warning'] {
-      color: orange;
-    }
+    opacity: 0.9;
   }
 </style>

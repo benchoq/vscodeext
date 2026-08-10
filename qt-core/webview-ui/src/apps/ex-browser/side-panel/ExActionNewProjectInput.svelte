@@ -5,7 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { onMount, tick } from 'svelte';
-  import { Plus, AppWindow } from '@lucide/svelte';
+  import { Check } from '@lucide/svelte';
   import * as icons from '@/icons';
   import * as chars from '@/utils/chars';
   import { clickOutside, portal } from '@/utils/actions';
@@ -14,9 +14,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import ExCheckBox from '../others/ExCheckBox.svelte';
   import ExValidationInput from '../others/ExValidationInput.svelte';
 
-  let {
-    controller = ui.input
-  } = $props();
+  let compNameInput: ExValidationInput;
+  const controller = $derived(ui.input);
+  const states = $derived(controller.states);
+  let showCreateOption = $state(false);
+  // const openInOptions = [
+    // { value: 'newWindow', label: texts.wizard.openInOptions.newWindow },
+    // { value: 'addToWorkspace', label: texts.wizard.openInOptions.addToWorkspace }
+  // ];
+
 
   let menu = $state(undefined as HTMLElement | undefined);
   let button: HTMLElement;
@@ -53,14 +59,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       node.style.left = `${a.right - n.width}px`;
     });
   }
-
-  let compNameInput: ExValidationInput;
-  const states = $derived(controller.states);
-  let showCreateOption = $state(false);
-  // const openInOptions = [
-    // { value: 'newWindow', label: texts.wizard.openInOptions.newWindow },
-    // { value: 'addToWorkspace', label: texts.wizard.openInOptions.addToWorkspace }
-  // ];
 
   function onInput() {
     controller.fireEvent('inputChanged');
@@ -150,6 +148,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <button
       data-variant='primary'
       class='qt-button'
+      disabled={!states.acceptable}
       onclick={() => {
         controller.fireEvent('createClicked');
       }}
@@ -161,6 +160,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       bind:this={button}
       data-variant='primary'
       class='qt-button w-[30px]'
+      disabled={!states.acceptable}
       onclick={toggleMenu}
     >
       {chars.downArrow}
@@ -169,7 +169,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 {#snippet Item(text: string, openIn: 'newWindow' | 'addToWorkspace')}
-  {@const Icon = (openIn === 'newWindow') ? AppWindow : Plus}
   <button
     data-role='dropdown-item'
     class='flex flex-row items-center'
@@ -179,7 +178,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       showCreateOption = false;
     }}
   >
-    <Icon size={14} />
+    {#if ui.input.states.openIn === openIn}
+      <Check size={14} />
+    {:else}
+      <div class='w-[14px]'></div>
+    {/if}
     {text}
   </button>
 {/snippet}
@@ -212,16 +215,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   .qt-button {
     &[data-role='browse-dir'] {
-      padding: 0 7px 0 0;
+      padding: 0 8px 0 0;
       background: none;
       border: none;
       border-radius: 0;
       right: 0px;
-
-      &[data-validation='error'],
-      &[data-validation='warning'] {
-        padding: 0 26px 0 0;
-      }
     }
   }
 </style>

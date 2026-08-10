@@ -51,4 +51,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       background: var(--qt-button-secondary-hover);
     }
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--qt-text-muted);
+    background: none;
+    border-color: var(--qt-stroke-muted);
+  }
 }
