@@ -64,11 +64,9 @@ export async function selectPackage(p: ExPackage) {
   ui.filter.searchInput = '';
   ui.filter.category = findCategoryByName('all');
   ui.selected.package = p;
-  ui.imageUrlCache.clear();
 
-  if (ui.grid) {
-    ui.grid.scrollTop = 0;
-  }
+  ui.imageUrlCache.clear();
+  resetMainViewScroll();
 
   await loadExamples('selectPackage');
 }
@@ -308,4 +306,14 @@ function setEventListenerEnabled(enable: boolean) {
     : document.removeEventListener.bind(document);
 
   callback('keydown', onKeyDown, { capture: true });
+}
+
+function resetMainViewScroll() {
+  if (ui.grid) {
+    ui.grid.scrollTop = 0;
+  }
+
+  if (ui.list) {
+    ui.list.scrollTop = 0;
+  }
 }

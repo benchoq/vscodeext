@@ -15,7 +15,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 </script>
 
-<div data-comp-root class='flex flex-col'>
+<div
+  bind:this={ui.list}
+  data-comp-root
+  class='flex flex-col'
+>
   {#each examples as example (example)}
     <button
       data-item

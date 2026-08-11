@@ -44,7 +44,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div class='w-full relative'>
-  <div data-role='search-icon' class='absolute top-1/2 -translate-1/2'>
+  <div
+    data-role='search-icon'
+    class='absolute top-1/2 -translate-1/2'
+  >
     {Glyphs.search}
   </div>
 

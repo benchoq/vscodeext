@@ -23,6 +23,7 @@ export const data = $state({
 
 export const ui = $state({
   grid: undefined as HTMLDivElement | undefined,
+  list: undefined as HTMLDivElement | undefined,
   theme: VscodeThemeMonitor.createController(),
 
   selected: {
