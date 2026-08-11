@@ -6,9 +6,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 @import 'tailwindcss';
 @import 'flowbite/dist/flowbite.min.css';
 
-@import './tokens.v2.css';
+@import './tokens.css';
 
-@import './components/button.css';
-@import './components/input.css';
-@import './components/list.css';
-@import './components/others.css';
+@import './button.css';
+@import './input.css';
+@import './list.css';
+@import './others.css';

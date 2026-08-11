@@ -67,18 +67,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   --qt-spacing-s:  6px;
   --qt-spacing-m:  8px;
   --qt-spacing-xl: 16px;
-}
 
-:root {
-  --qt-error-fg: var(--vscode-inputValidation-errorForeground, var(--vscode-input-foreground));
-  --qt-error-bg: var(--vscode-inputValidation-errorBackground);
-  --qt-error-border: var(--vscode-inputValidation-errorBorder);
+  /* States of controls, mainly for the input fields */
+  --qt-error-fg:       var(--vscode-inputValidation-errorForeground, var(--vscode-input-foreground));
+  --qt-error-bg:       var(--vscode-inputValidation-errorBackground);
+  --qt-error-border:   var(--vscode-inputValidation-errorBorder);
 
-  --qt-warning-fg: var(--vscode-inputValidation-warningForeground, var(--vscode-input-foreground));
-  --qt-warning-bg: var(--vscode-inputValidation-warningBackground);
+  --qt-warning-fg:     var(--vscode-inputValidation-warningForeground, var(--vscode-input-foreground));
+  --qt-warning-bg:     var(--vscode-inputValidation-warningBackground);
   --qt-warning-border: var(--vscode-inputValidation-warningBorder);
 
-  --qt-info-fg: var(--vscode-inputValidation-infoForeground, var(--vscode-input-foreground));
-  --qt-info-bg: var(--vscode-inputValidation-infoBackground);
-  --qt-info-border: var(--vscode-inputValidation-infoBorder);
+  --qt-info-fg:        var(--vscode-inputValidation-infoForeground, var(--vscode-input-foreground));
+  --qt-info-bg:        var(--vscode-inputValidation-infoBackground);
+  --qt-info-border:    var(--vscode-inputValidation-infoBorder);
 }
