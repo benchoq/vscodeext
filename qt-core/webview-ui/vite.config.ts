@@ -13,11 +13,13 @@ const devPort = parseInt(process.env.VITE_DEV_PORT ?? '5173');
 export default defineConfig({
   plugins: [svelte(), tailwindcss()],
   build: {
+    cssCodeSplit: false,
     rollupOptions: {
       output: {
         entryFileNames: 'index.js',
         assetFileNames: 'index[extname]',
-        chunkFileNames: 'chunk.js'
+        chunkFileNames: 'chunk.js',
+        inlineDynamicImports: true
       }
     },
     chunkSizeWarningLimit: 600
