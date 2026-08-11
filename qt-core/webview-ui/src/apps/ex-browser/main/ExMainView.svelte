@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { type ExCategory } from '@shared/ex-browser';
+  import { type ExCategory, type ExEntry } from '@shared/ex-browser';
   import EmptyState from '@/comps/EmptyState.svelte';
   import ExCollapsibleSection from '../others/ExCollapsibleSection.svelte';
   import ExGridView from './ExGridView.svelte';
@@ -38,31 +38,36 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div data-comp-root class='flex-1 min-w-0 flex flex-col'>
   {#if all.length !== 0}
     {#each all as { category, examples } (category)}
-      {#if category.type === 'general'}
-        {@const count = examples.length}
-        {@const View = (ui.selected.viewMode === 'grid')
-          ? ExGridView : ExListView
-        }
-
-        <ExCollapsibleSection title={category?.name ?? ''} {count}>
-          <View {examples} />
-        </ExCollapsibleSection>
+      {#if category.type === 'general' && examples.length !== 0}
+        {@render SingleCategory(category, examples)}
       {/if}
     {/each}
   {:else}
-    {@const lines = (data.packages.length === 0)
-      ? texts.empty.package
-      : ((all.length === 0) ? (texts.empty.example) : [])
-    }
-
-    <EmptyState text={texts.empty.title} class='!gap-10'>
-      {#each lines as l (l) }
-        {l}<br>
-      {/each}
-    </EmptyState>
-
+    {@render EmptyStateInfo()}
   {/if}
 </div>
+
+{#snippet SingleCategory(category: ExCategory, examples: ExEntry[])}
+  {@const count = examples.length}
+  {@const View = (ui.selected.viewMode === 'grid') ? ExGridView : ExListView}
+
+  <ExCollapsibleSection title={category?.name ?? ''} {count}>
+    <View {examples} />
+  </ExCollapsibleSection>
+{/snippet}
+
+{#snippet EmptyStateInfo()}
+  {@const lines = (data.packages.length === 0)
+    ? texts.empty.package
+    : ((all.length === 0) ? (texts.empty.example) : [])
+  }
+
+  <EmptyState text={texts.empty.title} class='!gap-10'>
+    {#each lines as l (l) }
+      {l}<br>
+    {/each}
+  </EmptyState>
+{/snippet}
 
 <style>
   [data-comp-root] {

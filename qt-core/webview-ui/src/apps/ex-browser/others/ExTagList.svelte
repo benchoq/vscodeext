@@ -27,7 +27,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {/if}
 
   {#if tags.length}
-    {#each tags as tag (tag)}
+    {#each tags as tag, index (index)}
       <ExTagChip
         text={tag}
         outline={usage === 'details'}

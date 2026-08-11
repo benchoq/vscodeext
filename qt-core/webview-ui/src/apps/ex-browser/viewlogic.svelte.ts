@@ -26,7 +26,6 @@ export async function onAppMount() {
   ui.input.onValidate(validateNewProjectForm);
   ui.theme.monitor.start();
 
-
   await loadConfigs();
   await loadPackages();
 
@@ -54,6 +53,9 @@ export async function selectPackage(p: ExPackage) {
 
   const categories = _.get(r, 'categories', []);
   const resolvedPaths = _.get(r, 'resolvedPaths', {});
+
+  selectExample(undefined);
+  data.examples = [];
   data.categories = isExCategoryArray(categories) ? categories : [];
   data.resolvedPaths =
     isExResolvedPathsRecord(resolvedPaths) ? resolvedPaths : {};
@@ -63,7 +65,6 @@ export async function selectPackage(p: ExPackage) {
   ui.filter.category = findCategoryByName('all');
   ui.selected.package = p;
   ui.imageUrlCache.clear();
-  selectExample(undefined);
 
   if (ui.grid) {
     ui.grid.scrollTop = 0;
@@ -286,7 +287,6 @@ function closeAllPopovers() {
   setPopoverVisible('tags', false);
   setPopoverVisible('openExample', false);
 }
-
 
 function onKeyDown(e: KeyboardEvent) {
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'f') {
