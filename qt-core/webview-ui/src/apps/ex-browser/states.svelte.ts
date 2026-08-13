@@ -12,7 +12,6 @@ import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 
 export type ViewMode = 'grid' | 'list';
-export type PopoverName = 'catalog' | 'tags' | 'openExample';
 
 export const data = $state({
   packages: [] as ExPackage[],
@@ -34,6 +33,7 @@ export const ui = $state({
 
   filter: {
     tags: [] as string[],
+    tagsFilterInput: '',
     searchInput: '',
     searchInputEl: undefined as HTMLInputElement | undefined,
     category: undefined as ExCategory | undefined,
@@ -42,19 +42,6 @@ export const ui = $state({
   sideBar: {
     visible: false,
     expanded: false
-  },
-
-  popovers: {
-    catalog: {
-      visible: false,
-      refEl: undefined as HTMLElement | undefined,
-    },
-
-    tags: {
-      visible: false,
-      refEl: undefined as HTMLElement | undefined,
-      searchInput: '',
-    }
   },
 
   input: NewItemForm.createController(),

@@ -18,8 +18,8 @@ import {
   isExResolvedPathsRecord
 } from "@shared/ex-browser";
 import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
-import { CommandId, isErrorResponse } from "@shared/message";
-import { data, ui, type PopoverName } from './states.svelte';
+import { CommandId, isErrorResponse } from '@shared/message';
+import { data, ui } from './states.svelte';
 
 export async function onAppMount() {
   ui.input.onEvent(onNewProjectFormEvent);
@@ -160,13 +160,6 @@ export async function resolveImageUrl(example: ExEntry) {
   return webviewUrl;
 }
 
-export function setPopoverVisible(name: PopoverName, visible: boolean) {
-  const p = ui.popovers[name];
-  if (p && (p.visible !== visible)) {
-    p.visible = visible;
-  }
-}
-
 export async function onNewProjectFormEvent(type: NewItemForm.EventType, args?: unknown) {
   switch (type) {
     case 'inputChanged':
@@ -281,9 +274,11 @@ function createFilterQuery(keywords: string, tags: string[]) {
 }
 
 function closeAllPopovers() {
-  setPopoverVisible('catalog', false);
-  setPopoverVisible('tags', false);
-  setPopoverVisible('openExample', false);
+  // TODO: remove this
+
+  // setPopoverVisible('catalog', false);
+  // setPopoverVisible('tags', false);
+  // setPopoverVisible('openExample', false);
 }
 
 function onKeyDown(e: KeyboardEvent) {

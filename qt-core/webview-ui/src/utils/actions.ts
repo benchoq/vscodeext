@@ -5,34 +5,35 @@ import {
   flip,
   shift,
   offset,
-  autoUpdate,
+  // autoUpdate,
   computePosition,
   type Placement
 } from '@floating-ui/dom';
 
 export function placeNear(node: HTMLElement, o: PlaceOption) {
-  let cleanup: (() => void) | undefined;
-  let recentOpts = o;
+  place(node, o);
+  // let cleanup: (() => void) | undefined;
+  // let recentOpts = o;
 
-  function callAutoUpdate(oo: PlaceOption) {
-    recentOpts = oo;
-    cleanup = oo.ref
-      ? autoUpdate(oo.ref, node, () => place(node, recentOpts))
-      : undefined;
-  }
+  // function callAutoUpdate(oo: PlaceOption) {
+  //   recentOpts = oo;
+  //   cleanup = oo.ref
+  //     ? autoUpdate(oo.ref, node, () => place(node, recentOpts))
+  //     : undefined;
+  // }
 
-  callAutoUpdate(o);
+  // callAutoUpdate(o);
 
-  return {
-    update(newO: PlaceOption) {
-      cleanup?.();
-      callAutoUpdate(newO);
-    },
+  // return {
+  //   update(newO: PlaceOption) {
+  //     cleanup?.();
+  //     callAutoUpdate(newO);
+  //   },
 
-    destroy() {
-      cleanup?.();
-    }
-  };
+  //   destroy() {
+  //     cleanup?.();
+  //   }
+  // };
 }
 
 export function portal(node: HTMLElement, target: HTMLElement | string = 'body') {
@@ -119,4 +120,7 @@ async function place(node: HTMLElement, o: PlaceOption) {
     top: `${y}px`,
     left: `${x}px`
   });
+
+  console.log(node, o);
+  console.log(x, y);
 }

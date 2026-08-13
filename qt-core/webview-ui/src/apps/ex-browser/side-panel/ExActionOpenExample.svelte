@@ -38,8 +38,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     use:portal
     use:placeNear={{ ref: menu.reference, width: 'full' }}
     use:clickOutside={(e: MouseEvent) => {
-      e.stopPropagation();
       menu.visible = false;
+      e.stopPropagation();
     }}
     class='qt-dropdown fixed flex flex-col'
   >

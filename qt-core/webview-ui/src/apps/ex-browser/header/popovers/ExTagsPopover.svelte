@@ -13,7 +13,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let inputEl: HTMLElement | undefined = undefined;
 
   const tags = $derived.by(() => {
-    const v = ui.popovers.tags.searchInput.trim();
+    const v = ui.filter.tagsFilterInput.trim();
     const all = ui.filter.category?.tags ?? [];
     return (v.length === 0)
       ? all
@@ -25,7 +25,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   function clearSearchInput() {
-    ui.popovers.tags.searchInput = '';
+    ui.filter.tagsFilterInput = '';
     inputEl?.focus();
   }
 
@@ -44,14 +44,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 >
   <div data-area='search' class='relative'>
     <input
-      bind:value={ui.popovers.tags.searchInput}
+      bind:value={ui.filter.tagsFilterInput}
       bind:this={inputEl}
       type='text'
       class='qt-input w-full'
       placeholder='Filter tags...'
     />
 
-    {#if ui.popovers.tags.searchInput.trim().length}
+    {#if ui.filter.tagsFilterInput.trim().length}
       <div class='absolute top-1/2 -translate-y-1/2 right-[12px]'>
         <ExCloseButton onClicked={clearSearchInput} />
       </div>

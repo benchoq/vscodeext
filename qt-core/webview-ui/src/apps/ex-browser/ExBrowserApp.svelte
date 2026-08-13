@@ -12,7 +12,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import ExHeader from './header/ExHeader.svelte';
   import ExMainView from './main/ExMainView.svelte';
   import ExSidePanel from './side-panel/ExSidePanel.svelte';
-  import ExAllPopovers from './ExAllPopovers.svelte';
   import * as viewlogic from './viewlogic.svelte';
   import { ui } from './states.svelte';
 
@@ -29,10 +28,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <div data-sidebar class:open={ui.sideBar.visible}>
       <ExSidePanel />
     </div>
-  </div>
-
-  <div class='z-100'>
-    <ExAllPopovers />
   </div>
 </div>
 
