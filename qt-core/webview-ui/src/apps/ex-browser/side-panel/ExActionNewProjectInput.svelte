@@ -97,7 +97,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {#if optionVisible}
     <div
       use:portal
-      use:placeNear={optionReference}
+      use:placeNear={{ ref: optionReference, placement: 'bottom-end' }}
       use:clickOutside={(e: MouseEvent) => {
         e.stopPropagation();
         optionVisible = false;

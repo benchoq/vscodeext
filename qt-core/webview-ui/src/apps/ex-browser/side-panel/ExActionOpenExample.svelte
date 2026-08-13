@@ -34,7 +34,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <div
     data-role='menu'
     use:portal
-    use:placeNear={menuReference}
+    use:placeNear={{ ref: menuReference, width: 'full' }}
     use:clickOutside={(e: MouseEvent) => {
       e.stopPropagation();
       menuVisible = false;
