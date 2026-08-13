@@ -7,7 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { Glyphs } from '@/icons';
   import { clickOutside, portal, placeNear } from '@/utils/actions';
   import { data, ui } from '../states.svelte';
-  import ExCatalogPopover from './popovers/ExCatalogPopover.svelte';
+  import ExCatalogPopover from '../popovers/ExCatalogPopover.svelte';
 
   const valid = $derived.by(() => {
     return (ui.selected.package?.name ?? '')

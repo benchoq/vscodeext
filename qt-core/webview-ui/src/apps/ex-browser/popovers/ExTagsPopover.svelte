@@ -6,9 +6,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  import ExCloseButton from '../../others/ExCloseButton.svelte';
-  import { ui } from '../../states.svelte';
-  import * as viewlogic from '../../viewlogic.svelte';
+  import ExCloseButton from '../others/ExCloseButton.svelte';
+  import { ui } from '../states.svelte';
+  import * as viewlogic from '../viewlogic.svelte';
 
   let inputEl: HTMLElement | undefined = undefined;
 

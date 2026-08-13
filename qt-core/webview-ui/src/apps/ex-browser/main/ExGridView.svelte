@@ -6,7 +6,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { type ExEntry } from '@shared/ex-browser';
 
-  import ExGridCard from './ExGridCard.svelte';
+  import ExGridViewCard from './ExGridViewCard.svelte';
   import { ui } from '../states.svelte';
 
   let {
@@ -19,8 +19,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   data-root
   class='grid grid-flow-dense gap-[10px]'
 >
-  {#each examples as example (example)}
-    <ExGridCard {example}/>
+  {#each examples as example (example.projectPath)}
+    <ExGridViewCard {example} />
   {/each}
 </div>
 

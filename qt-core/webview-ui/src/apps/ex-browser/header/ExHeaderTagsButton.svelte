@@ -6,7 +6,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { ui } from '../states.svelte';
   import { clickOutside, portal, placeNear } from '@/utils/actions';
-  import ExTagsPopover from './popovers/ExTagsPopover.svelte';
+  import ExTagsPopover from '../popovers/ExTagsPopover.svelte';
 
   const popover = $derived(ui.popovers.tags);
 </script>

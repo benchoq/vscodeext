@@ -8,6 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import EmptyState from '@/comps/EmptyState.svelte';
   import { exBrowser as texts } from '@/apps/texts';
 
+  import './ExMainView.css';
   import { data, ui } from '../states.svelte';
   import ExCollapsibleSection from '../others/ExCollapsibleSection.svelte';
   import ExGridView from './ExGridView.svelte';

@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2026 The Qt Company Ltd.
+SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+*/
+
+@keyframes cardInAni {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+[data-role='item-area'] {
+  background: var(--qt-bg-elevated);
+  border: 1px solid var(--qt-stroke-subtle);
+  border-radius: var(--qt-radius-s);
+  cursor: pointer;
+  overflow: hidden;
+  transition-property: border-color, background;
+  transition-duration: var(--duration-base);
+  animation: cardInAni 160ms ease both;
+
+  &:hover {
+    background: var(--qt-hover-bg);
+    border-color: color-mix(in srgb, var(--qt-text-muted) 60%, transparent);
+  }
+
+  &.selected {
+    background: var(--accent-blue-a9);
+    border-color: var(--qt-accent-info);
+  }
+}
+
+[data-role='item-name'] {
+  color: var(--qt-text-default);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

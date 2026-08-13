@@ -6,9 +6,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { Glyphs } from '@/icons';
 
-  import ExToolButton from '../../others/ExToolButton.svelte';
-  import { ui } from '../../states.svelte';
-  import * as viewlogic from '../../viewlogic.svelte';
+  import ExToolButton from '../others/ExToolButton.svelte';
+  import { ui } from '../states.svelte';
+  import * as viewlogic from '../viewlogic.svelte';
 
   const poolDirPath = $derived(ui.selected.package?.poolDir.fsPath);
 </script>

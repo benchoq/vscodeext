@@ -17,68 +17,39 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div
   bind:this={ui.list}
-  data-root
-  class='flex flex-col'
+  class='flex flex-col gap-[2px]'
 >
-  {#each examples as example (example)}
+  {#each examples as example (example.projectPath)}
     <button
-      data-item
+      data-role='item-area'
       class='flex items-center'
       class:selected={example === ui.selected.example}
       onclick={() => {
         viewlogic.selectExample(example);
       }}
     >
-      <span data-role='list-name'>{example.name}</span>
+      <span data-role='item-name'>{example.name}</span>
       {#if example.tags.length}
         <ExTagList
           usage='list'
           tags={example.tags}
         />
       {/if}
-      <span data-role='list-category'>{example.categories.join(', ')}</span>
+      <span data-role='item-category'>
+        {example.categories.join(', ')}
+      </span>
     </button>
   {/each}
 </div>
 
 <style>
-  [data-root] {
-    gap: 2px;
-
-    & > [data-item] {
-      height: 36px;
-      padding: 0 10px;
-      background: var(--qt-bg-elevated);
-      border: 1px solid var(--qt-stroke-subtle);
-      border-radius: var(--qt-radius-s);
-      gap: 10px;
-      cursor: pointer;
-      transition-property: border-color, background;
-      transition-duration: var(--duration-base);
-
-      &:hover {
-        background: var(--qt-hover-bg);
-        border-color: var(--qt-stroke-muted);
-      }
-
-      &.selected {
-        background: var(--accent-blue-a9);
-        border-color: var(--qt-accent-info);
-      }
-    }
+  [data-role='item-area'] {
+    height: 36px;
+    padding: 0 10px;
+    gap: 10px;
   }
 
-  [data-role='list-name'] {
-    color: var(--qt-text-default);
-    font-size: 13px;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 18px;
-  }
-
-  [data-role='list-category'] {
+  [data-role='item-category'] {
     color: var(--qt-text-muted);
     margin-left: auto;
     opacity: 0.8;
