@@ -31,7 +31,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   <ExSeparator margin='10px 0px'/>
 
-  <div class='flex flex-col'>
+  <div class='flex flex-col gap-[4px]'>
     <div data-role='section-header'>Actions</div>
     <ExActionOpenExample />
     <ExActionNewProject />

@@ -43,8 +43,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     gap: 10px;
   }
 
-  [data-role='section-title']:hover {
-    color: var(--qt-text-default);
+  [data-role='section-title'] {
+    font-size: 11px;
+    font-weight: 600;
+    text-align: start;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+
+    &:hover {
+      color: var(--qt-text-default);
+    }
+  }
+
+  [data-role='section-count'] {
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
   }
 
   [data-header] {

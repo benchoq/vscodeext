@@ -17,7 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   type="button"
   role="checkbox"
   aria-checked={checked}
-  data-role='wrapper'
+  data-root
   class="flex flex-row items-center"
   onclick={() => {
     checked = !checked;
@@ -38,7 +38,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </button>
 
 <style>
-  [data-role='wrapper'] {
+  [data-root] {
     gap: 6px;
     cursor: pointer;
 

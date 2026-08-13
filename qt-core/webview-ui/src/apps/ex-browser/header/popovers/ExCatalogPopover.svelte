@@ -30,7 +30,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   [data-root] {
-    width: var(--catalog-popup-width);
+    width: 480px;
     font-size: 13px;
     overflow: hidden;
   }

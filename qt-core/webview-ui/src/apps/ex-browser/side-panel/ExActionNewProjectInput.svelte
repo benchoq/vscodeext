@@ -75,7 +75,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   data-root
   class='flex flex-col gap-[13px]'
 >
-  <span>
+  <span data-role='note'>
     Keeps your changes out of the Qt install folder,
     so a Qt update can’t overwrite them.
   </span>
@@ -191,7 +191,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     background: var(--qt-button-secondary-bg);
   }
 
+  [data-role='note'] {
+    font-size: 11px;
+    padding: 0px 10px;
+    color: var(--qt-text-muted);
+  }
+
   [data-role='input-field-name'] {
+    font-size: 11px;
     color: var(--qt-text-muted);
   }
 

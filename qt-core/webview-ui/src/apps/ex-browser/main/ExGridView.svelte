@@ -27,6 +27,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <style>
   [data-root] {
     grid-auto-rows: 232px;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
   }
 </style>
