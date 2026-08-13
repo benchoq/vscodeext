@@ -17,7 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div
   bind:this={ui.list}
-  data-comp-root
+  data-root
   class='flex flex-col'
 >
   {#each examples as example (example)}
@@ -42,7 +42,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  [data-comp-root] {
+  [data-root] {
     gap: 2px;
 
     & > [data-item] {
@@ -70,11 +70,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   [data-role='list-name'] {
     color: var(--qt-text-default);
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 18px;
   }
 
   [data-role='list-category'] {
     color: var(--qt-text-muted);
     margin-left: auto;
     opacity: 0.8;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
   }
 </style>

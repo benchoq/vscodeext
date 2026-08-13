@@ -14,7 +14,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <button
-  data-comp-root
+  data-root
   class='flex items-center justify-center'
   style:width={size}
   style:height={size}
@@ -24,7 +24,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </button>
 
 <style>
-  [data-comp-root] {
+  [data-root] {
     color: var(--qt-text-muted);
     border-radius: var(--qt-radius-s);
     cursor: pointer;

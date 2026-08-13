@@ -31,10 +31,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     min-width: 60px;
     color: var(--qt-text-muted);
     flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 18px;
   }
 
   [data-role='row-value'] {
     padding: 3px 0px;
     color: var(--qt-text-default);
+    font-size: 11px;
+    line-height: 18px;
+    word-break: break-word;
   }
 </style>

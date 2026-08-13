@@ -39,7 +39,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <svelte:options runes={true} />
 
 <div
-  data-comp-root
+  data-root
   data-comp='tags-popover'
   class='qt-popover flex flex-col'
 >
@@ -84,7 +84,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  [data-comp-root] {
+  [data-root] {
     z-index: 200;
     width: 380px;
     max-height: 300px;

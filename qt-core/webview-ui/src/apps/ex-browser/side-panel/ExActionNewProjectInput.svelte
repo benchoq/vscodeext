@@ -73,7 +73,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div
   data-comp='side-panel'
-  data-comp-root
+  data-root
   class='flex flex-col gap-[13px]'
 >
   <span>
@@ -187,7 +187,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 <style>
-  [data-comp-root] {
+  [data-root] {
     padding: 10px;
     background: var(--qt-button-secondary-bg);
   }

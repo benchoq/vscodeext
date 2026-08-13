@@ -50,7 +50,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div
   bind:this={container}
-  data-comp-root
+  data-root
   class='w-full h-full relative'
 >
   {#if example}
@@ -71,7 +71,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  [data-comp-root] {
+  [data-root] {
     flex: 1;
     min-height: var(--card-min-height);
     border-radius: var(--qt-radius-m);

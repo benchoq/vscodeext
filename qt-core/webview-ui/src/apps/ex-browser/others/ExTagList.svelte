@@ -12,11 +12,27 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     tags = [] as string[],
     usage = 'card' as 'header' | 'card' | 'list' | 'details',
   } = $props();
+
+  function findTagVariant(tag: string) {
+    switch (usage) {
+      case 'card':
+      case 'list':
+        return viewlogic.isTagSelected(tag) ? 'selected' : '';
+
+      case 'header':
+        return 'selected';
+
+      case 'details':
+        return 'outline';
+
+      default:
+        return '';
+    }
+  }
 </script>
 
 <div
-  data-comp='tag-list'
-  data-comp-root
+  data-root
   class='flex flex-row'
   class:flex-wrap={usage === 'details'}
 >
@@ -30,8 +46,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {#each tags as tag, index (index)}
       <ExTagChip
         text={tag}
-        outline={usage === 'details'}
-        selected={viewlogic.isTagSelected(tag)}
+        variant={findTagVariant(tag)}
         decorated={usage === 'header'}
         onClicked={(e: MouseEvent) => {
           e.stopPropagation();
@@ -45,7 +60,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  [data-comp-root] {
+  [data-root] {
     align-items: center;
     gap: 4px;
     flex-shrink: 0;
@@ -60,7 +75,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-role='icon'] {
     color: var(--qt-text-muted);
     flex-shrink: 0;
-    align-items: center;
     margin-right: 1px;
     opacity: 0.7;
   }

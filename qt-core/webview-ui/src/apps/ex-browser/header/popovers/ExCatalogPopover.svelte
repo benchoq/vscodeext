@@ -13,7 +13,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <svelte:options runes={true} />
 
 <div
-  data-comp-root
+  data-root
   data-comp='catalog-popover'
   class='qt-popover flex flex-col'
 >
@@ -30,7 +30,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  [data-comp-root] {
+  [data-root] {
     width: var(--catalog-popup-width);
     overflow: hidden;
 

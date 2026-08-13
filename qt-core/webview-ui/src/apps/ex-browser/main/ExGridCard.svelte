@@ -7,17 +7,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { type ExEntry } from '@shared/ex-browser';
   import * as utils from '@/utils/utils';
 
+  import { ui } from '../states.svelte';
+  import * as viewlogic from '../viewlogic.svelte';
   import ExTagList from '../others/ExTagList.svelte';
   import ExThumbnail from '../others/ExThumbnail.svelte';
   import ExSeparator from '../others/ExSeparator.svelte';
-  import { ui } from '../states.svelte';
-  import * as viewlogic from '../viewlogic.svelte';
 
-  let {
-    example
-  } : {
-    example: ExEntry
-  } = $props();
+  type Props = { example: ExEntry };
+  let { example }: Props = $props();
 
   function selectExample() {
     viewlogic.selectExample(example);
@@ -25,7 +22,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div
-  data-comp-root
+  data-root
   class='w-full h-full flex flex-col relative'
   class:selected={example === ui.selected.example}
   role='button'
@@ -50,24 +47,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  [data-role='card-name'] {
-    color: var(--qt-text-default);
-  }
-
-  [data-role='card-module'] {
-    top: 8px;
-    left: 8px;
-    padding: 0 6px;
-    pointer-events: none;
-    color: #f2f2f2;
-    background: rgba(0,0,0,0.62);
-    border-radius: 3px;
-
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-  }
-
-  [data-comp-root] {
+  [data-root] {
     padding: var(--qt-spacing-xl);
     background: var(--qt-bg-elevated);
     border: 1px solid var(--qt-stroke-subtle);
@@ -97,6 +77,35 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       background: var(--qt-bg-default);
       overflow: hidden;
     }
+  }
+
+  [data-role='card-name'] {
+    color: var(--qt-text-default);
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  [data-role='card-module'] {
+    top: 8px;
+    left: 8px;
+    padding: 0 6px;
+    color: #f2f2f2;
+    background: rgba(0,0,0,0.62);
+    border-radius: 3px;
+
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
 
   @keyframes cardInAni {

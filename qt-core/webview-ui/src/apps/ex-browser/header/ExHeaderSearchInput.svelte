@@ -46,7 +46,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div class='w-full relative'>
   <div
     data-role='search-icon'
-    class='absolute top-1/2 -translate-1/2'
+    class='absolute top-1/2 -translate-y-1/2'
   >
     {Glyphs.search}
   </div>
@@ -76,11 +76,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='search-icon'] {
-    left: 15px;
+    left: 12px;
     color: var(--qt-text-muted);
     background: none;
     border: none;
     font-size: 13px;
-    line-height: 1;
   }
 </style>

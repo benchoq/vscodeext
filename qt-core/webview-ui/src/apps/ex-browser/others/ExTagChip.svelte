@@ -8,8 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   let {
     text = '',
-    outline = false,
-    selected = false,
+    variant = '' as '' | 'outline' | 'selected',
     decorated = false,
     onClicked = (_: MouseEvent) => {}
   } = $props();
@@ -17,10 +16,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#if text.length > 0}
   <button
-    data-comp='tag-chip'
     data-root
-    data-outline={outline}
-    data-selected={selected}
+    data-variant={variant}
     class='inline-flex'
     onclick={(e: MouseEvent) => {
       onClicked(e);
@@ -31,22 +28,26 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {:else}
       <span data-role='hash'>#</span>
       <span data-role='name'>{text}</span>
-      <span data-role='close'>
-        {Glyphs.multiplication}
-      </span>
+      <span data-role='close'>{Glyphs.multiplication}</span>
     {/if}
   </button>
 {/if}
 
 <style>
   [data-root] {
-    align-items: center;
     height: 20px;
     padding: 0 6px;
     border-radius: var(--qt-radius-s);
     background: var(--qt-bg-input);
     color: var(--qt-text-muted);
     border: 1px solid transparent;
+    font-weight: 600;
+    line-height: 12px;
+    font-family: inherit;
+    letter-spacing: 0;
+    white-space: nowrap;
+    text-decoration: none;
+    align-items: center;
     cursor: pointer;
     transition-property: background, border-color, color;
     transition-duration: var(--duration-short);
@@ -57,7 +58,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       color: var(--qt-text-default);
     }
 
-    &[data-outline='true'] {
+    &[data-variant='outline'] {
       background: transparent;
       border: 1px solid var(--qt-stroke-muted);
       color: var(--qt-text-muted);
@@ -69,7 +70,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       }
     }
 
-    &[data-selected='true'] {
+    &[data-variant='selected'] {
       background: var(--accent-blue-a22);
       border-color: var(--accent-blue-a55);
       color: var(--qt-accent-active);
@@ -80,9 +81,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }
   }
 
+  [data-role='name'] {
+    font-size: 10px;
+  }
+
   [data-role='hash'] {
-    opacity: 0.6;
     margin-right: -2px;
+    opacity: 0.6;
+    font-size: 10px;
   }
 
   [data-role='close'] {

@@ -12,13 +12,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-<div data-comp-root class='flex flex-row'>
+<div data-root class='flex flex-row'>
   <div data-role='title'>Catalog</div>
   <ExCloseButton onClicked={close} />
 </div>
 
 <style>
-  [data-comp-root] {
+  [data-root] {
     padding: 10px 14px;
     align-items: center;
     justify-content: space-between;

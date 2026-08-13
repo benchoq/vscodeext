@@ -10,13 +10,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div
-  data-comp-root
+  data-root
   style:margin={margin}
 >
 </div>
 
 <style>
-  [data-comp-root] {
+  [data-root] {
     height: 1px;
     background: var(--qt-stroke-subtle);
     flex-shrink: 0;

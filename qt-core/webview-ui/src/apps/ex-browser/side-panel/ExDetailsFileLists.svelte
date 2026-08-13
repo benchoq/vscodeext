@@ -11,6 +11,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const filesSorted = $derived.by(() => {
     return [...(example?.filesToOpen ?? [])].sort();
   })
+
   const resolvedPaths = $derived.by(() => {
     const id = ui.selected.example?.projectPath;
     return id ? data.resolvedPaths[id] : undefined;
@@ -34,7 +35,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 {#if example}
-  <div data-comp-root class='flex flex-col'>
+  <div class='flex flex-col'>
     {@render FileButton(shortenPath(example.projectPath), () => {
       viewlogic.runExAction('project-open-file');
     })}
@@ -61,16 +62,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 <style>
-  [data-comp-root] {
-    gap: 0px;
-  }
-
   [data-role='project-file'] {
     color: var(--qt-text-default);
     background: none;
     border: none;
     cursor: pointer;
     overflow: hidden;
+    line-height: 18px;
+    word-break: break-word;
+    font-family: inherit;
+    font-size: 11px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
 
     &:hover {
       color: var(--qt-accent-info);

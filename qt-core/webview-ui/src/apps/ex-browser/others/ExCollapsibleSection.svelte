@@ -15,7 +15,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   } = $props();
 </script>
 
-<div data-comp-root data-comp='main-view' class="flex flex-col">
+<div data-root data-comp='main-view' class="flex flex-col">
   <button
     data-header
     class='sticky flex flex-row items-center'
@@ -39,12 +39,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  [data-role='section-title']:hover {
-    color: var(--qt-text-default);
+  [data-root] {
+    gap: 10px;
   }
 
-  [data-comp-root] {
-    gap: 10px;
+  [data-role='section-title']:hover {
+    color: var(--qt-text-default);
   }
 
   [data-header] {
@@ -59,7 +59,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     gap: 7px;
     cursor: pointer;
-    user-select: none;
 
     & > [data-chevron] {
       transition: transform var(--duration-base);

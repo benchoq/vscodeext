@@ -19,7 +19,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     e.stopPropagation();
   }}
 >
-  <span data-comp='close-button'>
-    {Glyphs.multiplication}
-  </span>
+  {Glyphs.multiplication}
 </ExToolButton>

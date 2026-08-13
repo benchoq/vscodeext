@@ -17,7 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   const id = `input_${nanoid()}`;
   let focused = $state(false);
-  let forceShowAlert = true; //$state(false);
+  let forceShowAlert = $state(false);
   let hasIssue = $derived(message !== undefined && message.length > 0);
 
   export function focus() {

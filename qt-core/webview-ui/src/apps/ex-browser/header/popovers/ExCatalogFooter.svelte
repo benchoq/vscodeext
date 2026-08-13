@@ -13,7 +13,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const poolDirPath = $derived(ui.selected.package?.poolDir.fsPath);
 </script>
 
-<div data-comp-root class='flex-1 flex flex-row'>
+<div data-root class='flex-1 flex flex-row'>
   <span data-role='footer-icon-info'>
     {Glyphs.info}
   </span>
@@ -39,7 +39,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  [data-comp-root] {
+  [data-root] {
     align-items: center;
     gap: 8px;
     color: var(--qt-text-muted);

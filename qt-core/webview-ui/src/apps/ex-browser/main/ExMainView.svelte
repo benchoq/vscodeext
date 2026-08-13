@@ -4,13 +4,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { type ExCategory, type ExEntry } from '@shared/ex-browser';
+  import { type ExCategory } from '@shared/ex-browser';
   import EmptyState from '@/comps/EmptyState.svelte';
+  import { exBrowser as texts } from '@/apps/texts';
+
+  import { data, ui } from '../states.svelte';
   import ExCollapsibleSection from '../others/ExCollapsibleSection.svelte';
   import ExGridView from './ExGridView.svelte';
   import ExListView from './ExListView.svelte';
-  import { exBrowser as texts } from '@/apps/texts';
-  import { data, ui } from '../states.svelte';
 
   const all = $derived.by(() => {
     const categories =
@@ -35,28 +36,25 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-<div data-comp-root class='flex-1 min-w-0 flex flex-col'>
-  {#if all.length !== 0}
+<div data-root class='flex-1 min-w-0 flex flex-col'>
+  {#if all.length === 0}
+    {@render emptyStateInfo()}
+  {:else}
     {#each all as { category, examples } (category)}
       {#if category.type === 'general' && examples.length !== 0}
-        {@render SingleCategory(category, examples)}
+        {@const count = examples.length}
+        {@const View = (ui.selected.viewMode === 'grid') ? ExGridView : ExListView}
+
+        <ExCollapsibleSection title={category?.name ?? ''} {count}>
+          <View {examples} />
+        </ExCollapsibleSection>
       {/if}
     {/each}
-  {:else}
-    {@render EmptyStateInfo()}
   {/if}
 </div>
 
-{#snippet SingleCategory(category: ExCategory, examples: ExEntry[])}
-  {@const count = examples.length}
-  {@const View = (ui.selected.viewMode === 'grid') ? ExGridView : ExListView}
-
-  <ExCollapsibleSection title={category?.name ?? ''} {count}>
-    <View {examples} />
-  </ExCollapsibleSection>
-{/snippet}
-
-{#snippet EmptyStateInfo()}
+<!-- snippets -->
+{#snippet emptyStateInfo()}
   {@const lines = (data.packages.length === 0)
     ? texts.empty.package
     : ((all.length === 0) ? (texts.empty.example) : [])
@@ -70,8 +68,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 <style>
-  [data-comp-root] {
+  [data-root] {
     padding: 0px 14px 14px;
     overflow: hidden auto;
+    user-select: none;
   }
 </style>

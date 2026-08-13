@@ -11,8 +11,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import ExThumbnailAndDesc from './ExThumbnailAndDesc.svelte';
   import ExActionDocs from './ExActionDocs.svelte';
-  import ExActionOpen from './ExActionOpen.svelte';
   import ExActionNewProject from './ExActionNewProject.svelte';
+  import ExActionOpenExample from './ExActionOpenExample.svelte';
   import ExDetailsTable from './ExDetailsTable.svelte';
 
   function close() {
@@ -20,53 +20,51 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-<div data-comp-root data-comp='side-panel' class='flex flex-col'>
-  <div data-title-bar class='flex flex-row'>
-    <span data-role='title' class='flex-1'>
-      Example Details
-    </span>
-
-    <ExCloseButton onClicked={close} />
+<div data-root class='flex flex-col gap-[6px]'>
+  <div class='flex flex-col'>
+    <div class='flex flex-row'>
+      <span data-role='title' class='flex-1'>Example Details</span>
+      <ExCloseButton onClicked={close} />
+    </div>
+    <ExThumbnailAndDesc />
   </div>
 
-  <ExThumbnailAndDesc />
   <ExSeparator margin='10px 0px'/>
 
-  <div data-section class='flex flex-col'>
+  <div class='flex flex-col'>
     <div data-role='section-header'>Actions</div>
-    <ExActionOpen />
+    <ExActionOpenExample />
     <ExActionNewProject />
     <ExActionDocs />
   </div>
 
   <ExSeparator margin='10px 0px'/>
 
-  <div data-section class='flex flex-col'>
+  <div class='flex flex-col'>
     <div data-role='section-header'>Details</div>
     <ExDetailsTable />
   </div>
 </div>
 
 <style>
+  [data-root] {
+    overflow: hidden auto;
+    padding: 12px 14px 24px;
+  }
+
   [data-role='title'] {
     color: var(--qt-text-muted);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
   }
 
   [data-role='section-header'] {
     margin: 5px 0px;
     color: var(--qt-text-muted);
-  }
-
-  [data-comp-root] {
-    overflow: hidden auto;
-    padding: 12px 14px 24px;
-  }
-
-  [data-title-bar] {
-    margin-bottom: 6px;
-  }
-
-  [data-section] {
-    gap: 6px;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
   }
 </style>
