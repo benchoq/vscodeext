@@ -9,7 +9,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { clickOutside } from '@/utils/actions';
   import ExTagsPopover from './header/popovers/ExTagsPopover.svelte';
   import ExCatalogPopover from './header/popovers/ExCatalogPopover.svelte';
-  import ExOpenPopover from './side-panel/ExOpenPopover.svelte';
   import * as viewlogic from './viewlogic.svelte';
   import { data, ui, type PopoverName } from './states.svelte';
 
@@ -35,13 +34,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         offset: 5,
         visible: (ui.popovers.tags.visible && (ui.filter.category?.tags.length ?? 0) !== 0)
       },
-
-      openExample: {
-        component: ExOpenPopover,
-        pos: calcAnchorPos(ui.popovers.openExample.refEl),
-        offset: 3,
-        visible: (ui.popovers.openExample.visible && ui.selected.example)
-      }
     } as Record<PopoverName, Info>
   });
 
@@ -57,7 +49,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {@render Popover('tags')}
 {@render Popover('catalog')}
-{@render Popover('openExample')}
 
 {#snippet Popover(name: PopoverName)}
   {@const p = popovers[name]}

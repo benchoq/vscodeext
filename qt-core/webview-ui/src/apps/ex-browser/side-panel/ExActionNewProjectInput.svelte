@@ -16,17 +16,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let compNameInput: ExValidationInput;
   const controller = $derived(ui.input);
   const states = $derived(controller.states);
-  let showCreateOption = $state(false);
+
+  let optionVisible = $state(false);
+  let optionReference = $state<HTMLButtonElement>();
 
   // const openInOptions = [
     // { value: 'newWindow', label: texts.wizard.openInOptions.newWindow },
     // { value: 'addToWorkspace', label: texts.wizard.openInOptions.addToWorkspace }
   // ];
 
-  let menu = $state(undefined as HTMLElement | undefined);
-  let optionButton = $state<HTMLButtonElement>();
-
-  let menuStyle = $state('');
   let menuText = $derived.by(() => {
     return (ui.input.states.openIn === 'newWindow')
       ? 'Create and open in new window'
@@ -96,17 +94,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   {@render CreateButtonAndOptions()}
 
-  {#if showCreateOption}
+  {#if optionVisible}
     <div
-      bind:this={menu}
       use:portal
-      use:placeNear={optionButton}
+      use:placeNear={optionReference}
       use:clickOutside={(e: MouseEvent) => {
         e.stopPropagation();
-        showCreateOption = false;
+        optionVisible = false;
       }}
       class='qt-dropdown fixed flex flex-col'
-      style={menuStyle}
     >
       {@render Item('Open in new window', 'newWindow')}
       {@render Item('Add to workspace', 'addToWorkspace')}
@@ -129,12 +125,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </button>
 
     <button
-      bind:this={optionButton}
+      bind:this={optionReference}
       data-variant='primary'
       class='qt-button w-[30px]'
       disabled={!states.acceptable}
       onclick={(e: MouseEvent) => {
-        showCreateOption = true;
+        optionVisible = true;
         e.stopPropagation();
       }}
     >
@@ -150,7 +146,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     onclick={() => {
       controller.fireEvent('openInChanged', openIn);
       ui.input.states.openIn = openIn;
-      showCreateOption = false;
+      optionVisible = false;
     }}
   >
     {#if ui.input.states.openIn === openIn}
