@@ -273,25 +273,12 @@ function createFilterQuery(keywords: string, tags: string[]) {
   return `${keywords} ${tagsJoined}`;
 }
 
-function closeAllPopovers() {
-  // TODO: remove this
-
-  // setPopoverVisible('catalog', false);
-  // setPopoverVisible('tags', false);
-  // setPopoverVisible('openExample', false);
-}
-
 function onKeyDown(e: KeyboardEvent) {
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'f') {
     e.preventDefault();
     e.stopPropagation();
 
-    closeAllPopovers();
     ui.filter.searchInputEl?.focus();
-  }
-
-  if (e.key == 'Escape') {
-    closeAllPopovers();
   }
 }
 

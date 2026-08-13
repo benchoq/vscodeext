@@ -8,14 +8,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { clickOutside, portal, placeNear } from '@/utils/actions';
   import ExTagsPopover from './popovers/ExTagsPopover.svelte';
 
-  let popover = $state({
-    visible: false,
-    reference: undefined as HTMLButtonElement | undefined
-  });
+  const popover = $derived(ui.popovers.tags);
 </script>
 
 <button
   bind:this={popover.reference}
+  data-role='tags'
   class='qt-button flex flex-row'
   aria-expanded={popover.visible}
   disabled={(ui.filter.category?.tags.length ?? 0) === 0}
@@ -47,16 +45,3 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <ExTagsPopover />
   </div>
 {/if}
-
-<style>
-  .qt-button {
-    height: 28px;
-    color: var(--qt-text-muted);
-    border-radius: var(--qt-radius-s);
-    text-overflow: unset;
-
-    &[aria-expanded='true'] {
-      border-color: var(--qt-accent-info);
-    }
-  }
-</style>

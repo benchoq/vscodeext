@@ -1,0 +1,39 @@
+/*
+Copyright (C) 2026 The Qt Company Ltd.
+SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+*/
+
+.qt-button[data-role='breadcrumb'],
+.qt-button[data-role='tags'] {
+  height: 28px;
+  color: var(--qt-text-muted);
+  border-radius: var(--qt-radius-s);
+  text-overflow: unset;
+
+  &[aria-expanded='true'] {
+    border-color: var(--qt-accent-info);
+  }
+}
+
+.qt-button[data-role='view-mode'] {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+
+  &:hover {
+    color: var(--qt-text-default);
+    background: var(--qt-hover-bg);
+  }
+
+  &[aria-pressed='true'] {
+    color: var(--qt-accent-active);
+    background: var(--accent-blue-a15);
+  }
+
+  & + &{
+    border-left: 1px solid var(--qt-stroke-subtle);
+  }
+}

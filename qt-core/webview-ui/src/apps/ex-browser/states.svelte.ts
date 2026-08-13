@@ -44,6 +44,17 @@ export const ui = $state({
     expanded: false
   },
 
+  popovers: {
+    catalog: {
+      visible: false,
+      reference: undefined as HTMLElement | undefined
+    },
+    tags: {
+      visible: false,
+      reference: undefined as HTMLElement | undefined
+    }
+  },
+
   input: NewItemForm.createController(),
   imageUrlCache: new Map<string, string>(),
 })

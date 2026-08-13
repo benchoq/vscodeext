@@ -16,6 +16,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {#snippet modeButton(mode: 'grid' | 'list')}
   {@const Comp = mode === 'grid' ? icons.Grid : icons.List}
   <button
+    data-role='view-mode'
     class='qt-button flex items-center justify-center'
     aria-pressed={ui.selected.viewMode === mode}
     onclick={() => {
@@ -30,29 +31,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-root] {
     border: 1px solid var(--qt-stroke-subtle);
     border-radius: var(--qt-radius-s);
-  }
-
-  .qt-button {
-    width: 26px;
-    height: 26px;
-    padding: 0;
-    border: none;
-    border-radius: 0;
-    background: none;
-
-    &:hover {
-      color: var(--qt-text-default);
-      background: var(--qt-hover-bg);
-    }
-
-    &[aria-pressed='true'] {
-      color: var(--qt-accent-active);
-      background: var(--accent-blue-a15);
-    }
-  }
-
-  .qt-button + .qt-button {
-    border-left: 1px solid var(--qt-stroke-subtle);
   }
 </style>
 

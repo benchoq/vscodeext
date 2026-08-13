@@ -15,11 +15,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       && (data.packages.length !== 0);
   });
 
-  let popover = $state({
-    visible: false,
-    reference: undefined as HTMLButtonElement | undefined
-  });
-
+  const popover = $derived(ui.popovers.catalog);
   const count = $derived.by(() => {
     const count = ui.filter.category?.count ?? 0;
     const total = data.categories.find(c => c.type === 'all')?.count ?? 0;
@@ -33,6 +29,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <button
   bind:this={popover.reference}
+  data-role='breadcrumb'
   class='qt-button flex flex-row'
   aria-expanded={popover.visible}
   disabled={data.packages.length === 0}
@@ -86,16 +83,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     content: '›';
     margin-right: 6px;
     opacity: 0.5;
-  }
-
-  .qt-button {
-    height: 28px;
-    color: var(--qt-text-muted);
-    border-radius: var(--qt-radius-s);
-    text-overflow: unset;
-
-    &[aria-expanded='true'] {
-      border-color: var(--qt-accent-info);
-    }
   }
 </style>

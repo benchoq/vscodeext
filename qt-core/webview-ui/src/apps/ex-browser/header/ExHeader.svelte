@@ -7,8 +7,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from '../states.svelte';
   import ExTagList from '../others/ExTagList.svelte';
 
+  import './ExHeader.css';
   import ExHeaderBreadcrumb from './ExHeaderBreadcrumb.svelte';
-  import ExHeaderTagButton from './ExHeaderTagButton.svelte';
+  import ExHeaderTagsButton from './ExHeaderTagsButton.svelte';
   import ExHeaderSearchInput from './ExHeaderSearchInput.svelte';
   import ExHeaderViewModeButtons from './ExHeaderViewModeButtons.svelte';
 </script>
@@ -16,7 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div data-root class="flex flex-col shrink-0 gap-[7px]">
   <div class="flex flex-row gap-[6px]">
     <ExHeaderBreadcrumb />
-    <ExHeaderTagButton />
+    <ExHeaderTagsButton />
     <ExHeaderSearchInput />
     <ExHeaderViewModeButtons />
   </div>

@@ -53,9 +53,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {#snippet menuItem(text: string, action: ExActionTypes)}
   <button
     data-role='menu-item'
-    onclick={() => {
+    onclick={(e: MouseEvent) => {
+      menu.visible = false;
       viewlogic.runExAction(action);
-      viewlogic.setPopoverVisible('openExample', false);
+      e.stopPropagation();
     }}
   >
     {text}
