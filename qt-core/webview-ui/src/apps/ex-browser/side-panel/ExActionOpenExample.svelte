@@ -12,17 +12,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
-  let menuVisible = $state(false);
-  let menuReference = $state<HTMLButtonElement>();
+  let menu = $state({
+    visible: false,
+    reference: undefined as HTMLButtonElement | undefined
+  });
 </script>
 
 <button
-  bind:this={menuReference}
+  bind:this={menu.reference}
   data-variant={!ui.sideBar.expanded ? 'primary' : 'secondary'}
-  data-active={ui.popovers.openExample.visible}
+  data-active={menu.visible}
   class='qt-button flex flex-row items-center'
   onclick={(e: MouseEvent) => {
-    menuVisible = true;
+    menu.visible = true;
     e.stopPropagation();
   }}
 >
@@ -30,14 +32,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   Open example
 </button>
 
-{#if menuVisible}
+{#if menu.visible}
   <div
     data-role='menu'
     use:portal
-    use:placeNear={{ ref: menuReference, width: 'full' }}
+    use:placeNear={{ ref: menu.reference, width: 'full' }}
     use:clickOutside={(e: MouseEvent) => {
       e.stopPropagation();
-      menuVisible = false;
+      menu.visible = false;
     }}
     class='qt-dropdown fixed flex flex-col'
   >

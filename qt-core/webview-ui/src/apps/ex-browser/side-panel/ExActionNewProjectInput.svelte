@@ -17,8 +17,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const controller = $derived(ui.input);
   const states = $derived(controller.states);
 
-  let optionVisible = $state(false);
-  let optionReference = $state<HTMLButtonElement>();
+  let createMenu = $state({
+    visible: false,
+    reference: undefined as HTMLButtonElement | undefined
+  });
 
   // const openInOptions = [
     // { value: 'newWindow', label: texts.wizard.openInOptions.newWindow },
@@ -94,13 +96,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   {@render CreateButtonAndOptions()}
 
-  {#if optionVisible}
+  {#if createMenu.visible}
     <div
       use:portal
-      use:placeNear={{ ref: optionReference, placement: 'bottom-end' }}
+      use:placeNear={{ ref: createMenu.reference, placement: 'bottom-end' }}
       use:clickOutside={(e: MouseEvent) => {
         e.stopPropagation();
-        optionVisible = false;
+        createMenu.visible = false;
       }}
       class='qt-dropdown fixed flex flex-col'
     >
@@ -125,12 +127,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </button>
 
     <button
-      bind:this={optionReference}
+      bind:this={createMenu.reference}
       data-variant='primary'
       class='qt-button w-[30px]'
       disabled={!states.acceptable}
       onclick={(e: MouseEvent) => {
-        optionVisible = true;
+        createMenu.visible = true;
         e.stopPropagation();
       }}
     >
@@ -146,7 +148,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     onclick={() => {
       controller.fireEvent('openInChanged', openIn);
       ui.input.states.openIn = openIn;
-      optionVisible = false;
+      createMenu.visible = false;
     }}
   >
     {#if ui.input.states.openIn === openIn}

@@ -54,11 +54,6 @@ export const ui = $state({
       visible: false,
       refEl: undefined as HTMLElement | undefined,
       searchInput: '',
-    },
-
-    openExample: {
-      visible: false,
-      refEl: undefined as HTMLElement | undefined,
     }
   },
 
