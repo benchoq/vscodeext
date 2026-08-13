@@ -36,14 +36,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#if example}
   <div class='flex flex-col'>
-    {@render FileButton(shortenPath(example.projectPath), () => {
+    {@render fileButton(shortenPath(example.projectPath), () => {
       viewlogic.runExAction('project-open-file');
     })}
 
     {#each filesSorted as file (file)}
     {@const exists = resolvedPaths?.filesToOpen[file] !== undefined}
       {#if exists}
-        {@render FileButton(shortenPath(file), () => {
+        {@render fileButton(shortenPath(file), () => {
           viewlogic.runExAction('file-open', { file });
         })}
       {/if}
@@ -51,7 +51,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </div>
 {/if}
 
-{#snippet FileButton(file: string, onClicked: () => void)}
+{#snippet fileButton(file: string, onClicked: () => void)}
   <button
     data-role='project-file'
     class='flex flex-row grow'

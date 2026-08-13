@@ -47,10 +47,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-{@render Popover('tags')}
-{@render Popover('catalog')}
+{@render popover('tags')}
+{@render popover('catalog')}
 
-{#snippet Popover(name: PopoverName)}
+{#snippet popover(name: PopoverName)}
   {@const p = popovers[name]}
 
   {#if p.visible}

@@ -9,11 +9,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div data-root class='flex flex-row'>
-  {@render ModeButton('grid')}
-  {@render ModeButton('list')}
+  {@render modeButton('grid')}
+  {@render modeButton('list')}
 </div>
 
-{#snippet ModeButton(mode: 'grid' | 'list')}
+{#snippet modeButton(mode: 'grid' | 'list')}
   {@const Comp = mode === 'grid' ? icons.Grid : icons.List}
   <button
     class='qt-button flex items-center justify-center'

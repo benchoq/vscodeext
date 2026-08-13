@@ -94,7 +94,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     />
   </div>
 
-  {@render CreateButtonAndOptions()}
+  {@render createButtonAndOptions()}
 
   {#if createMenu.visible}
     <div
@@ -106,13 +106,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       }}
       class='qt-dropdown fixed flex flex-col'
     >
-      {@render Item('Open in new window', 'newWindow')}
-      {@render Item('Add to workspace', 'addToWorkspace')}
+      {@render createMenuItem('Open in new window', 'newWindow')}
+      {@render createMenuItem('Add to workspace', 'addToWorkspace')}
     </div>
   {/if}
 </div>
 
-{#snippet CreateButtonAndOptions()}
+{#snippet createButtonAndOptions()}
   <div class='flex flex-row gap-[3px]'>
     <div class='grow'></div>
     <button
@@ -141,7 +141,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </div>
 {/snippet}
 
-{#snippet Item(text: string, openIn: 'newWindow' | 'addToWorkspace')}
+{#snippet createMenuItem(text: string, openIn: 'newWindow' | 'addToWorkspace')}
   <button
     data-role='dropdown-item'
     class='flex flex-row items-center'
