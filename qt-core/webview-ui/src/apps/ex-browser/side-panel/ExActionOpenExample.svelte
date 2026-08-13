@@ -64,14 +64,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 <style>
-  .qt-button {
-    border: none;
-
-    &[data-active='true'] {
-      background: var(--qt-button-primary-hover);
-    }
-  }
-
   [data-role='menu'] {
     z-index: 200;
     padding: 2px 0;

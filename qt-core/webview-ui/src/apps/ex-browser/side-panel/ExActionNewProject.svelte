@@ -54,9 +54,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   .qt-button {
-    height: 24px;
     padding-right: 3px;
-    border: none;
   }
 
   [data-chevron] {

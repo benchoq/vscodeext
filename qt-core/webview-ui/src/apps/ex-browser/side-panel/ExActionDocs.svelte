@@ -12,29 +12,22 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div class='flex flex-row items-center justify-center'>
   <button
     data-variant='secondary'
-    class='qt-button flex flex-row grow'
+    class='qt-button flex flex-row grow relative'
     onclick={() => {
       viewlogic.runExAction('doc-open-internal');
     }}
   >
     <FileTag />
     <span class='flex-1'>Read the documentation</span>
-
-    <ExToolButton
-      onClicked={(e: MouseEvent) => {
-        e.stopPropagation();
-        viewlogic.runExAction('doc-open-external');
-      }}
-    >
-      <ExtLink size={12}/>
-    </ExToolButton>
+    <div class='absolute top-1/2 -translate-y-1/2 right-[4px]'>
+      <ExToolButton
+        onClicked={(e: MouseEvent) => {
+          e.stopPropagation();
+          viewlogic.runExAction('doc-open-external');
+        }}
+      >
+        <ExtLink size={12}/>
+      </ExToolButton>
+    </div>
   </button>
 </div>
-
-<style>
-  .qt-button {
-    height: 24px;
-    text-align: left;
-    border: none;
-  }
-</style>

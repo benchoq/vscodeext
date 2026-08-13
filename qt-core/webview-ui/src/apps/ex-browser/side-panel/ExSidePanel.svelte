@@ -4,47 +4,62 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { ui } from '../states.svelte';
+  import type { Snippet } from 'svelte';
+  import './ExSidePanel.css';
 
+  import { ui } from '../states.svelte';
   import ExSeparator from '../others/ExSeparator.svelte';
   import ExCloseButton from '../others/ExCloseButton.svelte';
 
-  import ExThumbnailAndDesc from './ExThumbnailAndDesc.svelte';
   import ExActionDocs from './ExActionDocs.svelte';
   import ExActionNewProject from './ExActionNewProject.svelte';
   import ExActionOpenExample from './ExActionOpenExample.svelte';
+  import ExThumbnailAndDesc from './ExThumbnailAndDesc.svelte';
   import ExDetailsTable from './ExDetailsTable.svelte';
 
   function close() {
     ui.sideBar.visible = false;
   }
+
+  const sectionContent: Snippet[] = [
+    infoContent,
+    actionContent,
+    detailContent
+  ]
 </script>
 
-<div data-root class='flex flex-col gap-[6px]'>
-  <div class='flex flex-col'>
-    <div class='flex flex-row'>
-      <span data-role='title' class='flex-1'>Example Details</span>
-      <ExCloseButton onClicked={close} />
+<div data-root class='flex flex-col gap-[12px]'>
+  {#each sectionContent as section, index (index)}
+    {#if index !== 0}
+      <ExSeparator />
+    {/if}
+
+    <div class='flex flex-col gap-[6px]'>
+      {@render section()}
     </div>
-    <ExThumbnailAndDesc />
-  </div>
-
-  <ExSeparator margin='10px 0px'/>
-
-  <div class='flex flex-col gap-[4px]'>
-    <div data-role='section-header'>Actions</div>
-    <ExActionOpenExample />
-    <ExActionNewProject />
-    <ExActionDocs />
-  </div>
-
-  <ExSeparator margin='10px 0px'/>
-
-  <div class='flex flex-col'>
-    <div data-role='section-header'>Details</div>
-    <ExDetailsTable />
-  </div>
+  {/each}
 </div>
+
+<!-- snippets -->
+{#snippet infoContent()}
+  <div class='flex flex-row items-center'>
+    <div data-role='title'>Example Details</div>
+    <ExCloseButton onClicked={close} />
+  </div>
+  <ExThumbnailAndDesc />
+{/snippet}
+
+{#snippet actionContent()}
+  <div data-role='title'>Actions</div>
+  <ExActionOpenExample />
+  <ExActionNewProject />
+  <ExActionDocs />
+{/snippet}
+
+{#snippet detailContent()}
+  <div data-role='title'>Details</div>
+  <ExDetailsTable />
+{/snippet}
 
 <style>
   [data-root] {
@@ -53,18 +68,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='title'] {
+    flex: 1;
     color: var(--qt-text-muted);
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.07em;
-    text-transform: uppercase;
-  }
-
-  [data-role='section-header'] {
-    margin: 5px 0px;
-    color: var(--qt-text-muted);
-    font-size: 12px;
-    font-weight: 400;
     text-transform: uppercase;
   }
 </style>
