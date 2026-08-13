@@ -58,7 +58,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     overflow: hidden;
     transition-property: background, border-color;
     transition-duration: var(--duration-long);
-    min-height: var(--card-min-height);
     animation: cardInAni 160ms ease both;
 
     &:hover {
@@ -73,7 +72,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     & > [data-thumbnail] {
       flex: 1;
-      min-height: var(--card-thumbnail-min-height);
+      min-height: 110px;
       background: var(--qt-bg-default);
       overflow: hidden;
     }

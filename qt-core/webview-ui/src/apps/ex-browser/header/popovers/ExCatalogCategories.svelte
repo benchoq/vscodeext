@@ -30,5 +30,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <style>
   [data-role='count'] {
     opacity: 0.65;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
   }
 </style>

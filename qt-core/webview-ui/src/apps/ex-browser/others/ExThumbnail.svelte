@@ -73,7 +73,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <style>
   [data-root] {
     flex: 1;
-    min-height: var(--card-min-height);
+    min-height: 220px;
     border-radius: var(--qt-radius-m);
     background: var(--qt-bg-default);
     overflow: hidden;

@@ -40,10 +40,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div
   data-root
-  data-comp='tags-popover'
   class='qt-popover flex flex-col'
 >
-  <div data-search-section class='relative'>
+  <div data-area='search' class='relative'>
     <input
       bind:value={ui.popovers.tags.searchInput}
       bind:this={inputEl}
@@ -61,7 +60,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   {#if tags.length !== 0}
     <div
-      data-list-section
+      data-area='list'
       class='qt-item-list flex flex-col'
     >
       {#each tags as tag (tag)}
@@ -90,78 +89,89 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     max-height: 300px;
     flex-direction: column;
     overflow: hidden;
+  }
 
-    & > [data-search-section] {
-      padding: 8px 10px;
-      flex-shrink: 0;
+  [data-area='search'] {
+    padding: 8px 10px;
+    flex-shrink: 0;
 
-      & input {
-        height: 24px;
-        background: var(--qt-bg-input);
-        border: 1px solid transparent;
-        border-radius: var(--qt-radius-s);
+    & input {
+      height: 24px;
+      background: var(--qt-bg-input);
+      border: 1px solid transparent;
+      border-radius: var(--qt-radius-s);
+      color: var(--qt-text-default);
+      padding: 0 26px 0 8px;
+      outline: none;
+      font-size: 11px;
+      font-family: inherit;
+
+      &:hover {
+        border-color: var(--qt-stroke-muted);
         color: var(--qt-text-default);
-        padding: 0 26px 0 8px;
-        outline: none;
-
-        &:hover {
-          border-color: var(--qt-stroke-muted);
-          color: var(--qt-text-default);
-        }
-
-        &:focus {
-          border-color: var(--qt-accent-info);
-          box-shadow: none;
-        }
-
-        &[type='text']::placeholder {
-          color: var(--qt-text-muted);
-        }
       }
-    }
 
-    & > [data-list-section] {
-      border-top: 1px solid var(--qt-stroke-subtle);
-      overflow-y: auto;
-      padding: 8px 10px;
-      gap: 5px;
-      align-content: flex-start;
+      &:focus {
+        border-color: var(--qt-accent-info);
+        box-shadow: none;
+      }
 
-      & .item {
-        align-items: center;
-        gap: 4px;
-        width: 100%;
-        padding: 5px 8px;
-        background: none;
-        border: none;
-        border-radius: var(--qt-radius-s);
-        color: var(--qt-text-default);
-        cursor: pointer;
-        transition: background var(--duration-short);
-        flex-shrink: 0;
-
-        &:hover {
-          background: var(--qt-hover-bg);
-        }
-
-        &.active {
-          background: var(--accent-blue-a18);
-          color: var(--qt-accent-active);
-        }
+      &[type='text']::placeholder {
+        color: var(--qt-text-muted);
       }
     }
   }
 
+  [data-area='list'] {
+    border-top: 1px solid var(--qt-stroke-subtle);
+    overflow-y: auto;
+    padding: 8px 10px;
+    gap: 5px;
+    align-content: flex-start;
+
+    & .item {
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+      padding: 5px 8px;
+      background: none;
+      border: none;
+      border-radius: var(--qt-radius-s);
+      color: var(--qt-text-default);
+      cursor: pointer;
+      transition: background var(--duration-short);
+      flex-shrink: 0;
+
+      &:hover {
+        background: var(--qt-hover-bg);
+      }
+
+      &.active {
+        background: var(--accent-blue-a18);
+        color: var(--qt-accent-active);
+      }
+    }
+  }
+
+  [data-role='name'] {
+    font-size: 12px;
+    text-align: left;
+  }
+
   [data-role='hash'] {
+    font-size: 11px;
     opacity: 0.5;
   }
 
   [data-role='count'] {
     color: var(--qt-text-muted);
+    font-size: 10px;
   }
 
   [data-role='no-match'] {
     padding: 16px;
     color: var(--qt-text-muted);
+    font-size: 11px;
+    text-align: center;
   }
 </style>

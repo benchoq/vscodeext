@@ -14,20 +14,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   } = $props();
 
   function findTagVariant(tag: string) {
-    switch (usage) {
-      case 'card':
-      case 'list':
-        return viewlogic.isTagSelected(tag) ? 'selected' : '';
-
-      case 'header':
-        return 'selected';
-
-      case 'details':
-        return 'outline';
-
-      default:
-        return '';
+    if ((usage === 'header') || viewlogic.isTagSelected(tag)) {
+      return 'selected';
     }
+
+    return (usage === 'details' ? 'outline' : '');
   }
 </script>
 
@@ -47,7 +38,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <ExTagChip
         text={tag}
         variant={findTagVariant(tag)}
-        decorated={usage === 'header'}
+        decorate={usage === 'header'}
         onClicked={(e: MouseEvent) => {
           e.stopPropagation();
           viewlogic.toggleTag(tag);

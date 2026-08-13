@@ -80,4 +80,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   --qt-info-fg:        var(--vscode-inputValidation-infoForeground, var(--vscode-input-foreground));
   --qt-info-bg:        var(--vscode-inputValidation-infoBackground);
   --qt-info-border:    var(--vscode-inputValidation-infoBorder);
+
+  /* others */
+  --qt-separator-color: var(--qt-stroke-subtle);
 }

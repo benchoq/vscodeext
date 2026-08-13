@@ -53,7 +53,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     transition-timing-function: cubic-bezier(.4,0,.2,1), ease;
 
     &.open {
-      width: var(--side-panel-width);
+      width: 320px;
       border-left-color: var(--qt-stroke-subtle);
     }
   }

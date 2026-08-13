@@ -10,15 +10,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div
-  data-root
+  class='h-px shrink-0 bg-(--qt-separator-color)'
   style:margin={margin}
 >
 </div>
-
-<style>
-  [data-root] {
-    height: 1px;
-    background: var(--qt-stroke-subtle);
-    flex-shrink: 0;
-  }
-</style>

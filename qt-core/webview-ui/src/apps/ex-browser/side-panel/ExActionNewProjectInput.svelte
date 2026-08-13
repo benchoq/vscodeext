@@ -72,7 +72,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div
-  data-comp='side-panel'
   data-root
   class='flex flex-col gap-[13px]'
 >

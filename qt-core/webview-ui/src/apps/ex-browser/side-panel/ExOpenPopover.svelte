@@ -17,7 +17,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div
   data-root
-  data-comp='side-panel'
   class='qt-dropdown flex flex-col'
   style:width={`${width}px;`}
 >

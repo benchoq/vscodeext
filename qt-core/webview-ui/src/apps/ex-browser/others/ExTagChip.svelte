@@ -9,7 +9,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let {
     text = '',
     variant = '' as '' | 'outline' | 'selected',
-    decorated = false,
+    decorate = false,
     onClicked = (_: MouseEvent) => {}
   } = $props();
 </script>
@@ -23,7 +23,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       onClicked(e);
     }}
     >
-    {#if !decorated}
+    {#if !decorate}
       <span data-role='name'>{text}</span>
     {:else}
       <span data-role='hash'>#</span>

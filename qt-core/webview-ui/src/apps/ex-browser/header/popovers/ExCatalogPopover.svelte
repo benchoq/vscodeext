@@ -14,7 +14,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div
   data-root
-  data-comp='catalog-popover'
   class='qt-popover flex flex-col'
 >
   <ExCatalogHeader />
@@ -32,25 +31,26 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <style>
   [data-root] {
     width: var(--catalog-popup-width);
+    font-size: 13px;
     overflow: hidden;
+  }
 
-    & > [data-section] {
-      max-height: 340px;
-      border-top: var(--catalog-section-separator);
+  [data-section] {
+    max-height: 340px;
+    border-top: 1px solid var(--qt-separator-color);
+  }
 
-      & > [data-versions] {
-        width: 160px;
-        padding: 6px 0;
-        min-height: 0;
-        overflow-y: auto;
-      }
+  [data-versions] {
+    width: 160px;
+    padding: 6px 0;
+    min-height: 0;
+    overflow-y: auto;
+  }
 
-      & > [data-categories] {
-        border-left: var(--catalog-section-separator);
-        padding: 6px 0;
-        min-height: 0;
-        overflow-y: auto;
-      }
-    }
+  [data-categories] {
+    border-left: 1px solid var(--qt-separator-color);
+    padding: 6px 0;
+    min-height: 0;
+    overflow-y: auto;
   }
 </style>

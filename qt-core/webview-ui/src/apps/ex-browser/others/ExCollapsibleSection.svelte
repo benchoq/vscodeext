@@ -15,7 +15,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   } = $props();
 </script>
 
-<div data-root data-comp='main-view' class="flex flex-col">
+<div data-root class="flex flex-col">
   <button
     data-header
     class='sticky flex flex-row items-center'

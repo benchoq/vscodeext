@@ -9,7 +9,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 :root {
   /* variables for overall layout */
-  --catalog-popup-width: 480px;
+  /* --catalog-popup-width: 480px;
   --catalog-section-separator: 1px solid var(--qt-stroke-subtle);
 
   --tags-popup-width: 380px;
@@ -20,7 +20,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   --card-thumbnail-min-height: 110px;
   --card-border: color-mix(in srgb, var(--qt-text-muted) 30%, transparent);
 
-  --side-panel-width: 320px;
+  --side-panel-width: 320px; */
 
   /* transition */
   --duration-short: 80ms;
