@@ -4,10 +4,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { onMount, tick } from 'svelte';
+  import { onMount } from 'svelte';
   import { Check } from '@lucide/svelte';
   import * as icons from '@/icons';
-  import { clickOutside, portal } from '@/utils/actions';
+  import { clickOutside, portal, placeNear } from '@/utils/actions';
 
   import { ui } from '../states.svelte';
   import ExCheckBox from '../others/ExCheckBox.svelte';
@@ -17,47 +17,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const controller = $derived(ui.input);
   const states = $derived(controller.states);
   let showCreateOption = $state(false);
+
   // const openInOptions = [
     // { value: 'newWindow', label: texts.wizard.openInOptions.newWindow },
     // { value: 'addToWorkspace', label: texts.wizard.openInOptions.addToWorkspace }
   // ];
 
-
   let menu = $state(undefined as HTMLElement | undefined);
-  let button: HTMLElement;
+  let optionButton = $state<HTMLButtonElement>();
+
   let menuStyle = $state('');
   let menuText = $derived.by(() => {
     return (ui.input.states.openIn === 'newWindow')
       ? 'Create and open in new window'
       : 'Create and add to workspace';
   })
-
-  async function toggleMenu() {
-    showCreateOption = !showCreateOption;
-
-    if (showCreateOption) {
-      await tick();
-      const rect = button.getBoundingClientRect();
-      const menuWidth = menu?.getBoundingClientRect().width ?? 0;
-
-      menuStyle = `
-        position: fixed;
-        top: ${rect.bottom}px;
-        left: ${rect.right - menuWidth}px;
-      `;
-    }
-  }
-
-  function position(node: HTMLElement, anchor: HTMLElement) {
-    requestAnimationFrame(() => {
-      const a = anchor.getBoundingClientRect();
-      const n = node.getBoundingClientRect();
-
-      node.style.position = 'fixed';
-      node.style.top = `${a.bottom + 3}px`;
-      node.style.left = `${a.right - n.width}px`;
-    });
-  }
 
   function onInput() {
     controller.fireEvent('inputChanged');
@@ -126,12 +100,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <div
       bind:this={menu}
       use:portal
-      use:position={button}
+      use:placeNear={optionButton}
       use:clickOutside={(e: MouseEvent) => {
         e.stopPropagation();
-        toggleMenu();
+        showCreateOption = false;
       }}
-      class='qt-dropdown flex flex-col'
+      class='qt-dropdown fixed flex flex-col'
       style={menuStyle}
     >
       {@render Item('Open in new window', 'newWindow')}
@@ -155,11 +129,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </button>
 
     <button
-      bind:this={button}
+      bind:this={optionButton}
       data-variant='primary'
       class='qt-button w-[30px]'
       disabled={!states.acceptable}
-      onclick={toggleMenu}
+      onclick={(e: MouseEvent) => {
+        showCreateOption = true;
+        e.stopPropagation();
+      }}
     >
       {icons.Glyphs.triangleDown}
     </button>

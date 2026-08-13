@@ -53,3 +53,13 @@ export function clickOutside(el: HTMLElement, cb: (ev: MouseEvent) => void) {
     }
   };
 }
+
+export function placeNear(target: HTMLElement, ref: HTMLElement | undefined) {
+  const rr = ref?.getBoundingClientRect();
+  const tr = target.getBoundingClientRect();
+
+  if (rr) {
+    target.style.top = `${rr.bottom + 3}px`;
+    target.style.left = `${rr.right - tr.width}px`;
+  }
+}
