@@ -174,39 +174,37 @@ export const exBrowser = {
     revealLocationTooltip: 'Reveal folder in the file manager'
   },
 
-  tags: {
-    title: 'Available tags'
-  },
+  // details: {
+  //   newProject: {
+  //     button: 'New project',
+  //     tooltip: "Create a new project based on this example",
+  //     dependencyWarning: [
+  //       'The extension does not check whether the Qt modules and resources ',
+  //       'used in the example are available.',
+  //       'You might need to install and add them before running the example.'
+  //     ]
+  //   },
 
-  details: {
-    newProject: {
-      button: 'New project',
-      tooltip: "Create a new project based on this example",
-      dependencyWarning: [
-        'The extension does not check whether the Qt modules and resources ',
-        'used in the example are available.',
-        'You might need to install and add them before running the example.'
-      ]
-    },
-    doc: {
-      button: 'Documentation',
-      tooltip: 'Open documentation in VS Code',
-      openExtTooltip: 'Open documentation in an external browser'
-    },
-    files: {
-      title: 'Project overview'
-    }
-  },
+  //   doc: {
+  //     button: 'Documentation',
+  //     tooltip: 'Open documentation in VS Code',
+  //     openExtTooltip: 'Open documentation in an external browser'
+  //   },
+
+  //   files: {
+  //     title: 'Project overview'
+  //   }
+  // },
 
   searchBox: {
     defaultPlaceholder: 'Search in examples...',
     placeholder: (category: string) => `Search in '${category}'`
   },
 
-  projectToolbar: {
-    openInVscode: 'Open project in a new window',
-    reveal: 'Reveal project directory in the file manager',
-  }
+  // projectToolbar: {
+  //   openInVscode: 'Open project in a new window',
+  //   reveal: 'Reveal project directory in the file manager',
+  // }
 }
 
 export const courses = {

@@ -4,17 +4,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { exBrowser as texts } from '@/apps/texts';
   import { ui } from '../states.svelte';
   import ExCloseButton from '../others/ExCloseButton.svelte';
 
-  function close() {
-    ui.popovers.catalog.visible = false;
-  }
 </script>
 
 <div data-root class="flex flex-row">
-  <div data-role="title">Catalog</div>
-  <ExCloseButton onClicked={close} />
+  <div data-role="title">{texts.catalog.title}</div>
+  <ExCloseButton onClicked={() => {
+    ui.popovers.catalog.visible = false;
+  }} />
 </div>
 
 <style>

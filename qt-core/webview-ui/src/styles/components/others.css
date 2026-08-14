@@ -27,3 +27,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   border-radius: 3px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
 }
+
+/* TODO */
+.qt-tooltip {
+  position: fixed;
+  z-index: 1000;
+  padding: 4px 8px;
+  background: var(--qt-tooltip-bg, var(--vscode-editorHoverWidget-background));
+  color: var(--vscode-editorHoverWidget-foreground);
+  border: 1px solid var(--vscode-editorHoverWidget-border);
+  border-radius: 4px;
+  font-size: 12px;
+  pointer-events: none;
+  max-width: 450px;
+  white-space: normal;
+  word-break: break-word;
+}

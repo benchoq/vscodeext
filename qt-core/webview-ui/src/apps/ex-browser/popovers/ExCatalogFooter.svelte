@@ -5,6 +5,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { Glyphs } from '@/icons';
+  import { tooltip } from '@/utils/actions';
+  import { exBrowser as texts } from '@/apps/texts';
 
   import ExToolButton from '../others/ExToolButton.svelte';
   import { ui } from '../states.svelte';
@@ -13,27 +15,30 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const poolDirPath = $derived(ui.selected.package?.poolDir.fsPath);
 </script>
 
-<div data-root class="flex-1 flex flex-row">
-  <span data-role="icon-info">{Glyphs.info}</span>
-
-  <!-- TODO: style Tooltip -->
-  <!-- <Tooltip class='text-left' placement='bottom' data-placement='bottom'>
-    {texts.catalog.locationInfo}
-  </Tooltip> -->
+<div
+  data-root
+  class="flex-1 flex flex-row"
+  use:tooltip={{ text: texts.catalog.locationInfo }}
+>
+  <span data-role="info-icon">
+    {Glyphs.info}
+  </span>
 
   <span data-role="location" class="flex-1">
     {poolDirPath ?? '-'}
   </span>
 
-  <ExToolButton
-    onClicked={() => {
-      if (poolDirPath) {
-        viewlogic.openFolder(poolDirPath);
-      }
-    }}
-  >
-    {Glyphs.arrowRightTop}
-  </ExToolButton>
+  <div use:tooltip={{ text: texts.catalog.revealLocationTooltip }}>
+    <ExToolButton
+      onClicked={() => {
+        if (poolDirPath) {
+          viewlogic.openFolder(poolDirPath);
+        }
+      }}
+    >
+      {Glyphs.arrowRightTop}
+    </ExToolButton>
+  </div>
 </div>
 
 <style>
@@ -46,8 +51,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     background: var(--qt-bg-default);
   }
 
-  [data-role='icon-info'] {
+  [data-role='info-icon'] {
     font-size: 13px;
+    user-select: none;
   }
 
   [data-role='location'] {

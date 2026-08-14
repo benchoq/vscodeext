@@ -5,35 +5,34 @@ import {
   flip,
   shift,
   offset,
-  // autoUpdate,
+  autoUpdate,
   computePosition,
   type Placement
 } from '@floating-ui/dom';
 
 export function placeNear(node: HTMLElement, o: PlaceOption) {
-  place(node, o);
-  // let cleanup: (() => void) | undefined;
-  // let recentOpts = o;
+  let cleanup: (() => void) | undefined;
+  let recentOpts = o;
 
-  // function callAutoUpdate(oo: PlaceOption) {
-  //   recentOpts = oo;
-  //   cleanup = oo.ref
-  //     ? autoUpdate(oo.ref, node, () => place(node, recentOpts))
-  //     : undefined;
-  // }
+  function callAutoUpdate(oo: PlaceOption) {
+    recentOpts = oo;
+    cleanup = oo.ref
+      ? autoUpdate(oo.ref, node, () => place(node, recentOpts))
+      : undefined;
+  }
 
-  // callAutoUpdate(o);
+  callAutoUpdate(o);
 
-  // return {
-  //   update(newO: PlaceOption) {
-  //     cleanup?.();
-  //     callAutoUpdate(newO);
-  //   },
+  return {
+    update(newO: PlaceOption) {
+      cleanup?.();
+      callAutoUpdate(newO);
+    },
 
-  //   destroy() {
-  //     cleanup?.();
-  //   }
-  // };
+    destroy() {
+      cleanup?.();
+    }
+  };
 }
 
 export function portal(
@@ -91,12 +90,67 @@ export function clickOutside(el: HTMLElement, cb: (ev: MouseEvent) => void) {
   };
 }
 
+export function tooltip(node: HTMLElement, options: TooltipOptions) {
+  let opts = options;
+  let tooltipEl: HTMLElement | null = null;
+  let showTimer: ReturnType<typeof setTimeout> | null = null;
+
+  function show() {
+    showTimer = setTimeout(() => {
+      tooltipEl = document.createElement('div');
+      tooltipEl.classList.add('qt-tooltip');
+      tooltipEl.textContent = opts.text;
+      document.body.appendChild(tooltipEl);
+
+      place(tooltipEl, {
+        ref: node,
+        width: options.width,
+        offset: options.offset,
+        placement: options.placement
+      });
+    }, opts.delay ?? 400);
+  }
+
+  function hide() {
+    if (showTimer) {
+      clearTimeout(showTimer);
+    }
+
+    tooltipEl?.remove();
+    tooltipEl = null;
+  }
+
+  node.addEventListener('mouseenter', show);
+  node.addEventListener('mouseleave', hide);
+  node.addEventListener('focus', show);
+  node.addEventListener('blur', hide);
+
+  return {
+    update(newOptions: TooltipOptions) {
+      opts = newOptions;
+    },
+
+    destroy() {
+      hide();
+      node.removeEventListener('mouseenter', show);
+      node.removeEventListener('mouseleave', hide);
+      node.removeEventListener('focus', show);
+      node.removeEventListener('blur', hide);
+    }
+  };
+}
+
 // helpers
 interface PlaceOption {
   ref?: HTMLElement;
   width?: 'full' | number;
-  placement?: Placement;
   offset?: number;
+  placement?: Placement;
+}
+
+interface TooltipOptions extends Omit<PlaceOption, 'ref'> {
+  text: string;
+  delay?: number;
 }
 
 async function place(node: HTMLElement, o: PlaceOption) {
@@ -118,7 +172,4 @@ async function place(node: HTMLElement, o: PlaceOption) {
     top: `${y}px`,
     left: `${x}px`
   });
-
-  console.log(node, o);
-  console.log(x, y);
 }
