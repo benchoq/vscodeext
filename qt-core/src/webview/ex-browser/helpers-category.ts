@@ -37,10 +37,7 @@ export class CategoriesCollector {
       builder.build()
     );
 
-    return [
-      this._all.build(),
-      ...sortCategories(generals)
-    ];
+    return [this._all.build(), ...sortCategories(generals)];
   }
 
   private _findGeneralCategoryBuilder(name: string) {
@@ -68,7 +65,10 @@ class CategoryBuilder {
       example.tags.forEach((t) => {
         const candidate = t.trim();
         if (candidate) {
-          this._tagCounts.set(candidate, (this._tagCounts.get(candidate) ?? 0) + 1);
+          this._tagCounts.set(
+            candidate,
+            (this._tagCounts.get(candidate) ?? 0) + 1
+          );
         }
       });
     }
