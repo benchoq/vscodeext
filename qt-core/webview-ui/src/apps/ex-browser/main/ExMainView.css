@@ -21,7 +21,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   cursor: pointer;
   overflow: hidden;
   transition-property: border-color, background;
-  transition-duration: var(--duration-base);
+  transition-duration: var(--qt-duration-normal);
   animation: cardInAni 160ms ease both;
 
   &:hover {

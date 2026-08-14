@@ -66,6 +66,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   /* Spacing & radius — not theme-dependent */
   --qt-radius-s:   4px;
   --qt-radius-m:   8px;
+
   --qt-spacing-xs: 4px;
   --qt-spacing-s:  6px;
   --qt-spacing-m:  8px;
@@ -86,8 +87,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   /* Texts */
   --qt-font-size-base: 13px;
-
   --qt-font-weight-semibold: 600;
+
+  /* Transition */
+  --qt-duration-fast:    80ms;
+  --qt-duration-normal: 150ms;
 
   /* Others */
   --qt-separator-color: var(--qt-stroke-subtle);

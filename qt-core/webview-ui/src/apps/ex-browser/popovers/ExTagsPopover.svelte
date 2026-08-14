@@ -129,7 +129,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       border-radius: var(--qt-radius-s);
       color: var(--qt-text-default);
       cursor: pointer;
-      transition: background var(--duration-short);
+      transition: background var(--qt-duration-fast);
       flex-shrink: 0;
 
       &:hover {

@@ -44,8 +44,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     background: var(--qt-bg-subtle);
     overflow: hidden;
     transition-property: width, border-color;
-    transition-duration: var(--duration-short);
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1), ease;
+    transition-duration: var(--qt-duration-normal);
 
     &.open {
       width: 320px;

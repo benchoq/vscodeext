@@ -28,7 +28,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     color: var(--qt-text-muted);
     border-radius: var(--qt-radius-s);
     cursor: pointer;
-    transition: background var(--duration-short);
+    transition: background var(--qt-duration-fast);
 
     &:hover {
       color: var(--qt-text-default);

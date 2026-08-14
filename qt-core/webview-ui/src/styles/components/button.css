@@ -21,7 +21,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   align-items: center;
   gap: 7px;
   transition-property: color, background;
-  transition-duration: var(--duration-short);
+  transition-duration: var(--qt-duration-fast);
 
   &:hover,
   &[data-active='true'] {

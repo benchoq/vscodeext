@@ -10,11 +10,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 }
 
 :root {
-  /* transition */
-  --duration-short: 80ms;
-  --duration-base: 150ms;
-  --duration-long: 220ms;
-
   /* others */
   /* simplify */
   --font-size-3xs: 9px;
