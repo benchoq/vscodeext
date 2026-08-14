@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { Tag } from '@/icons';
+  import { icons } from '@/symbols';
   import ExTagChip from './ExTagChip.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
@@ -25,7 +25,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div data-root class="flex flex-row" class:flex-wrap={usage === 'details'}>
   {#if usage === 'card' || usage === 'list'}
     <div data-role="icon">
-      <Tag size={usage === 'card' ? 20 : 13} />
+      <icons.Tag size={usage === 'card' ? 20 : 13} />
     </div>
   {/if}
 

@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { Glyphs } from '@/icons';
+  import { glyphs } from '@/symbols';
   import { tooltip } from '@/utils/actions';
   import { exBrowser as texts } from '@/apps/texts';
 
@@ -21,7 +21,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   use:tooltip={{ text: texts.catalog.locationInfo }}
 >
   <span data-role="info-icon">
-    {Glyphs.info}
+    {glyphs.info}
   </span>
 
   <span data-role="location" class="flex-1">
@@ -36,7 +36,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         }
       }}
     >
-      {Glyphs.arrowRightTop}
+      {glyphs.arrowRightTop}
     </ExToolButton>
   </div>
 </div>

@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { Glyphs } from '@/icons';
+  import { glyphs } from '@/symbols';
   import { clickOutside, portal, placeNear } from '@/utils/actions';
   import { data, ui } from '../states.svelte';
   import ExCatalogPopover from '../popovers/ExCatalogPopover.svelte';
@@ -48,7 +48,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <span data-role="current-category">{ui.filter.category?.name ?? ''}</span>
     <span class="qt-badge">{count}</span>
     <span data-role="expand-arrow">
-      {Glyphs.triangleDown}
+      {glyphs.triangleDown}
     </span>
   {/if}
 </button>

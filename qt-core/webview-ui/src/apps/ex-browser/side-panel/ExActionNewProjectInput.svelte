@@ -6,7 +6,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { onMount } from 'svelte';
   import { Check } from '@lucide/svelte';
-  import * as icons from '@/icons';
+
+  import { icons, glyphs } from '@/symbols';
   import { clickOutside, portal, placeNear } from '@/utils/actions';
   import { exBrowser } from '@/apps/texts';
 
@@ -125,7 +126,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         e.stopPropagation();
       }}
     >
-      {icons.Glyphs.triangleDown}
+      {glyphs.triangleDown}
     </button>
   </div>
 {/snippet}

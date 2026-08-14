@@ -28,11 +28,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 }
 
 body {
-  margin: 0;
-  padding: 0;
   color: var(--qt-text-default);
   background: var(--qt-bg-default);
   font-size: var(--vscode-font-size, 13px);
+  font-weight: var(--vscode-font-weight, 400);
   font-family: var(
     --vscode-font-family,
     'Segoe UI Variable',
@@ -43,5 +42,4 @@ body {
     system-ui,
     sans-serif
   );
-  line-height: 1.4;
 }

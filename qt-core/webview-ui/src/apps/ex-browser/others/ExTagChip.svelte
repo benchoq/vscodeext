@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { Glyphs } from '@/icons';
+  import { glyphs } from '@/symbols';
 
   let {
     text = '',
@@ -28,7 +28,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {:else}
       <span data-role="hash">#</span>
       <span data-role="name">{text}</span>
-      <span data-role="close">{Glyphs.multiplication}</span>
+      <span data-role="close">{glyphs.multiplication}</span>
     {/if}
   </button>
 {/if}

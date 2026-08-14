@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { Glyphs } from '@/icons';
+  import { glyphs } from '@/symbols';
   import ExToolButton from '../others/ExToolButton.svelte';
 
   let { onClicked = (_: MouseEvent) => {} } = $props();
@@ -16,5 +16,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     e.stopPropagation();
   }}
 >
-  {Glyphs.multiplication}
+  {glyphs.multiplication}
 </ExToolButton>

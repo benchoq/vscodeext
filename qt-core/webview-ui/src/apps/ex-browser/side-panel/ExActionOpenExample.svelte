@@ -5,7 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { type ExActionTypes } from '@shared/ex-browser';
-  import * as icons from '@/icons';
+  import { icons } from '@/symbols';
   import { exBrowser } from '@/apps/texts';
   import { clickOutside, portal, placeNear } from '@/utils/actions';
 

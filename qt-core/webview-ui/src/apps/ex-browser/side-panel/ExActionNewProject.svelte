@@ -7,7 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { slide, fade } from 'svelte/transition';
   import { cubicOut, cubicIn } from 'svelte/easing';
 
-  import { ChevronRight } from '@/icons';
+  import { icons } from '@/symbols';
   import { exBrowser } from '@/apps/texts';
 
   import { ui } from '../states.svelte';
@@ -34,7 +34,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       data-chevron
       style:transform={isOpen ? 'rotate(90deg)' : 'rotate(0deg)'}
     >
-      <ChevronRight size={16} />
+      <icons.ChevronRight size={16} />
     </span>
 
     <span>{texts.button}</span>
