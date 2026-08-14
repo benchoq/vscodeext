@@ -45,7 +45,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     margin-left: auto;
     opacity: 0.8;
     font-size: 10px;
-    font-weight: 600;
+    font-weight: var(--qt-font-weight-semibold);
     white-space: nowrap;
   }
 </style>

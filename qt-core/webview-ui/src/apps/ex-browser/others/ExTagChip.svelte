@@ -41,7 +41,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     background: var(--qt-bg-input);
     color: var(--qt-text-muted);
     border: 1px solid transparent;
-    font-weight: 600;
+    font-weight: var(--qt-font-weight-semibold);
     line-height: 12px;
     font-family: inherit;
     letter-spacing: 0;

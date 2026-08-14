@@ -45,7 +45,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   [data-role='section-title'] {
     font-size: 11px;
-    font-weight: 600;
+    font-weight: var(--qt-font-weight-semibold);
     text-align: start;
     text-transform: uppercase;
     letter-spacing: 0.06em;
