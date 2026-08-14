@@ -71,12 +71,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }
 
     &[data-variant='selected'] {
-      background: var(--accent-blue-a22);
-      border-color: var(--accent-blue-a55);
+      background: var(--qt-accent-blue-muted);
+      border-color: var(--qt-accent-blue-default);
       color: var(--qt-accent-active);
 
       &:hover {
-        background: var(--accent-blue-a35);
+        background: var(--qt-accent-blue-default);
       }
     }
   }

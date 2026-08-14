@@ -30,7 +30,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   &[aria-pressed='true'] {
     color: var(--qt-accent-active);
-    background: var(--accent-blue-a15);
+    background: var(--qt-accent-blue-muted);
   }
 
   & + & {

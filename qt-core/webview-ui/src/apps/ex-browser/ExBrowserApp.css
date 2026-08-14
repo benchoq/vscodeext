@@ -30,15 +30,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   --font-weight-extra-light: 200;
   --font-weight-medium: 500;
   --font-weight-semi-bold: 600;
-
-  /* TODO: simplify */
-  --accent-blue: rgb(0, 122, 204);
-  --accent-blue-a9: color-mix(in srgb, var(--accent-blue) 9%, transparent);
-  --accent-blue-a15: color-mix(in srgb, var(--accent-blue) 15%, transparent);
-  --accent-blue-a18: color-mix(in srgb, var(--accent-blue) 18%, transparent);
-  --accent-blue-a22: color-mix(in srgb, var(--accent-blue) 22%, transparent);
-  --accent-blue-a35: color-mix(in srgb, var(--accent-blue) 35%, transparent);
-  --accent-blue-a55: color-mix(in srgb, var(--accent-blue) 55%, transparent);
 }
 
 body {
