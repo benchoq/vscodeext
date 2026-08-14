@@ -187,7 +187,23 @@ export const exBrowser = {
       },
 
       newProject: {
-        button: 'Use as a template'
+        button: 'Use as a template',
+        note: [
+          'Keeps your changes out of the Qt install folder,',
+          'so a Qt update can’t overwrite them.'
+        ].join(' '),
+        name: 'Project name',
+        workingDir: 'Create in',
+        workingDirTooltip: 'Browse',
+        workingDirSaveCheckbox: 'Use as default project directory',
+        createButton: {
+          new: 'Create and open in new window',
+          add: 'Create and add to current workspace'
+        },
+        menuItem: {
+          new: 'Open in new window',
+          add: 'Add to current workspace'
+        }
       },
 
       openDoc: {
@@ -197,27 +213,15 @@ export const exBrowser = {
     },
 
     details: {
-      title: 'Actions'
+      title: 'Details',
+      itemNames: {
+        version: 'Qt',
+        module: 'Module',
+        files: 'Files',
+        cat: 'Category',
+        tags: 'Tags'
+      } as Record<string, string>
     }
-  //   newProject: {
-  //     button: 'New project',
-  //     tooltip: "Create a new project based on this example",
-  //     dependencyWarning: [
-  //       'The extension does not check whether the Qt modules and resources ',
-  //       'used in the example are available.',
-  //       'You might need to install and add them before running the example.'
-  //     ]
-  //   },
-
-  //   doc: {
-  //     button: 'Documentation',
-  //     tooltip: 'Open documentation in VS Code',
-  //     openExtTooltip: 'Open documentation in an external browser'
-  //   },
-
-  //   files: {
-  //     title: 'Project overview'
-  //   }
   },
 
   searchBox: {

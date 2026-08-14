@@ -8,6 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { Check } from '@lucide/svelte';
   import * as icons from '@/icons';
   import { clickOutside, portal, placeNear } from '@/utils/actions';
+  import { exBrowser } from '@/apps/texts';
 
   import { ui } from '../states.svelte';
   import ExCheckBox from '../others/ExCheckBox.svelte';
@@ -22,15 +23,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     reference: undefined as HTMLButtonElement | undefined
   });
 
-  // const openInOptions = [
-  // { value: 'newWindow', label: texts.wizard.openInOptions.newWindow },
-  // { value: 'addToWorkspace', label: texts.wizard.openInOptions.addToWorkspace }
-  // ];
-
-  let menuText = $derived.by(() => {
+  const texts = exBrowser.details.actions.newProject;
+  const cerateButtonText = $derived.by(() => {
     return ui.input.states.openIn === 'newWindow'
-      ? 'Create and open in new window'
-      : 'Create and add to workspace';
+      ? texts.createButton.new
+      : texts.createButton.add;
   });
 
   function onInput() {
@@ -45,14 +42,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div data-root class="flex flex-col gap-[13px]">
-  <span data-role="note">
-    Keeps your changes out of the Qt install folder, so a Qt update can’t
-    overwrite them.
-  </span>
+  <span data-role="note">{texts.note}</span>
 
   <!-- name -->
   <div class="flex flex-col gap-[3px]">
-    <div data-role="input-field-name">Project Name</div>
+    <div data-role="input-field-name">{texts.name}</div>
     <ExValidationInput
       bind:this={compNameInput}
       bind:value={states.name}
@@ -64,7 +58,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   <!-- working dir -->
   <div class="flex flex-col gap-[3px]">
-    <div data-role="input-field-name">Create in</div>
+    <div data-role="input-field-name">{texts.workingDir}</div>
     <div class="w-full flex flex-row items-center gap-[3px] relative">
       <ExValidationInput
         bind:value={states.workingDir}
@@ -85,7 +79,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       </button>
     </div>
 
-    <ExCheckBox text="Use as default project directory" />
+    <ExCheckBox text={texts.workingDirSaveCheckbox} />
   </div>
 
   {@render createButtonAndOptions()}
@@ -100,12 +94,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       }}
       class="qt-dropdown fixed flex flex-col"
     >
-      {@render createMenuItem('Open in new window', 'newWindow')}
-      {@render createMenuItem('Add to workspace', 'addToWorkspace')}
+      {@render createMenuItem(texts.menuItem.new, 'newWindow')}
+      {@render createMenuItem(texts.menuItem.new, 'addToWorkspace')}
     </div>
   {/if}
 </div>
 
+<!-- snippets -->
 {#snippet createButtonAndOptions()}
   <div class="flex flex-row gap-[3px]">
     <div class="grow"></div>
@@ -117,7 +112,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         controller.fireEvent('createClicked');
       }}
     >
-      {menuText}
+      {cerateButtonText}
     </button>
 
     <button
