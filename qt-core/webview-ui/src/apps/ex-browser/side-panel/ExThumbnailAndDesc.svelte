@@ -9,12 +9,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const example = $derived(ui.selected.example);
 </script>
 
-<div class='flex flex-col gap-[10px]'>
-  <div data-role='thumbnail'>
+<div class="flex flex-col gap-[10px]">
+  <div data-role="thumbnail">
     <ExThumbnail {example} />
   </div>
-  <div data-role='name'>{example?.name ?? ''}</div>
-  <div data-role='desc'>{example?.description}</div>
+  <div data-role="name">{example?.name ?? ''}</div>
+  <div data-role="desc">{example?.description}</div>
 </div>
 
 <style>

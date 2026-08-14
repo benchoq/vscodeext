@@ -32,12 +32,12 @@ export default defineConfig({
   },
   server: {
     cors: {
-      origin: /^vscode-webview:\/\//,
+      origin: /^vscode-webview:\/\//
     },
     strictPort: true,
     port: devPort,
     headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
+      'Access-Control-Allow-Origin': '*'
+    }
   }
 });

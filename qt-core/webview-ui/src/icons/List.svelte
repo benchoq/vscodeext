@@ -4,8 +4,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import SvgIconBase from "./SvgIconBase.svelte";
-  import { type ComponentProps } from "svelte";
+  import SvgIconBase from './SvgIconBase.svelte';
+  import { type ComponentProps } from 'svelte';
 
   let props: ComponentProps<typeof SvgIconBase> = $props();
 </script>

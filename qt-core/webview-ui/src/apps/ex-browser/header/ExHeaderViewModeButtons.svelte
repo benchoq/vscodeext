@@ -8,7 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from '../states.svelte';
 </script>
 
-<div data-root class='flex flex-row'>
+<div data-root class="flex flex-row">
   {@render modeButton('grid')}
   {@render modeButton('list')}
 </div>
@@ -16,8 +16,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {#snippet modeButton(mode: 'grid' | 'list')}
   {@const Comp = mode === 'grid' ? icons.Grid : icons.List}
   <button
-    data-role='view-mode'
-    class='qt-button flex items-center justify-center'
+    data-role="view-mode"
+    class="qt-button flex items-center justify-center"
     aria-pressed={ui.selected.viewMode === mode}
     onclick={() => {
       ui.selected.viewMode = mode;
@@ -33,4 +33,3 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     border-radius: var(--qt-radius-s);
   }
 </style>
-

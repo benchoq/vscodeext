@@ -3,7 +3,9 @@ Copyright (C) 2026 The Qt Company Ltd.
 SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -30,7 +32,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   --font-weight-semi-bold: 600;
 
   /* TODO: simplify */
-  --accent-blue: rgb(0,122,204);
+  --accent-blue: rgb(0, 122, 204);
   --accent-blue-a9: color-mix(in srgb, var(--accent-blue) 9%, transparent);
   --accent-blue-a15: color-mix(in srgb, var(--accent-blue) 15%, transparent);
   --accent-blue-a18: color-mix(in srgb, var(--accent-blue) 18%, transparent);
@@ -45,8 +47,15 @@ body {
   color: var(--qt-text-default);
   background: var(--qt-bg-default);
   font-size: var(--vscode-font-size, 13px);
-  font-family: var(--vscode-font-family,
-    'Segoe UI Variable', 'Segoe UI', -apple-system, BlinkMacSystemFont,
-    'Inter', system-ui, sans-serif);
+  font-family: var(
+    --vscode-font-family,
+    'Segoe UI Variable',
+    'Segoe UI',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Inter',
+    system-ui,
+    sans-serif
+  );
   line-height: 1.4;
 }

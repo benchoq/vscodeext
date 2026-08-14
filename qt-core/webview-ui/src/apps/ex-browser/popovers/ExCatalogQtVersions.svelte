@@ -12,18 +12,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let loading = $state(false);
 </script>
 
-<div class='qt-item-list flex flex-col'>
-  <span class='title'>{texts.catalog.versions}</span>
+<div class="qt-item-list flex flex-col">
+  <span class="title">{texts.catalog.versions}</span>
 
   {#each data.packages as p, i (p)}
-    {@const prev = data.packages[i-1]}
+    {@const prev = data.packages[i - 1]}
     <Separator
-      class='my-2'
-      visible={i!== 0 && prev.poolDir.sourceType !== p.poolDir.sourceType}
+      class="my-2"
+      visible={i !== 0 && prev.poolDir.sourceType !== p.poolDir.sourceType}
     />
 
     <button
-      class='item'
+      class="item"
       class:active={ui.selected.package === p}
       title={p.poolDir.fsPath}
       onclick={async () => {

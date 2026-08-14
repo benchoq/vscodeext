@@ -10,27 +10,29 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import ExCatalogPopover from '../popovers/ExCatalogPopover.svelte';
 
   const valid = $derived.by(() => {
-    return (ui.selected.package?.name ?? '')
-      && (ui.filter.category?.name ?? '')
-      && (data.packages.length !== 0);
+    return (
+      (ui.selected.package?.name ?? '') &&
+      (ui.filter.category?.name ?? '') &&
+      data.packages.length !== 0
+    );
   });
 
   const popover = $derived(ui.popovers.catalog);
   const count = $derived.by(() => {
     const count = ui.filter.category?.count ?? 0;
-    const total = data.categories.find(c => c.type === 'all')?.count ?? 0;
+    const total = data.categories.find((c) => c.type === 'all')?.count ?? 0;
     if (total === 0) {
       return '';
     }
 
-    return (count === total) ? `${count} examples` : `${count} / ${total}`;
+    return count === total ? `${count} examples` : `${count} / ${total}`;
   });
 </script>
 
 <button
   bind:this={popover.reference}
-  data-role='breadcrumb'
-  class='qt-button flex flex-row'
+  data-role="breadcrumb"
+  class="qt-button flex flex-row"
   aria-expanded={popover.visible}
   disabled={data.packages.length === 0}
   onclick={(e: MouseEvent) => {
@@ -39,13 +41,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }}
 >
   {#if !valid}
-    <span data-role='title'>-</span>
+    <span data-role="title">-</span>
   {:else}
-    <span data-role='title'>Categories</span>
-    <span data-role='qt-version'>{ui.selected.package?.name ?? ''}</span>
-    <span data-role='current-category'>{ui.filter.category?.name ?? ''}</span>
-    <span class='qt-badge'>{count}</span>
-    <span data-role='expand-arrow'>
+    <span data-role="title">Categories</span>
+    <span data-role="qt-version">{ui.selected.package?.name ?? ''}</span>
+    <span data-role="current-category">{ui.filter.category?.name ?? ''}</span>
+    <span class="qt-badge">{count}</span>
+    <span data-role="expand-arrow">
       {Glyphs.triangleDown}
     </span>
   {/if}
@@ -63,7 +65,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       popover.visible = false;
       e.stopPropagation();
     }}
-    class='fixed z-1'
+    class="fixed z-1"
   >
     <ExCatalogPopover />
   </div>

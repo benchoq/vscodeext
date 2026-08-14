@@ -13,8 +13,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <button
   bind:this={popover.reference}
-  data-role='tags'
-  class='qt-button flex flex-row'
+  data-role="tags"
+  class="qt-button flex flex-row"
   aria-expanded={popover.visible}
   disabled={(ui.filter.category?.tags.length ?? 0) === 0}
   onclick={(e: MouseEvent) => {
@@ -23,7 +23,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }}
 >
   <span># Tags</span>
-  <span class='qt-badge'>
+  <span class="qt-badge">
     {(ui.filter.category?.tags.length ?? 0).toString()}
   </span>
 </button>
@@ -40,7 +40,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       popover.visible = false;
       e.stopPropagation();
     }}
-    class='fixed z-2'
+    class="fixed z-2"
   >
     <ExTagsPopover />
   </div>

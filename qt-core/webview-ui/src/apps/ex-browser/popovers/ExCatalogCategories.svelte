@@ -9,20 +9,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from '../viewlogic.svelte';
 </script>
 
-<div class='qt-item-list flex flex-col'>
-  <span class='title'>{texts.catalog.categories}</span>
+<div class="qt-item-list flex flex-col">
+  <span class="title">{texts.catalog.categories}</span>
 
   {#each data.categories as cat (cat)}
     <button
-      class='item flex flex-row'
+      class="item flex flex-row"
       class:active={cat === ui.filter.category}
       onclick={async () => {
         await viewlogic.selectCategory(cat);
         ui.popovers.catalog.visible = false;
       }}
     >
-      <span class='flex-1'>{cat.name}</span>
-      <span data-role='count'>{cat.count}</span>
+      <span class="flex-1">{cat.name}</span>
+      <span data-role="count">{cat.count}</span>
     </button>
   {/each}
 </div>

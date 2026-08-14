@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <!--
 Copyright (C) 2026 The Qt Company Ltd.
 SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
@@ -15,10 +17,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const tags = $derived.by(() => {
     const v = ui.filter.tagsFilterInput.trim();
     const all = ui.filter.category?.tags ?? [];
-    return (v.length === 0)
-      ? all
-      : all.filter((tag) => tag.includes(v));
-  })
+    return v.length === 0 ? all : all.filter((tag) => tag.includes(v));
+  });
 
   function findTagCount(tag: string) {
     return ui.filter.category?.tagCounts[tag] ?? 0;
@@ -36,49 +36,41 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   });
 </script>
 
-<svelte:options runes={true} />
-
-<div
-  data-root
-  class='qt-popover flex flex-col'
->
-  <div data-area='search' class='relative'>
+<div data-root class="qt-popover flex flex-col">
+  <div data-area="search" class="relative">
     <input
       bind:value={ui.filter.tagsFilterInput}
       bind:this={inputEl}
-      type='text'
-      class='qt-input w-full'
-      placeholder='Filter tags...'
+      type="text"
+      class="qt-input w-full"
+      placeholder="Filter tags..."
     />
 
     {#if ui.filter.tagsFilterInput.trim().length}
-      <div class='absolute top-1/2 -translate-y-1/2 right-[12px]'>
+      <div class="absolute top-1/2 -translate-y-1/2 right-[12px]">
         <ExCloseButton onClicked={clearSearchInput} />
       </div>
     {/if}
   </div>
 
   {#if tags.length !== 0}
-    <div
-      data-area='list'
-      class='qt-item-list flex flex-col'
-    >
+    <div data-area="list" class="qt-item-list flex flex-col">
       {#each tags as tag (tag)}
         <button
-          class='item flex flex-row'
+          class="item flex flex-row"
           class:active={viewlogic.isTagSelected(tag)}
           onclick={async () => {
             await viewlogic.toggleTag(tag);
           }}
         >
-          <span data-role='hash'>#</span>
-          <span data-role='name' class='flex-1'>{tag}</span>
-          <span data-role='count'>{findTagCount(tag)}</span>
-      </button>
+          <span data-role="hash">#</span>
+          <span data-role="name" class="flex-1">{tag}</span>
+          <span data-role="count">{findTagCount(tag)}</span>
+        </button>
       {/each}
     </div>
   {:else}
-    <span data-role='no-match'>No tags match</span>
+    <span data-role="no-match">No tags match</span>
   {/if}
 </div>
 

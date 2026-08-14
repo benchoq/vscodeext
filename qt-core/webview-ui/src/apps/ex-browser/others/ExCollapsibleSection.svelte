@@ -11,14 +11,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     title = '',
     count = 0,
     expanded = $bindable(true),
-    children = undefined as (Snippet | undefined)
+    children = undefined as Snippet | undefined
   } = $props();
 </script>
 
 <div data-root class="flex flex-col">
   <button
     data-header
-    class='sticky flex flex-row items-center'
+    class="sticky flex flex-row items-center"
     onclick={() => {
       expanded = !expanded;
     }}
@@ -29,8 +29,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     >
       <icons.ChevronRight size={16} />
     </span>
-    <span data-role='section-title' class='flex-1'>{title}</span>
-    <span data-role='section-count'>{count}</span>
+    <span data-role="section-title" class="flex-1">{title}</span>
+    <span data-role="section-count">{count}</span>
   </button>
 
   {#if expanded}

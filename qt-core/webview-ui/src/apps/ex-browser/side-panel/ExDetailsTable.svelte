@@ -13,29 +13,26 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const example = $derived(ui.selected.example);
 </script>
 
-<div class='grid grid-cols-[max-content_1fr]'>
-  <TableRow title='Qt'>
+<div class="grid grid-cols-[max-content_1fr]">
+  <TableRow title="Qt">
     {utils.extractQtVersion(ui.selected.package?.name ?? '')}
   </TableRow>
 
-  <TableRow title='Module'>
+  <TableRow title="Module">
     {utils.addSpaceBeforeUppercase(example?.module ?? '')}
   </TableRow>
 
-  <TableRow title='Files'>
+  <TableRow title="Files">
     <ExDetailsFileLists />
   </TableRow>
 
-  <TableRow title='Category'>
+  <TableRow title="Category">
     {#each example?.categories as cat (cat)}
       <div>{cat}</div>
     {/each}
   </TableRow>
 
-  <TableRow title='Tags' separator={false}>
-    <ExTagList
-      usage='details'
-      tags={example?.tags}
-    />
+  <TableRow title="Tags" separator={false}>
+    <ExTagList usage="details" tags={example?.tags} />
   </TableRow>
 </div>

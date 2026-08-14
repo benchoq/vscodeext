@@ -21,20 +21,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     ui.sideBar.visible = false;
   }
 
-  const sectionContent: Snippet[] = [
-    infoContent,
-    actionContent,
-    detailContent
-  ]
+  const sectionContent: Snippet[] = [infoContent, actionContent, detailContent];
 </script>
 
-<div data-root class='flex flex-col gap-[12px]'>
+<div data-root class="flex flex-col gap-[12px]">
   {#each sectionContent as section, index (index)}
     {#if index !== 0}
       <ExSeparator />
     {/if}
 
-    <div class='flex flex-col gap-[6px]'>
+    <div class="flex flex-col gap-[6px]">
       {@render section()}
     </div>
   {/each}
@@ -42,22 +38,22 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <!-- snippets -->
 {#snippet infoContent()}
-  <div class='flex flex-row items-center'>
-    <div data-role='title'>Example Details</div>
+  <div class="flex flex-row items-center">
+    <div data-role="title">Example Details</div>
     <ExCloseButton onClicked={close} />
   </div>
   <ExThumbnailAndDesc />
 {/snippet}
 
 {#snippet actionContent()}
-  <div data-role='title'>Actions</div>
+  <div data-role="title">Actions</div>
   <ExActionOpenExample />
   <ExActionNewProject />
   <ExActionDocs />
 {/snippet}
 
 {#snippet detailContent()}
-  <div data-role='title'>Details</div>
+  <div data-role="title">Details</div>
   <ExDetailsTable />
 {/snippet}
 

@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { type Snippet } from "svelte";
+  import { type Snippet } from 'svelte';
 
   interface Props {
     size?: number;
@@ -12,11 +12,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     [key: string]: unknown;
   }
 
-  let {
-    size = 16,
-    children,
-    ...rest
-  }: Props = $props();
+  let { size = 16, children, ...rest }: Props = $props();
 </script>
 
 <svg

@@ -13,15 +13,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const poolDirPath = $derived(ui.selected.package?.poolDir.fsPath);
 </script>
 
-<div data-root class='flex-1 flex flex-row'>
-  <span data-role='icon-info'>{Glyphs.info}</span>
+<div data-root class="flex-1 flex flex-row">
+  <span data-role="icon-info">{Glyphs.info}</span>
 
   <!-- TODO: style Tooltip -->
   <!-- <Tooltip class='text-left' placement='bottom' data-placement='bottom'>
     {texts.catalog.locationInfo}
   </Tooltip> -->
 
-  <span data-role='location' class='flex-1'>
+  <span data-role="location" class="flex-1">
     {poolDirPath ?? '-'}
   </span>
 
@@ -56,5 +56,4 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
 </style>

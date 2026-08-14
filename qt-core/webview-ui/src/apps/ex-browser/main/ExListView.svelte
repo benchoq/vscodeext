@@ -9,33 +9,24 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
-  let {
-    examples = [] as ExEntry[],
-  } = $props();
-
+  let { examples = [] as ExEntry[] } = $props();
 </script>
 
-<div
-  bind:this={ui.list}
-  class='flex flex-col gap-[2px]'
->
+<div bind:this={ui.list} class="flex flex-col gap-[2px]">
   {#each examples as example (example.projectPath)}
     <button
-      data-role='item-area'
-      class='flex items-center'
+      data-role="item-area"
+      class="flex items-center"
       class:selected={example === ui.selected.example}
       onclick={() => {
         viewlogic.selectExample(example);
       }}
     >
-      <span data-role='item-name'>{example.name}</span>
+      <span data-role="item-name">{example.name}</span>
       {#if example.tags.length}
-        <ExTagList
-          usage='list'
-          tags={example.tags}
-        />
+        <ExTagList usage="list" tags={example.tags} />
       {/if}
-      <span data-role='item-category'>
+      <span data-role="item-category">
         {example.categories.join(', ')}
       </span>
     </button>

@@ -20,10 +20,7 @@ export function countAsLocaleString(n: number): string {
   });
 }
 
-export function dateAsLocaleString(
-  date: Date,
-  format: 'DMY' | 'MY' = 'DMY'
-) {
+export function dateAsLocaleString(date: Date, format: 'DMY' | 'MY' = 'DMY') {
   const year = date.getUTCFullYear();
   const day = date.getUTCDate();
   const monthName = date.toLocaleString('en-US', {

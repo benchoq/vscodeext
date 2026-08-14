@@ -15,9 +15,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let timer: ReturnType<typeof setTimeout>;
 
   const placeholder = $derived.by(() => {
-    if (!ui.filter.category
-      || !ui.filter.category.name
-      || ui.filter.category.type === 'all') {
+    if (
+      !ui.filter.category ||
+      !ui.filter.category.name ||
+      ui.filter.category.type === 'all'
+    ) {
       return texts.searchBox.defaultPlaceholder;
     }
 
@@ -43,27 +45,26 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-<div class='w-full relative'>
-  <div
-    data-role='search-icon'
-    class='absolute top-1/2 -translate-y-1/2'
-  >
+<div class="w-full relative">
+  <div data-role="search-icon" class="absolute top-1/2 -translate-y-1/2">
     {Glyphs.search}
   </div>
 
   <input
     bind:value
     bind:this={ui.filter.searchInputEl}
-    type='text'
-    class='qt-input w-full'
+    type="text"
+    class="qt-input w-full"
     {placeholder}
     disabled={data.packages.length === 0}
-    oninput={() => { triggerUpdate(200); }}
+    oninput={() => {
+      triggerUpdate(200);
+    }}
     onkeydown={onKeydown}
   />
 
   {#if value.trim().length}
-    <div class='absolute top-1/2 -translate-y-1/2 right-[5px]'>
+    <div class="absolute top-1/2 -translate-y-1/2 right-[5px]">
       <ExCloseButton onClicked={() => clear()} />
     </div>
   {/if}

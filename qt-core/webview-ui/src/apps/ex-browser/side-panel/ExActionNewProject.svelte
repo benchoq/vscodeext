@@ -20,11 +20,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-<div class='flex flex-col'>
+<div class="flex flex-col">
   <button
-    data-variant='secondary'
+    data-variant="secondary"
     data-active={isOpen}
-    class='qt-button flex flex-row'
+    class="qt-button flex flex-row"
     onclick={toggleOpen}
   >
     <span
@@ -35,7 +35,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </span>
 
     <span>Use as a template</span>
-    <div class='grow'></div>
+    <div class="grow"></div>
 
     {#if isOpen}
       <ExCloseButton onClicked={toggleOpen} />
@@ -44,8 +44,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   {#if isOpen}
     <div
-      in:fade={{ duration:500, easing:cubicOut }}
-      out:slide={{ duration:150, easing:cubicIn }}
+      in:fade={{ duration: 500, easing: cubicOut }}
+      out:slide={{ duration: 150, easing: cubicIn }}
     >
       <ExActionNewProjectInput />
     </div>

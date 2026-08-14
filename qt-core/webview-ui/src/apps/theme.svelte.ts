@@ -4,7 +4,7 @@
 const states = $state({
   kind: '',
   dark: false,
-  observer: undefined as (MutationObserver | undefined)
+  observer: undefined as MutationObserver | undefined
 });
 
 function getBodyCss() {
@@ -54,13 +54,17 @@ const qtLight = '#2CDE85';
 export const qtColors = {
   dark: qtDark,
   light: qtLight,
-  get foreground() { return states.dark ? qtLight : qtDark; },
-  get background() { return states.dark ? qtDark : qtLight; }
+  get foreground() {
+    return states.dark ? qtLight : qtDark;
+  },
+  get background() {
+    return states.dark ? qtDark : qtLight;
+  }
 };
 
 export const monitor = {
   states,
   getBodyCss
-}
+};
 
 start();

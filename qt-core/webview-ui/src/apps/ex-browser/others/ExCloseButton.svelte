@@ -7,10 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { Glyphs } from '@/icons';
   import ExToolButton from '../others/ExToolButton.svelte';
 
-  let {
-    onClicked = (_: MouseEvent) => {}
-  } = $props();
-
+  let { onClicked = (_: MouseEvent) => {} } = $props();
 </script>
 
 <ExToolButton

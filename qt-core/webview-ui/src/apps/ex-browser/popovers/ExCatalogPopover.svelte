@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <!--
 Copyright (C) 2026 The Qt Company Ltd.
 SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
@@ -10,17 +12,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import ExCatalogCategories from './ExCatalogCategories.svelte';
 </script>
 
-<svelte:options runes={true} />
-
-<div
-  data-root
-  class='qt-popover flex flex-col'
->
+<div data-root class="qt-popover flex flex-col">
   <ExCatalogHeader />
 
-  <div data-section class='flex flex-row'>
+  <div data-section class="flex flex-row">
     <div data-versions><ExCatalogQtVersions /></div>
-    <div data-categories class='flex-1'><ExCatalogCategories /></div>
+    <div data-categories class="flex-1"><ExCatalogCategories /></div>
   </div>
 
   <div data-section>

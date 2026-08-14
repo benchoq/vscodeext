@@ -24,17 +24,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     onClicked(checked);
   }}
 >
-  <div
-    data-role='icon'
-    data-checked={checked}
-    class='qt-checkbox flex'
-  >
+  <div data-role="icon" data-checked={checked} class="qt-checkbox flex">
     {#if checked}
       <Check size={12} />
     {/if}
   </div>
 
-  <span data-role='text'>{text}</span>
+  <span data-role="text">{text}</span>
 </button>
 
 <style>

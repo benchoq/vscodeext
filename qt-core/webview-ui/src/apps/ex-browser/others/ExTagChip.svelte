@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { Glyphs } from "@/icons";
+  import { Glyphs } from '@/icons';
 
   let {
     text = '',
@@ -18,17 +18,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <button
     data-root
     data-variant={variant}
-    class='inline-flex'
+    class="inline-flex"
     onclick={(e: MouseEvent) => {
       onClicked(e);
     }}
-    >
+  >
     {#if !decorate}
-      <span data-role='name'>{text}</span>
+      <span data-role="name">{text}</span>
     {:else}
-      <span data-role='hash'>#</span>
-      <span data-role='name'>{text}</span>
-      <span data-role='close'>{Glyphs.multiplication}</span>
+      <span data-role="hash">#</span>
+      <span data-role="name">{text}</span>
+      <span data-role="close">{Glyphs.multiplication}</span>
     {/if}
   </button>
 {/if}

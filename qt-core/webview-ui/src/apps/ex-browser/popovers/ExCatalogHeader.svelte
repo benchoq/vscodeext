@@ -12,8 +12,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-<div data-root class='flex flex-row'>
-  <div data-role='title'>Catalog</div>
+<div data-root class="flex flex-row">
+  <div data-role="title">Catalog</div>
   <ExCloseButton onClicked={close} />
 </div>
 

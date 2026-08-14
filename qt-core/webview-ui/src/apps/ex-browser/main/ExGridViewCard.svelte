@@ -16,7 +16,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let {
     example
   }: {
-    example: ExEntry
+    example: ExEntry;
   } = $props();
 
   function select() {
@@ -25,11 +25,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div
-  data-role='item-area'
-  class='w-full h-full flex flex-col relative'
+  data-role="item-area"
+  class="w-full h-full flex flex-col relative"
   class:selected={example === ui.selected.example}
-  role='button'
-  tabindex='0'
+  role="button"
+  tabindex="0"
   onclick={select}
   onkeydown={(e) => {
     if (e.key === 'Enter') {
@@ -37,23 +37,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }
   }}
 >
-  <div data-role='item-thumbnail'>
+  <div data-role="item-thumbnail">
     <ExThumbnail {example} />
   </div>
 
-  <div
-    data-role='item-module'
-    class='absolute top-[8px] left-[8px]'
-  >
+  <div data-role="item-module" class="absolute top-[8px] left-[8px]">
     {utils.addSpaceBeforeUppercase(example.module)}
   </div>
 
-  <div data-role='item-name'>
+  <div data-role="item-name">
     {example.name}
   </div>
 
   <ExSeparator />
-  <ExTagList usage='card' tags={example.tags} />
+  <ExTagList usage="card" tags={example.tags} />
 </div>
 
 <style>

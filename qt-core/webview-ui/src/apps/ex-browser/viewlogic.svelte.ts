@@ -16,7 +16,7 @@ import {
   isExCategoryArray,
   isExBrowserViewConfig,
   isExResolvedPathsRecord
-} from "@shared/ex-browser";
+} from '@shared/ex-browser';
 import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
 import { CommandId, isErrorResponse } from '@shared/message';
 import { data, ui } from './states.svelte';
@@ -57,8 +57,9 @@ export async function selectPackage(p: ExPackage) {
   selectExample(undefined);
   data.examples = [];
   data.categories = isExCategoryArray(categories) ? categories : [];
-  data.resolvedPaths =
-    isExResolvedPathsRecord(resolvedPaths) ? resolvedPaths : {};
+  data.resolvedPaths = isExResolvedPathsRecord(resolvedPaths)
+    ? resolvedPaths
+    : {};
 
   ui.filter.tags = [];
   ui.filter.searchInput = '';
@@ -72,9 +73,8 @@ export async function selectPackage(p: ExPackage) {
 }
 
 export async function selectCategory(category?: ExCategory | string) {
-  const c = (typeof category === 'string')
-    ? findCategoryByName(category)
-    : category;
+  const c =
+    typeof category === 'string' ? findCategoryByName(category) : category;
 
   if (!_.isEqual(ui.filter.category, c)) {
     ui.filter.category = c;
@@ -85,7 +85,7 @@ export async function selectCategory(category?: ExCategory | string) {
 export async function selectExample(example: ExEntry | undefined) {
   if (ui.selected.example !== example) {
     ui.selected.example = example;
-    ui.sideBar.visible = (example !== undefined);
+    ui.sideBar.visible = example !== undefined;
     ui.sideBar.expanded = false;
   }
 }
@@ -104,7 +104,7 @@ export async function toggleTag(rawTag: string) {
   }
 
   if (isTagSelected(trimmed)) {
-    ui.filter.tags = ui.filter.tags.filter(t => t !== trimmed);
+    ui.filter.tags = ui.filter.tags.filter((t) => t !== trimmed);
   } else {
     ui.filter.tags.push(trimmed);
   }
@@ -139,7 +139,7 @@ export async function runExAction(action: ExActionTypes, args: object = {}) {
 
 export async function openFolder(folder: string) {
   await vscode.post(CommandId.CommonOpenFolder, { folder });
-};
+}
 
 export async function resolveImageUrl(example: ExEntry) {
   const src = example.imageUrl;
@@ -160,7 +160,10 @@ export async function resolveImageUrl(example: ExEntry) {
   return webviewUrl;
 }
 
-export async function onNewProjectFormEvent(type: NewItemForm.EventType, args?: unknown) {
+export async function onNewProjectFormEvent(
+  type: NewItemForm.EventType,
+  args?: unknown
+) {
   switch (type) {
     case 'inputChanged':
       validateNewProjectForm();
@@ -178,7 +181,7 @@ export async function onNewProjectFormEvent(type: NewItemForm.EventType, args?: 
             ui.input.states.workingDir = data;
             validateNewProjectForm();
           }
-        })
+        });
       break;
 
     case 'createClicked':
@@ -198,7 +201,7 @@ export async function validateNewProjectForm() {
   const payload = {
     type: 'project',
     name: ui.input.states.name,
-    workingDir: ui.input.states.workingDir,
+    workingDir: ui.input.states.workingDir
   };
 
   try {
@@ -232,7 +235,7 @@ async function loadPackages() {
 async function loadExamples(reason: 'selectPackage' | '' = '') {
   const r = await vscode.post(CommandId.ExBrowserGetExamples, {
     query: createFilterQuery(ui.filter.searchInput, ui.filter.tags),
-    category: $state.snapshot(ui.filter.category),
+    category: $state.snapshot(ui.filter.category)
   });
 
   if (Array.isArray(r) && r.every(isExEntry)) {
@@ -245,7 +248,7 @@ async function loadExamples(reason: 'selectPackage' | '' = '') {
   }
 
   if (ui.selected.example) {
-    const hit = data.examples.find(e => {
+    const hit = data.examples.find((e) => {
       return _.isEqual(ui.selected.example, e);
     });
 
@@ -256,7 +259,7 @@ async function loadExamples(reason: 'selectPackage' | '' = '') {
 }
 
 function findCategoryByName(name: string) {
-  return data.categories.find(c => {
+  return data.categories.find((c) => {
     return c.name.toLocaleLowerCase() === name.toLowerCase();
   });
 }
@@ -265,7 +268,7 @@ function createFilterQuery(keywords: string, tags: string[]) {
   const tagsJoined = tags
     .map((e) => {
       const t = e.trim();
-      return t.length === 0 ? '' : (TagPrefix + t);
+      return t.length === 0 ? '' : TagPrefix + t;
     })
     .filter((e) => e.length !== 0)
     .join(' ');

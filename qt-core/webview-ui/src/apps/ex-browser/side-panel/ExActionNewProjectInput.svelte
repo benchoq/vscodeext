@@ -23,15 +23,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   });
 
   // const openInOptions = [
-    // { value: 'newWindow', label: texts.wizard.openInOptions.newWindow },
-    // { value: 'addToWorkspace', label: texts.wizard.openInOptions.addToWorkspace }
+  // { value: 'newWindow', label: texts.wizard.openInOptions.newWindow },
+  // { value: 'addToWorkspace', label: texts.wizard.openInOptions.addToWorkspace }
   // ];
 
   let menuText = $derived.by(() => {
-    return (ui.input.states.openIn === 'newWindow')
+    return ui.input.states.openIn === 'newWindow'
       ? 'Create and open in new window'
       : 'Create and add to workspace';
-  })
+  });
 
   function onInput() {
     controller.fireEvent('inputChanged');
@@ -41,46 +41,42 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     if (compNameInput) {
       compNameInput.focus();
     }
-  })
-
+  });
 </script>
 
-<div
-  data-root
-  class='flex flex-col gap-[13px]'
->
-  <span data-role='note'>
-    Keeps your changes out of the Qt install folder,
-    so a Qt update can’t overwrite them.
+<div data-root class="flex flex-col gap-[13px]">
+  <span data-role="note">
+    Keeps your changes out of the Qt install folder, so a Qt update can’t
+    overwrite them.
   </span>
 
   <!-- name -->
-  <div class='flex flex-col gap-[3px]'>
-    <div data-role='input-field-name'>Project Name</div>
+  <div class="flex flex-col gap-[3px]">
+    <div data-role="input-field-name">Project Name</div>
     <ExValidationInput
       bind:this={compNameInput}
       bind:value={states.name}
       level={states.issues.name.level}
       message={states.issues.name.message}
-      onInput={onInput}
+      {onInput}
     />
   </div>
 
   <!-- working dir -->
-  <div class='flex flex-col gap-[3px]'>
-    <div data-role='input-field-name'>Create in</div>
+  <div class="flex flex-col gap-[3px]">
+    <div data-role="input-field-name">Create in</div>
     <div class="w-full flex flex-row items-center gap-[3px] relative">
       <ExValidationInput
         bind:value={states.workingDir}
         level={states.issues.workingDir.level}
         message={states.issues.workingDir.message}
-        onInput={onInput}
+        {onInput}
       />
 
       <button
-        data-role='browse-dir'
+        data-role="browse-dir"
         data-validation={states.issues.workingDir.level}
-        class='qt-button h-full absolute top-1/2 -translate-y-1/2'
+        class="qt-button h-full absolute top-1/2 -translate-y-1/2"
         onclick={() => {
           controller.fireEvent('browseClicked');
         }}
@@ -89,9 +85,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       </button>
     </div>
 
-    <ExCheckBox
-      text='Use as default project directory'
-    />
+    <ExCheckBox text="Use as default project directory" />
   </div>
 
   {@render createButtonAndOptions()}
@@ -104,7 +98,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         e.stopPropagation();
         createMenu.visible = false;
       }}
-      class='qt-dropdown fixed flex flex-col'
+      class="qt-dropdown fixed flex flex-col"
     >
       {@render createMenuItem('Open in new window', 'newWindow')}
       {@render createMenuItem('Add to workspace', 'addToWorkspace')}
@@ -113,11 +107,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 {#snippet createButtonAndOptions()}
-  <div class='flex flex-row gap-[3px]'>
-    <div class='grow'></div>
+  <div class="flex flex-row gap-[3px]">
+    <div class="grow"></div>
     <button
-      data-variant='primary'
-      class='qt-button'
+      data-variant="primary"
+      class="qt-button"
       disabled={!states.acceptable}
       onclick={() => {
         controller.fireEvent('createClicked');
@@ -128,8 +122,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     <button
       bind:this={createMenu.reference}
-      data-variant='primary'
-      class='qt-button w-[30px]'
+      data-variant="primary"
+      class="qt-button w-[30px]"
       disabled={!states.acceptable}
       onclick={(e: MouseEvent) => {
         createMenu.visible = true;
@@ -143,8 +137,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#snippet createMenuItem(text: string, openIn: 'newWindow' | 'addToWorkspace')}
   <button
-    data-role='dropdown-item'
-    class='flex flex-row items-center'
+    data-role="dropdown-item"
+    class="flex flex-row items-center"
     onclick={() => {
       controller.fireEvent('openInChanged', openIn);
       ui.input.states.openIn = openIn;
@@ -154,7 +148,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {#if ui.input.states.openIn === openIn}
       <Check size={14} />
     {:else}
-      <div class='w-[14px]'></div>
+      <div class="w-[14px]"></div>
     {/if}
     {text}
   </button>

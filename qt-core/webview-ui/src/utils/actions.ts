@@ -36,7 +36,10 @@ export function placeNear(node: HTMLElement, o: PlaceOption) {
   // };
 }
 
-export function portal(node: HTMLElement, target: HTMLElement | string = 'body') {
+export function portal(
+  node: HTMLElement,
+  target: HTMLElement | string = 'body'
+) {
   let targetEl: HTMLElement;
 
   function resolveTarget(target: HTMLElement | string): HTMLElement {
@@ -88,7 +91,6 @@ export function clickOutside(el: HTMLElement, cb: (ev: MouseEvent) => void) {
   };
 }
 
-
 // helpers
 interface PlaceOption {
   ref?: HTMLElement;
@@ -109,11 +111,7 @@ async function place(node: HTMLElement, o: PlaceOption) {
 
   const { x, y } = await computePosition(o.ref, node, {
     placement: o.placement ?? 'bottom-start',
-    middleware: [
-      offset(o.offset ?? 3),
-      flip(),
-      shift({ padding: 8 })
-    ]
+    middleware: [offset(o.offset ?? 3), flip(), shift({ padding: 8 })]
   });
 
   Object.assign(node.style, {

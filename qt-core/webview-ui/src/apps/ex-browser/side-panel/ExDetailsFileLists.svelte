@@ -10,7 +10,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const example = $derived(ui.selected.example);
   const filesSorted = $derived.by(() => {
     return [...(example?.filesToOpen ?? [])].sort();
-  })
+  });
 
   const resolvedPaths = $derived.by(() => {
     const id = ui.selected.example?.projectPath;
@@ -22,7 +22,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       return '';
     }
 
-    const full = example?.projectPath
+    const full = example?.projectPath;
     const index = full.lastIndexOf('/');
     return index === -1 ? '' : full.slice(0, index + 1);
   });
@@ -35,13 +35,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 {#if example}
-  <div class='flex flex-col'>
+  <div class="flex flex-col">
     {@render fileButton(shortenPath(example.projectPath), () => {
       viewlogic.runExAction('project-open-file');
     })}
 
     {#each filesSorted as file (file)}
-    {@const exists = resolvedPaths?.filesToOpen[file] !== undefined}
+      {@const exists = resolvedPaths?.filesToOpen[file] !== undefined}
       {#if exists}
         {@render fileButton(shortenPath(file), () => {
           viewlogic.runExAction('file-open', { file });
@@ -53,8 +53,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#snippet fileButton(file: string, onClicked: () => void)}
   <button
-    data-role='project-file'
-    class='flex flex-row grow'
+    data-role="project-file"
+    class="flex flex-row grow"
     onclick={onClicked}
   >
     {file}

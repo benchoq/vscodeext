@@ -14,13 +14,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   } = $props();
 </script>
 
-<div data-role='row-title'>{title}</div>
-<div data-role='row-value'>
+<div data-role="row-title">{title}</div>
+<div data-role="row-value">
   {@render children?.()}
 </div>
 
 {#if separator}
-  <div class='col-span-2'>
+  <div class="col-span-2">
     <ExSeparator />
   </div>
 {/if}

@@ -22,7 +22,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   bind:this={menu.reference}
   data-variant={!ui.sideBar.expanded ? 'primary' : 'secondary'}
   data-active={menu.visible}
-  class='qt-button flex flex-row items-center'
+  class="qt-button flex flex-row items-center"
   onclick={(e: MouseEvent) => {
     menu.visible = true;
     e.stopPropagation();
@@ -34,25 +34,25 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#if menu.visible}
   <div
-    data-role='menu'
+    data-role="menu"
     use:portal
     use:placeNear={{ ref: menu.reference, width: 'full' }}
     use:clickOutside={(e: MouseEvent) => {
       menu.visible = false;
       e.stopPropagation();
     }}
-    class='qt-dropdown fixed flex flex-col'
+    class="qt-dropdown fixed flex flex-col"
   >
     {@render menuItem('Open in new window', 'project-open')}
     {@render menuItem('Add to workspace', 'project-open-as-workspace')}
-    <ExSeparator margin='2px' />
+    <ExSeparator margin="2px" />
     {@render menuItem('Reveal in the file manager', 'project-reveal')}
   </div>
 {/if}
 
 {#snippet menuItem(text: string, action: ExActionTypes)}
   <button
-    data-role='menu-item'
+    data-role="menu-item"
     onclick={(e: MouseEvent) => {
       menu.visible = false;
       viewlogic.runExAction(action);

@@ -48,22 +48,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   onMount(fetchSrc);
 </script>
 
-<div
-  bind:this={container}
-  data-root
-  class='w-full h-full relative'
->
+<div bind:this={container} data-root class="w-full h-full relative">
   {#if example}
     {#await srcPromise then src}
       <img
-        src={src}
+        {src}
         alt={example.imageUrl}
         title={example.description}
-        class='w-full h-full absolute'
+        class="w-full h-full absolute"
         onload={onLoaded}
       />
     {:catch _err}
-      <div class='wrap-anywhere'>
+      <div class="wrap-anywhere">
         {example.imageUrl}
       </div>
     {/await}

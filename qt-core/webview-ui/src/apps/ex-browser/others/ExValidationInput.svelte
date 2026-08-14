@@ -45,9 +45,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div class="w-full relative">
   {#if hasIssue && (focused || forceShowAlert)}
     <div
-      data-role='alert-message'
+      data-role="alert-message"
       data-validation={level}
-      class='qt-alert w-full absolute top-full z-10'
+      class="qt-alert w-full absolute top-full z-10"
     >
       {message}
     </div>
@@ -56,14 +56,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <input
     {id}
     bind:value
-    type='text'
-    class='qt-input w-full'
+    type="text"
+    class="qt-input w-full"
     data-validation={level}
     onblur={onFocusChange}
     onfocus={onFocusChange}
     onmouseenter={onHoverEvent}
     onmouseleave={onHoverEvent}
-    oninput={() => { onInput(); }}
+    oninput={() => {
+      onInput();
+    }}
     onkeydown={onKeyDown}
     {...restProps}
   />

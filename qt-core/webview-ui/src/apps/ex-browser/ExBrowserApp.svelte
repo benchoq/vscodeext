@@ -19,10 +19,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   onDestroy(() => viewlogic.onAppDestroy());
 </script>
 
-<div class='w-screen h-screen flex flex-col' >
+<div class="w-screen h-screen flex flex-col">
   <ExHeader />
 
-  <div data-body class='flex flex-row'>
+  <div data-body class="flex flex-row">
     <ExMainView />
 
     <div data-sidebar class:open={ui.sideBar.visible}>
@@ -45,7 +45,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     overflow: hidden;
     transition-property: width, border-color;
     transition-duration: var(--duration-short);
-    transition-timing-function: cubic-bezier(.4,0,.2,1), ease;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1), ease;
 
     &.open {
       width: 320px;

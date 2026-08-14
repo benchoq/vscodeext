@@ -6,7 +6,7 @@ import {
   type ExPackage,
   type ExCategory,
   type ExResolvedPaths
-} from "@shared/ex-browser";
+} from '@shared/ex-browser';
 
 import * as NewItemForm from '@/comps/NewItemForm.logic.svelte';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
@@ -36,7 +36,7 @@ export const ui = $state({
     tagsFilterInput: '',
     searchInput: '',
     searchInputEl: undefined as HTMLInputElement | undefined,
-    category: undefined as ExCategory | undefined,
+    category: undefined as ExCategory | undefined
   },
 
   sideBar: {
@@ -56,5 +56,5 @@ export const ui = $state({
   },
 
   input: NewItemForm.createController(),
-  imageUrlCache: new Map<string, string>(),
-})
+  imageUrlCache: new Map<string, string>()
+});

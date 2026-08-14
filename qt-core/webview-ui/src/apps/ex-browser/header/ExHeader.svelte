@@ -23,10 +23,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </div>
 
   {#if ui.filter.tags.length}
-    <ExTagList
-      usage='header'
-      tags={ui.filter.tags}
-    />
+    <ExTagList usage="header" tags={ui.filter.tags} />
   {/if}
 </div>
 

@@ -10,26 +10,22 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   let {
     tags = [] as string[],
-    usage = 'card' as 'header' | 'card' | 'list' | 'details',
+    usage = 'card' as 'header' | 'card' | 'list' | 'details'
   } = $props();
 
   function findTagVariant(tag: string) {
-    if ((usage === 'header') || viewlogic.isTagSelected(tag)) {
+    if (usage === 'header' || viewlogic.isTagSelected(tag)) {
       return 'selected';
     }
 
-    return (usage === 'details' ? 'outline' : '');
+    return usage === 'details' ? 'outline' : '';
   }
 </script>
 
-<div
-  data-root
-  class='flex flex-row'
-  class:flex-wrap={usage === 'details'}
->
+<div data-root class="flex flex-row" class:flex-wrap={usage === 'details'}>
   {#if usage === 'card' || usage === 'list'}
-    <div data-role='icon'>
-      <Tag size={usage === 'card' ? 20 : 13}/>
+    <div data-role="icon">
+      <Tag size={usage === 'card' ? 20 : 13} />
     </div>
   {/if}
 
@@ -46,7 +42,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       />
     {/each}
   {:else}
-    <span data-role='no-tags'>No tags</span>
+    <span data-role="no-tags">No tags</span>
   {/if}
 </div>
 
