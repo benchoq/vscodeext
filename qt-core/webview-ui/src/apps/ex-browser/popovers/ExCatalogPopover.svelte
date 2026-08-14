@@ -28,7 +28,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <style>
   [data-root] {
     width: 480px;
-    font-size: 13px;
+    font-size: var(--qt-font-m);
     overflow: hidden;
   }
 

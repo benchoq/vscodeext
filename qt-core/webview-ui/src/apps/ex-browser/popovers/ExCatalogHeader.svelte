@@ -26,8 +26,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='title'] {
-    font-size: 13px;
-    font-weight: var(--qt-font-weight-semibold);
+    font-size: var(--qt-font-m);
+    font-weight: var(--qt-font-semibold);
     color: var(--qt-text-default);
   }
 </style>

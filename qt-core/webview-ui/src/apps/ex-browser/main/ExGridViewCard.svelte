@@ -71,9 +71,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     color: #f2f2f2;
     background: rgba(0, 0, 0, 0.62);
     border-radius: 3px;
-
-    font-size: 9px;
-    font-weight: var(--qt-font-weight-semibold);
+    font-size: var(--qt-font-3xs);
+    font-weight: var(--qt-font-semibold);
     line-height: 1.8;
   }
 </style>

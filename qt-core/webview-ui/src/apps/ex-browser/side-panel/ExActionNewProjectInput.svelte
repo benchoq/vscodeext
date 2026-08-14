@@ -157,13 +157,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='note'] {
-    font-size: 11px;
+   font-size: var(--qt-font-xs);
     padding: 0px 10px;
     color: var(--qt-text-muted);
   }
 
   [data-role='input-field-name'] {
-    font-size: 11px;
+    font-size: var(--qt-font-xs);
     color: var(--qt-text-muted);
   }
 

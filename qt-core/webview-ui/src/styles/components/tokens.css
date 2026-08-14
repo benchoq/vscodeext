@@ -86,8 +86,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   --qt-info-border: var(--vscode-inputValidation-infoBorder);
 
   /* Texts */
-  --qt-font-size-base: 13px;
-  --qt-font-weight-semibold: 600;
+  --qt-font-m:   13px;
+  --qt-font-s:   calc(var(--qt-font-m) - 1px);
+  --qt-font-xs:  calc(var(--qt-font-m) - 2px);
+  --qt-font-2xs: calc(var(--qt-font-m) - 3px);
+  --qt-font-3xs: calc(var(--qt-font-m) - 4px);
+
+  --qt-font-normal:   400;
+  --qt-font-semibold: 600;
 
   /* Transition */
   --qt-duration-fast:    80ms;

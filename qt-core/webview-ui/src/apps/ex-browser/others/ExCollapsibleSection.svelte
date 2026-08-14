@@ -44,8 +44,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='section-title'] {
-    font-size: 11px;
-    font-weight: var(--qt-font-weight-semibold);
+    font-size: var(--qt-font-xs);
+    font-weight: var(--qt-font-semibold);
     text-align: start;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -56,7 +56,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='section-count'] {
-    font-size: 10px;
+    font-size: var(--qt-font-2xs);
     font-variant-numeric: tabular-nums;
   }
 

@@ -41,7 +41,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     background: var(--qt-bg-input);
     color: var(--qt-text-muted);
     border: 1px solid transparent;
-    font-weight: var(--qt-font-weight-semibold);
+    font-size: var(--qt-font-2xs);
+    font-weight: var(--qt-font-semibold);
     line-height: 12px;
     font-family: inherit;
     letter-spacing: 0;
@@ -81,19 +82,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }
   }
 
-  [data-role='name'] {
-    font-size: 10px;
-  }
-
-  [data-role='hash'] {
-    margin-right: -2px;
-    opacity: 0.6;
-    font-size: 10px;
-  }
-
+  [data-role='hash'],
   [data-role='close'] {
-    opacity: 0.55;
-    margin-top: -0.5px;
-    font-size: 10px;
+    opacity: 0.6;
   }
 </style>

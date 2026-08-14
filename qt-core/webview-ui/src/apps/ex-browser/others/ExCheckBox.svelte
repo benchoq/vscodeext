@@ -37,6 +37,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-root] {
     gap: 6px;
     cursor: pointer;
+    font-size: var(--qt-font-s);
 
     &:hover {
       [data-role='icon'] {

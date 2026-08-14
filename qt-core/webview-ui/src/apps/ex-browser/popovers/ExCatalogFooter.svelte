@@ -52,12 +52,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='info-icon'] {
-    font-size: 13px;
+    font-size: var(--qt-font-m);
     user-select: none;
   }
 
   [data-role='location'] {
-    font-size: 11px;
+    font-size: var(--qt-font-xs);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

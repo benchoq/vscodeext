@@ -80,7 +80,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     color: var(--qt-dropdown-fg);
     cursor: pointer;
     font-family: inherit;
-    font-size: 12px;
+    font-size: var(--qt-font-s);
     text-align: left;
 
     &:hover {

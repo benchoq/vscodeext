@@ -80,6 +80,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     color: var(--qt-text-muted);
     background: none;
     border: none;
-    font-size: 13px;
+    font-size: var(--qt-font-m);
   }
 </style>

@@ -71,7 +71,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     line-height: 18px;
     word-break: break-word;
     font-family: inherit;
-    font-size: 11px;
+    font-size: var(--qt-font-xs);
     white-space: nowrap;
     text-overflow: ellipsis;
     text-align: left;
