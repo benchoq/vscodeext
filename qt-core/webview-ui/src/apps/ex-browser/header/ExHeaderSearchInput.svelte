@@ -46,7 +46,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div class="w-full relative">
-  <div data-role="search-icon" class="absolute top-1/2 -translate-y-1/2">
+  <div data-role="search-icon" class="qt-absolute-cy left-[12px]">
     {Glyphs.search}
   </div>
 
@@ -64,7 +64,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   />
 
   {#if value.trim().length}
-    <div class="absolute top-1/2 -translate-y-1/2 right-[5px]">
+    <div class="qt-absolute-cy right-[5px]">
       <ExCloseButton onClicked={() => clear()} />
     </div>
   {/if}
@@ -77,7 +77,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='search-icon'] {
-    left: 12px;
     color: var(--qt-text-muted);
     background: none;
     border: none;

@@ -4,8 +4,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import type { Snippet } from 'svelte';
   import './ExSidePanel.css';
+  import { exBrowser } from '@/apps/texts';
 
   import { ui } from '../states.svelte';
   import ExSeparator from '../others/ExSeparator.svelte';
@@ -21,7 +21,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     ui.sideBar.visible = false;
   }
 
-  const sectionContent: Snippet[] = [infoContent, actionContent, detailContent];
+  const texts = exBrowser.details;
+  const sectionContent = [infoContent, actionContent, detailContent];
 </script>
 
 <div data-root class="flex flex-col gap-[12px]">
@@ -39,21 +40,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <!-- snippets -->
 {#snippet infoContent()}
   <div class="flex flex-row items-center">
-    <div data-role="title">Example Details</div>
+    <div data-role="title">{texts.title}</div>
     <ExCloseButton onClicked={close} />
   </div>
   <ExThumbnailAndDesc />
 {/snippet}
 
 {#snippet actionContent()}
-  <div data-role="title">Actions</div>
+  <div data-role="title">{texts.actions.title}</div>
   <ExActionOpenExample />
   <ExActionNewProject />
   <ExActionDocs />
 {/snippet}
 
 {#snippet detailContent()}
-  <div data-role="title">Details</div>
+  <div data-role="title">{texts.details.title}</div>
   <ExDetailsTable />
 {/snippet}
 

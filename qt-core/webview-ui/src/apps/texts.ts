@@ -174,7 +174,31 @@ export const exBrowser = {
     revealLocationTooltip: 'Reveal folder in the file manager'
   },
 
-  // details: {
+  details: {
+    title: 'Example details',
+
+    actions: {
+      title: 'Actions',
+      openExample: {
+        button: 'Open example',
+        menuAdd: 'Add to workspace',
+        menuNew: 'Open in new window',
+        menuReveal: 'Reveal in the file manager'
+      },
+
+      newProject: {
+        button: 'Use as a template'
+      },
+
+      openDoc: {
+        button: 'Read the documentation',
+        openExtTooltip: 'Open documentation in external browser'
+      }
+    },
+
+    details: {
+      title: 'Actions'
+    }
   //   newProject: {
   //     button: 'New project',
   //     tooltip: "Create a new project based on this example",
@@ -194,7 +218,7 @@ export const exBrowser = {
   //   files: {
   //     title: 'Project overview'
   //   }
-  // },
+  },
 
   searchBox: {
     defaultPlaceholder: 'Search in examples...',

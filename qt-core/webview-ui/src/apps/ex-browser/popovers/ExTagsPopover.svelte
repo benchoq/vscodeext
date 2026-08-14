@@ -45,7 +45,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     />
 
     {#if ui.filter.tagsFilterInput.trim().length}
-      <div class="absolute top-1/2 -translate-y-1/2 right-[12px]">
+      <div class="qt-absolute-cy right-[12px]">
         <ExCloseButton onClicked={clearSearchInput} />
       </div>
     {/if}

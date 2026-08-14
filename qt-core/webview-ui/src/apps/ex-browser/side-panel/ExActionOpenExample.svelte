@@ -6,12 +6,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { type ExActionTypes } from '@shared/ex-browser';
   import * as icons from '@/icons';
+  import { exBrowser } from '@/apps/texts';
   import { clickOutside, portal, placeNear } from '@/utils/actions';
 
   import ExSeparator from '../others/ExSeparator.svelte';
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
+  const texts = exBrowser.details.actions.openExample;
   let menu = $state({
     visible: false,
     reference: undefined as HTMLButtonElement | undefined
@@ -29,7 +31,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }}
 >
   <icons.FolderOpen />
-  Open example
+  {texts.button}
 </button>
 
 {#if menu.visible}
@@ -43,10 +45,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }}
     class="qt-dropdown fixed flex flex-col"
   >
-    {@render menuItem('Open in new window', 'project-open')}
-    {@render menuItem('Add to workspace', 'project-open-as-workspace')}
+    {@render menuItem(texts.menuNew, 'project-open')}
+    {@render menuItem(texts.menuAdd, 'project-open-as-workspace')}
     <ExSeparator margin="2px" />
-    {@render menuItem('Reveal in the file manager', 'project-reveal')}
+    {@render menuItem(texts.menuReveal, 'project-reveal')}
   </div>
 {/if}
 

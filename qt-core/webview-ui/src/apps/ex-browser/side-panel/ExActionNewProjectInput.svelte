@@ -76,7 +76,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <button
         data-role="browse-dir"
         data-validation={states.issues.workingDir.level}
-        class="qt-button h-full absolute top-1/2 -translate-y-1/2"
+        class="qt-button qt-absoulte-cy h-full"
         onclick={() => {
           controller.fireEvent('browseClicked');
         }}

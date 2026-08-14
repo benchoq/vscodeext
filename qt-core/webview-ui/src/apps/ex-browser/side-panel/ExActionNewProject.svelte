@@ -8,12 +8,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { cubicOut, cubicIn } from 'svelte/easing';
 
   import { ChevronRight } from '@/icons';
+  import { exBrowser } from '@/apps/texts';
+
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
   import ExCloseButton from '../others/ExCloseButton.svelte';
   import ExActionNewProjectInput from './ExActionNewProjectInput.svelte';
 
   const isOpen = $derived(ui.sideBar.expanded);
+  const texts = exBrowser.details.actions.newProject;
 
   function toggleOpen() {
     viewlogic.setNewProjectFormVisible(!ui.sideBar.expanded);
@@ -34,7 +37,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <ChevronRight size={16} />
     </span>
 
-    <span>Use as a template</span>
+    <span>{texts.button}</span>
     <div class="grow"></div>
 
     {#if isOpen}
