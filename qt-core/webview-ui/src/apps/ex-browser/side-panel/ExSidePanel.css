@@ -7,4 +7,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   height: 26px;
   text-align: left;
   border: none;
+
+  &[data-active='true'] {
+    background: var(--qt-button-primary-hover);
+  }
 }
