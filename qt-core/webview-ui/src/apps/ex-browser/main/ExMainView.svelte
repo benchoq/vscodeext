@@ -38,7 +38,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-<div data-root class="flex-1 min-w-0 flex flex-col">
+<div data-area='main' class="flex-1 min-w-0 flex flex-col">
   {#if all.length === 0}
     {@render emptyStateInfo()}
   {:else}
@@ -71,11 +71,3 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {/each}
   </EmptyState>
 {/snippet}
-
-<style>
-  [data-root] {
-    padding: 0px 14px 14px;
-    overflow: hidden auto;
-    user-select: none;
-  }
-</style>

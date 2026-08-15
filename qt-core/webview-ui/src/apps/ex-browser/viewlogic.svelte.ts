@@ -280,8 +280,8 @@ function onKeyDown(e: KeyboardEvent) {
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'f') {
     e.preventDefault();
     e.stopPropagation();
-
     ui.filter.searchInputEl?.focus();
+    ui.filter.searchInputEl?.select();
   }
 }
 

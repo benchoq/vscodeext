@@ -21,7 +21,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     text-align: left;
     cursor: pointer;
     border: none;
-    border-radius: 0;
     transition-property: background, color;
     transition-duration: var(--duration-short);
 

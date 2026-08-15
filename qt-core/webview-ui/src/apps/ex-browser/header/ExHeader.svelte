@@ -14,7 +14,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import ExHeaderViewModeButtons from './ExHeaderViewModeButtons.svelte';
 </script>
 
-<div data-root class="flex flex-col shrink-0 gap-[7px]">
+<div data-area='header' class="flex flex-col shrink-0 gap-[7px]">
   <div class="flex flex-row gap-[6px]">
     <ExHeaderBreadcrumb />
     <ExHeaderTagsButton />
@@ -26,11 +26,3 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <ExTagList usage="header" tags={ui.filter.tags} />
   {/if}
 </div>
-
-<style>
-  [data-root] {
-    padding: 8px 14px;
-    background: var(--qt-bg-subtle);
-    border-bottom: 1px solid var(--qt-stroke-subtle);
-  }
-</style>

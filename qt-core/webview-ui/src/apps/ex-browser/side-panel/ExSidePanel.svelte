@@ -25,7 +25,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const sectionContent = [infoContent, actionContent, detailContent];
 </script>
 
-<div data-root class="flex flex-col gap-[12px]">
+<div data-area='side-panel' class="flex flex-col gap-[12px]">
   {#each sectionContent as section, index (index)}
     {#if index !== 0}
       <ExSeparator />
@@ -59,11 +59,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 <style>
-  [data-root] {
-    overflow: hidden auto;
-    padding: 12px 14px 24px;
-  }
-
   [data-role='title'] {
     flex: 1;
     color: var(--qt-text-muted);

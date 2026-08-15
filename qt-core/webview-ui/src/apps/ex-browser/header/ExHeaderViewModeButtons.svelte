@@ -17,7 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {@const Comp = mode === 'grid' ? icons.Grid : icons.List}
   <button
     data-role="view-mode"
-    class="qt-button flex items-center justify-center"
+    class="qt-button flex justify-center"
     aria-pressed={ui.selected.viewMode === mode}
     onclick={() => {
       ui.selected.viewMode = mode;
@@ -27,9 +27,3 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </button>
 {/snippet}
 
-<style>
-  [data-root] {
-    border: 1px solid var(--qt-stroke-subtle);
-    border-radius: var(--qt-radius-s);
-  }
-</style>
