@@ -1,0 +1,11 @@
+packages:
+  - "qt-lib"
+  - "qt-core"
+  - "qt-core/webview-ui"
+  - "qt-cpp"
+
+allowBuilds:
+  '@parcel/watcher': true
+  '@vscode/vsce-sign': true
+  esbuild: true
+  keytar: true

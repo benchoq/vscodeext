@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "compile": "vite build",
     "preview": "vite preview",
     "pretest": "npm run build && npm run lint",
     "lint": "npm run prettierWrite && eslint . --fix --cache",
@@ -45,9 +46,5 @@
     "marked": "^15.0.7",
     "nanoid": "^5.1.5",
     "zod": "^3.25.67"
-  },
-  "allowScripts": {
-    "esbuild": true,
-    "@parcel/watcher": true
   }
 }
