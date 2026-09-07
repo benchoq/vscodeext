@@ -11,6 +11,6 @@ export async function onAppMount() {
 export async function onAppDestroy() {
 }
 
-export async function ping() {
-  await vscode.post(CommandId.DocBrowserPing);
+export async function search(keyword: string) {
+  await vscode.post(CommandId.DocBrowserSearch, { keyword });
 }

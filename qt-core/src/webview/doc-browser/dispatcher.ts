@@ -1,12 +1,15 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
+import _ from 'lodash';
+import * as fs from 'fs';
+import * as path from 'path';
 import {
   Disposable,
   WebviewPanel as Panel,
   ExtensionContext as Context
 } from 'vscode';
-
+import initSqlJs from 'sql.js';
 
 import { createLogger } from 'qt-lib';
 import { WebviewChannel } from '@/webview/channel';
@@ -35,7 +38,7 @@ export class DocBrowserDispatcher {
 
     this._comm = new WebviewChannel(panel.webview);
     this._handlers = new Map<CommandId, CommandHandler>([
-      [CommandId.DocBrowserPing, this._onPing],
+      [CommandId.DocBrowserSearch, this._onSearch],
     ]);
 
     // this._viewConfig = helpers.createViewConfig(this._context);
@@ -72,8 +75,42 @@ export class DocBrowserDispatcher {
   }
 
   // handlers
-  private readonly _onPing = (cmd: Command) => {
-    console.log("ping");
+  private readonly _onSearch = async (cmd: Command) => {
+    const keyword = String(_.get(cmd.payload, 'keyword', '')).trim();
+    const SQL = await initSqlJs({
+      locateFile: file => {
+        return path.join(
+          '/Users/bencho/ws_vscode/0907.doc-browser/vscodeext',
+          'qt-core/node_modules/sql.js/dist',
+          file
+        );
+      }
+    });
+
+    const qch = '/Users/bencho/tools/Qt/Docs/Qt-6.11.1/qtcore.qch';
+    const data = fs.readFileSync(qch);
+    const db = new SQL.Database(data);
+    const result = db.exec(`
+      SELECT *
+      FROM IndexTable
+      WHERE Name = 'QObject'
+    `);
+
+    const table = result[0];
+    const cols = table?.columns; // string[]
+    const values = table?.values; // [number | string | Uint8Array | null][];
+
+    if (cols && values) {
+      for (const row of values) {
+        console.log(row);
+      }
+
+      console.log(cols);
+    }
+
+    // console.log(result);
+    console.log("onSearch", keyword);
+
     this._comm.postDataReply(cmd, { status: 'done' });
   };
 }
