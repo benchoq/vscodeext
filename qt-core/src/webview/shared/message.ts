@@ -58,6 +58,9 @@ export enum CommandId {
   UiFileOpenInDesigner,
   UiFileOpenInTextEditor,
 
+  // doc browser
+  DocBrowserPing,
+
   // common
   CommonOpenFolder,
   CommonVscodeThemeChanged

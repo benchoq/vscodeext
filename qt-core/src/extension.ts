@@ -41,6 +41,7 @@ import {
   registerOpenExBrowserCommand,
   registerExBrowserPageSerializer
 } from '@/webview/ex-browser/controller';
+import { registerDocBrowser } from '@/webview/doc-browser/controller';
 import { registerOpenCoursesBrowserCommand } from '@/webview/courses/controller';
 import {
   tryOpenWelcomePage,
@@ -99,6 +100,7 @@ export async function activate(context: vscode.ExtensionContext) {
   registerQmlTraceProvider(context);
   registerUiDesignerCommands(context);
   registerUiFileEditorProvider(context);
+  registerDocBrowser(context);
 
   await enableQtTsFileSupport(context);
 
