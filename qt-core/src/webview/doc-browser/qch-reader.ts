@@ -70,8 +70,12 @@ function execToIndexData(db: Database, sql: string, params: SqlValue[] = []) {
     const data: IndexData = {
       name: String(o.Name ?? ''),
       fileId: Number(o.FileId ?? 0),
-      anchor: String(o.Identifier ?? ''),
-      identifier: String(o.Identifier ?? '')
+      anchor: String(o.Anchor ?? ''),
+      identifier: String(o.Identifier ?? ''),
+      folderName: String(o.FolderName ?? ''),
+      fileName: String(o.FileName ?? ''),
+      fileTitle: String(o.FileTitle ?? ''),
+      namespaceName: String(o.NamespaceName ?? '')
     }
 
     records.push(data);

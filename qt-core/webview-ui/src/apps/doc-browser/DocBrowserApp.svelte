@@ -35,11 +35,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     >
   </div>
 
-  <div class='flex flex-col'>
+  <div class='flex flex-col gap-1'>
     {#each data.data as entry (entry.identifier)}
-      <div>
-        {entry.name} / {entry.identifier} / {entry.anchor}
-      </div>
+      <button
+        class='qt-button flex align-start'
+        onclick={() => {
+          viewlogic.openDoc(entry);
+        }}
+      >
+        {entry.fileTitle} ({entry.anchor})
+      </button>
     {/each}
   </div>
 </div>

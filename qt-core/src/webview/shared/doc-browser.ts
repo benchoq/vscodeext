@@ -6,6 +6,10 @@ export interface IndexData {
   fileId: number;
   anchor: string;
   identifier: string;
+  folderName: string,
+  fileName: string;
+  fileTitle: string;
+  namespaceName: string;
 }
 
 export function isIndexData(x: unknown): x is IndexData {
@@ -18,6 +22,10 @@ export function isIndexData(x: unknown): x is IndexData {
     typeof o.name === 'string' &&
     typeof o.fileId === 'number' &&
     typeof o.anchor === 'string' &&
-    typeof o.identifier === 'string'
+    typeof o.identifier === 'string' &&
+    typeof o.folderName === 'string' &&
+    typeof o.fileName === 'string' &&
+    typeof o.fileTitle === 'string' &&
+    typeof o.namespaceName === 'string'
   );
 }

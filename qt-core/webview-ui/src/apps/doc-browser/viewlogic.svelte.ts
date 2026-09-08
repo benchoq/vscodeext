@@ -4,7 +4,7 @@
 import { vscode } from '@/apps/vscode';
 import { CommandId } from '@shared/message';
 import { data } from './states.svelte';
-import { isIndexData } from '@shared/doc-browser';
+import { isIndexData, type IndexData } from '@shared/doc-browser';
 
 export async function onAppMount() {
 }
@@ -17,4 +17,10 @@ export async function search(keyword: string) {
   if (Array.isArray(r) && r.every(isIndexData)) {
     data.data = r;
   }
+}
+
+export async function openDoc(entry: IndexData) {
+  await vscode.post(CommandId.DocBrowserOpen, {
+    entry: $state.snapshot(entry)
+  });
 }

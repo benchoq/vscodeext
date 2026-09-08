@@ -60,6 +60,7 @@ export enum CommandId {
 
   // doc browser
   DocBrowserSearch,
+  DocBrowserOpen,
 
   // common
   CommonOpenFolder,
