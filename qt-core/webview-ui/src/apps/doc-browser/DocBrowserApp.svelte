@@ -11,7 +11,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import DocBrowserHeader from './DocBrowserHeader.svelte';
   import DocBrowserView from './DocBrowserView.svelte';
-  import DocBrowserSearchList from './DocBrowserSearchList.svelte';
+  import DocBrowserIndexSearchList from './DocBrowserIndexSearchList.svelte';
 
   import * as viewlogic from './viewlogic.svelte';
 
@@ -22,8 +22,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div class="w-screen h-screen flex flex-col gap-1 p-2">
   <DocBrowserHeader />
 
-  <div class='flex flex-row grow gap-2'>
-    <DocBrowserSearchList />
+  <div data-body class='flex flex-row grow gap-2'>
+    <div class="w-[300px]">
+      <DocBrowserIndexSearchList />
+    </div>
     <DocBrowserView />
   </div>
 </div>
+
+<style>
+  [data-body] {
+    flex: 1;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+</style>
