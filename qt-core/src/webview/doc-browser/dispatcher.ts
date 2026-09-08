@@ -2,14 +2,11 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import _ from 'lodash';
-import * as fs from 'fs';
-import * as path from 'path';
 import {
   Disposable,
   WebviewPanel as Panel,
   ExtensionContext as Context
 } from 'vscode';
-import initSqlJs from 'sql.js';
 
 import { createLogger } from 'qt-lib';
 import { WebviewChannel } from '@/webview/channel';
@@ -19,12 +16,15 @@ import {
   CommandHandler,
   IsCommand
 } from '@/webview/shared/message';
+import { QchReader } from './qch-reader';
+
 // import {} from '@/webview/shared/doc-browser';
 // import * as texts from '@/texts';
 
 const logger = createLogger('doc-browser-dispatcher');
 
 export class DocBrowserDispatcher {
+  private readonly _qchReaderPromise: Promise<QchReader>;
   private readonly _comm: WebviewChannel;
   private readonly _handlers: Map<CommandId, CommandHandler> | undefined;
   // private readonly _viewConfig: ExBrowserViewConfig;
@@ -35,6 +35,9 @@ export class DocBrowserDispatcher {
     panel: Panel,
   ) {
     void this._context;
+
+    const qchPath = '/Users/bencho/tools/Qt/Docs/Qt-6.11.1/qtcore.qch';
+    this._qchReaderPromise = QchReader.create(qchPath);
 
     this._comm = new WebviewChannel(panel.webview);
     this._handlers = new Map<CommandId, CommandHandler>([
@@ -77,38 +80,13 @@ export class DocBrowserDispatcher {
   // handlers
   private readonly _onSearch = async (cmd: Command) => {
     const keyword = String(_.get(cmd.payload, 'keyword', '')).trim();
-    const SQL = await initSqlJs({
-      locateFile: file => {
-        return path.join(
-          '/Users/bencho/ws_vscode/0907.doc-browser/vscodeext',
-          'qt-core/node_modules/sql.js/dist',
-          file
-        );
-      }
-    });
+    const reader = await this._qchReaderPromise;
+    const result = reader.execToRecords(
+      'SELECT * FROM IndexTable WHERE Name LIKE ?',
+      [`%${keyword}%`]
+    );
 
-    const qch = '/Users/bencho/tools/Qt/Docs/Qt-6.11.1/qtcore.qch';
-    const data = fs.readFileSync(qch);
-    const db = new SQL.Database(data);
-    const result = db.exec(`
-      SELECT *
-      FROM IndexTable
-      WHERE Name = 'QObject'
-    `);
-
-    const table = result[0];
-    const cols = table?.columns; // string[]
-    const values = table?.values; // [number | string | Uint8Array | null][];
-
-    if (cols && values) {
-      for (const row of values) {
-        console.log(row);
-      }
-
-      console.log(cols);
-    }
-
-    // console.log(result);
+    console.log(result);
     console.log("onSearch", keyword);
 
     this._comm.postDataReply(cmd, { status: 'done' });
