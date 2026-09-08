@@ -9,10 +9,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import '@/styles/components/components.css';
   import './DocBrowserApp.css';
 
+  import DocBrowserView from './DocBrowserView.svelte';
   import * as viewlogic from './viewlogic.svelte';
   import { data } from './states.svelte';
 
-  let value = $state('');
+  let value = $state('QObject');
 
   onMount(() => viewlogic.onAppMount());
   onDestroy(() => viewlogic.onAppDestroy());
@@ -35,16 +36,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     >
   </div>
 
-  <div class='flex flex-col gap-1'>
-    {#each data.data as entry (entry.identifier)}
-      <button
-        class='qt-button flex align-start'
-        onclick={() => {
-          viewlogic.openDoc(entry);
-        }}
-      >
-        {entry.fileTitle} ({entry.anchor})
-      </button>
-    {/each}
+  <div class='flex flex-row h-full gap-2'>
+    <div class='flex flex-col gap-1'>
+      {#each data.data as entry (entry.identifier)}
+        <button
+          class='qt-button flex align-start'
+          onclick={() => {
+            viewlogic.openDoc(entry);
+          }}
+        >
+          {entry.fileTitle} ({entry.anchor})
+        </button>
+      {/each}
+    </div>
+
+    <DocBrowserView />
   </div>
 </div>

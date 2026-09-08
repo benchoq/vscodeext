@@ -1,10 +1,12 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
+import _ from 'lodash';
 import { vscode } from '@/apps/vscode';
+
 import { CommandId } from '@shared/message';
-import { data } from './states.svelte';
 import { isIndexData, type IndexData } from '@shared/doc-browser';
+import { data, ui } from './states.svelte';
 
 export async function onAppMount() {
 }
@@ -20,7 +22,13 @@ export async function search(keyword: string) {
 }
 
 export async function openDoc(entry: IndexData) {
-  await vscode.post(CommandId.DocBrowserOpen, {
+  const r = await vscode.post(CommandId.DocBrowserOpen, {
     entry: $state.snapshot(entry)
   });
+
+  const html = _.get(r, 'html', '');
+  ui.selected.entry = entry;
+  ui.selected.html = html;
+
+  console.log(html);
 }

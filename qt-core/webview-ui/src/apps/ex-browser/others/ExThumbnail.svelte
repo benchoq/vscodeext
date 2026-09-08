@@ -54,7 +54,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <img
         {src}
         alt={example.imageUrl}
-        title={example.description}
+        title={src}
         class="w-full h-full absolute"
         onload={onLoaded}
       />

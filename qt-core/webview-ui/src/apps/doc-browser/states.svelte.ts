@@ -9,5 +9,10 @@ export const data = $state({
 });
 
 export const ui = $state({
-  theme: VscodeThemeMonitor.createController()
+  theme: VscodeThemeMonitor.createController(),
+
+  selected: {
+    entry: undefined as IndexData | undefined,
+    html: ''
+  }
 });

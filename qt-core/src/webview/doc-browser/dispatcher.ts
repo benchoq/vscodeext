@@ -4,7 +4,7 @@
 import _ from 'lodash';
 import * as path from 'path';
 import {
-  commands,
+  // commands,
   Uri,
   Disposable,
   WebviewPanel as Panel,
@@ -21,7 +21,7 @@ import {
 } from '@/webview/shared/message';
 import { QchReader } from './qch-reader';
 import { isIndexData } from '../shared/doc-browser';
-// import { fsFile } from '@/fs-utils';
+import { fsFile } from '@/fs-utils';
 
 // import {} from '@/webview/shared/doc-browser';
 // import * as texts from '@/texts';
@@ -38,14 +38,14 @@ export class DocBrowserDispatcher {
 
   public constructor(
     private readonly _context: Context,
-    panel: Panel,
+    private readonly _panel: Panel,
   ) {
     void this._context;
 
     const qchPath = path.join(qchDir, 'qtcore.qch');
     this._qchReaderPromise = QchReader.create(qchPath);
 
-    this._comm = new WebviewChannel(panel.webview);
+    this._comm = new WebviewChannel(_panel.webview);
     this._handlers = new Map<CommandId, CommandHandler>([
       [CommandId.DocBrowserSearch, this._onSearch],
       [CommandId.DocBrowserOpen, this._onOpen]
@@ -123,13 +123,46 @@ export class DocBrowserDispatcher {
     }
 
     const fullPath = path.join(qchDir, entry.folderName, entry.fileName);
-    const uri = Uri.file(fullPath).with({
-      fragment: encodeURIComponent(entry.anchor)
-    });
+    const folderUri = Uri.file(path.dirname(fullPath));
+    const baseUri = this._panel.webview.asWebviewUri(folderUri);
 
-    commands.executeCommand('simpleBrowser.api.open', uri);
+    const rawHtml = String(fsFile(fullPath).readAll());
+    const cssContent = String(
+      fsFile(folderUri, 'style/offline-dark.css').readAll()
+    );
+
+    const headContent = `
+      <meta charset="utf-8">
+      <base href="${baseUri.toString() + '/'}">
+      <style>${cssContent}</style>
+    `;
+
+    const bodyMatch = new RegExp(/<body[^>]*>([\s\S]*)<\/body>/i).exec(rawHtml)
+    const bodyContent = bodyMatch ? bodyMatch[0] : rawHtml;
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+        ${headContent}
+        ${bodyContent}
+      </html>
+    `;
+
+    // html = html.replace('<head>', `
+    //   <head>
+    //     <base href="${baseUri.toString() + '/'}">
+    //     <meta http-equiv="Content-Security-Policy" content="style-src *; script-src *;">
+    // `);
+
+    // const uri = Uri.file(fullPath).with({
+    //   fragment: encodeURIComponent(entry.anchor)
+    // });
+
+    // commands.executeCommand('simpleBrowser.api.open', uri);
     // void fsFile(fullPath).openInSimpleBrowser();
 
-    this._comm.postDataReply(cmd, entry);
+    this._comm.postDataReply(cmd, {
+      html,
+    });
   };
 }

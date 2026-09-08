@@ -52,7 +52,7 @@ export function createWebviewHtml(view: Webview, config: WebviewAppConfig) {
       <meta http-equiv="Content-Security-Policy" content="
           default-src 'none';
           img-src https: data: blob:;
-          style-src 'unsafe-inline' http://${devHost};
+          style-src https: 'unsafe-inline' http://${devHost};
           script-src http://${devHost} 'unsafe-eval';
           connect-src ws://${devHost} http://${devHost};
         ">

@@ -4,6 +4,7 @@
 import {
   window,
   commands,
+  Uri,
   Disposable,
   WebviewPanel as Panel,
   ExtensionContext as Context
@@ -41,7 +42,10 @@ export class DocBrowserController {
       app: 'doc-browser',
       title: 'Qt documentation',
       context,
-      ...basicWebviewAppConfig
+      ...basicWebviewAppConfig,
+      additionalResourceRoots: [
+        Uri.file('/Users/bencho/tools/Qt/Docs/Qt-6.11.1')
+      ]
     };
 
     panel.iconPath = createWebviewPanelIcons(context);
