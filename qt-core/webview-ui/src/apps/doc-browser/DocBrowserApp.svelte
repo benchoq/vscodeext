@@ -9,47 +9,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import '@/styles/components/components.css';
   import './DocBrowserApp.css';
 
+  import DocBrowserHeader from './DocBrowserHeader.svelte';
   import DocBrowserView from './DocBrowserView.svelte';
-  import * as viewlogic from './viewlogic.svelte';
-  import { data } from './states.svelte';
+  import DocBrowserSearchList from './DocBrowserSearchList.svelte';
 
-  let value = $state('QObject');
+  import * as viewlogic from './viewlogic.svelte';
 
   onMount(() => viewlogic.onAppMount());
   onDestroy(() => viewlogic.onAppDestroy());
 </script>
 
-<div class="w-screen h-screen flex flex-col">
-  <div class='flex flex-row'>
-    <button
-      class='qt-button'
-      onclick={() => {
-        viewlogic.search(value);
-      }}
-    >
-      Search
-    </button>
-    <input
-      type="text"
-      class='qt-input'
-      bind:value
-    >
-  </div>
+<div class="w-screen h-screen flex flex-col gap-1 p-2">
+  <DocBrowserHeader />
 
-  <div class='flex flex-row h-full gap-2'>
-    <div class='flex flex-col gap-1'>
-      {#each data.data as entry (entry.identifier)}
-        <button
-          class='qt-button flex align-start'
-          onclick={() => {
-            viewlogic.openDoc(entry);
-          }}
-        >
-          {entry.fileTitle} ({entry.anchor})
-        </button>
-      {/each}
-    </div>
-
+  <div class='flex flex-row grow gap-2'>
+    <DocBrowserSearchList />
     <DocBrowserView />
   </div>
 </div>
