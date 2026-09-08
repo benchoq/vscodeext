@@ -10,7 +10,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import './DocBrowserApp.css';
 
   import * as viewlogic from './viewlogic.svelte';
-  // import { ui } from './states.svelte';
+  import { data } from './states.svelte';
 
   let value = $state('');
 
@@ -24,15 +24,22 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       class='qt-button'
       onclick={() => {
         viewlogic.search(value);
-        console.log(value);
       }}
     >
-      Click me
+      Search
     </button>
     <input
       type="text"
       class='qt-input'
       bind:value
     >
+  </div>
+
+  <div class='flex flex-col'>
+    {#each data.data as entry (entry.identifier)}
+      <div>
+        {entry.name} / {entry.identifier} / {entry.anchor}
+      </div>
+    {/each}
   </div>
 </div>

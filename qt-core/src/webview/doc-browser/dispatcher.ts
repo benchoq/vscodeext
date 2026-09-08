@@ -89,6 +89,6 @@ export class DocBrowserDispatcher {
     console.log(result);
     console.log("onSearch", keyword);
 
-    this._comm.postDataReply(cmd, { status: 'done' });
+    this._comm.postDataReply(cmd, result);
   };
 }

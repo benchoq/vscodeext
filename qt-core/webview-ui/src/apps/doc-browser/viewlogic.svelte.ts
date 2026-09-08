@@ -3,7 +3,8 @@
 
 import { vscode } from '@/apps/vscode';
 import { CommandId } from '@shared/message';
-// import { data, ui } from './states.svelte';
+import { data } from './states.svelte';
+import { isIndexData } from '@shared/doc-browser';
 
 export async function onAppMount() {
 }
@@ -12,5 +13,8 @@ export async function onAppDestroy() {
 }
 
 export async function search(keyword: string) {
-  await vscode.post(CommandId.DocBrowserSearch, { keyword });
+  const r = await vscode.post(CommandId.DocBrowserSearch, { keyword });
+  if (Array.isArray(r) && r.every(isIndexData)) {
+    data.data = r;
+  }
 }

@@ -6,6 +6,7 @@ import * as path from 'path';
 import initSqlJs, { Database, SqlJsStatic, SqlValue } from 'sql.js';
 
 import { createWrappedLogger } from 'qt-lib';
+import { IndexData } from '@/webview/shared/doc-browser';
 
 let sqlPromise: Promise<SqlJsStatic> | undefined;
 const logger = createWrappedLogger('qch-reader');
@@ -37,7 +38,7 @@ export class QchReader {
       return [];
     }
 
-    return execToRecords(this._db, sql, params);
+    return execToIndexData(this._db, sql, params);
   }
 }
 
@@ -59,15 +60,24 @@ async function initSql() {
   return sqlPromise;
 }
 
-function execToRecords(db: Database, sql: string, params: SqlValue[] = []) {
+function execToIndexData(db: Database, sql: string, params: SqlValue[] = []) {
+  const records: IndexData[] = [];
   const s = db.prepare(sql);
   s.bind(params);
 
-  const records = [];
   while (s.step()) {
-    records.push(s.getAsObject());
+    const o = s.getAsObject();
+    const data: IndexData = {
+      name: String(o.Name ?? ''),
+      fileId: Number(o.FileId ?? 0),
+      anchor: String(o.Identifier ?? ''),
+      identifier: String(o.Identifier ?? '')
+    }
+
+    records.push(data);
   }
 
   s.free();
   return records;
 }
+
