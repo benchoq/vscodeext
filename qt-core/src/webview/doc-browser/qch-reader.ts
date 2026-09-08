@@ -3,64 +3,36 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import initSqlJs, { Database, SqlJsStatic, SqlValue } from 'sql.js';
+import { Database, SqlJsStatic, SqlValue } from 'sql.js';
 
-import { createWrappedLogger } from 'qt-lib';
+// import { createWrappedLogger } from 'qt-lib';
 import { IndexData } from '@/webview/shared/doc-browser';
+import { fetchSql } from './sql';
 
-let sqlPromise: Promise<SqlJsStatic> | undefined;
-const logger = createWrappedLogger('qch-reader');
+// const logger = createWrappedLogger('qch-reader');
 
 export class QchReader {
-  private _db: Database | undefined;
+  private readonly _db: Database;
 
-  private constructor(private readonly _sql: SqlJsStatic) {}
-
-  public static async create(qchPath: string) {
-    const sql = await initSql();
-    const reader = new QchReader(sql);
-
-    reader._load(qchPath);
-    return reader;
-  }
-
-  public _load(filePath: string) {
-    const data = fs.readFileSync(filePath);
+  private constructor(
+    private readonly _sql: SqlJsStatic,
+    private readonly _filePath: string
+  ) {
+    const data = fs.readFileSync(this._filePath);
     this._db = new this._sql.Database(data);
   }
 
-  public execToRecords(sql: string, params: SqlValue[] = []) {
-    if (!this._db) {
-      logger.text('Cannot exec sql, DB is not initialized')
-        .data(sql)
-        .error();
+  public static async create(qchPath: string) {
+    return new QchReader(await fetchSql(), qchPath);
+  }
 
-      return [];
-    }
-
-    return execToIndexData(this._db, sql, params);
+  public searchIndex(sql: string, params: SqlValue[] = []) {
+    return searchIndex(this._filePath, this._db, sql, params);
   }
 }
 
 // helpers
-async function initSql() {
-  if (!sqlPromise) {
-    const distPath = path.join(
-      '/Users/bencho/ws_vscode/0907.doc-browser/vscodeext',
-      'qt-core/node_modules/sql.js/dist'
-    );
-
-    sqlPromise = initSqlJs({
-      locateFile: file => {
-        return path.join(distPath, file);
-      }
-    });
-  }
-
-  return sqlPromise;
-}
-
-function execToIndexData(db: Database, sql: string, params: SqlValue[] = []) {
+function searchIndex(qchFilePath: string, db: Database, sql: string, params: SqlValue[] = []) {
   const records: IndexData[] = [];
   const s = db.prepare(sql);
   s.bind(params);
@@ -75,7 +47,9 @@ function execToIndexData(db: Database, sql: string, params: SqlValue[] = []) {
       folderName: String(o.FolderName ?? ''),
       fileName: String(o.FileName ?? ''),
       fileTitle: String(o.FileTitle ?? ''),
-      namespaceName: String(o.NamespaceName ?? '')
+      namespaceName: String(o.NamespaceName ?? ''),
+      qchFilePath,
+      qchFileName: path.basename(qchFilePath)
     }
 
     records.push(data);

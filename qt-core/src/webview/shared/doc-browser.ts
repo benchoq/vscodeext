@@ -10,6 +10,9 @@ export interface IndexData {
   fileName: string;
   fileTitle: string;
   namespaceName: string;
+
+  qchFileName: string;
+  qchFilePath: string;
 }
 
 export function isIndexData(x: unknown): x is IndexData {
@@ -26,6 +29,8 @@ export function isIndexData(x: unknown): x is IndexData {
     typeof o.folderName === 'string' &&
     typeof o.fileName === 'string' &&
     typeof o.fileTitle === 'string' &&
-    typeof o.namespaceName === 'string'
+    typeof o.namespaceName === 'string' &&
+    typeof o.qchFilePath === 'string' &&
+     typeof o.qchFileName === 'string'
   );
 }

@@ -4,7 +4,6 @@
 import _ from 'lodash';
 import * as path from 'path';
 import {
-  // commands,
   Uri,
   Disposable,
   WebviewPanel as Panel,
@@ -19,7 +18,7 @@ import {
   CommandHandler,
   IsCommand
 } from '@/webview/shared/message';
-import { QchReader } from './qch-reader';
+import { DocBrowserDataManager } from './data-manager';
 import { isIndexData } from '../shared/doc-browser';
 import { fsFile } from '@/fs-utils';
 
@@ -30,10 +29,10 @@ const logger = createLogger('doc-browser-dispatcher');
 const qchDir = '/Users/bencho/tools/Qt/Docs/Qt-6.11.1';
 
 export class DocBrowserDispatcher {
-  private readonly _qchReaderPromise: Promise<QchReader>;
   private readonly _comm: WebviewChannel;
   private readonly _handlers: Map<CommandId, CommandHandler> | undefined;
   // private readonly _viewConfig: ExBrowserViewConfig;
+  private readonly _data: DocBrowserDataManager;
   private readonly _disposables: Disposable[] = [];
 
   public constructor(
@@ -42,8 +41,7 @@ export class DocBrowserDispatcher {
   ) {
     void this._context;
 
-    const qchPath = path.join(qchDir, 'qtcore.qch');
-    this._qchReaderPromise = QchReader.create(qchPath);
+    this._data = new DocBrowserDataManager();
 
     this._comm = new WebviewChannel(_panel.webview);
     this._handlers = new Map<CommandId, CommandHandler>([
@@ -87,32 +85,9 @@ export class DocBrowserDispatcher {
   // handlers
   private readonly _onSearch = async (cmd: Command) => {
     const keyword = String(_.get(cmd.payload, 'keyword', '')).trim();
-    const reader = await this._qchReaderPromise;
-    const result = reader.execToRecords(
-      `SELECT
-        IndexTable.Name,
-        IndexTable.FileId,
-        IndexTable.Identifier,
-        IndexTable.Anchor,
-        FolderTable.Name as FolderName,
-        FileNameTable.Name as FileName,
-        FileNameTable.Title as FileTitle,
-        NamespaceTable.Name as NamespaceName
-      FROM
-        IndexTable,
-        FolderTable,
-        FileNameTable,
-        NamespaceTable
-      WHERE
-        IndexTable.Name LIKE ?
-        AND IndexTable.FileId == FileNameTable.FileId
-        AND FileNameTable.FolderId == FolderTable.Id
-        AND FolderTable.NamespaceID == NamespaceTable.Id
-    `,
-      [`%${keyword}%`]
-    );
+    const data = await this._data.searchIndex(keyword);
 
-    this._comm.postDataReply(cmd, result);
+    this._comm.postDataReply(cmd, data);
   };
 
   private readonly _onOpen = (cmd: Command) => {
@@ -147,19 +122,6 @@ export class DocBrowserDispatcher {
         ${bodyContent}
       </html>
     `;
-
-    // html = html.replace('<head>', `
-    //   <head>
-    //     <base href="${baseUri.toString() + '/'}">
-    //     <meta http-equiv="Content-Security-Policy" content="style-src *; script-src *;">
-    // `);
-
-    // const uri = Uri.file(fullPath).with({
-    //   fragment: encodeURIComponent(entry.anchor)
-    // });
-
-    // commands.executeCommand('simpleBrowser.api.open', uri);
-    // void fsFile(fullPath).openInSimpleBrowser();
 
     this._comm.postDataReply(cmd, {
       html,

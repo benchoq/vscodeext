@@ -17,6 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         viewlogic.openDoc(entry);
       }}
     >
+      {entry.qchFileName} {entry.fileTitle}
       {entry.name}
       ({entry.anchor})
     </button>
