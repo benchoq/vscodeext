@@ -17,6 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   function triggerUpdate(delay = 200) {
     clearTimeout(timer);
     timer = setTimeout(() => {
+      viewlogic.setMode('search');
       viewlogic.search(value);
     }, delay);
   }
@@ -28,23 +29,33 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-<div class='flex flex-row m-2 gap-2'>
-  <input
-    bind:value
-    type="text"
-    class='qt-input w-[200px]'
-    oninput={() => {
-      triggerUpdate(200);
-    }}
-    onkeydown={onKeydown}
-  >
-
+<div class='flex flex-row h-[32px] gap-2'>
   <button
     class='qt-button'
     onclick={() => {
-      viewlogic.search(value);
+      viewlogic.setMode('toc');
     }}
   >
-    Search
+    TOC
   </button>
+  <div class='flex flex-row gap-2'>
+    <input
+      bind:value
+      type="text"
+      class='qt-input w-[300px]'
+      oninput={() => {
+        triggerUpdate(200);
+      }}
+      onkeydown={onKeydown}
+    >
+
+    <button
+      class='qt-button'
+      onclick={() => {
+        triggerUpdate(0);
+      }}
+    >
+      Search
+    </button>
+  </div>
 </div>

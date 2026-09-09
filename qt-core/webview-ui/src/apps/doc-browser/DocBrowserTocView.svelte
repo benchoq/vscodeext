@@ -13,18 +13,23 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   class='flex flex-col'
 >
   <span class='p-2'>
-    Total {data.indexes.length} entries
+    Total {data.toc.length} entries
   </span>
   <div class='qt-item-list flex flex-col h-full'>
-    {#each data.indexes as entry (entry.identifier + entry.qchFileName)}
+    {#each data.toc as toc, i (i)}
       <button
         class='item flex align-start'
-        class:active={ui.selected.index === entry}
+        class:active={ui.selected.toc === toc}
         onclick={() => {
-          viewlogic.openDoc(entry);
+          viewlogic.openDocFromToc(toc);
         }}
       >
-        {entry.identifier}
+        <span
+          style:margin-left={`${toc.depth * 20}px`}
+          class='overflow-hidden whitespace-nowrap text-ellipsis'
+        >
+          {toc.title} ({toc.depth})
+        </span>
       </button>
     {/each}
   </div>

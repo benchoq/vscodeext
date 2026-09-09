@@ -6,7 +6,7 @@ import * as path from 'path';
 import { Database, SqlJsStatic, SqlValue } from 'sql.js';
 
 // import { createWrappedLogger } from 'qt-lib';
-import { IndexData } from '@/webview/shared/doc-browser';
+import { IndexData, TocEntry } from '@/webview/shared/doc-browser';
 import { fetchSql } from './sql';
 
 // const logger = createWrappedLogger('qch-reader');
@@ -26,36 +26,78 @@ export class QchReader {
     return new QchReader(await fetchSql(), qchPath);
   }
 
-  public searchIndex(sql: string, params: SqlValue[] = []) {
-    return searchIndex(this._filePath, this._db, sql, params);
-  }
-}
+  public readToc(sql: string) {
+    const entries: TocEntry[] = [];
+    const s = this._db.prepare(sql);
 
-// helpers
-function searchIndex(qchFilePath: string, db: Database, sql: string, params: SqlValue[] = []) {
-  const records: IndexData[] = [];
-  const s = db.prepare(sql);
-  s.bind(params);
-
-  while (s.step()) {
-    const o = s.getAsObject();
-    const data: IndexData = {
-      name: String(o.Name ?? ''),
-      fileId: Number(o.FileId ?? 0),
-      anchor: String(o.Anchor ?? ''),
-      identifier: String(o.Identifier ?? ''),
-      folderName: String(o.FolderName ?? ''),
-      fileName: String(o.FileName ?? ''),
-      fileTitle: String(o.FileTitle ?? ''),
-      namespaceName: String(o.NamespaceName ?? ''),
-      qchFilePath,
-      qchFileName: path.basename(qchFilePath)
+    while (s.step()) {
+      const o = s.getAsObject();
+      const bytes = o.Data as Uint8Array;
+      entries.push(...parseContentsTable(bytes));
     }
 
-    records.push(data);
+    s.free();
+    return entries;
   }
 
-  s.free();
-  return records;
+  public searchIndex(sql: string, params: SqlValue[] = []) {
+    const records: IndexData[] = [];
+    const s = this._db.prepare(sql);
+    s.bind(params);
+
+    while (s.step()) {
+      const o = s.getAsObject();
+      const data: IndexData = {
+        name: String(o.Name ?? ''),
+        fileId: Number(o.FileId ?? 0),
+        anchor: String(o.Anchor ?? ''),
+        identifier: String(o.Identifier ?? ''),
+        folderName: String(o.FolderName ?? ''),
+        fileName: String(o.FileName ?? ''),
+        fileTitle: String(o.FileTitle ?? ''),
+        namespaceName: String(o.NamespaceName ?? ''),
+        qchFilePath: this._filePath,
+        qchFileName: path.basename(this._filePath)
+      }
+
+      records.push(data);
+    }
+
+    s.free();
+    return records;
+  }
 }
 
+
+// helpers
+function parseContentsTable(data: Uint8Array): TocEntry[] {
+  const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
+  const entries: TocEntry[] = [];
+  let pos = 0;
+
+  function readUtf16BE(length: number): string {
+    const chars: string[] = [];
+    for (let i = 0; i < length; i += 2) {
+      chars.push(String.fromCharCode(view.getUint16(pos + i, false)));
+    }
+    pos += length;
+    return chars.join('');
+  }
+
+  while (pos < data.length) {
+    const depth = view.getInt32(pos, false);
+    pos += 4;
+
+    const hrefLen = view.getUint32(pos, false);
+    pos += 4;
+    const href = readUtf16BE(hrefLen);
+
+    const titleLen = view.getUint32(pos, false);
+    pos += 4;
+    const title = readUtf16BE(titleLen);
+
+    entries.push({ depth, href, title });
+  }
+
+  return entries;
+}

@@ -19,7 +19,7 @@ import {
   IsCommand
 } from '@/webview/shared/message';
 import { DocBrowserDataManager } from './data-manager';
-import { isIndexData } from '../shared/doc-browser';
+import { isIndexData, isTocEntry } from '../shared/doc-browser';
 import { fsFile } from '@/fs-utils';
 
 // import {} from '@/webview/shared/doc-browser';
@@ -45,8 +45,10 @@ export class DocBrowserDispatcher {
 
     this._comm = new WebviewChannel(_panel.webview);
     this._handlers = new Map<CommandId, CommandHandler>([
+      [CommandId.DocBrowserReadToc, this._onReadToc],
       [CommandId.DocBrowserSearch, this._onSearch],
-      [CommandId.DocBrowserOpen, this._onOpen]
+      [CommandId.DocBrowserOpenDocFromToc, this._onOpenFromToc],
+      [CommandId.DocBrowserOpenDocFromIndex, this._onOpenFromIndex]
     ]);
 
     // this._viewConfig = helpers.createViewConfig(this._context);
@@ -83,6 +85,11 @@ export class DocBrowserDispatcher {
   }
 
   // handlers
+  private readonly _onReadToc = async (cmd: Command) => {
+    const data = await this._data.readToc();
+    this._comm.postDataReply(cmd, data);
+  };
+
   private readonly _onSearch = async (cmd: Command) => {
     const keyword = String(_.get(cmd.payload, 'keyword', '')).trim();
     const data = await this._data.searchIndex(keyword);
@@ -90,41 +97,57 @@ export class DocBrowserDispatcher {
     this._comm.postDataReply(cmd, data);
   };
 
-  private readonly _onOpen = (cmd: Command) => {
-    const entry = _.get(cmd.payload, 'entry', {});
-    if (!isIndexData(entry)) {
+
+  private readonly _onOpenFromToc = (cmd: Command) => {
+    const toc = _.get(cmd.payload, 'toc', {});
+    if (!isTocEntry(toc)) {
       console.log('bad data');
       return;
     }
 
-    const fullPath = path.join(qchDir, entry.folderName, entry.fileName);
-    const folderUri = Uri.file(path.dirname(fullPath));
-    const baseUri = this._panel.webview.asWebviewUri(folderUri);
+    this._comm.postDataReply(cmd, {
+      html: loadHtml(this._panel, 'qtcore', toc.href)
+    });
+  }
 
-    const rawHtml = String(fsFile(fullPath).readAll());
-    const cssContent = String(
-      fsFile(folderUri, 'style/offline-dark.css').readAll()
-    );
-
-    const headContent = `
-      <meta charset="utf-8">
-      <base href="${baseUri.toString() + '/'}">
-      <style>${cssContent}</style>
-    `;
-
-    const bodyMatch = new RegExp(/<body[^>]*>([\s\S]*)<\/body>/i).exec(rawHtml)
-    const bodyContent = bodyMatch ? bodyMatch[0] : rawHtml;
-
-    const html = `
-      <!DOCTYPE html>
-      <html>
-        ${headContent}
-        ${bodyContent}
-      </html>
-    `;
+  private readonly _onOpenFromIndex = (cmd: Command) => {
+    const index = _.get(cmd.payload, 'index', {});
+    if (!isIndexData(index)) {
+      console.log('bad data');
+      return;
+    }
 
     this._comm.postDataReply(cmd, {
-      html,
+      html: loadHtml(this._panel, index.folderName, index.fileName)
     });
   };
+}
+
+// helpers
+function loadHtml(panel: Panel, folderName: string, fileName: string) {
+  const fullPath = path.join(qchDir, folderName, fileName);
+  const folderUri = Uri.file(path.dirname(fullPath));
+  const baseUri = panel.webview.asWebviewUri(folderUri);
+
+  const rawHtml = String(fsFile(fullPath).readAll());
+  const cssContent = String(
+    fsFile(folderUri, 'style/offline-dark.css').readAll()
+  );
+
+  const headContent = `
+    <meta charset="utf-8">
+    <base href="${baseUri.toString() + '/'}">
+    <style>${cssContent}</style>
+  `;
+
+  const bodyMatch = new RegExp(/<body[^>]*>([\s\S]*)<\/body>/i).exec(rawHtml)
+  const bodyContent = bodyMatch ? bodyMatch[0] : rawHtml;
+
+  return `
+    <!DOCTYPE html>
+    <html>
+      ${headContent}
+      ${bodyContent}
+    </html>
+  `;
 }

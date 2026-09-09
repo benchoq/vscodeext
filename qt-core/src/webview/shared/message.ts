@@ -59,8 +59,10 @@ export enum CommandId {
   UiFileOpenInTextEditor,
 
   // doc browser
+  DocBrowserReadToc,
   DocBrowserSearch,
-  DocBrowserOpen,
+  DocBrowserOpenDocFromToc,
+  DocBrowserOpenDocFromIndex,
 
   // common
   CommonOpenFolder,

@@ -6,32 +6,35 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { ui } from './states.svelte';
 
-  const entry = $derived(ui.selected.entry);
+  const index = $derived(ui.selected.index);
   let iframeEl: HTMLIFrameElement;
 
   function scrollToAnchor() {
-    const anchor = entry?.anchor;
+    const anchor = index?.anchor;
     if (anchor && iframeEl.contentDocument) {
       const target = iframeEl.contentDocument.getElementById(anchor);
       target?.scrollIntoView();
     }
   }
 
+  const title = $derived(ui.mode === 'toc' ? ui.selected.toc?.title : ui.selected.index?.fileTitle);
+  const htmlInfo = $derived(ui.mode === 'toc' ? ui.selected.toc?.href : ui.selected.index?.fileName)
+
   $effect(() => {
-    void entry?.anchor;
+    void index?.anchor;
     scrollToAnchor();
   });
 </script>
 
 <div data-role='area' class='w-full flex flex-col'>
   <div class='p-2 flex flex-row'>
-    <span class='grow'>{entry?.fileTitle}</span>
-    <span>{entry?.folderName}/{entry?.fileName}</span>
+    <span class='grow'>{title}</span>
+    <span>{htmlInfo}</span>
   </div>
   <iframe
     bind:this={iframeEl}
     class='grow min-w-0 overflow-y-auto'
-    title={entry?.fileTitle}
+    title={index?.fileTitle}
     srcdoc={ui.selected.html}
     onload={scrollToAnchor}
   >

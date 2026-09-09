@@ -15,6 +15,12 @@ export interface IndexData {
   qchFilePath: string;
 }
 
+export interface TocEntry {
+  depth: number;
+  href: string;
+  title: string;
+}
+
 export function isIndexData(x: unknown): x is IndexData {
   if (typeof x !== 'object' || x === null) {
     return false;
@@ -32,5 +38,18 @@ export function isIndexData(x: unknown): x is IndexData {
     typeof o.namespaceName === 'string' &&
     typeof o.qchFilePath === 'string' &&
      typeof o.qchFileName === 'string'
+  );
+}
+
+export function isTocEntry(x: unknown): x is TocEntry {
+  if (typeof x !== 'object' || x === null) {
+    return false;
+  }
+
+  const o = x as Record<string, unknown>;
+  return (
+    typeof o.depth === 'number' &&
+    typeof o.href === 'string' &&
+    typeof o.title === 'string'
   );
 }

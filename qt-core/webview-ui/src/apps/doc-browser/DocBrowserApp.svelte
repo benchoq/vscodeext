@@ -11,9 +11,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import DocBrowserHeader from './DocBrowserHeader.svelte';
   import DocBrowserView from './DocBrowserView.svelte';
+  import DocBrowserTocView from './DocBrowserTocView.svelte';
   import DocBrowserIndexSearchList from './DocBrowserIndexSearchList.svelte';
 
   import * as viewlogic from './viewlogic.svelte';
+  import { ui } from './states.svelte';
 
   onMount(() => viewlogic.onAppMount());
   onDestroy(() => viewlogic.onAppDestroy());
@@ -24,7 +26,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   <div data-body class='flex flex-row grow gap-2'>
     <div class="w-[300px]">
-      <DocBrowserIndexSearchList />
+      {#if ui.mode === 'toc'}
+        <DocBrowserTocView />
+      {:else}
+        <DocBrowserIndexSearchList />
+      {/if}
     </div>
     <DocBrowserView />
   </div>

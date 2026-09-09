@@ -10,19 +10,27 @@ export class DocBrowserDataManager {
   private readonly _readersPromise: Promise<QchReader[]>;
 
   constructor() {
-    const qchFiles = fsDir(qchDir).findFiles("*.qch");
+    const qchFiles = fsDir(qchDir).findFiles("qtcore.qch");
 
     this._readersPromise = Promise.all(
       qchFiles.map(async (filePath) => QchReader.create(filePath))
     );
   }
 
+  public async readToc() {
+    const readers = await this._readersPromise;
+    const results = await Promise.all(
+      readers.map((r) => r.readToc(Sqls.readContentData))
+    );
+
+    return results.flat();
+  }
+
   public async searchIndex(keyword: string) {
     const readers = await this._readersPromise;
-
     const results = await Promise.all(
-      readers.map((reader) =>
-        reader.searchIndex(
+      readers.map((r) =>
+        r.searchIndex(
           Sqls.searchIndex,
           [`%${keyword}%`, keyword]
         )
@@ -60,5 +68,10 @@ const Sqls = {
       AND FolderTable.NamespaceID == NamespaceTable.Id
     ORDER BY
       CASE WHEN IndexTable.Name = ? THEN 0 ELSE 1 END
+  `,
+
+  readContentData: `
+    SELECT *
+    FROM ContentsTable
   `
 };
