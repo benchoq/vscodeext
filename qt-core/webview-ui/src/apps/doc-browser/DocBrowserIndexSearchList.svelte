@@ -10,24 +10,29 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div
-  data-role='list'
-  class='qt-item-list flex flex-col'
+  data-role='area'
+  class='flex flex-col'
 >
-  {#each data.data as entry (entry.identifier)}
-    <button
-      class='item flex align-start'
-      class:active={ui.selected.entry === entry}
-      onclick={() => {
-        viewlogic.openDoc(entry);
-      }}
-    >
-      {entry.identifier}
-    </button>
-  {/each}
+  <span class='p-2'>
+    Total {data.data.length} entries
+  </span>
+  <div class='qt-item-list flex flex-col h-full'>
+    {#each data.data as entry (entry.identifier + entry.qchFileName)}
+      <button
+        class='item flex align-start'
+        class:active={ui.selected.entry === entry}
+        onclick={() => {
+          viewlogic.openDoc(entry);
+        }}
+      >
+        {entry.identifier}
+      </button>
+    {/each}
+  </div>
 </div>
 
 <style>
-  [data-role='list'] {
+  [data-role='area'] {
     border: 1px solid #333333;
     height: 100%;
     min-height: 0;
