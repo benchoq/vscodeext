@@ -26,7 +26,17 @@ export function registerDocBrowser(context: Context) {
     commands.registerCommand(consts.COMMAND_FULL_OPEN, () => {
       // telemetry.sendAction(consts.COMMAND_OPEN);
       DocBrowserController.render(context);
-    })
+    }),
+
+    window.registerWebviewPanelSerializer(
+      consts.WEBVIEW_PANEL_VIEW_TYPE,
+      {
+        async deserializeWebviewPanel(panel: Panel) {
+          DocBrowserController.restore(context, panel);
+          return Promise.resolve();
+        }
+      }
+    )
   );
 }
 
