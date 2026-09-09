@@ -37,10 +37,4 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     min-height: 0;
     overflow: auto;
   }
-
-  .qt-item-list {
-    & .item {
-      padding: 2px 4px;
-    }
-  }
 </style>

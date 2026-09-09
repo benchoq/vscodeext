@@ -75,6 +75,12 @@ function parseContentsTable(data: Uint8Array): TocEntry[] {
   const entries: TocEntry[] = [];
   let pos = 0;
 
+  function readUint32(): number {
+    const i = view.getUint32(pos, false);
+    pos += 4;
+    return i;
+  }
+
   function readUtf16BE(length: number): string {
     const chars: string[] = [];
     for (let i = 0; i < length; i += 2) {
@@ -85,16 +91,9 @@ function parseContentsTable(data: Uint8Array): TocEntry[] {
   }
 
   while (pos < data.length) {
-    const depth = view.getInt32(pos, false);
-    pos += 4;
-
-    const hrefLen = view.getUint32(pos, false);
-    pos += 4;
-    const href = readUtf16BE(hrefLen);
-
-    const titleLen = view.getUint32(pos, false);
-    pos += 4;
-    const title = readUtf16BE(titleLen);
+    const depth = readUint32();
+    const href = readUtf16BE(readUint32());
+    const title = readUtf16BE(readUint32());
 
     entries.push({ depth, href, title });
   }

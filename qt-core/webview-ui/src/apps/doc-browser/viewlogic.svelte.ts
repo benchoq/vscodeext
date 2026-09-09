@@ -60,7 +60,6 @@ export async function loadToc() {
   const r = await vscode.post(CommandId.DocBrowserReadToc);
   if (Array.isArray(r) && r.every(isTocEntry)) {
     data.toc = r;
-  } else {
-    console.log(r);
+    ui.tocTree.rebuild(r);
   }
 }

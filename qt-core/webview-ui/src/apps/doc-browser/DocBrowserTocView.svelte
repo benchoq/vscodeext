@@ -4,8 +4,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import * as viewlogic from './viewlogic.svelte';
+  // import * as viewlogic from './viewlogic.svelte';
   import { data, ui } from './states.svelte';
+  import TocTreeViewNode from './others/TocTreeViewNode.svelte';
 </script>
 
 <div
@@ -16,21 +17,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     Total {data.toc.length} entries
   </span>
   <div class='qt-item-list flex flex-col h-full'>
-    {#each data.toc as toc, i (i)}
-      <button
-        class='item flex align-start'
-        class:active={ui.selected.toc === toc}
-        onclick={() => {
-          viewlogic.openDocFromToc(toc);
-        }}
-      >
-        <span
-          style:margin-left={`${toc.depth * 20}px`}
-          class='overflow-hidden whitespace-nowrap text-ellipsis'
-        >
-          {toc.title} ({toc.depth})
-        </span>
-      </button>
+    {#each ui.tocTree.topLevels as node (node.id)}
+      <TocTreeViewNode {node} />
     {/each}
   </div>
 </div>
@@ -41,11 +29,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     height: 100%;
     min-height: 0;
     overflow: auto;
-  }
-
-  .qt-item-list {
-    & .item {
-      padding: 2px 4px;
-    }
   }
 </style>
