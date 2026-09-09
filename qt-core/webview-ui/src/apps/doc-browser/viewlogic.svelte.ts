@@ -20,8 +20,6 @@ export function setMode(mode: UiMode) {
   if (ui.mode === 'toc') {
     loadToc();
   }
-
-  console.log(mode);
 }
 
 export async function search(keyword: string) {
@@ -36,12 +34,8 @@ export async function openDoc(index: IndexData) {
     index: $state.snapshot(index)
   });
 
-  const html = _.get(r, 'html', '');
-
   ui.selected.index = index;
-  ui.selected.html = html;
-
-  console.log(html);
+  ui.selected.html = _.get(r, 'html', '');;
 }
 
 export async function openDocFromToc(toc: TocEntry) {
@@ -49,11 +43,8 @@ export async function openDocFromToc(toc: TocEntry) {
     toc: $state.snapshot(toc)
   });
 
-  const html = _.get(r, 'html', '');
   ui.selected.toc = toc;
-  ui.selected.html = html;
-
-  console.log(html);
+  ui.selected.html = _.get(r, 'html', '');
 }
 
 export async function loadToc() {

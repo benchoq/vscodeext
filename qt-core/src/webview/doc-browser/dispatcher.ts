@@ -106,7 +106,7 @@ export class DocBrowserDispatcher {
     }
 
     this._comm.postDataReply(cmd, {
-      html: loadHtml(this._panel, 'qtcore', toc.href)
+      html: loadHtml(this._panel, path.join(qchDir, toc.folderName), toc.href)
     });
   }
 
@@ -118,14 +118,14 @@ export class DocBrowserDispatcher {
     }
 
     this._comm.postDataReply(cmd, {
-      html: loadHtml(this._panel, index.folderName, index.fileName)
+      html: loadHtml(this._panel, path.join(qchDir, index.folderName), index.fileName)
     });
   };
 }
 
 // helpers
-function loadHtml(panel: Panel, folderName: string, fileName: string) {
-  const fullPath = path.join(qchDir, folderName, fileName);
+function loadHtml(panel: Panel, folderPath: string, fileName: string) {
+  const fullPath = path.join(folderPath, fileName);
   const folderUri = Uri.file(path.dirname(fullPath));
   const baseUri = panel.webview.asWebviewUri(folderUri);
 

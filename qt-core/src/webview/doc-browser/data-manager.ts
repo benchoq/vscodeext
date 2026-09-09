@@ -10,7 +10,7 @@ export class DocBrowserDataManager {
   private readonly _readersPromise: Promise<QchReader[]>;
 
   constructor() {
-    const qchFiles = fsDir(qchDir).findFiles("qtcore.qch");
+    const qchFiles = fsDir(qchDir).findFiles("*.qch");
 
     this._readersPromise = Promise.all(
       qchFiles.map(async (filePath) => QchReader.create(filePath))
@@ -20,7 +20,7 @@ export class DocBrowserDataManager {
   public async readToc() {
     const readers = await this._readersPromise;
     const results = await Promise.all(
-      readers.map((r) => r.readToc(Sqls.readContentData))
+      readers.map((r) => r.readToc())
     );
 
     return results.flat();
@@ -29,12 +29,7 @@ export class DocBrowserDataManager {
   public async searchIndex(keyword: string) {
     const readers = await this._readersPromise;
     const results = await Promise.all(
-      readers.map((r) =>
-        r.searchIndex(
-          Sqls.searchIndex,
-          [`%${keyword}%`, keyword]
-        )
-      )
+      readers.map((r) => r.searchIndex(keyword))
     );
 
     return results.flat().sort((a, b) => {
@@ -44,34 +39,3 @@ export class DocBrowserDataManager {
     });
   }
 }
-
-const Sqls = {
-  searchIndex: `
-    SELECT
-      IndexTable.Name,
-      IndexTable.FileId,
-      IndexTable.Identifier,
-      IndexTable.Anchor,
-      FolderTable.Name as FolderName,
-      FileNameTable.Name as FileName,
-      FileNameTable.Title as FileTitle,
-      NamespaceTable.Name as NamespaceName
-    FROM
-      IndexTable,
-      FolderTable,
-      FileNameTable,
-      NamespaceTable
-    WHERE
-      IndexTable.Name LIKE ?
-      AND IndexTable.FileId == FileNameTable.FileId
-      AND FileNameTable.FolderId == FolderTable.Id
-      AND FolderTable.NamespaceID == NamespaceTable.Id
-    ORDER BY
-      CASE WHEN IndexTable.Name = ? THEN 0 ELSE 1 END
-  `,
-
-  readContentData: `
-    SELECT *
-    FROM ContentsTable
-  `
-};

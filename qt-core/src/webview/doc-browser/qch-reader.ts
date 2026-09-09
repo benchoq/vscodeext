@@ -3,7 +3,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { Database, SqlJsStatic, SqlValue } from 'sql.js';
+import { Database, SqlJsStatic } from 'sql.js';
 
 // import { createWrappedLogger } from 'qt-lib';
 import { IndexData, TocEntry } from '@/webview/shared/doc-browser';
@@ -26,24 +26,31 @@ export class QchReader {
     return new QchReader(await fetchSql(), qchPath);
   }
 
-  public readToc(sql: string) {
+  public readToc() {
     const entries: TocEntry[] = [];
-    const s = this._db.prepare(sql);
+    const s = this._db.prepare(Sqls.readContentData);
 
     while (s.step()) {
       const o = s.getAsObject();
       const bytes = o.Data as Uint8Array;
-      entries.push(...parseContentsTable(bytes));
+      entries.push(...
+        parseContentsTable(bytes)
+          .map(p => ({
+              ...p,
+              folderName: String(o.FolderName ?? '')
+            } as TocEntry)
+          )
+      );
     }
 
     s.free();
     return entries;
   }
 
-  public searchIndex(sql: string, params: SqlValue[] = []) {
+  public searchIndex(keyword: string) {
     const records: IndexData[] = [];
-    const s = this._db.prepare(sql);
-    s.bind(params);
+    const s = this._db.prepare(Sqls.searchIndex);
+    s.bind([`%${keyword}%`, keyword]);
 
     while (s.step()) {
       const o = s.getAsObject();
@@ -68,11 +75,10 @@ export class QchReader {
   }
 }
 
-
 // helpers
-function parseContentsTable(data: Uint8Array): TocEntry[] {
+function parseContentsTable(data: Uint8Array): Partial<TocEntry>[] {
   const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
-  const entries: TocEntry[] = [];
+  const entries: Partial<TocEntry>[] = [];
   let pos = 0;
 
   function readUint32(): number {
@@ -100,3 +106,41 @@ function parseContentsTable(data: Uint8Array): TocEntry[] {
 
   return entries;
 }
+
+
+const Sqls = {
+  searchIndex: `
+    SELECT
+      IndexTable.Name,
+      IndexTable.FileId,
+      IndexTable.Identifier,
+      IndexTable.Anchor,
+      FolderTable.Name as FolderName,
+      FileNameTable.Name as FileName,
+      FileNameTable.Title as FileTitle,
+      NamespaceTable.Name as NamespaceName
+    FROM
+      IndexTable,
+      FolderTable,
+      FileNameTable,
+      NamespaceTable
+    WHERE
+      IndexTable.Name LIKE ?
+      AND IndexTable.FileId == FileNameTable.FileId
+      AND FileNameTable.FolderId == FolderTable.Id
+      AND FolderTable.NamespaceID == NamespaceTable.Id
+    ORDER BY
+      CASE WHEN IndexTable.Name = ? THEN 0 ELSE 1 END
+  `,
+
+  readContentData: `
+    SELECT
+      ContentsTable.Data,
+      FolderTable.Name as FolderName
+    FROM
+      ContentsTable,
+      FolderTable
+    WHERE
+      ContentsTable.NamespaceID == FolderTable.NamespaceID
+  `
+};

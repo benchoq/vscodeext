@@ -19,6 +19,8 @@ export interface TocEntry {
   depth: number;
   href: string;
   title: string;
+
+  folderName: string;
 }
 
 export function isIndexData(x: unknown): x is IndexData {
@@ -37,7 +39,7 @@ export function isIndexData(x: unknown): x is IndexData {
     typeof o.fileTitle === 'string' &&
     typeof o.namespaceName === 'string' &&
     typeof o.qchFilePath === 'string' &&
-     typeof o.qchFileName === 'string'
+    typeof o.qchFileName === 'string'
   );
 }
 
@@ -50,6 +52,7 @@ export function isTocEntry(x: unknown): x is TocEntry {
   return (
     typeof o.depth === 'number' &&
     typeof o.href === 'string' &&
-    typeof o.title === 'string'
+    typeof o.title === 'string' &&
+    typeof o.folderName === 'string'
   );
 }
