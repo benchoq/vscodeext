@@ -35,7 +35,7 @@ export async function openDoc(index: IndexData) {
   });
 
   ui.selected.index = index;
-  ui.selected.html = _.get(r, 'html', '');;
+  ui.selected.htmlUri = _.get(r, 'htmlUri', '');
 }
 
 export async function openDocFromToc(toc: TocEntry) {
@@ -44,7 +44,7 @@ export async function openDocFromToc(toc: TocEntry) {
   });
 
   ui.selected.toc = toc;
-  ui.selected.html = _.get(r, 'html', '');
+  ui.selected.htmlUri = _.get(r, 'htmlUri', '');
 }
 
 export async function loadToc() {

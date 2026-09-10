@@ -29,7 +29,7 @@ export const basicWebviewAppConfig = {
   cssFile: 'index.css'
 };
 
-export function createWebviewHtml(view: Webview, config: WebviewAppConfig) {
+export function createWebviewHtml(view: Webview, config: WebviewAppConfig, extraSrc = '') {
   const root = config.distDir.split('/');
   const baseUri = config.context.extensionUri;
   const js = getUri(view, baseUri, [...root, config.jsFile]);
@@ -55,6 +55,7 @@ export function createWebviewHtml(view: Webview, config: WebviewAppConfig) {
           style-src https: 'unsafe-inline' http://${devHost};
           script-src http://${devHost} 'unsafe-eval';
           connect-src ws://${devHost} http://${devHost};
+          frame-src ${extraSrc}
         ">
       <script type="module" src="${devModuleUri}"></script>
       `;

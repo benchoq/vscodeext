@@ -35,7 +35,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     bind:this={iframeEl}
     class='grow min-w-0 overflow-y-auto'
     title={index?.fileTitle}
-    srcdoc={ui.selected.html}
+    src={ui.selected.htmlUri}
     onload={scrollToAnchor}
   >
   </iframe>

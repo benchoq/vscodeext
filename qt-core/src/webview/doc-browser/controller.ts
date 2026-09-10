@@ -19,13 +19,14 @@ import {
   createWebviewPanelIcons,
 } from '@/webview/utils';
 import { DocBrowserDispatcher } from './dispatcher';
+import { DocBrowserLocalServer } from './local-server';
 import * as consts from './constants';
 
 export function registerDocBrowser(context: Context) {
   context.subscriptions.push(
-    commands.registerCommand(consts.COMMAND_FULL_OPEN, () => {
+    commands.registerCommand(consts.COMMAND_FULL_OPEN, async () => {
       // telemetry.sendAction(consts.COMMAND_OPEN);
-      DocBrowserController.render(context);
+      await DocBrowserController.render(context);
     }),
 
     window.registerWebviewPanelSerializer(
@@ -42,6 +43,7 @@ export function registerDocBrowser(context: Context) {
 
 export class DocBrowserController {
   public static instance: DocBrowserController | undefined;
+  public static localServer = new DocBrowserLocalServer();
 
   private readonly _panel: Panel;
   private readonly _dispatcher: DocBrowserDispatcher;
@@ -59,11 +61,21 @@ export class DocBrowserController {
     };
 
     panel.iconPath = createWebviewPanelIcons(context);
-    panel.webview.html = createWebviewHtml(panel.webview, config);
+    panel.webview.html = createWebviewHtml(
+      panel.webview,
+      config,
+      DocBrowserController.localServer.origin
+    );
+
     panel.webview.options = createWebviewOptions(config);
 
     this._panel = panel;
-    this._dispatcher = new DocBrowserDispatcher(context, panel);
+    this._dispatcher = new DocBrowserDispatcher(
+      context,
+      panel,
+      DocBrowserController.localServer
+    );
+
     this._disposables = [
       this._dispatcher,
       panel.onDidDispose(this.dispose.bind(this))
@@ -76,8 +88,10 @@ export class DocBrowserController {
     this._disposables.length = 0;
   }
 
-  public static render(context: Context) {
+  public static async render(context: Context) {
     if (!DocBrowserController.instance) {
+      await DocBrowserController.localServer.start();
+
       DocBrowserController.instance = new DocBrowserController(
         context,
         window.createWebviewPanel(

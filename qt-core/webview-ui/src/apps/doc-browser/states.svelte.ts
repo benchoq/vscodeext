@@ -20,6 +20,6 @@ export const ui = $state({
   selected: {
     toc: undefined as TocEntry | undefined,
     index: undefined as IndexData | undefined,
-    html: ''
+    htmlUri: ''
   }
 });
