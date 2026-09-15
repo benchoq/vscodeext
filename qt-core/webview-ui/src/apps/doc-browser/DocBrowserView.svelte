@@ -7,12 +7,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from './states.svelte';
 
   const index = $derived(ui.selected.index);
-  let iframeEl: HTMLIFrameElement;
 
   function scrollToAnchor() {
     const anchor = index?.anchor;
-    if (anchor && iframeEl.contentWindow) {
-      iframeEl.contentWindow.postMessage({
+    if (anchor && ui.iframeEl?.contentWindow) {
+      ui.iframeEl.contentWindow.postMessage({
         type: 'docbrowser-scroll-to-anchor',
         anchor
       }, '*');
@@ -34,7 +33,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <span>{htmlInfo} </span>
   </div>
   <iframe
-    bind:this={iframeEl}
+    bind:this={ui.iframeEl}
     class='grow min-w-0 overflow-y-auto'
     title={index?.fileTitle}
     src={ui.selected.htmlUri}

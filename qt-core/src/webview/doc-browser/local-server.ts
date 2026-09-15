@@ -162,20 +162,30 @@ function getMimeType(filePath: string): string {
 }
 
 function getScriptToInject() {
-  return `
+  return /*html*/ `
     <script>
       window.addEventListener('message', (event) => {
+        console.log(event);
+
         if (event.data?.type === 'docbrowser-scroll-to-anchor') {
           document.getElementById(event.data.anchor)?.scrollIntoView();
+          return;
+        }
+
+        if (event.data?.type === 'docbrowser-theme-vars') {
+          for (const [name, value] of Object.entries(event.data.vars)) {
+            document.documentElement.style.setProperty(name, value);
+          }
         }
       });
 
       const ws = new WebSocket('ws://localhost:3001');
       ws.onmessage = (e) => {
         if (e.data === 'reload-css') {
-          console.log('reload-css');
           location.reload();
         }
       };
+
+      window.parent.postMessage({ type: 'docbrowser-ready' }, '*');
     </script>`;
 }

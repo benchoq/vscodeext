@@ -17,6 +17,7 @@ export const ui = $state({
   theme: VscodeThemeMonitor.createController(),
   mode: 'index' as UiMode,
   tocTree: new TocTreeModel(),
+  iframeEl: undefined as HTMLIFrameElement | undefined,
 
   selected: {
     toc: undefined as TocEntry | undefined,

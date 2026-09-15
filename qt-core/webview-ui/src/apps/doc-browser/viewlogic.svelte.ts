@@ -9,6 +9,14 @@ import { isFullTextSearchData, isIndexData, isTocEntry, type FullTextSearchData,
 import { data, ui, type UiMode } from './states.svelte';
 
 export async function onAppMount() {
+  ui.theme.monitor.start();
+  ui.theme.monitor.onChanged(postCssVarsToBrowser);
+
+  window.addEventListener('message', (event) => {
+    if (event.data?.type === 'docbrowser-ready') {
+      postCssVarsToBrowser();
+    }
+  });
 }
 
 export async function onAppDestroy() {
@@ -75,4 +83,17 @@ export async function loadToc() {
     data.toc = r;
     ui.tocTree.rebuild(r);
   }
+}
+
+// helpers
+function postCssVarsToBrowser() {
+  if (!ui.iframeEl) {
+    return;
+  }
+
+  const vars = ui.theme.getAllVscodeCssVars();
+  ui.iframeEl?.contentWindow?.postMessage({
+    type: 'docbrowser-theme-vars',
+    vars: $state.snapshot(vars),
+  }, '*');
 }
