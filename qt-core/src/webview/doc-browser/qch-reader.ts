@@ -33,14 +33,15 @@ export class QchReader {
     while (s.step()) {
       const o = s.getAsObject();
       const bytes = o.Data as Uint8Array;
-      entries.push(...
-        parseContentsTable(bytes)
-          .map(p => ({
-              ...p,
-              folderName: String(o.FolderName ?? '')
-            } as TocEntry)
-          )
-      );
+      entries.push(...parseContentsTable(bytes, String(o.FolderName ?? '')));
+      // entries.push(...
+      //   parseContentsTable(bytes)
+      //     .map(p => ({
+      //         ...p,
+      //         folderName: String(o.FolderName ?? '')
+      //       } as TocEntry)
+      //     )
+      // );
     }
 
     s.free();
@@ -55,16 +56,11 @@ export class QchReader {
     while (s.step()) {
       const o = s.getAsObject();
       const data: IndexData = {
+        title: String(o.FileTitle ?? ''),
+        filePathRel: path.join(String(o.FolderName ?? ''),  String(o.FileName ?? '')),
         name: String(o.Name ?? ''),
-        fileId: Number(o.FileId ?? 0),
         anchor: String(o.Anchor ?? ''),
-        identifier: String(o.Identifier ?? ''),
-        folderName: String(o.FolderName ?? ''),
-        fileName: String(o.FileName ?? ''),
-        fileTitle: String(o.FileTitle ?? ''),
-        namespaceName: String(o.NamespaceName ?? ''),
-        qchFilePath: this._filePath,
-        qchFileName: path.basename(this._filePath)
+        identifier: String(o.Identifier ?? '')
       }
 
       records.push(data);
@@ -81,9 +77,9 @@ export class QchReader {
 }
 
 // helpers
-function parseContentsTable(data: Uint8Array): Partial<TocEntry>[] {
+function parseContentsTable(data: Uint8Array, folderName: string): TocEntry[] {
   const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
-  const entries: Partial<TocEntry>[] = [];
+  const entries: TocEntry[] = [];
   let pos = 0;
 
   function readUint32(): number {
@@ -103,10 +99,14 @@ function parseContentsTable(data: Uint8Array): Partial<TocEntry>[] {
 
   while (pos < data.length) {
     const depth = readUint32();
-    const href = readUtf16BE(readUint32());
+    const fileName = readUtf16BE(readUint32());
     const title = readUtf16BE(readUint32());
 
-    entries.push({ depth, href, title });
+    entries.push({
+      depth,
+      title,
+      filePathRel: path.join(folderName, fileName)
+    });
   }
 
   return entries;

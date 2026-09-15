@@ -14,9 +14,8 @@ export class TocTreeModel {
     id: -1,
     data: {
       depth: -1,
-      href: '',
       title: '(root)',
-      folderName: ''
+      filePathRel: ''
     },
     children: []
   });

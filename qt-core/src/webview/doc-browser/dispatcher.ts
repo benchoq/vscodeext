@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import _ from 'lodash';
-import * as path from 'path';
 import {
   Uri,
   Disposable,
@@ -102,7 +101,6 @@ export class DocBrowserDispatcher {
     }
   };
 
-
   private readonly _onOpenFromToc = (cmd: Command) => {
     const toc = _.get(cmd.payload, 'toc', {});
     if (!isTocEntry(toc)) {
@@ -110,9 +108,8 @@ export class DocBrowserDispatcher {
       return;
     }
 
-    const relPath = path.join(toc.folderName, toc.href);
     const uri = Uri
-      .file(relPath)
+      .file(toc.filePathRel)
       .with({
         scheme: this._server.scheme,
         authority: `${this._server.host}:${String(this._server.port ?? 0)}`,
@@ -129,9 +126,8 @@ export class DocBrowserDispatcher {
       return;
     }
 
-    const relPath = path.join(index.folderName, index.fileName);
     const uri = Uri
-      .file(relPath)
+      .file(index.filePathRel)
       .with({
         scheme: this._server.scheme,
         authority: `${this._server.host}:${String(this._server.port ?? 0)}`,
@@ -147,9 +143,8 @@ export class DocBrowserDispatcher {
       return;
     }
 
-    const relPath = path.join(data.folderName, data.fileName);
     const uri = Uri
-      .file(relPath)
+      .file(data.filePathRel)
       .with({
         scheme: this._server.scheme,
         authority: `${this._server.host}:${String(this._server.port ?? 0)}`,
@@ -157,6 +152,4 @@ export class DocBrowserDispatcher {
 
     this._comm.postDataReply(cmd, { htmlUri: uri.toString() });
   };
-
-
 }

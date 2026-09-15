@@ -16,7 +16,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     Total {data.indexes.length} entries
   </span>
   <div class='qt-item-list flex flex-col h-full'>
-    {#each data.indexes as entry (entry.identifier + entry.qchFileName)}
+    {#each data.indexes as entry, i (i + entry.filePathRel)}
       <button
         class='item flex align-start'
         class:active={ui.selected.index === entry}

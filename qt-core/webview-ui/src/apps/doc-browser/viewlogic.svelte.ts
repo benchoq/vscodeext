@@ -66,7 +66,7 @@ export async function openDoc(index: IndexData) {
 
   ui.selected.index = index;
   ui.selected.htmlUri = _.get(r, 'htmlUri', '');
-  ui.history.push(ui.selected.htmlUri, index.fileTitle);
+  ui.history.push(ui.selected.htmlUri, index.title);
 }
 
 export async function openDocFromToc(toc: TocEntry) {

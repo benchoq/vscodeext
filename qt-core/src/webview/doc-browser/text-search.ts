@@ -71,10 +71,11 @@ export class HtmlFullTextIndex {
       const relPath = path.relative(String(r.rootDir), String(r.id));
       const fullText = this.textById.get(String(r.id)) ?? '';
       return {
-        filePath: String(r.id),
-        fileName: path.basename(relPath),
-        folderName: path.dirname(relPath),
+        // filePath: String(r.id),
+        // fileName: path.basename(relPath),
+        // folderName: path.dirname(relPath),
         title: String(r.title),
+        filePathRel: relPath,
         snippet: this.buildSnippet(fullText, r.terms),
       };
     });

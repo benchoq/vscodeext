@@ -1,33 +1,22 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-export interface IndexData {
+export interface HtmlEntry {
+  title: string;
+  filePathRel: string;
+}
+
+export interface IndexData extends HtmlEntry {
   name: string;
-  fileId: number;
   anchor: string;
   identifier: string;
-  folderName: string,
-  fileName: string;
-  fileTitle: string;
-  namespaceName: string;
-
-  qchFileName: string;
-  qchFilePath: string;
 }
 
-export interface TocEntry {
+export interface TocEntry extends HtmlEntry {
   depth: number;
-  href: string;
-  title: string;
-
-  folderName: string;
 }
 
-export interface FullTextSearchData {
-  filePath: string;
-  fileName: string;
-  folderName: string,
-  title: string;
+export interface FullTextSearchData extends HtmlEntry {
   snippet: string;
 }
 
@@ -38,44 +27,41 @@ export function isIndexData(x: unknown): x is IndexData {
 
   const o = x as Record<string, unknown>;
   return (
+    isHtmlEntry(x) &&
     typeof o.name === 'string' &&
-    typeof o.fileId === 'number' &&
     typeof o.anchor === 'string' &&
-    typeof o.identifier === 'string' &&
-    typeof o.folderName === 'string' &&
-    typeof o.fileName === 'string' &&
-    typeof o.fileTitle === 'string' &&
-    typeof o.namespaceName === 'string' &&
-    typeof o.qchFilePath === 'string' &&
-    typeof o.qchFileName === 'string'
+    typeof o.identifier === 'string'
   );
 }
 
 export function isTocEntry(x: unknown): x is TocEntry {
-  if (typeof x !== 'object' || x === null) {
+  if (!isHtmlEntry(x)) {
     return false;
   }
 
-  const o = x as Record<string, unknown>;
   return (
-    typeof o.depth === 'number' &&
-    typeof o.href === 'string' &&
-    typeof o.title === 'string' &&
-    typeof o.folderName === 'string'
+    'depth' in x && typeof x.depth === 'number'
   );
 }
 
 export function isFullTextSearchData(x: unknown): x is FullTextSearchData {
+  if (!isHtmlEntry(x)) {
+    return false;
+  }
+
+  return (
+    'snippet' in x && typeof x.snippet === 'string'
+  );
+}
+
+export function isHtmlEntry(x: unknown): x is HtmlEntry {
   if (typeof x !== 'object' || x === null) {
     return false;
   }
 
   const o = x as Record<string, unknown>;
   return (
-    typeof o.filePath === 'string' &&
-    typeof o.fileName === 'string' &&
-    typeof o.folderName === 'string' &&
     typeof o.title === 'string' &&
-    typeof o.snippet === 'string'
+    typeof o.filePathRel === 'string'
   );
 }
