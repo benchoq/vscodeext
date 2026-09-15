@@ -20,7 +20,7 @@ import {
 } from '@/webview/shared/message';
 import { DocBrowserDataManager } from './data-manager';
 import { DocBrowserLocalServer } from './local-server';
-import { isIndexData, isTocEntry } from '../shared/doc-browser';
+import { isFullTextSearchData, isIndexData, isTocEntry } from '../shared/doc-browser';
 
 // import {} from '@/webview/shared/doc-browser';
 // import * as texts from '@/texts';
@@ -49,7 +49,8 @@ export class DocBrowserDispatcher {
       [CommandId.DocBrowserReadToc, this._onReadToc],
       [CommandId.DocBrowserSearch, this._onSearch],
       [CommandId.DocBrowserOpenDocFromToc, this._onOpenFromToc],
-      [CommandId.DocBrowserOpenDocFromIndex, this._onOpenFromIndex]
+      [CommandId.DocBrowserOpenDocFromIndex, this._onOpenFromIndex],
+      [CommandId.DocBrowserOpenDocFromFullText, this._onOpenFromFullText]
     ]);
 
     this._disposables = [
@@ -90,10 +91,15 @@ export class DocBrowserDispatcher {
   };
 
   private readonly _onSearch = async (cmd: Command) => {
+    const mode = String(_.get(cmd.payload, 'mode', '')).trim();
     const keyword = String(_.get(cmd.payload, 'keyword', '')).trim();
-    const data = await this._data.searchIndex(keyword);
-
-    this._comm.postDataReply(cmd, data);
+    if (mode === 'index') {
+      const data = await this._data.searchIndex(keyword);
+      this._comm.postDataReply(cmd, data);
+    } else {
+      const data = await this._data.searchFullText(keyword);
+      this._comm.postDataReply(cmd, data);
+    }
   };
 
 
@@ -133,42 +139,24 @@ export class DocBrowserDispatcher {
 
     this._comm.postDataReply(cmd, { htmlUri: uri.toString() });
   };
+
+  private readonly _onOpenFromFullText = (cmd: Command) => {
+    const data = _.get(cmd.payload, 'search', {});
+    if (!isFullTextSearchData(data)) {
+      console.log('bad data');
+      return;
+    }
+
+    const relPath = path.join(data.folderName, data.fileName);
+    const uri = Uri
+      .file(relPath)
+      .with({
+        scheme: this._server.scheme,
+        authority: `${this._server.host}:${String(this._server.port ?? 0)}`,
+      });
+
+    this._comm.postDataReply(cmd, { htmlUri: uri.toString() });
+  };
+
+
 }
-
-// helpers
-// function loadHtml(panel: Panel, folderPath: string, fileName: string) {
-//   const fullPath = path.join(folderPath, fileName);
-//   const folderUri = Uri.file(path.dirname(fullPath));
-//   const baseUri = panel.webview.asWebviewUri(folderUri);
-
-//   const rawHtml = String(fsFile(fullPath).readAll());
-//   const cssContent = String(
-//     fsFile(folderUri, 'style/offline-dark.css').readAll()
-//   );
-
-//   const headContent = `
-//     <meta charset="utf-8">
-//     <base href="${baseUri.toString() + '/'}">
-//     <style>${cssContent}</style>
-//   `;
-
-//   const bodyMatch = new RegExp(/<body[^>]*>([\s\S]*)<\/body>/i).exec(rawHtml)
-//   const bodyContent = bodyMatch ? bodyMatch[0] : rawHtml;
-
-//   return `
-//     <!DOCTYPE html>
-//     <html>
-//       ${headContent}
-//       ${bodyContent}
-//     </html>
-//   `;
-// }
-
-// function htmlUri(server: DocBrowserLocalServer, folderPath: string, fileName: string) {
-//   const fullPath = path.join(folderPath, fileName);
-//   const uri = Uri.file(fullPath).with({
-//     scheme: 'http',
-//     authority: server.addrText
-//   });
-//   return uri;
-// }

@@ -73,6 +73,11 @@ export class QchReader {
     s.free();
     return records;
   }
+
+  public searchFullText(keyword: string) {
+    console.log(this, keyword);
+    return [];
+  }
 }
 
 // helpers

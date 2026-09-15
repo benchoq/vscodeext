@@ -8,6 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   let value = $state('QObject');
   let timer: ReturnType<typeof setTimeout>;
+  let searchTarget = $state('' as 'index' | 'text');
 
   // function clear() {
   //   value = '';
@@ -17,7 +18,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   function triggerUpdate(delay = 200) {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      viewlogic.setMode('search');
+      viewlogic.setMode(searchTarget);
       viewlogic.search(value);
     }, delay);
   }
@@ -52,10 +53,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <button
       class='qt-button'
       onclick={() => {
+        searchTarget = 'index';
         triggerUpdate(0);
       }}
     >
-      Search
+      Indexes
+    </button>
+
+    <button
+      class='qt-button'
+      onclick={() => {
+        searchTarget = 'text';
+        triggerUpdate(0);
+      }}
+    >
+      Full text
     </button>
   </div>
 </div>

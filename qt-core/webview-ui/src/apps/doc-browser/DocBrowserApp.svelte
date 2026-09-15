@@ -13,6 +13,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import DocBrowserView from './DocBrowserView.svelte';
   import DocBrowserTocView from './DocBrowserTocView.svelte';
   import DocBrowserIndexSearchList from './DocBrowserIndexSearchList.svelte';
+  import DocBrowserFullTextSearchList from './DocBrowserFullTextSearchList.svelte';
 
   import * as viewlogic from './viewlogic.svelte';
   import { ui } from './states.svelte';
@@ -28,8 +29,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <div class="w-[300px]">
       {#if ui.mode === 'toc'}
         <DocBrowserTocView />
-      {:else}
+      {:else if ui.mode === 'index'}
         <DocBrowserIndexSearchList />
+      {:else}
+        <DocBrowserFullTextSearchList />
       {/if}
     </div>
     <DocBrowserView />

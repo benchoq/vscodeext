@@ -63,6 +63,7 @@ export enum CommandId {
   DocBrowserSearch,
   DocBrowserOpenDocFromToc,
   DocBrowserOpenDocFromIndex,
+  DocBrowserOpenDocFromFullText,
 
   // common
   CommonOpenFolder,

@@ -23,6 +23,13 @@ export interface TocEntry {
   folderName: string;
 }
 
+export interface FullTextSearchData {
+  filePath: string;
+  fileName: string;
+  folderName: string,
+  title: string;
+}
+
 export function isIndexData(x: unknown): x is IndexData {
   if (typeof x !== 'object' || x === null) {
     return false;
@@ -56,3 +63,16 @@ export function isTocEntry(x: unknown): x is TocEntry {
     typeof o.folderName === 'string'
   );
 }
+
+export function isFullTextSearchData(x: unknown): x is FullTextSearchData {
+  if (typeof x !== 'object' || x === null) {
+    return false;
+  }
+
+  const o = x as Record<string, unknown>;
+  return (
+    typeof o.filePath === 'string' &&
+    typeof o.title === 'string'
+  );
+}
+

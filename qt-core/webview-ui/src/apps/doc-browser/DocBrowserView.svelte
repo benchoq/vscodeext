@@ -11,9 +11,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   function scrollToAnchor() {
     const anchor = index?.anchor;
-    if (anchor && iframeEl.contentDocument) {
-      const target = iframeEl.contentDocument.getElementById(anchor);
-      target?.scrollIntoView();
+    if (anchor && iframeEl.contentWindow) {
+      iframeEl.contentWindow.postMessage({
+        type: 'docbrowser-scroll-to-anchor',
+        anchor
+      }, '*');
     }
   }
 
@@ -29,7 +31,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div data-role='area' class='w-full flex flex-col'>
   <div class='p-2 flex flex-row'>
     <span class='grow'>{title}</span>
-    <span>{htmlInfo}</span>
+    <span>{htmlInfo} </span>
   </div>
   <iframe
     bind:this={iframeEl}
