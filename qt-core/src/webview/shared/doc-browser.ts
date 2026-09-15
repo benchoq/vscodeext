@@ -28,6 +28,7 @@ export interface FullTextSearchData {
   fileName: string;
   folderName: string,
   title: string;
+  snippet: string;
 }
 
 export function isIndexData(x: unknown): x is IndexData {
@@ -72,7 +73,9 @@ export function isFullTextSearchData(x: unknown): x is FullTextSearchData {
   const o = x as Record<string, unknown>;
   return (
     typeof o.filePath === 'string' &&
-    typeof o.title === 'string'
+    typeof o.fileName === 'string' &&
+    typeof o.folderName === 'string' &&
+    typeof o.title === 'string' &&
+    typeof o.snippet === 'string'
   );
 }
-

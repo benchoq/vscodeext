@@ -18,13 +18,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <div class='qt-item-list flex flex-col h-full'>
     {#each data.fullText as entry, i (i)}
       <button
-        class='item flex align-start'
+        class='item flex flex-col align-start'
         class:active={ui.selected.fullText === entry}
         onclick={() => {
           viewlogic.openDocFromFullTextSearch(entry);
         }}
       >
-        {entry.title}
+        <div>{entry.title}</div>
+        <div class='opacity-50'>
+          {entry.snippet}
+        </div>
       </button>
     {/each}
   </div>
