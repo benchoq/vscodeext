@@ -56,6 +56,54 @@ export class TocTreeModel {
   }
 }
 
+type HistoryEntry = {
+  url: string;
+  title?: string;
+};
+
+export class HistoryManager {
+  private _history = $state([] as HistoryEntry[]);
+  private _currentIndex = $state(-1);
+
+  public go(dir: 'back' | 'forward') {
+    if (dir === 'back') {
+      if (this._currentIndex > 0) {
+        this._currentIndex--;
+        return this.currentEntry;
+      }
+    }
+
+    if (dir === 'forward') {
+      if (this._currentIndex + 1 < this._history.length) {
+        this._currentIndex++;
+        return this.currentEntry;
+      }
+    }
+
+    return undefined;
+  }
+
+  public canGo(dir: 'back' | 'forward') {
+    if (dir === 'back') {
+      return this._currentIndex > 0;
+    }
+
+    return this._currentIndex + 1 < this._history.length;
+  }
+
+  public get currentEntry() {
+    return this._history[this._currentIndex];
+  }
+
+  public push(url: string, title: string) {
+    this._history = [
+      ...this._history.slice(0, this._currentIndex + 1),
+      { url, title }
+    ];
+    this._currentIndex = this._history.length - 1;
+  }
+}
+
 // helpers
 function build(flatEntries: TocEntry[]): TocTreeNode[] {
   const topLevels: TocTreeNode[] = [];

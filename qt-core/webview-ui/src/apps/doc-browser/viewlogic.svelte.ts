@@ -30,6 +30,15 @@ export function setMode(mode: UiMode) {
   }
 }
 
+export function navigate(dir: 'back' | 'forward') {
+  const entry = ui.history.go(dir);
+  if (entry) {
+    ui.selected.htmlUri = entry.url;
+  }
+
+  console.log(entry);
+}
+
 export async function search(keyword: string) {
   const r = await vscode.post(CommandId.DocBrowserSearch, {
     mode: ui.mode,
@@ -57,6 +66,7 @@ export async function openDoc(index: IndexData) {
 
   ui.selected.index = index;
   ui.selected.htmlUri = _.get(r, 'htmlUri', '');
+  ui.history.push(ui.selected.htmlUri, index.fileTitle);
 }
 
 export async function openDocFromToc(toc: TocEntry) {
@@ -66,6 +76,7 @@ export async function openDocFromToc(toc: TocEntry) {
 
   ui.selected.toc = toc;
   ui.selected.htmlUri = _.get(r, 'htmlUri', '');
+  ui.history.push(ui.selected.htmlUri, toc.title);
 }
 
 export async function openDocFromFullTextSearch(data: FullTextSearchData) {
@@ -75,6 +86,7 @@ export async function openDocFromFullTextSearch(data: FullTextSearchData) {
 
   ui.selected.fullText = data;
   ui.selected.htmlUri = _.get(r, 'htmlUri', '');
+  ui.history.push(ui.selected.htmlUri, data.title);
 }
 
 export async function loadToc() {

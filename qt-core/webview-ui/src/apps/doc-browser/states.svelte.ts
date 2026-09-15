@@ -3,7 +3,7 @@
 
 import { type FullTextSearchData, type IndexData, type TocEntry } from '@shared/doc-browser';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
-import { TocTreeModel } from './types.svelte';
+import { TocTreeModel, HistoryManager } from './types.svelte';
 
 export type UiMode = 'toc' | 'index' | 'text';
 
@@ -24,5 +24,7 @@ export const ui = $state({
     index: undefined as IndexData | undefined,
     fullText: undefined as FullTextSearchData | undefined,
     htmlUri: ''
-  }
+  },
+
+  history: new HistoryManager()
 });
