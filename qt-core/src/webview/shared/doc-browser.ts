@@ -4,11 +4,11 @@
 export interface HtmlEntry {
   title: string;
   filePathRel: string;
+  anchor?: string;
 }
 
 export interface IndexData extends HtmlEntry {
   name: string;
-  anchor: string;
   identifier: string;
 }
 

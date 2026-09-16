@@ -5,7 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { ui } from './states.svelte';
-  import DocBrowserViewToolbar from './DocBrowserViewToolbar.svelte';
+  import DocBrowserHtmlViewToolbar from './DocBrowserHtmlViewToolbar.svelte';
 
   const index = $derived(ui.selected.index);
 
@@ -29,7 +29,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div data-role='area' class='w-full flex flex-col'>
-  <DocBrowserViewToolbar />
+  <DocBrowserHtmlViewToolbar />
   <!-- <div class='p-2 flex flex-row'>
     <span class='grow'>{title}</span>
     <span>{htmlInfo} </span>
