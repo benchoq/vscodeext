@@ -6,9 +6,7 @@ import * as http from 'http';
 import * as path from 'path';
 import { createWrappedLogger } from 'qt-lib';
 
-import {
-  ViewerActionId
-} from '@/webview/shared/doc-browser';
+import { ViewerMessageId } from '@/webview/shared/doc-browser';
 
 export interface RequestContext {
   filePath: string;
@@ -117,27 +115,29 @@ function getScriptToInject() {
   return /*html*/ `
     <script>
       window.addEventListener('message', (e) => {
-        if (e.data?.type === '${ViewerActionId.ScrollToAnchor}') {
+        if (e.data?.type === '${ViewerMessageId.ReloadPage}') {
+          location.reload();
+          return;
+        }
+
+        if (e.data?.type === '${ViewerMessageId.ScrollToAnchor}') {
           document.getElementById(e.data.anchor)?.scrollIntoView();
           return;
         }
 
-        if (e.data?.type === '${ViewerActionId.ApplyVscodeTheme}') {
+        if (e.data?.type === '${ViewerMessageId.ApplyVscodeTheme}') {
           for (const [name, value] of Object.entries(e.data.vars)) {
             document.documentElement.style.setProperty(name, value);
           }
           return;
         }
-
-        if (e.data?.type === '${ViewerActionId.DevReloadPage}') {
-          location.reload();
-          return;
-        }
       });
 
-      window.parent.postMessage(
-        { type: '${ViewerActionId.NotifyViewerReady }' },
-        '*'
-      );
+      window.addEventListener('load', (e) => {
+        window.parent.postMessage(
+          { type: '${ViewerMessageId.Loaded }' },
+          '*'
+        );
+      });
     </script>`;
 }

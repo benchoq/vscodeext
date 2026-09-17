@@ -26,11 +26,11 @@ export interface FullTextMatch {
   snippet: string;
 }
 
-export enum ViewerActionId {
+export enum ViewerMessageId {
+  Loaded = 'docbrowser-loaded',
+  ReloadPage = 'docbrowser-dev-reload-page',
   ScrollToAnchor = 'docbrowser-scroll-to-anchor',
   ApplyVscodeTheme = 'docbrowser-apply-vscode-theme',
-  NotifyViewerReady = 'docbrowser-notify-viewer-ready',
-  DevReloadPage = 'docbrowser-dev-reload-page'
 }
 
 // type guard functions

@@ -10,32 +10,21 @@ import {
   isIndexMatch,
   isFullTextMatch,
   type HtmlPageInfo,
-  ViewerActionId
+  ViewerMessageId
 } from '@shared/doc-browser';
 import { data, ui, type UiMode } from './states.svelte';
 
 export async function onAppMount() {
   ui.theme.monitor.start();
-  ui.theme.monitor.onChanged(postCssVarsToBrowser);
+  ui.theme.monitor.onChanged(onVscodeThemeChanged);
 
-  vscode.onDidReceiveNotification(onVscodeNotified);
+  window.addEventListener('message', onMessageFromViewer);
+  vscode.onDidReceiveNotification(onMessageFromVscode);
 
   await updateConfigs();
-
-  window.addEventListener('message', (e) => {
-    if (e.data?.type === ViewerActionId.NotifyViewerReady) {
-      postCssVarsToBrowser();
-    }
-  });
 }
 
 export async function onAppDestroy() {
-}
-
-export function postToViewer(id: ViewerActionId, data = {}) {
-  ui.iframeEl?.contentWindow?.postMessage(
-    { type: id, ...data }, '*'
-  );
 }
 
 export function isCurrentDoc(e: HtmlPageInfo): boolean {
@@ -117,20 +106,40 @@ export async function loadToc() {
   }
 }
 
-// helpers
-function postCssVarsToBrowser() {
-  const vars = ui.theme.getAllVscodeCssVars();
-  postToViewer(ViewerActionId.ApplyVscodeTheme, { vars });
+export function scrollToAnchor(anchor: string | undefined) {
+  if (anchor) {
+    postToViewer(ViewerMessageId.ScrollToAnchor, { anchor });
+  }
 }
 
+// helpers
 async function updateConfigs() {
   const r = await vscode.post(CommandId.DocBrowserGetConfig);
   data.configs.serverOrigin = String(_.get(r, 'serverOrigin', '')).trim();
 }
 
-async function onVscodeNotified(reply: CommandReply) {
+function onVscodeThemeChanged() {
+  postToViewer(ViewerMessageId.ApplyVscodeTheme, {
+    vars: ui.theme.getAllVscodeCssVars()
+  });
+}
+
+async function onMessageFromVscode(reply: CommandReply) {
   if (reply.id === CommandId.DocBrowserReload) {
-    postToViewer(ViewerActionId.DevReloadPage);
-    console.log('app: reload received');
+    postToViewer(ViewerMessageId.ReloadPage);
   }
+}
+
+function onMessageFromViewer(e: MessageEvent) {
+  if (e.data?.type === ViewerMessageId.Loaded) {
+    postToViewer(ViewerMessageId.ApplyVscodeTheme, {
+      vars: ui.theme.getAllVscodeCssVars()
+    });
+  }
+}
+
+function postToViewer(id: ViewerMessageId, data = {}) {
+  ui.iframeEl?.contentWindow?.postMessage(
+    { type: id, ...data }, '*'
+  );
 }
