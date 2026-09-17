@@ -19,7 +19,7 @@ import {
 } from '@/webview/shared/message';
 import { DocBrowserDataManager } from './data-manager';
 import { DocBrowserLocalServer } from './local-server';
-import { isHtmlEntry } from '@/webview/shared/doc-browser';
+import { isHtmlPageInfo } from '@/webview/shared/doc-browser';
 
 // import {} from '@/webview/shared/doc-browser';
 // import * as texts from '@/texts';
@@ -100,14 +100,14 @@ export class DocBrowserDispatcher {
   };
 
   private readonly _onOpenHtml = (cmd: Command) => {
-    const html = _.get(cmd.payload, 'html', {});
-    if (!isHtmlEntry(html)) {
+    const info = _.get(cmd.payload, 'info', {});
+    if (!isHtmlPageInfo(info)) {
       console.log('bad data');
       return;
     }
 
     const uri = Uri
-      .file(html.filePathRel)
+      .file(info.filePathRel)
       .with({
         scheme: this._server.scheme,
         authority: `${this._server.host}:${String(this._server.port ?? 0)}`,

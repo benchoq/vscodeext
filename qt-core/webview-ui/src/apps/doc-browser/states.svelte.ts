@@ -1,7 +1,12 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import { type FullTextSearchData, type HtmlEntry, type IndexData, type TocEntry } from '@shared/doc-browser';
+import {
+  type HtmlPageInfo,
+  type TocEntry,
+  type IndexMatch,
+  type FullTextMatch
+} from '@shared/doc-browser';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import { TocTreeModel, HistoryManager } from './types.svelte';
 
@@ -9,8 +14,8 @@ export type UiMode = 'toc' | 'index' | 'text';
 
 export const data = $state({
   toc: [] as TocEntry[],
-  indexes: [] as IndexData[],
-  fullText: [] as FullTextSearchData[]
+  indexes: [] as IndexMatch[],
+  fullText: [] as FullTextMatch[]
 });
 
 export const ui = $state({
@@ -20,11 +25,8 @@ export const ui = $state({
   iframeEl: undefined as HTMLIFrameElement | undefined,
 
   selected: {
-    toc: undefined as TocEntry | undefined,
-    index: undefined as IndexData | undefined,
-    fullText: undefined as FullTextSearchData | undefined,
     htmlUri: '',
-    htmlEntry: undefined as HtmlEntry | undefined
+    htmlEntry: undefined as HtmlPageInfo | undefined
   },
 
   history: new HistoryManager()

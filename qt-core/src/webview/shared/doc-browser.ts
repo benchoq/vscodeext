@@ -1,27 +1,33 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-export interface HtmlEntry {
+export interface HtmlPageInfo {
   title: string;
   filePathRel: string;
   anchor?: string;
 }
 
-export interface IndexData extends HtmlEntry {
+export interface TocEntry {
+  type: 'toc';
+  page: HtmlPageInfo;
+  depth: number;
+}
+
+export interface IndexMatch {
+  type: 'index';
+  page: HtmlPageInfo;
   name: string;
   identifier: string;
 }
 
-export interface TocEntry extends HtmlEntry {
-  depth: number;
-}
-
-export interface FullTextSearchData extends HtmlEntry {
+export interface FullTextMatch {
+  type: 'full-text';
+  page: HtmlPageInfo;
   snippet: string;
 }
 
 // type guard functions
-export function isHtmlEntry(x: unknown): x is HtmlEntry {
+export function isHtmlPageInfo(x: unknown): x is HtmlPageInfo {
   if (typeof x !== 'object' || x === null) {
     return false;
   }
@@ -34,36 +40,42 @@ export function isHtmlEntry(x: unknown): x is HtmlEntry {
   );
 }
 
-export function isIndexData(x: unknown): x is IndexData {
+export function isTocEntry(x: unknown): x is TocEntry {
   if (typeof x !== 'object' || x === null) {
     return false;
   }
 
   const o = x as Record<string, unknown>;
   return (
-    isHtmlEntry(x) &&
+    o.type === 'toc' &&
+    isHtmlPageInfo(o.page) &&
+    typeof o.depth === 'number'
+  );
+}
+
+export function isIndexMatch(x: unknown): x is IndexMatch {
+  if (typeof x !== 'object' || x === null) {
+    return false;
+  }
+
+  const o = x as Record<string, unknown>;
+  return (
+    o.type === 'index' &&
+    isHtmlPageInfo(o.page) &&
     typeof o.name === 'string' &&
-    typeof o.anchor === 'string' &&
     typeof o.identifier === 'string'
   );
 }
 
-export function isTocEntry(x: unknown): x is TocEntry {
-  if (!isHtmlEntry(x)) {
+export function isFullTextMatch(x: unknown): x is FullTextMatch {
+  if (typeof x !== 'object' || x === null) {
     return false;
   }
 
+  const o = x as Record<string, unknown>;
   return (
-    'depth' in x && typeof x.depth === 'number'
-  );
-}
-
-export function isFullTextSearchData(x: unknown): x is FullTextSearchData {
-  if (!isHtmlEntry(x)) {
-    return false;
-  }
-
-  return (
-    'snippet' in x && typeof x.snippet === 'string'
+    o.type === 'full-text' &&
+    isHtmlPageInfo(o.page) &&
+    typeof o.snippet === 'string'
   );
 }

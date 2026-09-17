@@ -7,9 +7,9 @@ import { vscode } from '@/apps/vscode';
 import { CommandId } from '@shared/message';
 import {
   isTocEntry,
-  isIndexData,
-  isFullTextSearchData,
-  type HtmlEntry,
+  isIndexMatch,
+  isFullTextMatch,
+  type HtmlPageInfo
 } from '@shared/doc-browser';
 import { data, ui, type UiMode } from './states.svelte';
 
@@ -27,7 +27,7 @@ export async function onAppMount() {
 export async function onAppDestroy() {
 }
 
-export function isCurrentDoc(e: HtmlEntry): boolean {
+export function isCurrentDoc(e: HtmlPageInfo): boolean {
   if (!ui.selected.htmlEntry) {
     return false;
   }
@@ -65,27 +65,27 @@ export async function search(keyword: string) {
   });
 
   if (ui.mode === 'index') {
-    if (Array.isArray(r) && r.every(isIndexData)) {
+    if (Array.isArray(r) && r.every(isIndexMatch)) {
       data.indexes = r;
     }
     return;
   }
 
-  if (Array.isArray(r) && r.every(isFullTextSearchData)) {
+  if (Array.isArray(r) && r.every(isFullTextMatch)) {
     data.fullText = r;
   }
 
   console.log(r);
 }
 
-export async function openHtml(html: HtmlEntry) {
+export async function openHtml(info: HtmlPageInfo) {
   const r = await vscode.post(CommandId.DocBrowserOpenHtml, {
-    html: $state.snapshot(html)
+    info: $state.snapshot(info)
   });
 
-  ui.selected.htmlEntry = html;
+  ui.selected.htmlEntry = info;
   ui.selected.htmlUri = _.get(r, 'htmlUri', '');
-  ui.history.push(html);
+  ui.history.push(info);
 }
 
 export async function loadToc() {

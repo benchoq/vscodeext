@@ -16,24 +16,26 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   let { node }: Props = $props();
 
+  const entry = $derived(node.data);
+  const page = $derived(node.data.page);
   const hasChildren = $derived(node.children.length !== 0);
   const expanded = $derived(ui.tocTree.expanded(node.id));
 </script>
 
 <button
   class='item flex align-start'
-  class:active={viewlogic.isCurrentDoc(node.data)}
+  class:active={viewlogic.isCurrentDoc(page)}
   onclick={() => {
     ui.tocTree.toggleExpanded(node.id);
-    viewlogic.openHtml(node.data);
+    viewlogic.openHtml(page);
   }}
 >
   <span
-    style:margin-left={`${node.data.depth * 10}px`}
+    style:margin-left={`${entry.depth * 10}px`}
     class='flex items-center gap-1 overflow-hidden whitespace-nowrap text-ellipsis'
   >
     {@render chevron(node, expanded)}
-    {node.data.title}
+    {page.title}
   </span>
 </button>
 

@@ -7,7 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from './states.svelte';
   import DocBrowserHtmlViewToolbar from './DocBrowserHtmlViewToolbar.svelte';
 
-  const index = $derived(ui.selected.index);
+  const index = $derived(ui.selected.htmlEntry);
 
   function scrollToAnchor() {
     const anchor = index?.anchor;

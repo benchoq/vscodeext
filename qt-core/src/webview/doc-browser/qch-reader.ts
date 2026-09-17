@@ -5,8 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Database, SqlJsStatic } from 'sql.js';
 
-// import { createWrappedLogger } from 'qt-lib';
-import { IndexData, TocEntry } from '@/webview/shared/doc-browser';
+import { IndexMatch, TocEntry } from '@/webview/shared/doc-browser';
 import { fetchSql } from './sql';
 
 // const logger = createWrappedLogger('qch-reader');
@@ -34,14 +33,6 @@ export class QchReader {
       const o = s.getAsObject();
       const bytes = o.Data as Uint8Array;
       entries.push(...parseContentsTable(bytes, String(o.FolderName ?? '')));
-      // entries.push(...
-      //   parseContentsTable(bytes)
-      //     .map(p => ({
-      //         ...p,
-      //         folderName: String(o.FolderName ?? '')
-      //       } as TocEntry)
-      //     )
-      // );
     }
 
     s.free();
@@ -49,17 +40,20 @@ export class QchReader {
   }
 
   public searchIndex(keyword: string) {
-    const records: IndexData[] = [];
+    const records: IndexMatch[] = [];
     const s = this._db.prepare(Sqls.searchIndex);
     s.bind([`%${keyword}%`, keyword]);
 
     while (s.step()) {
       const o = s.getAsObject();
-      const data: IndexData = {
-        title: String(o.FileTitle ?? ''),
-        filePathRel: path.join(String(o.FolderName ?? ''),  String(o.FileName ?? '')),
+      const data: IndexMatch = {
+        type: 'index',
+        page: {
+          title: String(o.FileTitle ?? ''),
+          filePathRel: path.join(String(o.FolderName ?? ''),  String(o.FileName ?? '')),
+          anchor: String(o.Anchor ?? '')
+        },
         name: String(o.Name ?? ''),
-        anchor: String(o.Anchor ?? ''),
         identifier: String(o.Identifier ?? '')
       }
 
@@ -103,10 +97,13 @@ function parseContentsTable(data: Uint8Array, folderName: string): TocEntry[] {
     const title = readUtf16BE(readUint32());
 
     entries.push({
-      depth,
-      title,
-      filePathRel: path.join(folderName, fileName)
-    });
+      type: 'toc',
+      page: {
+        title,
+        filePathRel: path.join(folderName, fileName)
+      },
+      depth
+    } satisfies TocEntry);
   }
 
   return entries;
