@@ -6,9 +6,10 @@ import * as path from 'path';
 import {
   workspace,
   Disposable,
-  RelativePattern,
   WebviewPanel as Panel,
-  ExtensionContext as Context
+  ExtensionMode as Mode,
+  ExtensionContext as Context,
+  RelativePattern
 } from 'vscode';
 
 import { createLogger } from 'qt-lib';
@@ -21,6 +22,7 @@ import {
 } from '@/webview/shared/message';
 import { DocBrowserDataManager } from './data-manager';
 import { DocBrowserLocalServer } from './local-server';
+import { fsFile } from '@/fs-utils';
 
 const logger = createLogger('doc-browser-dispatcher');
 
@@ -36,6 +38,7 @@ export class DocBrowserDispatcher {
     private readonly _server: DocBrowserLocalServer | undefined
   ) {
     // TODO
+    // TODO: ensure the server instance is always valid
     void this._context;
     void this._panel;
 
@@ -48,18 +51,13 @@ export class DocBrowserDispatcher {
       [CommandId.DocBrowserSearch, this._onSearch],
     ]);
 
-    const cssBase = this._context.extensionPath;
-    const cssRel = 'res/others/doc-styles.css';
-    const cssWatcher = workspace.createFileSystemWatcher(
-      new RelativePattern(cssBase, cssRel)
-    );
+    this._loadCss();
 
-    // TODO: ensure the server instance is always valid
-    this._server?.setCssPath(path.join(cssBase, cssRel));
+    if (this._context.extensionMode === Mode.Development) {
+      this._setupCssWatcher();
+    }
 
     this._disposables = [
-      cssWatcher,
-      cssWatcher.onDidChange(this._onCssChanged),
       this._comm,
       this._comm.onDidReceiveMessage((m) => {
         void this.dispatch(m);
@@ -105,6 +103,7 @@ export class DocBrowserDispatcher {
   private readonly _onSearch = async (cmd: Command) => {
     const mode = String(_.get(cmd.payload, 'mode', '')).trim();
     const keyword = String(_.get(cmd.payload, 'keyword', '')).trim();
+
     if (mode === 'index') {
       const data = await this._data.searchIndex(keyword);
       this._comm.postDataReply(cmd, data);
@@ -114,14 +113,32 @@ export class DocBrowserDispatcher {
     }
   };
 
-  private readonly _onCssChanged = () => {
-    console.log(this);
-    console.log('css changed');
+  // private
+  private _loadCss() {
+    const css = fsFile(...this._cssFileInfo());
+    if (this._server && css.exists()) {
+      this._server.setCssOverride(String(css.readAll()));
+    }
+  }
 
-    const cssBase = this._context.extensionPath;
-    const cssRel = 'res/others/doc-styles.css';
+  private _setupCssWatcher() {
+    const [ dir, name ] = this._cssFileInfo();
+    const pat = new RelativePattern(dir, name);
+    const watcher = workspace.createFileSystemWatcher(pat);
 
-    this._server?.setCssPath(path.join(cssBase, cssRel));
-    this._comm.post(CommandId.DocBrowserReload, {});
+    this._disposables.push(
+      watcher,
+      watcher.onDidChange(() => {
+        this._loadCss();
+        this._comm.post(CommandId.DocBrowserReload, {});
+      })
+    );
+  }
+
+  private _cssFileInfo(): [string, string] {
+    return [
+      path.join(this._context.extensionPath, 'res/others'),
+      'doc-styles.css'
+    ]
   }
 }

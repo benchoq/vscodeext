@@ -53,8 +53,8 @@ export class DocBrowserLocalServer implements Disposable {
     return port ? `${this.scheme}://${this.host}:${String(port)}` : '';
   }
 
-  public setCssPath(fsPathAbs: string) {
-    this._cssOverrideHandler.setCssPath(fsPathAbs);
+  public setCssOverride(css: string) {
+    this._cssOverrideHandler.setCss(css);
   }
 
   async start(): Promise<void> {

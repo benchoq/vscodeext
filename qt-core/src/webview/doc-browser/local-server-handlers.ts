@@ -36,8 +36,8 @@ export class CssOverrideHandler implements RequestHandler {
     c.res.end(this._css);
   }
 
-  public setCssPath(fsPathAbs: string) {
-    this._css = String(fs.readFileSync(fsPathAbs));
+  public setCss(css: string) {
+    this._css = css;
   }
 }
 
