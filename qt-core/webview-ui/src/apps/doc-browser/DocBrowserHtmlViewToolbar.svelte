@@ -18,10 +18,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   });
 
   let keyword = $state('');
-
-  function find() {
-    viewlogic.findInCurrentDoc(keyword);
-  }
 </script>
 
 <div data-role='root' class='flex flex-row gap-1'>
@@ -37,8 +33,37 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     class='min-w-[200px] border-1'
   />
   <button
-    onclick={find}
-  >Find
+    class='w-[32px] border-1'
+    onclick={() => {
+      viewlogic.findInPage(keyword, 'new');
+    }}
+  >
+    Find
+  </button>
+  <button
+    class='w-[32px] border-1'
+    onclick={() => {
+      viewlogic.findInPage(keyword, 'prev');
+    }}
+  >
+    &lt;
+  </button>
+  <button
+    class='w-[32px] border-1'
+    onclick={() => {
+      viewlogic.findInPage(keyword, 'next');
+    }}
+  >
+    &gt;
+  </button>
+  <button
+    class='w-[32px] border-1'
+    onclick={() => {
+      keyword = '';
+      viewlogic.findInPage(keyword, 'clear');
+    }}
+  >
+    &times;
   </button>
   {@render bookmarkButton()}
 </div>

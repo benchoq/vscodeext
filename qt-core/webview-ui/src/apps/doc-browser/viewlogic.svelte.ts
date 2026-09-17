@@ -39,14 +39,11 @@ export function isCurrentDoc(e: HtmlPageInfo): boolean {
     current.anchor === e.anchor
   );
 }
-
-export function findInCurrentDoc(keyword: string) {
+export function findInPage(keyword: string, action: 'new' | 'prev' | 'next' | 'clear') {
   const w = ui.iframeEl?.contentWindow
-  if (keyword.length === 0 || !w) {
-    return;
+  if (w) {
+    postToViewer(ViewerMessageId.FindInPage, { keyword, action });
   }
-
-  postToViewer(ViewerMessageId.FindInPage, { keyword });
 }
 
 export function setMode(mode: UiMode) {

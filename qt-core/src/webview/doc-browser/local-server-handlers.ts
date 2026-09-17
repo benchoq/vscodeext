@@ -114,6 +114,18 @@ function getMimeType(filePath: string): string {
 function getScriptToInject() {
   return /*html*/ `
     <script>
+      function findInPage(keyword, dir) {
+        return window.find(
+          keyword,
+          false, // caseSensitive
+          (dir === 'backward') ? true : false,
+          true, // wrapAround
+          false, // wholeWord
+          false, // searchInFrames
+          false, // showDialog
+        );
+      }
+
       window.addEventListener('message', (e) => {
         if (e.data?.type === '${ViewerMessageId.ReloadPage}') {
           location.reload();
@@ -133,15 +145,27 @@ function getScriptToInject() {
         }
 
         if (e.data?.type === '${ViewerMessageId.FindInPage}') {
-          const query = e.data.keyword;
-          console.log('finding', query);
-          window.getSelection()?.removeAllRanges();
+          const keyword = e.data.keyword;
+          const action = e.data.action;
 
-          const found = window.find(query, false, false, true, false, false, false);
-          const found2 = window.find(query, false, true, true, false, false, false);
+          switch (action) {
+            case 'new':
+              window.getSelection()?.removeAllRanges();
+              findInPage(e.data.keyword, 'forward');
+              break;
 
-          console.log('found', found, found2);
-          console.log(window.find);
+            case 'prev':
+              findInPage(e.data.keyword, 'backward');
+              break;
+
+            case 'next':
+              findInPage(e.data.keyword, 'forward');
+              break;
+
+            case 'clear':
+              window.getSelection()?.removeAllRanges();
+              break;
+          }
           return;
         }
       });
