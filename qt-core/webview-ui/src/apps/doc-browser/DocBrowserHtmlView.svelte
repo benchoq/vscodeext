@@ -5,6 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { ui } from './states.svelte';
+  import { ViewerActionId } from '@shared/doc-browser';
   import DocBrowserHtmlViewToolbar from './DocBrowserHtmlViewToolbar.svelte';
 
   const info = $derived(ui.history.currentEntry);
@@ -13,7 +14,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     const anchor = info?.anchor;
     if (anchor && ui.iframeEl?.contentWindow) {
       ui.iframeEl.contentWindow.postMessage({
-        type: 'docbrowser-scroll-to-anchor',
+        type: ViewerActionId.ScrollToAnchor,
         anchor
       }, '*');
     }

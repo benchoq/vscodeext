@@ -9,7 +9,8 @@ import {
   isTocEntry,
   isIndexMatch,
   isFullTextMatch,
-  type HtmlPageInfo
+  type HtmlPageInfo,
+  ViewerActionId
 } from '@shared/doc-browser';
 import { data, ui, type UiMode } from './states.svelte';
 
@@ -20,7 +21,7 @@ export async function onAppMount() {
   await updateConfigs();
 
   window.addEventListener('message', (event) => {
-    if (event.data?.type === 'docbrowser-ready') {
+    if (event.data?.type === ViewerActionId.NotifyViewerReady) {
       postCssVarsToBrowser();
     }
   });
@@ -116,7 +117,7 @@ function postCssVarsToBrowser() {
 
   const vars = ui.theme.getAllVscodeCssVars();
   ui.iframeEl?.contentWindow?.postMessage({
-    type: 'docbrowser-theme-vars',
+    type: ViewerActionId.ApplyVscodeTheme,
     vars: $state.snapshot(vars),
   }, '*');
 }

@@ -6,6 +6,11 @@ import * as http from 'http';
 import * as path from 'path';
 import { createWrappedLogger } from 'qt-lib';
 
+import {
+  ViewerActionId,
+  DevViewerWebSocketUri
+} from '@/webview/shared/doc-browser';
+
 export interface RequestContext {
   filePath: string;
   fileName: string;
@@ -19,7 +24,7 @@ export interface RequestHandler {
   handle(ctx: RequestContext): void;
 }
 
-export class OfflineCssHandler implements RequestHandler {
+export class CssOverrideHandler implements RequestHandler {
   constructor(private readonly _cssPath: string) {}
 
   // eslint-disable-next-line @typescript-eslint/class-methods-use-this
@@ -33,7 +38,7 @@ export class OfflineCssHandler implements RequestHandler {
   }
 }
 
-export class HtmlInjectionHandler implements RequestHandler {
+export class ScriptInjectionHandler implements RequestHandler {
   // eslint-disable-next-line @typescript-eslint/class-methods-use-this
   canHandle(c: RequestContext): boolean {
     return c.fileName.endsWith('.html');
@@ -58,7 +63,7 @@ export class HtmlInjectionHandler implements RequestHandler {
   }
 }
 
-export class StaticFileHandler implements RequestHandler {
+export class FallbackHandler implements RequestHandler {
   // eslint-disable-next-line @typescript-eslint/class-methods-use-this
   canHandle(): boolean {
     return true;
@@ -90,7 +95,7 @@ export function sendForbidden(res: http.ServerResponse, filePath: string) {
   logger.text('Forbidden').data({ filePath }).error();
 }
 
-
+// helpers
 function getMimeType(filePath: string): string {
   const ext = path.extname(filePath).toLowerCase();
   const map: Record<string, string> = {
@@ -111,25 +116,25 @@ function getScriptToInject() {
       window.addEventListener('message', (event) => {
         console.log(event);
 
-        if (event.data?.type === 'docbrowser-scroll-to-anchor') {
+        if (event.data?.type === ${ViewerActionId.ScrollToAnchor}) {
           document.getElementById(event.data.anchor)?.scrollIntoView();
           return;
         }
 
-        if (event.data?.type === 'docbrowser-theme-vars') {
+        if (event.data?.type === ${ViewerActionId.ApplyVscodeTheme}) {
           for (const [name, value] of Object.entries(event.data.vars)) {
             document.documentElement.style.setProperty(name, value);
           }
         }
       });
 
-      const ws = new WebSocket('ws://localhost:3001');
+      const ws = new WebSocket(${DevViewerWebSocketUri});
       ws.onmessage = (e) => {
-        if (e.data === 'reload-css') {
+        if (e.data === ${ViewerActionId.DevReload}) {
           location.reload();
         }
       };
 
-      window.parent.postMessage({ type: 'docbrowser-ready' }, '*');
+      window.parent.postMessage({ type: ${ViewerActionId.NotifyViewerReady } }, '*');
     </script>`;
 }

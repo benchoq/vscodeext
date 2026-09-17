@@ -11,11 +11,12 @@ import { createWrappedLogger } from 'qt-lib';
 import {
   RequestHandler,
   RequestContext,
-  OfflineCssHandler,
-  HtmlInjectionHandler,
-  StaticFileHandler,
+  CssOverrideHandler,
+  ScriptInjectionHandler,
+  FallbackHandler,
   sendForbidden
 } from './local-server-handlers';
+import { ViewerActionId, DevViewerWebSocketPort } from '../shared/doc-browser';
 
 const logger = createWrappedLogger('docbrowser-localserver');
 const cssPath = '/Users/bencho/ws_vscode/0907.doc-browser/vscodeext/qt-core/src/webview/doc-browser/doc-styles.css';
@@ -23,9 +24,9 @@ const cssPath = '/Users/bencho/ws_vscode/0907.doc-browser/vscodeext/qt-core/src/
 export class DocBrowserLocalServer implements Disposable {
   private _server: http.Server | undefined;
   private readonly _handlers: RequestHandler[] = [
-    new OfflineCssHandler(cssPath),
-    new HtmlInjectionHandler(),
-    new StaticFileHandler(),
+    new CssOverrideHandler(cssPath),
+    new ScriptInjectionHandler(),
+    new FallbackHandler(),
   ];
 
   constructor(private readonly _contentRoot: string) {
@@ -70,12 +71,12 @@ export class DocBrowserLocalServer implements Disposable {
 
     return new Promise((resolve, reject) => {
       if (this._server) {
-        const wss = new WebSocketServer({ port: 3001 });
+        const wss = new WebSocketServer({ port: DevViewerWebSocketPort });
         chokidar.watch(cssPath).on('change', () => {
           console.log("css changed");
 
           wss.clients.forEach((c) => {
-            c.send('reload-css');
+            c.send(ViewerActionId.DevReload);
           });
         });
 
