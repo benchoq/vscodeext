@@ -717,4 +717,7 @@ div.multi-column div {
 
 ::selection {
   background-color: var(--vscode-editor-findMatchBackground, #F6F6D6);
+  color: inherit;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  text-decoration: underline;
 }
