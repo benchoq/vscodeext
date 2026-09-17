@@ -2,8 +2,11 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import _ from 'lodash';
+import * as path from 'path';
 import {
+  workspace,
   Disposable,
+  RelativePattern,
   WebviewPanel as Panel,
   ExtensionContext as Context
 } from 'vscode';
@@ -32,6 +35,7 @@ export class DocBrowserDispatcher {
     private readonly _panel: Panel,
     private readonly _server: DocBrowserLocalServer | undefined
   ) {
+    // TODO
     void this._context;
     void this._panel;
 
@@ -44,7 +48,18 @@ export class DocBrowserDispatcher {
       [CommandId.DocBrowserSearch, this._onSearch],
     ]);
 
+    const cssBase = this._context.extensionPath;
+    const cssRel = 'res/others/doc-styles.css';
+    const cssWatcher = workspace.createFileSystemWatcher(
+      new RelativePattern(cssBase, cssRel)
+    );
+
+    // TODO: ensure the server instance is always valid
+    this._server?.setCssPath(path.join(cssBase, cssRel));
+
     this._disposables = [
+      cssWatcher,
+      cssWatcher.onDidChange(this._onCssChanged),
       this._comm,
       this._comm.onDidReceiveMessage((m) => {
         void this.dispatch(m);
@@ -98,4 +113,15 @@ export class DocBrowserDispatcher {
       this._comm.postDataReply(cmd, data);
     }
   };
+
+  private readonly _onCssChanged = () => {
+    console.log(this);
+    console.log('css changed');
+
+    const cssBase = this._context.extensionPath;
+    const cssRel = 'res/others/doc-styles.css';
+
+    this._server?.setCssPath(path.join(cssBase, cssRel));
+    this._comm.post(CommandId.DocBrowserReload, {});
+  }
 }

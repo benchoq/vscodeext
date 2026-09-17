@@ -4,7 +4,6 @@
 import * as net from 'net';
 import * as http from 'http';
 import * as path from 'path';
-import { WebSocketServer } from 'ws';
 import { Disposable } from 'vscode';
 
 import { createWrappedLogger } from 'qt-lib';
@@ -16,20 +15,20 @@ import {
   FallbackHandler,
   sendForbidden
 } from './local-server-handlers';
-import { ViewerActionId, DevViewerWebSocketPort } from '../shared/doc-browser';
 
 const logger = createWrappedLogger('docbrowser-localserver');
-const cssPath = '/Users/bencho/ws_vscode/0907.doc-browser/vscodeext/qt-core/src/webview/doc-browser/doc-styles.css';
 
 export class DocBrowserLocalServer implements Disposable {
   private _server: http.Server | undefined;
-  private readonly _handlers: RequestHandler[] = [
-    new CssOverrideHandler(cssPath),
-    new ScriptInjectionHandler(),
-    new FallbackHandler(),
-  ];
+  private readonly _cssOverrideHandler = new CssOverrideHandler()
+  private readonly _handlers: RequestHandler[] = []
 
   constructor(private readonly _contentRoot: string) {
+    this._handlers.push(
+      this._cssOverrideHandler,
+      new ScriptInjectionHandler(),
+      new FallbackHandler()
+    );
   }
 
   dispose(): void {
@@ -54,6 +53,10 @@ export class DocBrowserLocalServer implements Disposable {
     return port ? `${this.scheme}://${this.host}:${String(port)}` : '';
   }
 
+  public setCssPath(fsPathAbs: string) {
+    this._cssOverrideHandler.setCssPath(fsPathAbs);
+  }
+
   async start(): Promise<void> {
     if (this._server) {
       logger.text("Server is already running")
@@ -67,19 +70,8 @@ export class DocBrowserLocalServer implements Disposable {
       this._onRequest(req, res);
     });
 
-    const chokidar = await import('chokidar');
-
     return new Promise((resolve, reject) => {
       if (this._server) {
-        const wss = new WebSocketServer({ port: DevViewerWebSocketPort });
-        chokidar.watch(cssPath).on('change', () => {
-          console.log("css changed");
-
-          wss.clients.forEach((c) => {
-            c.send(ViewerActionId.DevReloadPage);
-          })
-        });
-
         const anyPort = 0;
         this._server.once('error', reject);
         this._server.listen(anyPort, this.host, () => {

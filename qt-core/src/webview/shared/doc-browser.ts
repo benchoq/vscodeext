@@ -33,9 +33,6 @@ export enum ViewerActionId {
   DevReloadPage = 'docbrowser-dev-reload-page'
 }
 
-export const DevViewerWebSocketPort = 3001
-export const DevViewerWebSocketUri = `ws://localhost:${String(DevViewerWebSocketPort)}`;
-
 // type guard functions
 export function isHtmlPageInfo(x: unknown): x is HtmlPageInfo {
   if (typeof x !== 'object' || x === null) {

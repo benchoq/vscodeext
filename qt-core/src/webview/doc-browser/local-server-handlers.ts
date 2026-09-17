@@ -7,8 +7,7 @@ import * as path from 'path';
 import { createWrappedLogger } from 'qt-lib';
 
 import {
-  ViewerActionId,
-  DevViewerWebSocketUri
+  ViewerActionId
 } from '@/webview/shared/doc-browser';
 
 export interface RequestContext {
@@ -25,7 +24,7 @@ export interface RequestHandler {
 }
 
 export class CssOverrideHandler implements RequestHandler {
-  constructor(private readonly _cssPath: string) {}
+  private _css = '';
 
   // eslint-disable-next-line @typescript-eslint/class-methods-use-this
   canHandle(c: RequestContext): boolean {
@@ -34,7 +33,11 @@ export class CssOverrideHandler implements RequestHandler {
 
   handle(c: RequestContext): void {
     c.res.writeHead(200, { 'Content-Type': 'text/css' });
-    c.res.end(fs.readFileSync(this._cssPath));
+    c.res.end(this._css);
+  }
+
+  public setCssPath(fsPathAbs: string) {
+    this._css = String(fs.readFileSync(fsPathAbs));
   }
 }
 
@@ -113,13 +116,6 @@ function getMimeType(filePath: string): string {
 function getScriptToInject() {
   return /*html*/ `
     <script>
-      const ws = new WebSocket('${DevViewerWebSocketUri}');
-      ws.onmessage = (e) => {
-        if (e.data === '${ViewerActionId.DevReloadPage}') {
-          location.reload();
-        }
-      };
-
       window.addEventListener('message', (e) => {
         if (e.data?.type === '${ViewerActionId.ScrollToAnchor}') {
           document.getElementById(e.data.anchor)?.scrollIntoView();
@@ -130,6 +126,12 @@ function getScriptToInject() {
           for (const [name, value] of Object.entries(e.data.vars)) {
             document.documentElement.style.setProperty(name, value);
           }
+          return;
+        }
+
+        if (e.data?.type === '${ViewerActionId.DevReloadPage}') {
+          location.reload();
+          return;
         }
       });
 

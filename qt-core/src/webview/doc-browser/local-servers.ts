@@ -1,8 +1,6 @@
 // Copyright (C) 2025 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-// import * as vscode from 'vscode';
-
 import { DocBrowserLocalServer } from './local-server';
 
 export class DocBrowserLocalServerManager {
@@ -27,9 +25,5 @@ export class DocBrowserLocalServerManager {
 
     const s = this._servers.get(rootDir);
     await s?.start();
-  }
-
-  public find(key: string): DocBrowserLocalServer | undefined {
-    return this._servers.get(key);
   }
 }

@@ -22,7 +22,7 @@ import { DocBrowserDispatcher } from './dispatcher';
 import { DocBrowserLocalServerManager } from './local-servers';
 import * as consts from './constants';
 
-const docServers = new DocBrowserLocalServerManager();
+let docServers: DocBrowserLocalServerManager | undefined;
 
 export function registerDocBrowser(context: Context) {
   context.subscriptions.push(
@@ -52,7 +52,7 @@ export class DocBrowserController {
   private readonly _disposables: Disposable[] = [];
 
   private constructor(context: Context, panel: Panel) {
-    const localServer = docServers.get(DocBrowserController.docRootDir);
+    const localServer = docServers?.get(DocBrowserController.docRootDir);
 
     const config: WebviewAppConfig = {
       app: 'doc-browser',
@@ -94,6 +94,10 @@ export class DocBrowserController {
 
   public static async render(context: Context) {
     if (!DocBrowserController.instance) {
+      if (!docServers) {
+        docServers = new DocBrowserLocalServerManager();
+      }
+
       await docServers.prepare(this.docRootDir);
 
       DocBrowserController.instance = new DocBrowserController(

@@ -4,7 +4,7 @@
 import _ from 'lodash';
 import { vscode } from '@/apps/vscode';
 
-import { CommandId } from '@shared/message';
+import { CommandId, type CommandReply } from '@shared/message';
 import {
   isTocEntry,
   isIndexMatch,
@@ -17,6 +17,8 @@ import { data, ui, type UiMode } from './states.svelte';
 export async function onAppMount() {
   ui.theme.monitor.start();
   ui.theme.monitor.onChanged(postCssVarsToBrowser);
+
+  vscode.onDidReceiveNotification(onVscodeNotified);
 
   await updateConfigs();
 
@@ -124,4 +126,11 @@ function postCssVarsToBrowser() {
 async function updateConfigs() {
   const r = await vscode.post(CommandId.DocBrowserGetConfig);
   data.configs.serverOrigin = String(_.get(r, 'serverOrigin', '')).trim();
+}
+
+async function onVscodeNotified(reply: CommandReply) {
+  if (reply.id === CommandId.DocBrowserReload) {
+    postToViewer(ViewerActionId.DevReloadPage);
+    console.log('app: reload received');
+  }
 }

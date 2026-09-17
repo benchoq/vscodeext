@@ -62,6 +62,7 @@ export enum CommandId {
   DocBrowserGetConfig,
   DocBrowserReadToc,
   DocBrowserSearch,
+  DocBrowserReload,
 
   // common
   CommonOpenFolder,
@@ -73,6 +74,7 @@ export const OneWayCommandIds = [
   CommandId.UiItemCreationRequested,
   CommandId.UiHasError,
   CommandId.QrcDocChanged,
+  CommandId.DocBrowserReload,
   CommandId.CommonVscodeThemeChanged
 ];
 
