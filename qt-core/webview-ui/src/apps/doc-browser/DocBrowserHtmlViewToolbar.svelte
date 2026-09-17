@@ -11,7 +11,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from "./states.svelte";
 
   const loc = $derived.by(() => {
-    return ui.history.currentEntry?.filePathRel ?? '';
+    const e = ui.history.currentEntry;
+    return e
+      ? `${e.filePathRel}${e.anchor ? '#' + e.anchor : ''}`
+      : '<none>';
   });
 </script>
 
