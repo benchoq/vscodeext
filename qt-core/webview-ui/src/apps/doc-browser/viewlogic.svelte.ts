@@ -46,7 +46,7 @@ export function findInCurrentDoc(keyword: string) {
     return;
   }
 
-  // TODO
+  postToViewer(ViewerMessageId.FindInPage, { keyword });
 }
 
 export function setMode(mode: UiMode) {

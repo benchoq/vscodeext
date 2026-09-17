@@ -31,6 +31,7 @@ export enum ViewerMessageId {
   ReloadPage = 'docbrowser-dev-reload-page',
   ScrollToAnchor = 'docbrowser-scroll-to-anchor',
   ApplyVscodeTheme = 'docbrowser-apply-vscode-theme',
+  FindInPage = 'docbrowser-find-in-page'
 }
 
 // type guard functions

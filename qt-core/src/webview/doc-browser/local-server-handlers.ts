@@ -131,6 +131,19 @@ function getScriptToInject() {
           }
           return;
         }
+
+        if (e.data?.type === '${ViewerMessageId.FindInPage}') {
+          const query = e.data.keyword;
+          console.log('finding', query);
+          window.getSelection()?.removeAllRanges();
+
+          const found = window.find(query, false, false, true, false, false, false);
+          const found2 = window.find(query, false, true, true, false, false, false);
+
+          console.log('found', found, found2);
+          console.log(window.find);
+          return;
+        }
       });
 
       window.addEventListener('load', (e) => {

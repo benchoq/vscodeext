@@ -714,3 +714,7 @@ div.multi-column div {
   scrollbar-width: thin;
   scrollbar-color: var(--vscode-scrollbarSlider-background, #79797966) var(--vscode-editor-background, #262626);
 }
+
+::selection {
+  background-color: var(--vscode-editor-findMatchBackground, #F6F6D6);
+}
