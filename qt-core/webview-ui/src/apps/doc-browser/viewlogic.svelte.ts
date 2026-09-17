@@ -51,7 +51,8 @@ export function setMode(mode: UiMode) {
 export function navigate(dir: 'back' | 'forward') {
   const entry = ui.history.go(dir);
   if (entry) {
-    ui.selected.htmlUri = entry.url;
+    ui.selected.htmlEntry = entry;
+    ui.selected.htmlUri = entry.filePathRel;
   }
 
   console.log(entry);
@@ -84,7 +85,7 @@ export async function openHtml(html: HtmlEntry) {
 
   ui.selected.htmlEntry = html;
   ui.selected.htmlUri = _.get(r, 'htmlUri', '');
-  ui.history.push(ui.selected.htmlUri, html.title);
+  ui.history.push(html);
 }
 
 export async function loadToc() {

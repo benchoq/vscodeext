@@ -1,7 +1,7 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import { type TocEntry } from "@shared/doc-browser";
+import { type HtmlEntry, type TocEntry } from "@shared/doc-browser";
 
 export interface TocTreeNode {
   id: number;
@@ -55,13 +55,8 @@ export class TocTreeModel {
   }
 }
 
-type HistoryEntry = {
-  url: string;
-  title?: string;
-};
-
 export class HistoryManager {
-  private _history = $state([] as HistoryEntry[]);
+  private _history = $state([] as HtmlEntry[]);
   private _currentIndex = $state(-1);
 
   public go(dir: 'back' | 'forward') {
@@ -94,10 +89,10 @@ export class HistoryManager {
     return this._history[this._currentIndex];
   }
 
-  public push(url: string, title: string) {
+  public push(entry: HtmlEntry) {
     this._history = [
       ...this._history.slice(0, this._currentIndex + 1),
-      { url, title }
+      entry
     ];
     this._currentIndex = this._history.length - 1;
   }
