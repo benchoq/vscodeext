@@ -707,3 +707,10 @@ div.multi-column div {
   top: 0;
   left: 0;
 }
+
+/* ---------- scrollbar ---------- */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--vscode-scrollbarSlider-background, #79797966) var(--vscode-editor-background, #262626);
+}
