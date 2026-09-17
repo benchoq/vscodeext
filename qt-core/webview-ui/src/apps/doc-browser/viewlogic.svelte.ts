@@ -28,14 +28,15 @@ export async function onAppDestroy() {
 }
 
 export function isCurrentDoc(e: HtmlPageInfo): boolean {
-  if (!ui.selected.htmlEntry) {
+  const current = ui.history.currentEntry;
+  if (!current) {
     return false;
   }
 
   return (
-    ui.selected.htmlEntry.title === e.title &&
-    ui.selected.htmlEntry.filePathRel === e.filePathRel &&
-    ui.selected.htmlEntry.anchor === e.anchor
+    current.title === e.title &&
+    current.filePathRel === e.filePathRel &&
+    current.anchor === e.anchor
   );
 }
 
@@ -51,7 +52,6 @@ export function setMode(mode: UiMode) {
 export function navigate(dir: 'back' | 'forward') {
   const entry = ui.history.go(dir);
   if (entry) {
-    ui.selected.htmlEntry = entry;
     ui.selected.htmlUri = entry.filePathRel;
   }
 
@@ -83,9 +83,8 @@ export async function openHtml(info: HtmlPageInfo) {
     info: $state.snapshot(info)
   });
 
-  ui.selected.htmlEntry = info;
-  ui.selected.htmlUri = _.get(r, 'htmlUri', '');
   ui.history.push(info);
+  ui.selected.htmlUri = _.get(r, 'htmlUri', '');
 }
 
 export async function loadToc() {

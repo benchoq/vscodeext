@@ -7,10 +7,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from './states.svelte';
   import DocBrowserHtmlViewToolbar from './DocBrowserHtmlViewToolbar.svelte';
 
-  const index = $derived(ui.selected.htmlEntry);
+  const info = $derived(ui.history.currentEntry);
 
   function scrollToAnchor() {
-    const anchor = index?.anchor;
+    const anchor = info?.anchor;
     if (anchor && ui.iframeEl?.contentWindow) {
       ui.iframeEl.contentWindow.postMessage({
         type: 'docbrowser-scroll-to-anchor',
@@ -20,7 +20,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   $effect(() => {
-    void index?.anchor;
+    void info?.anchor;
     scrollToAnchor();
   });
 </script>
@@ -30,7 +30,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <iframe
     bind:this={ui.iframeEl}
     class='grow min-w-0 overflow-y-auto'
-    title={index?.title}
+    title={info?.title}
     src={ui.selected.htmlUri}
     onload={scrollToAnchor}
   >

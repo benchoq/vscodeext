@@ -1,7 +1,10 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import { type HtmlEntry, type TocEntry } from "@shared/doc-browser";
+import {
+  type TocEntry,
+  type HtmlPageInfo,
+} from "@shared/doc-browser";
 
 export interface TocTreeNode {
   id: number;
@@ -10,20 +13,11 @@ export interface TocTreeNode {
 }
 
 export class TocTreeModel {
-   private readonly _root = $state<TocTreeNode>({
-    id: -1,
-    data: {
-      depth: -1,
-      title: '(root)',
-      filePathRel: ''
-    },
-    children: []
-  });
-
+  private _topLevels = $state([] as TocTreeNode[]);
   private _expandedIds = $state(new Set<number>);
 
   get topLevels() {
-    return this._root.children;
+    return this._topLevels;
   }
 
   public expanded(id: number) {
@@ -50,13 +44,13 @@ export class TocTreeModel {
   }
 
   public rebuild(flatEntries: TocEntry[]) {
-    this._root.children = build(flatEntries);
+    this._topLevels = build(flatEntries);
     this._expandedIds = new Set<number>();
   }
 }
 
 export class HistoryManager {
-  private _history = $state([] as HtmlEntry[]);
+  private _history = $state([] as HtmlPageInfo[]);
   private _currentIndex = $state(-1);
 
   public go(dir: 'back' | 'forward') {
@@ -89,7 +83,7 @@ export class HistoryManager {
     return this._history[this._currentIndex];
   }
 
-  public push(entry: HtmlEntry) {
+  public push(entry: HtmlPageInfo) {
     this._history = [
       ...this._history.slice(0, this._currentIndex + 1),
       entry

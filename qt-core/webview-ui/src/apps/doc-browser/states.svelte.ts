@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import {
-  type HtmlPageInfo,
   type TocEntry,
   type IndexMatch,
   type FullTextMatch
@@ -26,7 +25,6 @@ export const ui = $state({
 
   selected: {
     htmlUri: '',
-    htmlEntry: undefined as HtmlPageInfo | undefined
   },
 
   history: new HistoryManager()
