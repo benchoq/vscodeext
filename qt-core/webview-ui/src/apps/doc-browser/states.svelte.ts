@@ -1,7 +1,7 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import { type FullTextSearchData, type IndexData, type TocEntry } from '@shared/doc-browser';
+import { type FullTextSearchData, type HtmlEntry, type IndexData, type TocEntry } from '@shared/doc-browser';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import { TocTreeModel, HistoryManager } from './types.svelte';
 
@@ -23,7 +23,8 @@ export const ui = $state({
     toc: undefined as TocEntry | undefined,
     index: undefined as IndexData | undefined,
     fullText: undefined as FullTextSearchData | undefined,
-    htmlUri: ''
+    htmlUri: '',
+    htmlEntry: undefined as HtmlEntry | undefined
   },
 
   history: new HistoryManager()

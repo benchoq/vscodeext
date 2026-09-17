@@ -5,7 +5,12 @@ import _ from 'lodash';
 import { vscode } from '@/apps/vscode';
 
 import { CommandId } from '@shared/message';
-import { isFullTextSearchData, isIndexData, isTocEntry, type FullTextSearchData, type IndexData, type TocEntry } from '@shared/doc-browser';
+import {
+  isTocEntry,
+  isIndexData,
+  isFullTextSearchData,
+  type HtmlEntry,
+} from '@shared/doc-browser';
 import { data, ui, type UiMode } from './states.svelte';
 
 export async function onAppMount() {
@@ -21,6 +26,19 @@ export async function onAppMount() {
 
 export async function onAppDestroy() {
 }
+
+export function isCurrentDoc(e: HtmlEntry): boolean {
+  if (!ui.selected.htmlEntry) {
+    return false;
+  }
+
+  return (
+    ui.selected.htmlEntry.title === e.title &&
+    ui.selected.htmlEntry.filePathRel === e.filePathRel &&
+    ui.selected.htmlEntry.anchor === e.anchor
+  );
+}
+
 
 export function setMode(mode: UiMode) {
   ui.mode = mode;
@@ -59,34 +77,14 @@ export async function search(keyword: string) {
   console.log(r);
 }
 
-export async function openDoc(index: IndexData) {
-  const r = await vscode.post(CommandId.DocBrowserOpenDocFromIndex, {
-    index: $state.snapshot(index)
+export async function openHtml(html: HtmlEntry) {
+  const r = await vscode.post(CommandId.DocBrowserOpenHtml, {
+    html: $state.snapshot(html)
   });
 
-  ui.selected.index = index;
+  ui.selected.htmlEntry = html;
   ui.selected.htmlUri = _.get(r, 'htmlUri', '');
-  ui.history.push(ui.selected.htmlUri, index.title);
-}
-
-export async function openDocFromToc(toc: TocEntry) {
-  const r = await vscode.post(CommandId.DocBrowserOpenDocFromToc, {
-    toc: $state.snapshot(toc)
-  });
-
-  ui.selected.toc = toc;
-  ui.selected.htmlUri = _.get(r, 'htmlUri', '');
-  ui.history.push(ui.selected.htmlUri, toc.title);
-}
-
-export async function openDocFromFullTextSearch(data: FullTextSearchData) {
-  const r = await vscode.post(CommandId.DocBrowserOpenDocFromFullText, {
-    search: $state.snapshot(data)
-  });
-
-  ui.selected.fullText = data;
-  ui.selected.htmlUri = _.get(r, 'htmlUri', '');
-  ui.history.push(ui.selected.htmlUri, data.title);
+  ui.history.push(ui.selected.htmlUri, html.title);
 }
 
 export async function loadToc() {

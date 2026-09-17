@@ -19,7 +19,7 @@ import {
 } from '@/webview/shared/message';
 import { DocBrowserDataManager } from './data-manager';
 import { DocBrowserLocalServer } from './local-server';
-import { isFullTextSearchData, isIndexData, isTocEntry } from '../shared/doc-browser';
+import { isHtmlEntry } from '@/webview/shared/doc-browser';
 
 // import {} from '@/webview/shared/doc-browser';
 // import * as texts from '@/texts';
@@ -47,9 +47,7 @@ export class DocBrowserDispatcher {
     this._handlers = new Map<CommandId, CommandHandler>([
       [CommandId.DocBrowserReadToc, this._onReadToc],
       [CommandId.DocBrowserSearch, this._onSearch],
-      [CommandId.DocBrowserOpenDocFromToc, this._onOpenFromToc],
-      [CommandId.DocBrowserOpenDocFromIndex, this._onOpenFromIndex],
-      [CommandId.DocBrowserOpenDocFromFullText, this._onOpenFromFullText]
+      [CommandId.DocBrowserOpenHtml, this._onOpenHtml]
     ]);
 
     this._disposables = [
@@ -101,15 +99,15 @@ export class DocBrowserDispatcher {
     }
   };
 
-  private readonly _onOpenFromToc = (cmd: Command) => {
-    const toc = _.get(cmd.payload, 'toc', {});
-    if (!isTocEntry(toc)) {
+  private readonly _onOpenHtml = (cmd: Command) => {
+    const html = _.get(cmd.payload, 'html', {});
+    if (!isHtmlEntry(html)) {
       console.log('bad data');
       return;
     }
 
     const uri = Uri
-      .file(toc.filePathRel)
+      .file(html.filePathRel)
       .with({
         scheme: this._server.scheme,
         authority: `${this._server.host}:${String(this._server.port ?? 0)}`,
@@ -118,38 +116,4 @@ export class DocBrowserDispatcher {
     // http://127.0.0.1/qtcore/qobject.html
     this._comm.postDataReply(cmd, { htmlUri: uri.toString() });
   }
-
-  private readonly _onOpenFromIndex = (cmd: Command) => {
-    const index = _.get(cmd.payload, 'index', {});
-    if (!isIndexData(index)) {
-      console.log('bad data');
-      return;
-    }
-
-    const uri = Uri
-      .file(index.filePathRel)
-      .with({
-        scheme: this._server.scheme,
-        authority: `${this._server.host}:${String(this._server.port ?? 0)}`,
-      });
-
-    this._comm.postDataReply(cmd, { htmlUri: uri.toString() });
-  };
-
-  private readonly _onOpenFromFullText = (cmd: Command) => {
-    const data = _.get(cmd.payload, 'search', {});
-    if (!isFullTextSearchData(data)) {
-      console.log('bad data');
-      return;
-    }
-
-    const uri = Uri
-      .file(data.filePathRel)
-      .with({
-        scheme: this._server.scheme,
-        authority: `${this._server.host}:${String(this._server.port ?? 0)}`,
-      });
-
-    this._comm.postDataReply(cmd, { htmlUri: uri.toString() });
-  };
 }

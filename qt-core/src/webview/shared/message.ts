@@ -61,9 +61,7 @@ export enum CommandId {
   // doc browser
   DocBrowserReadToc,
   DocBrowserSearch,
-  DocBrowserOpenDocFromToc,
-  DocBrowserOpenDocFromIndex,
-  DocBrowserOpenDocFromFullText,
+  DocBrowserOpenHtml,
 
   // common
   CommonOpenFolder,

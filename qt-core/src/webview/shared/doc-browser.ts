@@ -20,6 +20,20 @@ export interface FullTextSearchData extends HtmlEntry {
   snippet: string;
 }
 
+// type guard functions
+export function isHtmlEntry(x: unknown): x is HtmlEntry {
+  if (typeof x !== 'object' || x === null) {
+    return false;
+  }
+
+  const o = x as Record<string, unknown>;
+  return (
+    typeof o.title === 'string' &&
+    typeof o.filePathRel === 'string' &&
+    (o.anchor === undefined || typeof o.anchor === 'string')
+  );
+}
+
 export function isIndexData(x: unknown): x is IndexData {
   if (typeof x !== 'object' || x === null) {
     return false;
@@ -51,17 +65,5 @@ export function isFullTextSearchData(x: unknown): x is FullTextSearchData {
 
   return (
     'snippet' in x && typeof x.snippet === 'string'
-  );
-}
-
-export function isHtmlEntry(x: unknown): x is HtmlEntry {
-  if (typeof x !== 'object' || x === null) {
-    return false;
-  }
-
-  const o = x as Record<string, unknown>;
-  return (
-    typeof o.title === 'string' &&
-    typeof o.filePathRel === 'string'
   );
 }

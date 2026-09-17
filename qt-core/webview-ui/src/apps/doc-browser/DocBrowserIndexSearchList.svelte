@@ -5,7 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import * as viewlogic from './viewlogic.svelte';
-  import { data, ui } from './states.svelte';
+  import { data } from './states.svelte';
 </script>
 
 <div
@@ -19,9 +19,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {#each data.indexes as entry, i (i + entry.filePathRel)}
       <button
         class='item flex align-start'
-        class:active={ui.selected.index === entry}
+        class:active={viewlogic.isCurrentDoc(entry)}
         onclick={() => {
-          viewlogic.openDoc(entry);
+          viewlogic.openHtml(entry);
         }}
       >
         {entry.identifier}

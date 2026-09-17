@@ -5,7 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import * as viewlogic from './viewlogic.svelte';
-  import { data, ui } from './states.svelte';
+  import { data } from './states.svelte';
 </script>
 
 <div
@@ -19,9 +19,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {#each data.fullText as entry, i (i)}
       <button
         class='item flex flex-col align-start'
-        class:active={ui.selected.fullText === entry}
+        class:active={viewlogic.isCurrentDoc(entry)}
         onclick={() => {
-          viewlogic.openDocFromFullTextSearch(entry);
+          viewlogic.openHtml(entry);
         }}
       >
         <div>{entry.title}</div>
