@@ -3,7 +3,6 @@
 
 import _ from 'lodash';
 import {
-  Uri,
   Disposable,
   WebviewPanel as Panel,
   ExtensionContext as Context
@@ -19,13 +18,8 @@ import {
 } from '@/webview/shared/message';
 import { DocBrowserDataManager } from './data-manager';
 import { DocBrowserLocalServer } from './local-server';
-import { isHtmlPageInfo } from '@/webview/shared/doc-browser';
-
-// import {} from '@/webview/shared/doc-browser';
-// import * as texts from '@/texts';
 
 const logger = createLogger('doc-browser-dispatcher');
-// const qchDir = '/Users/bencho/tools/Qt/Docs/Qt-6.11.1';
 
 export class DocBrowserDispatcher {
   private readonly _comm: WebviewChannel;
@@ -45,9 +39,9 @@ export class DocBrowserDispatcher {
 
     this._comm = new WebviewChannel(_panel.webview);
     this._handlers = new Map<CommandId, CommandHandler>([
+      [CommandId.DocBrowserGetConfig, this._onGetConfig],
       [CommandId.DocBrowserReadToc, this._onReadToc],
       [CommandId.DocBrowserSearch, this._onSearch],
-      [CommandId.DocBrowserOpenHtml, this._onOpenHtml]
     ]);
 
     this._disposables = [
@@ -82,6 +76,12 @@ export class DocBrowserDispatcher {
   }
 
   // handlers
+  private readonly _onGetConfig = (cmd: Command) => {
+    this._comm.postDataReply(cmd, {
+      serverOrigin: this._server.origin
+    });
+  };
+
   private readonly _onReadToc = async (cmd: Command) => {
     const data = await this._data.readToc();
     this._comm.postDataReply(cmd, data);
@@ -98,22 +98,4 @@ export class DocBrowserDispatcher {
       this._comm.postDataReply(cmd, data);
     }
   };
-
-  private readonly _onOpenHtml = (cmd: Command) => {
-    const info = _.get(cmd.payload, 'info', {});
-    if (!isHtmlPageInfo(info)) {
-      console.log('bad data');
-      return;
-    }
-
-    const uri = Uri
-      .file(info.filePathRel)
-      .with({
-        scheme: this._server.scheme,
-        authority: `${this._server.host}:${String(this._server.port ?? 0)}`,
-      });
-
-    // http://127.0.0.1/qtcore/qobject.html
-    this._comm.postDataReply(cmd, { htmlUri: uri.toString() });
-  }
 }

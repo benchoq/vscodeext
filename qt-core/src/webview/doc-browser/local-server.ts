@@ -6,9 +6,7 @@ import * as net from 'net';
 import * as http from 'http';
 import * as path from 'path';
 import { WebSocketServer } from 'ws';
-import {
-  Disposable
-} from 'vscode';
+import { Disposable } from 'vscode';
 
 import { createWrappedLogger } from 'qt-lib';
 

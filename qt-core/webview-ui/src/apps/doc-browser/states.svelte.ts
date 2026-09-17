@@ -4,7 +4,7 @@
 import {
   type TocEntry,
   type IndexMatch,
-  type FullTextMatch
+  type FullTextMatch,
 } from '@shared/doc-browser';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import { TocTreeModel, HistoryManager } from './types.svelte';
@@ -14,7 +14,10 @@ export type UiMode = 'toc' | 'index' | 'text';
 export const data = $state({
   toc: [] as TocEntry[],
   indexes: [] as IndexMatch[],
-  fullText: [] as FullTextMatch[]
+  fullText: [] as FullTextMatch[],
+  configs: {
+    serverOrigin: '' // expects 'http://127.0.0.1:<port>'
+  }
 });
 
 export const ui = $state({

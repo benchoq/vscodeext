@@ -17,6 +17,8 @@ export async function onAppMount() {
   ui.theme.monitor.start();
   ui.theme.monitor.onChanged(postCssVarsToBrowser);
 
+  await updateConfigs();
+
   window.addEventListener('message', (event) => {
     if (event.data?.type === 'docbrowser-ready') {
       postCssVarsToBrowser();
@@ -79,12 +81,15 @@ export async function search(keyword: string) {
 }
 
 export async function openHtml(info: HtmlPageInfo) {
-  const r = await vscode.post(CommandId.DocBrowserOpenHtml, {
-    info: $state.snapshot(info)
-  });
+  const uri = [
+    data.configs.serverOrigin,
+    data.configs.serverOrigin.endsWith('/') ? '' : '/',
+    info.filePathRel,
+    info.anchor ? '#' + info.anchor : ''
+  ].join('');
 
   ui.history.push(info);
-  ui.selected.htmlUri = _.get(r, 'htmlUri', '');
+  ui.selected.htmlUri = uri;
 }
 
 export async function loadToc() {
@@ -106,4 +111,13 @@ function postCssVarsToBrowser() {
     type: 'docbrowser-theme-vars',
     vars: $state.snapshot(vars),
   }, '*');
+}
+
+async function updateConfigs() {
+  const r = await vscode.post(CommandId.DocBrowserGetConfig);
+
+  data.configs.serverOrigin = String(_.get(r, 'serverOrigin', '')).trim();
+
+  console.log(r);
+  console.log(data.configs);
 }
