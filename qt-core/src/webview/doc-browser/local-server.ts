@@ -1,7 +1,6 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import * as fs from 'fs';
 import * as net from 'net';
 import * as http from 'http';
 import * as path from 'path';
@@ -9,12 +8,25 @@ import { WebSocketServer } from 'ws';
 import { Disposable } from 'vscode';
 
 import { createWrappedLogger } from 'qt-lib';
+import {
+  RequestHandler,
+  RequestContext,
+  OfflineCssHandler,
+  HtmlInjectionHandler,
+  StaticFileHandler,
+  sendForbidden
+} from './local-server-handlers';
 
 const logger = createWrappedLogger('docbrowser-localserver');
 const cssPath = '/Users/bencho/ws_vscode/0907.doc-browser/vscodeext/qt-core/src/webview/doc-browser/doc-styles.css';
 
 export class DocBrowserLocalServer implements Disposable {
   private _server: http.Server | undefined;
+  private readonly _handlers: RequestHandler[] = [
+    new OfflineCssHandler(cssPath),
+    new HtmlInjectionHandler(),
+    new StaticFileHandler(),
+  ];
 
   constructor(private readonly _contentRoot: string) {
   }
@@ -89,43 +101,23 @@ export class DocBrowserLocalServer implements Disposable {
     const filePath = path.join(this._contentRoot, urlPath);
     const fileName = path.basename(filePath);
 
-    if (!filePath.startsWith(this._contentRoot)) {
-      res.writeHead(403);
-      res.end('Forbidden');
-      logger.text('Forbidden').data({ filePath }).error();
+    if (!this._isAccessAllowed(filePath)) {
+      sendForbidden(res, filePath);
       return;
     }
 
-    if (fileName.startsWith('offline') && fileName.endsWith('.css')) {
-      res.writeHead(200, { 'Content-Type': 'text/css' });
-      res.end(fs.readFileSync(cssPath));
-      return;
-    }
+    const c: RequestContext = {
+      filePath,
+      fileName,
+      res
+    };
 
-    fs.readFile(filePath, (err, data) => {
-      logger.text('Reading file').data({ filePath }).debug();
+    const handler = this._handlers.find((h) => h.canHandle(c));
+    handler?.handle(c);
+  }
 
-      if (err) {
-        res.writeHead(404);
-        res.end('Not found');
-        logger.text('Not found').data({ filePath }).error();
-        return;
-      }
-
-      if (fileName.endsWith('.html')) {
-        const html = String(data);
-        const html2 = html.replace(
-          '</body>',
-          `${getScriptToInject()}</body>`
-        );
-        res.writeHead(200, { 'Content-Type': getMimeType(filePath) });
-        res.end(html2);
-        return;
-      }
-
-      res.writeHead(200, { 'Content-Type': getMimeType(filePath) });
-      res.end(data);
-    });
+  private _isAccessAllowed(filePath: string): boolean {
+    return filePath.startsWith(this._contentRoot);
   }
 }
 
@@ -145,47 +137,4 @@ function addrToString(server: net.Server | undefined) {
   }
 
   return '';
-}
-
-function getMimeType(filePath: string): string {
-  const ext = path.extname(filePath).toLowerCase();
-  const map: Record<string, string> = {
-    '.html': 'text/html; charset=utf-8',
-    '.css': 'text/css',
-    '.js': 'application/javascript',
-    '.png': 'image/png',
-    '.svg': 'image/svg+xml',
-    '.woff2': 'font/woff2',
-  };
-
-  return map[ext] ?? 'application/octet-stream';
-}
-
-function getScriptToInject() {
-  return /*html*/ `
-    <script>
-      window.addEventListener('message', (event) => {
-        console.log(event);
-
-        if (event.data?.type === 'docbrowser-scroll-to-anchor') {
-          document.getElementById(event.data.anchor)?.scrollIntoView();
-          return;
-        }
-
-        if (event.data?.type === 'docbrowser-theme-vars') {
-          for (const [name, value] of Object.entries(event.data.vars)) {
-            document.documentElement.style.setProperty(name, value);
-          }
-        }
-      });
-
-      const ws = new WebSocket('ws://localhost:3001');
-      ws.onmessage = (e) => {
-        if (e.data === 'reload-css') {
-          location.reload();
-        }
-      };
-
-      window.parent.postMessage({ type: 'docbrowser-ready' }, '*');
-    </script>`;
 }
