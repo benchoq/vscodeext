@@ -19,8 +19,10 @@ import {
   createWebviewPanelIcons,
 } from '@/webview/utils';
 import { DocBrowserDispatcher } from './dispatcher';
-import { DocBrowserLocalServer } from './local-server';
+import { DocBrowserLocalServerManager } from './local-servers';
 import * as consts from './constants';
+
+const docServers = new DocBrowserLocalServerManager();
 
 export function registerDocBrowser(context: Context) {
   context.subscriptions.push(
@@ -43,13 +45,15 @@ export function registerDocBrowser(context: Context) {
 
 export class DocBrowserController {
   public static instance: DocBrowserController | undefined;
-  public static localServer = new DocBrowserLocalServer();
+  public static docRootDir = '/Users/bencho/tools/Qt/Docs/Qt-6.11.1';
 
   private readonly _panel: Panel;
   private readonly _dispatcher: DocBrowserDispatcher;
   private readonly _disposables: Disposable[] = [];
 
   private constructor(context: Context, panel: Panel) {
+    const localServer = docServers.get(DocBrowserController.docRootDir);
+
     const config: WebviewAppConfig = {
       app: 'doc-browser',
       title: 'Qt documentation',
@@ -64,7 +68,7 @@ export class DocBrowserController {
     panel.webview.html = createWebviewHtml(
       panel.webview,
       config,
-      DocBrowserController.localServer.origin
+      localServer?.origin
     );
 
     panel.webview.options = createWebviewOptions(config);
@@ -73,7 +77,7 @@ export class DocBrowserController {
     this._dispatcher = new DocBrowserDispatcher(
       context,
       panel,
-      DocBrowserController.localServer
+      localServer
     );
 
     this._disposables = [
@@ -90,7 +94,7 @@ export class DocBrowserController {
 
   public static async render(context: Context) {
     if (!DocBrowserController.instance) {
-      await DocBrowserController.localServer.start();
+      await docServers.prepare(this.docRootDir);
 
       DocBrowserController.instance = new DocBrowserController(
         context,

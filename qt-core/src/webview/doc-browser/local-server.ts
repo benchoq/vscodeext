@@ -15,7 +15,9 @@ const cssPath = '/Users/bencho/ws_vscode/0907.doc-browser/vscodeext/qt-core/src/
 
 export class DocBrowserLocalServer implements Disposable {
   private _server: http.Server | undefined;
-  private readonly _contentRoot = '/Users/bencho/tools/Qt/Docs/Qt-6.11.1';
+
+  constructor(private readonly _contentRoot: string) {
+  }
 
   dispose(): void {
     if (this._server) {

@@ -42,6 +42,14 @@ export function isCurrentDoc(e: HtmlPageInfo): boolean {
   );
 }
 
+export function findInCurrentDoc(keyword: string) {
+  const w = ui.iframeEl?.contentWindow
+  if (keyword.length === 0 || !w) {
+    return;
+  }
+
+  // TODO
+}
 
 export function setMode(mode: UiMode) {
   ui.mode = mode;
@@ -115,9 +123,5 @@ function postCssVarsToBrowser() {
 
 async function updateConfigs() {
   const r = await vscode.post(CommandId.DocBrowserGetConfig);
-
   data.configs.serverOrigin = String(_.get(r, 'serverOrigin', '')).trim();
-
-  console.log(r);
-  console.log(data.configs);
 }

@@ -16,6 +16,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       ? `${e.filePathRel}${e.anchor ? '#' + e.anchor : ''}`
       : '<none>';
   });
+
+  let keyword = $state('');
+
+  function find() {
+    viewlogic.findInCurrentDoc(keyword);
+  }
 </script>
 
 <div data-role='root' class='flex flex-row gap-1'>
@@ -26,6 +32,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     class='grow border-1'
     readonly={true}
   />
+  <input
+    bind:value={keyword}
+    class='min-w-[200px] border-1'
+  />
+  <button
+    onclick={find}
+  >Find
+  </button>
   {@render bookmarkButton()}
 </div>
 

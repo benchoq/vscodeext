@@ -30,7 +30,7 @@ export class DocBrowserDispatcher {
   public constructor(
     private readonly _context: Context,
     private readonly _panel: Panel,
-    private readonly _server: DocBrowserLocalServer
+    private readonly _server: DocBrowserLocalServer | undefined
   ) {
     void this._context;
     void this._panel;
@@ -78,7 +78,7 @@ export class DocBrowserDispatcher {
   // handlers
   private readonly _onGetConfig = (cmd: Command) => {
     this._comm.postDataReply(cmd, {
-      serverOrigin: this._server.origin
+      serverOrigin: this._server?.origin ?? ''
     });
   };
 
