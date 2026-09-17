@@ -20,14 +20,20 @@ export async function onAppMount() {
 
   await updateConfigs();
 
-  window.addEventListener('message', (event) => {
-    if (event.data?.type === ViewerActionId.NotifyViewerReady) {
+  window.addEventListener('message', (e) => {
+    if (e.data?.type === ViewerActionId.NotifyViewerReady) {
       postCssVarsToBrowser();
     }
   });
 }
 
 export async function onAppDestroy() {
+}
+
+export function postToViewer(id: ViewerActionId, data = {}) {
+  ui.iframeEl?.contentWindow?.postMessage(
+    { type: id, ...data }, '*'
+  );
 }
 
 export function isCurrentDoc(e: HtmlPageInfo): boolean {
@@ -111,15 +117,8 @@ export async function loadToc() {
 
 // helpers
 function postCssVarsToBrowser() {
-  if (!ui.iframeEl) {
-    return;
-  }
-
   const vars = ui.theme.getAllVscodeCssVars();
-  ui.iframeEl?.contentWindow?.postMessage({
-    type: ViewerActionId.ApplyVscodeTheme,
-    vars: $state.snapshot(vars),
-  }, '*');
+  postToViewer(ViewerActionId.ApplyVscodeTheme, { vars });
 }
 
 async function updateConfigs() {

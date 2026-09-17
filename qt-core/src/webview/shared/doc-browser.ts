@@ -30,11 +30,11 @@ export enum ViewerActionId {
   ScrollToAnchor = 'docbrowser-scroll-to-anchor',
   ApplyVscodeTheme = 'docbrowser-apply-vscode-theme',
   NotifyViewerReady = 'docbrowser-notify-viewer-ready',
-  DevReload = 'docbrowser-dev-reload'
+  DevReloadPage = 'docbrowser-dev-reload-page'
 }
 
 export const DevViewerWebSocketPort = 3001
-export const DevViewerWebSocketUri = `ws://localhost:${String(DevViewerWebSocketPort)}')`;
+export const DevViewerWebSocketUri = `ws://localhost:${String(DevViewerWebSocketPort)}`;
 
 // type guard functions
 export function isHtmlPageInfo(x: unknown): x is HtmlPageInfo {

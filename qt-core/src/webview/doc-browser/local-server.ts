@@ -76,8 +76,8 @@ export class DocBrowserLocalServer implements Disposable {
           console.log("css changed");
 
           wss.clients.forEach((c) => {
-            c.send(ViewerActionId.DevReload);
-          });
+            c.send(ViewerActionId.DevReloadPage);
+          })
         });
 
         const anyPort = 0;

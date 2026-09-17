@@ -113,28 +113,29 @@ function getMimeType(filePath: string): string {
 function getScriptToInject() {
   return /*html*/ `
     <script>
-      window.addEventListener('message', (event) => {
-        console.log(event);
+      const ws = new WebSocket('${DevViewerWebSocketUri}');
+      ws.onmessage = (e) => {
+        if (e.data === '${ViewerActionId.DevReloadPage}') {
+          location.reload();
+        }
+      };
 
-        if (event.data?.type === ${ViewerActionId.ScrollToAnchor}) {
-          document.getElementById(event.data.anchor)?.scrollIntoView();
+      window.addEventListener('message', (e) => {
+        if (e.data?.type === '${ViewerActionId.ScrollToAnchor}') {
+          document.getElementById(e.data.anchor)?.scrollIntoView();
           return;
         }
 
-        if (event.data?.type === ${ViewerActionId.ApplyVscodeTheme}) {
-          for (const [name, value] of Object.entries(event.data.vars)) {
+        if (e.data?.type === '${ViewerActionId.ApplyVscodeTheme}') {
+          for (const [name, value] of Object.entries(e.data.vars)) {
             document.documentElement.style.setProperty(name, value);
           }
         }
       });
 
-      const ws = new WebSocket(${DevViewerWebSocketUri});
-      ws.onmessage = (e) => {
-        if (e.data === ${ViewerActionId.DevReload}) {
-          location.reload();
-        }
-      };
-
-      window.parent.postMessage({ type: ${ViewerActionId.NotifyViewerReady } }, '*');
+      window.parent.postMessage(
+        { type: '${ViewerActionId.NotifyViewerReady }' },
+        '*'
+      );
     </script>`;
 }
