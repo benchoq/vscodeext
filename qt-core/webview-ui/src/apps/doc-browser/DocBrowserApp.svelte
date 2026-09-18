@@ -10,8 +10,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import './DocBrowserApp.css';
 
   import DocBrowserSidebar from './sidebar/DocBrowserSidebar.svelte';
+  import DocBrowserSidebarHandle from './sidebar/DocBrowserSidebarHandle.svelte';
   import DocBrowserHtmlView from './viewer/DocBrowserHtmlView.svelte';
 
+  import { ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
 
   onMount(() => viewlogic.onAppMount());
@@ -19,8 +21,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div class="w-screen h-screen flex flex-col gap-1 p-2">
-  <div data-body class='flex flex-row grow gap-2'>
-    <DocBrowserSidebar />
+  <div data-body class='flex flex-row grow'>
+    <div style:width={`${ui.sidebar.width}px`} class="shrink-0">
+      <DocBrowserSidebar />
+    </div>
+
+    <DocBrowserSidebarHandle />
     <DocBrowserHtmlView />
   </div>
 </div>

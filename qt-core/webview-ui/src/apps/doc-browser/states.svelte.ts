@@ -25,6 +25,11 @@ export const ui = $state({
   mode: 'toc' as UiMode,
   tocTree: new TocTreeModel(),
   iframeEl: undefined as HTMLIFrameElement | undefined,
+  sidebar: {
+    width: 300,
+    min: 200,
+    max: 650
+  },
 
   selected: {
     htmlUri: '',
