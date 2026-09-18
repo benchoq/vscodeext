@@ -12,6 +12,22 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   data-role='area'
   class='flex flex-col'
 >
+  <div class='flex flex-row gap-1 p-0.5'>
+    <span class='ml-1 items-center self-center'>
+      Table of contents
+    </span>
+
+    <div class='grow'></div>
+    <button
+      class='qt-button'
+      onclick={() => {
+        ui.tocTree.toggleExpandedAll();
+      }}
+    >
+      -
+    </button>
+  </div>
+
   <div class='qt-item-list flex flex-col h-full'>
     {#each ui.tocTree.topLevels as node (node.id)}
     <TocTreeViewNode {node} />

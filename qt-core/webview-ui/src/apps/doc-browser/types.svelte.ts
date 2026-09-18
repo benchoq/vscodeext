@@ -14,7 +14,8 @@ export interface TocTreeNode {
 
 export class TocTreeModel {
   private _topLevels = $state([] as TocTreeNode[]);
-  private _expandedIds = $state(new Set<number>);
+  private _expandedIds = $state(new Set<number>());
+  private _expandableIds: number[] = [];
 
   get topLevels() {
     return this._topLevels;
@@ -43,8 +44,21 @@ export class TocTreeModel {
     this._expandedIds = newSet;
   }
 
+  public toggleExpandedAll() {
+    if (this._expandedIds.size === 0 && this._expandableIds.length !== 0) {
+      this._expandedIds = new Set(this._expandableIds);
+    } else {
+      if (this._expandedIds.size !== 0) {
+        this._expandedIds = new Set();
+      }
+    }
+  }
+
   public rebuild(flatEntries: TocEntry[]) {
-    this._topLevels = build(flatEntries);
+    const { topLevels, expandableIds } = build(flatEntries);
+
+    this._topLevels = topLevels;
+    this._expandableIds = expandableIds;
     this._expandedIds = new Set<number>();
   }
 }
@@ -93,9 +107,10 @@ export class HistoryManager {
 }
 
 // helpers
-function build(flatEntries: TocEntry[]): TocTreeNode[] {
-  const topLevels: TocTreeNode[] = [];
+function build(flatEntries: TocEntry[]) {
   const stack: TocTreeNode[] = [];
+  const expandableIds: number[] = [];
+  const topLevels: TocTreeNode[] = [];
 
   flatEntries.forEach((entry, i) => {
     const node: TocTreeNode = {
@@ -104,15 +119,23 @@ function build(flatEntries: TocEntry[]): TocTreeNode[] {
       children: []
     };
 
-    if (entry.depth === 0 || !stack[entry.depth - 1]) {
+    while (stack.length > entry.depth) {
+      stack.pop();
+    }
+
+    const parent = stack[entry.depth - 1];
+    if (!parent) {
       topLevels.push(node);
     } else {
-      stack[entry.depth - 1].children.push(node);
+      if (parent.children.length === 0) {
+        expandableIds.push(parent.id);
+      }
+
+      parent.children.push(node);
     }
 
     stack[entry.depth] = node;
-    stack.length = entry.depth + 1;
   });
 
-  return topLevels;
+  return { topLevels, expandableIds };
 }

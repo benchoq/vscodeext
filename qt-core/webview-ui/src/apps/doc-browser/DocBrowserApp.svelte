@@ -9,7 +9,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import '@/styles/components/components.css';
   import './DocBrowserApp.css';
 
-  import DocBrowserHeader from './header/DocBrowserHeader.svelte';
   import DocBrowserSidebar from './sidebar/DocBrowserSidebar.svelte';
   import DocBrowserHtmlView from './viewer/DocBrowserHtmlView.svelte';
 
@@ -20,8 +19,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div class="w-screen h-screen flex flex-col gap-1 p-2">
-  <DocBrowserHeader />
-
   <div data-body class='flex flex-row grow gap-2'>
     <DocBrowserSidebar />
     <DocBrowserHtmlView />

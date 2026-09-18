@@ -23,18 +23,24 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div
   data-role='area'
-  class='flex flex-col'
+  class='flex flex-col gap-1'
 >
-  <input
-    bind:value={ui.index.filter.keyword}
-    class='qt-input h-[26px] shrink-0 m-1 px-2'
-    placeholder='Filter...'
-    oninput={() => {
-      viewlogic.updateFilteredIndex();
-    }}
-  />
+  <div class='flex flex-row gap-1 p-0.5'>
+    <span class='ml-1 items-center self-center'>
+      Index
+    </span>
 
-  <div class='qt-item-list grow'>
+    <input
+      bind:value={ui.index.filter.keyword}
+      class='qt-input h-[26px] shrink-0 grow m-1 px-2'
+      placeholder='Filter...'
+      oninput={() => {
+        viewlogic.updateFilteredIndex();
+      }}
+    />
+  </div>
+
+  <div class='qt-item-list'>
     <VirtualList
       bind:this={virtualList}
       width="100%"
@@ -61,17 +67,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {/snippet}
     </VirtualList>
   </div>
-
-  <span class='p-2'>
-    Total {all.length} entries
-  </span>
 </div>
 
 <style>
   [data-role='area'] {
-    border: 1px solid #333333;
     height: 100%;
     min-height: 0;
     overflow: auto;
+    border: 1px solid #444;
   }
 </style>
