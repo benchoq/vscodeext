@@ -12,7 +12,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   const all = $derived(ui.index.filtered);
   let virtualList: VirtualList;
-  let filterInput: HTMLInputElement;
+  let inputEl: HTMLInputElement;
 
   $effect(() => {
     void ui.index.filter.keyword;
@@ -22,8 +22,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   })
 
   onMount(() => {
-    filterInput.focus();
-    filterInput.select();
+    inputEl.focus();
+    inputEl.select();
   })
 </script>
 
@@ -37,7 +37,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </span>
 
     <input
-      bind:this={filterInput}
+      bind:this={inputEl}
       bind:value={ui.index.filter.keyword}
       class='qt-input h-[26px] shrink-0 grow m-1 px-2'
       placeholder='Filter...'

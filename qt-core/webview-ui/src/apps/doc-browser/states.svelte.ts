@@ -40,5 +40,9 @@ export const ui = $state({
     filtered: [] as IndexMatch[]
   },
 
+  search: {
+    keyword: ''
+  },
+
   history: new HistoryManager()
 });
