@@ -34,28 +34,44 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     el.addEventListener('pointerup', end);
     el.addEventListener('pointermove', move);
-    el.removeEventListener('pointercancel', end);
+    el.addEventListener('pointercancel', end);
   }
 </script>
 
 <div
   data-resize-handle
   class:dragging
+  class='flex h-full items-center select-none'
   onpointerdown={startResize}
   role='button'
   tabindex='0'
 >
+  <svg class="grip-icon" viewBox="0 0 6 16" width="6" height="16">
+    <circle cx="3" cy="2" r="1" fill="currentColor" />
+    <circle cx="3" cy="8" r="1" fill="currentColor" />
+    <circle cx="3" cy="14" r="1" fill="currentColor" />
+  </svg>
 </div>
 
 <style>
   [data-resize-handle] {
-    width: 4px;
+    width: 5px;
     flex-shrink: 0;
     cursor: col-resize;
 
     &:hover,
     &.dragging {
       background: var(--vscode-focusBorder);
+
+      .grip-icon {
+        opacity: 1;
+        color: var(--vscode-sash-hoverBorder, #ffffff);
+      }
     }
+  }
+
+  .grip-icon {
+    color: var(--vscode-foreground, #888888);
+    opacity: 0.8;
   }
 </style>

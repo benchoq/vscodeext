@@ -35,7 +35,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   [data-role='viewer'] {
-    border: 1px solid #333333;
     overflow: hidden;
   }
 </style>
