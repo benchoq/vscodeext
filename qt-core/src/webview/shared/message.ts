@@ -61,6 +61,7 @@ export enum CommandId {
   // doc browser,
   DocBrowserGetConfig,
   DocBrowserReadToc,
+  DocBrowserReadIndexes,
   DocBrowserSearch,
   DocBrowserReload,
 

@@ -31,6 +31,15 @@ export class DocBrowserDataManager {
     return results.flat();
   }
 
+  public async readIndexes() {
+    const readers = await this._readersPromise;
+    const results = await Promise.all(
+      readers.map((r) => r.readIndexes())
+    );
+
+    return results.flat();
+  }
+
   public async searchIndex(keyword: string) {
     const readers = await this._readersPromise;
     const results = await Promise.all(

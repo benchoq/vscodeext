@@ -39,6 +39,30 @@ export class QchReader {
     return entries;
   }
 
+  public readIndexes() {
+    const entries: IndexMatch[] = [];
+    const s = this._db.prepare(Sqls.readIndexes);
+
+    while (s.step()) {
+      const ttt = s.getAsObject();
+      const data: IndexMatch = {
+        type: 'index',
+        page: {
+          title: String(ttt.FileTitle ?? ''),
+          filePathRel: path.join(String(ttt.FolderName ?? ''),  String(ttt.FileName ?? '')),
+          anchor: String(ttt.Anchor ?? '')
+        },
+        name: String(ttt.Name ?? ''),
+        identifier: String(ttt.Identifier ?? '')
+      }
+
+      entries.push(data);
+    }
+
+    s.free();
+    return entries;
+  }
+
   public searchIndex(keyword: string) {
     const records: IndexMatch[] = [];
     const s = this._db.prepare(Sqls.searchIndex);
@@ -109,7 +133,7 @@ function parseContentsTable(data: Uint8Array, folderName: string): TocEntry[] {
   return entries;
 }
 
-
+// TODO: remove unnecessary fields ...
 const Sqls = {
   searchIndex: `
     SELECT
@@ -133,6 +157,25 @@ const Sqls = {
       AND FolderTable.NamespaceID == NamespaceTable.Id
     ORDER BY
       CASE WHEN IndexTable.Name = ? THEN 0 ELSE 1 END
+  `,
+
+  readIndexes: `
+    SELECT
+      IndexTable.Name,
+      IndexTable.Identifier,
+      IndexTable.Anchor,
+      FolderTable.Name as FolderName,
+      FileNameTable.Name as FileName,
+      FileNameTable.Title as FileTitle
+    FROM
+      IndexTable,
+      FolderTable,
+      FileNameTable,
+    WHERE
+      IndexATable.FileId === FileNameTable.FileId
+      AND FileNameTable.FolderId == FolderTable.Id
+    ORDER BY
+      IndexTable.Name
   `,
 
   readContentData: `

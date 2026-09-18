@@ -19,7 +19,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     clearTimeout(timer);
     timer = setTimeout(() => {
       viewlogic.setMode(searchTarget);
-      viewlogic.search(value);
+      if (searchTarget === 'text') {
+        viewlogic.search(value);
+      }
     }, delay);
   }
 

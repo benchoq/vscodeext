@@ -4,9 +4,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import * as viewlogic from './viewlogic.svelte';
-  import { data } from './states.svelte';
-
+  import * as viewlogic from '../viewlogic.svelte';
+  import { data } from '../states.svelte';
 </script>
 
 <div
@@ -14,21 +13,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   class='flex flex-col'
 >
   <span class='p-2'>
-    Total {data.fullText.length} entries
+    Total {data.indexes.length} entries
   </span>
   <div class='qt-item-list flex flex-col h-full'>
-    {#each data.fullText as entry, i (i)}
+    {#each data.indexes as entry, i (i + entry.page.filePathRel)}
       <button
-        class='item flex flex-col align-start'
+        class='item flex align-start'
         class:active={viewlogic.isCurrentDoc(entry.page)}
         onclick={() => {
           viewlogic.openHtml(entry.page);
         }}
       >
-        <div>{entry.page.title}</div>
-        <div class='opacity-50'>
-          {entry.snippet}
-        </div>
+        {entry.identifier}
       </button>
     {/each}
   </div>

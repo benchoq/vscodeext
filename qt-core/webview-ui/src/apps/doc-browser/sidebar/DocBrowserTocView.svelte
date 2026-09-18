@@ -5,8 +5,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   // import * as viewlogic from './viewlogic.svelte';
-  import { data, ui } from './states.svelte';
-  import TocTreeViewNode from './others/TocTreeViewNode.svelte';
+  import { data, ui } from '../states.svelte';
+  import TocTreeViewNode from '../others/TocTreeViewNode.svelte';
 </script>
 
 <div

@@ -10,13 +10,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import './DocBrowserApp.css';
 
   import DocBrowserHeader from './DocBrowserHeader.svelte';
-  import DocBrowserView from './DocBrowserHtmlView.svelte';
-  import DocBrowserTocView from './DocBrowserTocView.svelte';
-  import DocBrowserIndexSearchList from './DocBrowserIndexSearchList.svelte';
-  import DocBrowserFullTextSearchList from './DocBrowserFullTextSearchList.svelte';
+  import DocBrowserSidebar from './sidebar/DocBrowserSidebar.svelte';
+  import DocBrowserHtmlView from './viewer/DocBrowserHtmlView.svelte';
 
   import * as viewlogic from './viewlogic.svelte';
-  import { ui } from './states.svelte';
 
   onMount(() => viewlogic.onAppMount());
   onDestroy(() => viewlogic.onAppDestroy());
@@ -26,16 +23,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <DocBrowserHeader />
 
   <div data-body class='flex flex-row grow gap-2'>
-    <div class="w-[300px]">
-      {#if ui.mode === 'toc'}
-        <DocBrowserTocView />
-      {:else if ui.mode === 'index'}
-        <DocBrowserIndexSearchList />
-      {:else}
-        <DocBrowserFullTextSearchList />
-      {/if}
-    </div>
-    <DocBrowserView />
+    <DocBrowserSidebar />
+    <DocBrowserHtmlView />
   </div>
 </div>
 

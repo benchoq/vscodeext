@@ -48,6 +48,7 @@ export class DocBrowserDispatcher {
     this._handlers = new Map<CommandId, CommandHandler>([
       [CommandId.DocBrowserGetConfig, this._onGetConfig],
       [CommandId.DocBrowserReadToc, this._onReadToc],
+      [CommandId.DocBrowserReadIndexes, this._onReadIndexes],
       [CommandId.DocBrowserSearch, this._onSearch],
     ]);
 
@@ -97,6 +98,11 @@ export class DocBrowserDispatcher {
 
   private readonly _onReadToc = async (cmd: Command) => {
     const data = await this._data.readToc();
+    this._comm.postDataReply(cmd, data);
+  };
+
+  private readonly _onReadIndexes = async (cmd: Command) => {
+    const data = await this._data.readIndexes();
     this._comm.postDataReply(cmd, data);
   };
 

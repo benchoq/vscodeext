@@ -22,6 +22,8 @@ export async function onAppMount() {
   vscode.onDidReceiveNotification(onMessageFromVscode);
 
   await updateConfigs();
+  await loadToc();
+  await loadIndexes();
 }
 
 export async function onAppDestroy() {
@@ -70,9 +72,9 @@ export async function search(keyword: string) {
   });
 
   if (ui.mode === 'index') {
-    if (Array.isArray(r) && r.every(isIndexMatch)) {
-      data.indexes = r;
-    }
+    // if (Array.isArray(r) && r.every(isIndexMatch)) {
+    //   data.indexes = r;
+    // }
     return;
   }
 
@@ -100,6 +102,13 @@ export async function loadToc() {
   if (Array.isArray(r) && r.every(isTocEntry)) {
     data.toc = r;
     ui.tocTree.rebuild(r);
+  }
+}
+
+export async function loadIndexes() {
+  const r = await vscode.post(CommandId.DocBrowserReadIndexes);
+  if (Array.isArray(r) && r.every(isIndexMatch)) {
+    data.indexes = r;
   }
 }
 
