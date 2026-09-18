@@ -29,7 +29,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       bind:this={inputEl}
       bind:value={ui.search.keyword}
       class='qt-input h-[26px] shrink-0 grow m-1 px-2'
-      placeholder='Filter...'
+      placeholder='Keyword...'
       onfocus={() => {
         inputEl.select();
       }}
