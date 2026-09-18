@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { untrack } from 'svelte';
+  import { untrack, onMount } from 'svelte';
   import VirtualList from 'svelte-tiny-virtual-list';
 
   import { ui } from '../states.svelte';
@@ -12,12 +12,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   const all = $derived(ui.index.filtered);
   let virtualList: VirtualList;
+  let filterInput: HTMLInputElement;
 
   $effect(() => {
     void ui.index.filter.keyword;
     untrack(() => {
       virtualList.recomputeSizes?.(0);
     });
+  })
+
+  onMount(() => {
+    filterInput.focus();
+    filterInput.select();
   })
 </script>
 
@@ -31,6 +37,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </span>
 
     <input
+      bind:this={filterInput}
       bind:value={ui.index.filter.keyword}
       class='qt-input h-[26px] shrink-0 grow m-1 px-2'
       placeholder='Filter...'
@@ -67,6 +74,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {/snippet}
     </VirtualList>
   </div>
+
+  <div class='grow'></div>
+  <span class='p-2'>
+    Total {all.length} entries
+  </span>
 </div>
 
 <style>
