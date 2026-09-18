@@ -20,20 +20,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let keyword = $state('');
 </script>
 
-<div data-role='root' class='flex flex-row gap-1'>
+<div data-role='root' class='flex flex-row h-[32px] gap-1'>
   {@render navButton('back')}
   {@render navButton('forward')}
   <input
     value={loc}
-    class='grow border-1'
+    class='qt-input grow px-2'
     readonly={true}
   />
   <input
     bind:value={keyword}
-    class='min-w-[200px] border-1'
+    class='qt-input min-w-[200px] px-2'
   />
   <button
-    class='w-[32px] border-1'
+    class='qt-button'
     onclick={() => {
       viewlogic.findInPage(keyword, 'new');
     }}
@@ -41,7 +41,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     Find
   </button>
   <button
-    class='w-[32px] border-1'
+    class='qt-button'
     onclick={() => {
       viewlogic.findInPage(keyword, 'prev');
     }}
@@ -49,7 +49,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     &lt;
   </button>
   <button
-    class='w-[32px] border-1'
+    class='qt-button'
     onclick={() => {
       viewlogic.findInPage(keyword, 'next');
     }}
@@ -57,7 +57,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     &gt;
   </button>
   <button
-    class='w-[32px] border-1'
+    class='qt-button'
     onclick={() => {
       keyword = '';
       viewlogic.findInPage(keyword, 'clear');
@@ -71,7 +71,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {#snippet navButton(dir: 'back' | 'forward')}
   <button
     data-role='nav-button'
-    class='flex items-center justify-center'
+    class='qt-button flex items-center justify-center'
     class:rotate-180={dir==='back'}
     disabled={!ui.history.canGo(dir)}
     onclick={() => {
@@ -85,7 +85,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {#snippet bookmarkButton()}
   <button
     data-role='nav-button'
-    class='flex items-center justify-center'
+    class='qt-button flex items-center justify-center'
   >
     <Bookmark />
   </button>
@@ -100,7 +100,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-role='nav-button'] {
     width: 32px;
     height: 32px;
-    background-color: lightgray;
 
     &:disabled {
       background-color: transparent;

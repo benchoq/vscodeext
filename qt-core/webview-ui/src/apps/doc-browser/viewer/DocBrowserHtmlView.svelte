@@ -17,10 +17,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   });
 </script>
 
-<div data-role='area' class='w-full flex flex-col'>
+<div class='w-full flex flex-col gap-1.5'>
+  <div class='h-[32px]'></div>
   <DocBrowserHtmlViewToolbar />
   <iframe
     bind:this={ui.iframeEl}
+    data-role='viewer'
     class='grow min-w-0 overflow-y-auto'
     title={page?.title}
     src={ui.selected.htmlUri}
@@ -32,7 +34,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  [data-role='area'] {
+  [data-role='viewer'] {
     border: 1px solid #333333;
     overflow: hidden;
   }
