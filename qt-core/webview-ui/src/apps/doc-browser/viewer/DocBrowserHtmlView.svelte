@@ -18,7 +18,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div class='w-full flex flex-col gap-1.5'>
-  <div class='h-[32px]'></div>
   <DocBrowserHtmlViewToolbar />
   <iframe
     bind:this={ui.iframeEl}
