@@ -12,12 +12,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 </script>
 
-<div class="w-[300px]">
-  {#if ui.mode === 'toc'}
-    <DocBrowserTocView />
-  {:else if ui.mode === 'index'}
+<div class="w-[300px] shrink-0">
+  {#if ui.mode === 'index'}
     <DocBrowserIndexList />
-  {:else}
+  {:else if ui.mode === 'text'}
     <DocBrowserSearchResultList />
+  {:else}
+    <DocBrowserTocView />
   {/if}
 </div>

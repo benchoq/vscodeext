@@ -30,6 +30,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div class='flex flex-row h-[32px] gap-2'>
   <button
     class='qt-button'
+  >
+    Qt 6.11.1
+  </button>
+
+  <button
+    class='qt-button'
     onclick={() => {
       viewlogic.setMode('toc');
     }}
@@ -45,6 +51,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   >
     Indexes
   </button>
+
+  <div class='grow'></div>
 
   <div class='flex flex-row gap-2'>
     <input
@@ -64,7 +72,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         triggerUpdate(0);
       }}
     >
-      Search text
+      Find
     </button>
   </div>
 </div>

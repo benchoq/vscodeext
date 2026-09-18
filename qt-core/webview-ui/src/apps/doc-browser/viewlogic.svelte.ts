@@ -41,6 +41,7 @@ export function isCurrentDoc(e: HtmlPageInfo): boolean {
     current.anchor === e.anchor
   );
 }
+
 export function findInPage(keyword: string, action: 'new' | 'prev' | 'next' | 'clear') {
   const w = ui.iframeEl?.contentWindow
   if (w) {
@@ -85,6 +86,18 @@ export async function search(keyword: string) {
   console.log(r);
 }
 
+export async function updateFilteredIndex() {
+  const k = ui.index.filter.keyword.trim();
+  if (k.length === 0) {
+    ui.index.filtered = data.indexes;
+    return;
+  }
+
+  ui.index.filtered = data.indexes.filter((v) => {
+    return (v.name.indexOf(ui.index.filter.keyword) !== -1);
+  });
+}
+
 export async function openHtml(info: HtmlPageInfo) {
   const uri = [
     data.configs.serverOrigin,
@@ -109,6 +122,7 @@ export async function loadIndexes() {
   const r = await vscode.post(CommandId.DocBrowserReadIndexes);
   if (Array.isArray(r) && r.every(isIndexMatch)) {
     data.indexes = r;
+    updateFilteredIndex();
   }
 }
 

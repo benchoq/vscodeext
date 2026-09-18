@@ -22,12 +22,17 @@ export const data = $state({
 
 export const ui = $state({
   theme: VscodeThemeMonitor.createController(),
-  mode: 'index' as UiMode,
+  mode: 'toc' as UiMode,
   tocTree: new TocTreeModel(),
   iframeEl: undefined as HTMLIFrameElement | undefined,
 
   selected: {
     htmlUri: '',
+  },
+
+  index: {
+    filter: { keyword: '' },
+    filtered: [] as IndexMatch[]
   },
 
   history: new HistoryManager()

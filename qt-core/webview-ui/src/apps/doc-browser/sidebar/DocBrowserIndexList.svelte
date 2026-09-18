@@ -4,30 +4,47 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { untrack } from 'svelte';
   import VirtualList from 'svelte-tiny-virtual-list';
 
-  import { data } from '../states.svelte';
+  import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
+  const all = $derived(ui.index.filtered);
+  let virtualList: VirtualList;
+
+  $effect(() => {
+    void ui.index.filter.keyword;
+    untrack(() => {
+      virtualList.recomputeSizes?.(0);
+    });
+  })
 </script>
 
 <div
   data-role='area'
   class='flex flex-col'
 >
-  <span class='p-2'>
-    Total {data.indexes.length} entries
-  </span>
+  <input
+    bind:value={ui.index.filter.keyword}
+    class='qt-input h-[26px] shrink-0 m-1 px-2'
+    placeholder='Filter...'
+    oninput={() => {
+      viewlogic.updateFilteredIndex();
+    }}
+  />
 
-  <div class='qt-item-list'>
+  <div class='qt-item-list grow'>
     <VirtualList
+      bind:this={virtualList}
       width="100%"
       height="100%"
-      itemCount={data.indexes.length}
+      itemCount={all.length}
       itemSize={24}
     >
       {#snippet item({ style, index })}
-        {@const entry = data.indexes[index]}
+      {@const entry = all[index]}
+      {#if entry}
         <button
           {style}
           class='item flex items-center'
@@ -40,9 +57,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
             {entry.identifier}
           </span>
         </button>
+      {/if}
       {/snippet}
     </VirtualList>
   </div>
+
+  <span class='p-2'>
+    Total {all.length} entries
+  </span>
 </div>
 
 <style>
