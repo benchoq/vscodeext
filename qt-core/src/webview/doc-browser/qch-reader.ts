@@ -170,9 +170,9 @@ const Sqls = {
     FROM
       IndexTable,
       FolderTable,
-      FileNameTable,
+      FileNameTable
     WHERE
-      IndexATable.FileId === FileNameTable.FileId
+      IndexTable.FileId == FileNameTable.FileId
       AND FileNameTable.FolderId == FolderTable.Id
     ORDER BY
       IndexTable.Name

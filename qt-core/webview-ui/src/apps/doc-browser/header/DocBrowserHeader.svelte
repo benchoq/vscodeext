@@ -4,16 +4,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import * as viewlogic from './viewlogic.svelte';
+  import * as viewlogic from '../viewlogic.svelte';
 
   let value = $state('QObject');
   let timer: ReturnType<typeof setTimeout>;
   let searchTarget = $state('' as 'index' | 'text');
-
-  // function clear() {
-  //   value = '';
-  //   triggerUpdate(0);
-  // }
 
   function triggerUpdate(delay = 200) {
     clearTimeout(timer);
@@ -39,8 +34,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       viewlogic.setMode('toc');
     }}
   >
-    TOC
+    Contents
   </button>
+
+  <button
+    class='qt-button'
+    onclick={() => {
+      viewlogic.setMode('index');
+    }}
+  >
+    Indexes
+  </button>
+
   <div class='flex flex-row gap-2'>
     <input
       bind:value
@@ -55,21 +60,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <button
       class='qt-button'
       onclick={() => {
-        searchTarget = 'index';
-        triggerUpdate(0);
-      }}
-    >
-      Indexes
-    </button>
-
-    <button
-      class='qt-button'
-      onclick={() => {
         searchTarget = 'text';
         triggerUpdate(0);
       }}
     >
-      Full text
+      Search text
     </button>
   </div>
 </div>

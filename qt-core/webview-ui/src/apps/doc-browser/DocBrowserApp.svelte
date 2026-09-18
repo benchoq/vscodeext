@@ -9,7 +9,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import '@/styles/components/components.css';
   import './DocBrowserApp.css';
 
-  import DocBrowserHeader from './DocBrowserHeader.svelte';
+  import DocBrowserHeader from './header/DocBrowserHeader.svelte';
   import DocBrowserSidebar from './sidebar/DocBrowserSidebar.svelte';
   import DocBrowserHtmlView from './viewer/DocBrowserHtmlView.svelte';
 

@@ -16,7 +16,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     Total {data.indexes.length} entries
   </span>
   <div class='qt-item-list flex flex-col h-full'>
-    {#each data.indexes as entry, i (i + entry.page.filePathRel)}
+    {#each data.indexes as entry, i (i)}
       <button
         class='item flex align-start'
         class:active={viewlogic.isCurrentDoc(entry.page)}
