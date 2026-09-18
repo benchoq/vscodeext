@@ -51,10 +51,6 @@ export function findInPage(keyword: string, action: 'new' | 'prev' | 'next' | 'c
 
 export function setMode(mode: UiMode) {
   ui.mode = mode;
-
-  if (ui.mode === 'toc') {
-    loadToc();
-  }
 }
 
 export function navigate(dir: 'back' | 'forward') {
@@ -62,28 +58,13 @@ export function navigate(dir: 'back' | 'forward') {
   if (entry) {
     ui.selected.htmlUri = entry.filePathRel;
   }
-
-  console.log(entry);
 }
 
 export async function search(keyword: string) {
-  const r = await vscode.post(CommandId.DocBrowserSearch, {
-    mode: ui.mode,
-    keyword
-  });
-
-  if (ui.mode === 'index') {
-    // if (Array.isArray(r) && r.every(isIndexMatch)) {
-    //   data.indexes = r;
-    // }
-    return;
-  }
-
+  const r = await vscode.post(CommandId.DocBrowserSearch, { keyword });
   if (Array.isArray(r) && r.every(isFullTextMatch)) {
     data.fullText = r;
   }
-
-  console.log(r);
 }
 
 export async function updateFilteredIndex() {
@@ -94,7 +75,7 @@ export async function updateFilteredIndex() {
   }
 
   ui.index.filtered = data.indexes.filter((v) => {
-    return (v.name.indexOf(ui.index.filter.keyword) !== -1);
+    return (v.name.toLowerCase().indexOf(ui.index.filter.keyword.toLowerCase()) !== -1);
   });
 }
 

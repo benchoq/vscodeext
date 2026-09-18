@@ -17,7 +17,6 @@ export interface IndexMatch {
   type: 'index';
   page: HtmlPageInfo;
   name: string;
-  identifier: string;
 }
 
 export interface FullTextMatch {
@@ -70,8 +69,7 @@ export function isIndexMatch(x: unknown): x is IndexMatch {
   return (
     o.type === 'index' &&
     isHtmlPageInfo(o.page) &&
-    typeof o.name === 'string' &&
-    typeof o.identifier === 'string'
+    typeof o.name === 'string'
   );
 }
 

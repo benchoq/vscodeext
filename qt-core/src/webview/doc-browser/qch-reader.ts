@@ -44,31 +44,6 @@ export class QchReader {
     const s = this._db.prepare(Sqls.readIndexes);
 
     while (s.step()) {
-      const ttt = s.getAsObject();
-      const data: IndexMatch = {
-        type: 'index',
-        page: {
-          title: String(ttt.FileTitle ?? ''),
-          filePathRel: path.join(String(ttt.FolderName ?? ''),  String(ttt.FileName ?? '')),
-          anchor: String(ttt.Anchor ?? '')
-        },
-        name: String(ttt.Name ?? ''),
-        identifier: String(ttt.Identifier ?? '')
-      }
-
-      entries.push(data);
-    }
-
-    s.free();
-    return entries;
-  }
-
-  public searchIndex(keyword: string) {
-    const records: IndexMatch[] = [];
-    const s = this._db.prepare(Sqls.searchIndex);
-    s.bind([`%${keyword}%`, keyword]);
-
-    while (s.step()) {
       const o = s.getAsObject();
       const data: IndexMatch = {
         type: 'index',
@@ -77,15 +52,14 @@ export class QchReader {
           filePathRel: path.join(String(o.FolderName ?? ''),  String(o.FileName ?? '')),
           anchor: String(o.Anchor ?? '')
         },
-        name: String(o.Name ?? ''),
-        identifier: String(o.Identifier ?? '')
+        name: String(o.Name ?? '')
       }
 
-      records.push(data);
+      entries.push(data);
     }
 
     s.free();
-    return records;
+    return entries;
   }
 
   public searchFullText(keyword: string) {
@@ -133,36 +107,10 @@ function parseContentsTable(data: Uint8Array, folderName: string): TocEntry[] {
   return entries;
 }
 
-// TODO: remove unnecessary fields ...
 const Sqls = {
-  searchIndex: `
-    SELECT
-      IndexTable.Name,
-      IndexTable.FileId,
-      IndexTable.Identifier,
-      IndexTable.Anchor,
-      FolderTable.Name as FolderName,
-      FileNameTable.Name as FileName,
-      FileNameTable.Title as FileTitle,
-      NamespaceTable.Name as NamespaceName
-    FROM
-      IndexTable,
-      FolderTable,
-      FileNameTable,
-      NamespaceTable
-    WHERE
-      IndexTable.Name LIKE ?
-      AND IndexTable.FileId == FileNameTable.FileId
-      AND FileNameTable.FolderId == FolderTable.Id
-      AND FolderTable.NamespaceID == NamespaceTable.Id
-    ORDER BY
-      CASE WHEN IndexTable.Name = ? THEN 0 ELSE 1 END
-  `,
-
   readIndexes: `
     SELECT
       IndexTable.Name,
-      IndexTable.Identifier,
       IndexTable.Anchor,
       FolderTable.Name as FolderName,
       FileNameTable.Name as FileName,
@@ -174,8 +122,6 @@ const Sqls = {
     WHERE
       IndexTable.FileId == FileNameTable.FileId
       AND FileNameTable.FolderId == FolderTable.Id
-    ORDER BY
-      IndexTable.Name
   `,
 
   readContentData: `

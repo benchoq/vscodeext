@@ -54,7 +54,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
           }}
         >
           <span class='truncate min-w-0'>
-            {entry.identifier}
+            {entry.name}
           </span>
         </button>
       {/if}

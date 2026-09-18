@@ -40,19 +40,6 @@ export class DocBrowserDataManager {
     return results.flat();
   }
 
-  public async searchIndex(keyword: string) {
-    const readers = await this._readersPromise;
-    const results = await Promise.all(
-      readers.map((r) => r.searchIndex(keyword))
-    );
-
-    return results.flat().sort((a, b) => {
-      const aExact = a.name === keyword ? 0 : 1;
-      const bExact = b.name === keyword ? 0 : 1;
-      return aExact - bExact;
-    });
-  }
-
   public async searchFullText(keyword: string) {
     await this._fullTextIndexBuild;
     const results = this._fullTextIndex.search(keyword);

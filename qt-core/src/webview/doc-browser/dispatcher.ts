@@ -107,16 +107,10 @@ export class DocBrowserDispatcher {
   };
 
   private readonly _onSearch = async (cmd: Command) => {
-    const mode = String(_.get(cmd.payload, 'mode', '')).trim();
     const keyword = String(_.get(cmd.payload, 'keyword', '')).trim();
 
-    if (mode === 'index') {
-      const data = await this._data.searchIndex(keyword);
-      this._comm.postDataReply(cmd, data);
-    } else {
-      const data = await this._data.searchFullText(keyword);
-      this._comm.postDataReply(cmd, data);
-    }
+    const data = await this._data.searchFullText(keyword);
+    this._comm.postDataReply(cmd, data);
   };
 
   // private
