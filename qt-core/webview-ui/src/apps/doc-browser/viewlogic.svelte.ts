@@ -13,6 +13,7 @@ import {
   ViewerMessageId
 } from '@shared/doc-browser';
 import { data, ui, type UiMode } from './states.svelte';
+import type { FindAction } from './types.svelte';
 
 export async function onAppMount() {
   ui.theme.monitor.start();
@@ -42,11 +43,21 @@ export function isCurrentDoc(e: HtmlPageInfo): boolean {
   );
 }
 
-export function findInPage(keyword: string, action: 'new' | 'prev' | 'next' | 'clear') {
+export function findInPage(action: FindAction) {
   const w = ui.iframeEl?.contentWindow
-  if (w) {
-    postToViewer(ViewerMessageId.FindInPage, { keyword, action });
+  if (!w) {
+    return;
   }
+
+  if (action === 'clear') {
+    ui.popover.keyword = '';
+    ui.popover.visible = false;
+  }
+
+  postToViewer(ViewerMessageId.FindInPage, {
+    keyword: ui.popover.keyword,
+    action
+  });
 }
 
 export function setMode(mode: UiMode) {

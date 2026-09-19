@@ -17,62 +17,31 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       : '<none>';
   });
 
-  // let keyword = $state('');
 </script>
 
 <div data-role='root' class='flex flex-row h-[32px] gap-1'>
   {@render navButton('back')}
   {@render navButton('forward')}
+  {@render bookmarkButton()}
   <input
     value={loc}
     class='qt-input grow px-2'
     readonly={true}
   />
-  <!-- <input
-    bind:value={keyword}
-    class='qt-input min-w-[200px] px-2'
-  />
+
   <button
-    class='qt-button'
-    onclick={() => {
-      viewlogic.findInPage(keyword, 'new');
-    }}
-  >
-    Find
-  </button>
-  <button
-    class='qt-button'
-    onclick={() => {
-      viewlogic.findInPage(keyword, 'prev');
-    }}
-  >
-    &lt;
-  </button>
-  <button
-    class='qt-button'
-    onclick={() => {
-      viewlogic.findInPage(keyword, 'next');
-    }}
-  >
-    &gt;
-  </button>
-  <button
-    class='qt-button'
-    onclick={() => {
-      keyword = '';
-      viewlogic.findInPage(keyword, 'clear');
-    }}
-  >
-    &times;
-  </button> -->
-  <button
+    bind:this={ui.popover.refEl}
     data-role='nav-button'
     class='qt-button flex items-center justify-center'
+    aria-pressed={ui.popover.visible}
+    onclick={(e: MouseEvent) => {
+      ui.popover.visible = !ui.popover.visible;
+      e.stopPropagation();
+    }}
   >
     <TextSearch />
   </button>
 
-  {@render bookmarkButton()}
 </div>
 
 {#snippet navButton(dir: 'back' | 'forward')}

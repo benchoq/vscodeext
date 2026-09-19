@@ -4,8 +4,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { clickOutside, portal, placeNear } from '@/utils/actions';
+
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
+  import DocBrowserFindPopover from './DocBrowserFindPopover.svelte';
   import DocBrowserHtmlViewToolbar from './DocBrowserHtmlViewToolbar.svelte';
 
   const page = $derived(ui.history.currentEntry);
@@ -19,6 +22,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div class='w-full flex flex-col gap-1.5'>
   <DocBrowserHtmlViewToolbar />
+
   <iframe
     bind:this={ui.iframeEl}
     data-role='viewer'
@@ -30,6 +34,24 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }}
   >
   </iframe>
+
+  {#if ui.popover.visible}
+    <div
+      use:portal
+      use:placeNear={{
+        ref: ui.popover.refEl,
+        placement: 'bottom-end',
+        offset: 5
+      }}
+      use:clickOutside={(e: MouseEvent) => {
+        ui.popover.visible = false;
+        e.stopPropagation();
+      }}
+      class="fixed z-1"
+    >
+      <DocBrowserFindPopover />
+    </div>
+  {/if}
 </div>
 
 <style>

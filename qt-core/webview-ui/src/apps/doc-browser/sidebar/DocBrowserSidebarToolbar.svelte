@@ -22,8 +22,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   <div class='flex flex-row gap-0'>
     {@render modeButton('toc', Book)}
-    {@render modeButton('index', ListOrdered)}
     {@render modeButton('text', Search)}
+    {@render modeButton('index', ListOrdered)}
   </div>
 </div>
 

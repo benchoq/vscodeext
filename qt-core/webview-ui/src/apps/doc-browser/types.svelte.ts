@@ -12,6 +12,8 @@ export interface TocTreeNode {
   children: TocTreeNode[];
 }
 
+export type FindAction = 'new' | 'prev' | 'next' | 'clear';
+
 export class TocTreeModel {
   private _topLevels = $state([] as TocTreeNode[]);
   private _expandedIds = $state(new Set<number>());
