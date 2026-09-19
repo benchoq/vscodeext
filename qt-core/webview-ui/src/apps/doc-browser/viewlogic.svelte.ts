@@ -50,12 +50,12 @@ export function findInPage(action: FindAction) {
   }
 
   if (action === 'clear') {
-    ui.popover.keyword = '';
-    ui.popover.visible = false;
+    ui.popovers.find.keyword = '';
+    ui.popovers.find.visible = false;
   }
 
   postToViewer(ViewerMessageId.FindInPage, {
-    keyword: ui.popover.keyword,
+    keyword: ui.popovers.find.keyword,
     action
   });
 }

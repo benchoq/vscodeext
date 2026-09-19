@@ -15,7 +15,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div data-root class="qt-popover h-[36px] flex flex-row">
   <input
-    bind:value={ui.popover.keyword}
+    bind:value={ui.popovers.find.keyword}
     data-role='find-input'
     class='qt-input min-w-[200px] px-2'
     placeholder="Find in page"

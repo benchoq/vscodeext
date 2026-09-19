@@ -10,6 +10,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from '../viewlogic.svelte';
   import { ui } from "../states.svelte";
 
+  const popover = $derived(ui.popovers.find);
   const loc = $derived.by(() => {
     const e = ui.history.currentEntry;
     return e
@@ -30,12 +31,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   />
 
   <button
-    bind:this={ui.popover.refEl}
+    bind:this={popover.refEl}
     data-role='nav-button'
     class='qt-button flex items-center justify-center'
-    aria-pressed={ui.popover.visible}
+    aria-pressed={popover.visible}
     onclick={(e: MouseEvent) => {
-      ui.popover.visible = !ui.popover.visible;
+      popover.visible = !popover.visible;
       e.stopPropagation();
     }}
   >

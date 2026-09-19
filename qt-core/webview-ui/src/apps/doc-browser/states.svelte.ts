@@ -44,10 +44,16 @@ export const ui = $state({
     keyword: ''
   },
 
-  popover: {
-    keyword: '',
-    visible: false,
-    refEl: undefined as HTMLButtonElement | undefined,
+  popovers: {
+    qtVersions: {
+      visible: false,
+      refEl: undefined as HTMLButtonElement | undefined,
+    },
+    find: {
+      keyword: '',
+      visible: false,
+      refEl: undefined as HTMLButtonElement | undefined,
+    },
   },
 
   history: new HistoryManager()

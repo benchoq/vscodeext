@@ -12,6 +12,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import DocBrowserHtmlViewToolbar from './DocBrowserHtmlViewToolbar.svelte';
 
   const page = $derived(ui.history.currentEntry);
+  const popover = $derived(ui.popovers.find);
 
   $effect(() => {
     if (page?.anchor) {
@@ -35,16 +36,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   >
   </iframe>
 
-  {#if ui.popover.visible}
+  {#if popover.visible}
     <div
       use:portal
       use:placeNear={{
-        ref: ui.popover.refEl,
+        ref: popover.refEl,
         placement: 'bottom-end',
         offset: 5
       }}
       use:clickOutside={(e: MouseEvent) => {
-        ui.popover.visible = false;
+        popover.visible = false;
         e.stopPropagation();
       }}
       class="fixed z-1"

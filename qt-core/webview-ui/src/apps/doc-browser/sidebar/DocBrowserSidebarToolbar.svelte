@@ -9,11 +9,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import * as viewlogic from '../viewlogic.svelte';
   import { ui, type UiMode } from '../states.svelte';
+
 </script>
 
 <div class='flex flex-row h-[32px] gap-2'>
   <button
+    bind:this={ui.popovers.qtVersions.refEl}
     class='qt-button flex flex-row'
+    onclick={(e: MouseEvent) => {
+      ui.popovers.qtVersions.visible = !ui.popovers.qtVersions.visible;
+      e.stopPropagation();
+    }}
   >
     Qt 6.11.1
   </button>
