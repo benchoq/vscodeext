@@ -4,6 +4,7 @@
 import {
   type TocEntry,
   type HtmlPageInfo,
+  isSameHtmlPageInfo,
 } from "@shared/doc-browser";
 
 export interface TocTreeNode {
@@ -89,6 +90,9 @@ export class HistoryManager {
   }
 
   public canGo(dir: 'back' | 'forward') {
+    console.log('canGo', dir);
+    console.log($state.snapshot(this._history), $state.snapshot(this._currentIndex));
+
     if (dir === 'back') {
       return this._currentIndex > 0;
     }
@@ -101,10 +105,17 @@ export class HistoryManager {
   }
 
   public push(entry: HtmlPageInfo) {
+    if ((entry.filePathRel.length === 0)
+        || (this.currentEntry && isSameHtmlPageInfo(entry, this.currentEntry)))
+    {
+      return;
+    }
+
     this._history = [
       ...this._history.slice(0, this._currentIndex + 1),
       entry
     ];
+
     this._currentIndex = this._history.length - 1;
   }
 

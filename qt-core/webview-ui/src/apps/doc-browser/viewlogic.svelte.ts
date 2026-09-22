@@ -9,6 +9,7 @@ import {
   isTocEntry,
   isIndexMatch,
   isFullTextMatch,
+  type IndexMatch,
   type HtmlPageInfo,
   ViewerMessageId,
 } from '@shared/doc-browser';
@@ -66,7 +67,6 @@ export function setMode(mode: UiMode) {
 
 export async function openHtml(info: HtmlPageInfo) {
   loadPage(info, 'list');
-  // ui.history.push(info);
 }
 
 export function navigate(dir: 'back' | 'forward') {
@@ -103,9 +103,9 @@ export async function loadToc() {
 export async function loadIndexes() {
   const r = await vscode.post(CommandId.DocBrowserReadIndexes);
   if (Array.isArray(r) && r.every(isIndexMatch)) {
-    // data.indexes = r.sort((a: IndexMatch, b: IndexMatch) => {
-    //   return a.name.localeCompare(b.name);
-    // });
+    data.indexes = r.sort((a: IndexMatch, b: IndexMatch) => {
+      return a.name.localeCompare(b.name);
+    });
     data.indexes = r;
     updateFilteredIndex();
   }
