@@ -31,10 +31,6 @@ export const ui = $state({
     max: 650
   },
 
-  selected: {
-    htmlUri: '',
-  },
-
   index: {
     filter: { keyword: '' },
     filtered: [] as IndexMatch[]

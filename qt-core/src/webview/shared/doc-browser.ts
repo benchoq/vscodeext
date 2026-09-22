@@ -27,7 +27,8 @@ export interface FullTextMatch {
 
 export enum ViewerMessageId {
   Loaded = 'docbrowser-loaded',
-  ReloadPage = 'docbrowser-dev-reload-page',
+  LoadPage = 'docbrowser-load-page',
+  ReloadPage = 'docbrowser-reload-page',
   ScrollToAnchor = 'docbrowser-scroll-to-anchor',
   ApplyVscodeTheme = 'docbrowser-apply-vscode-theme',
   FindInPage = 'docbrowser-find-in-page',

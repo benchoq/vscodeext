@@ -111,7 +111,7 @@ function getMimeType(filePath: string): string {
   return map[ext] ?? 'application/octet-stream';
 }
 
-function getScriptToInject() {
+export function getScriptToInject() {
   return /*html*/ `
     <script>
       function findInPage(keyword, dir) {
@@ -127,6 +127,11 @@ function getScriptToInject() {
       }
 
       window.addEventListener('message', (e) => {
+        if (e.data?.type === '${ViewerMessageId.LoadPage}') {
+          location.replace(e.data.href);
+          return;
+        }
+
         if (e.data?.type === '${ViewerMessageId.ReloadPage}') {
           location.reload();
           return;

@@ -151,12 +151,12 @@ function loadHtmlPage(info: HtmlPageInfo | undefined) {
     return;
   }
 
-  const uri = [
+  const href = [
     data.configs.serverOrigin,
     data.configs.serverOrigin.endsWith('/') ? '' : '/',
     info.filePathRel,
     info.anchor ? '#' + info.anchor : ''
   ].join('');
 
-  ui.selected.htmlUri = uri;
+  postToViewer(ViewerMessageId.LoadPage, { href });
 }

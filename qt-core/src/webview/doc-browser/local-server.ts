@@ -13,7 +13,8 @@ import {
   CssOverrideHandler,
   ScriptInjectionHandler,
   FallbackHandler,
-  sendForbidden
+  sendForbidden,
+  getScriptToInject
 } from './local-server-handlers';
 
 const logger = createWrappedLogger('docbrowser-localserver');
@@ -93,6 +94,24 @@ export class DocBrowserLocalServer implements Disposable {
     const urlPath = decodeURIComponent((req.url ?? '/').split('?')[0] ?? '');
     const filePath = path.join(this._contentRoot, urlPath);
     const fileName = path.basename(filePath);
+
+    if (req.url === '/') {
+      const html = /*html*/ `
+        <!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            ${getScriptToInject()}
+          </head>
+          <body>
+          </body>
+        </html>
+      `;
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(html);
+      return;
+    }
 
     if (!this._isAccessAllowed(filePath)) {
       sendForbidden(res, filePath);
