@@ -34,9 +34,8 @@ export enum ViewerMessageId {
   FindInPage = 'docbrowser-find-in-page',
 }
 
-export function isSameHtmlPageInfo(a: HtmlPageInfo, b: HtmlPageInfo) {
+export function isSameHtmlPage(a: HtmlPageInfo, b: HtmlPageInfo) {
   return (
-    a.title === b.title &&
     a.filePathRel === b.filePathRel &&
     (a.anchor ?? '') === (b.anchor ?? '')
   );

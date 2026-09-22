@@ -24,13 +24,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     Qt 6.11.1
   </button>
 
-  <div class='grow'></div>
-
   <div class='flex flex-row gap-0'>
     {@render modeButton('toc', Book)}
     {@render modeButton('text', Search)}
     {@render modeButton('index', ListOrdered)}
   </div>
+
+  <div class='grow'></div>
 </div>
 
 {#snippet modeButton(mode: UiMode, Icon: Component)}
@@ -47,7 +47,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </div>
   </button>
 {/snippet}
-
 
 <style>
   .qt-button[data-role='mode-button'] {

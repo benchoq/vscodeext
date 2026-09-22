@@ -12,6 +12,7 @@ import {
   type IndexMatch,
   type HtmlPageInfo,
   ViewerMessageId,
+  isSameHtmlPage,
 } from '@shared/doc-browser';
 import { data, ui, type UiMode } from './states.svelte';
 import type { FindAction, PageLoadContext } from './types.svelte';
@@ -37,11 +38,7 @@ export function isCurrentDoc(e: HtmlPageInfo): boolean {
     return false;
   }
 
-  return (
-    current.title === e.title &&
-    current.filePathRel === e.filePathRel &&
-    current.anchor === e.anchor
-  );
+  return isSameHtmlPage(e, current);
 }
 
 export function findInPage(action: FindAction) {
