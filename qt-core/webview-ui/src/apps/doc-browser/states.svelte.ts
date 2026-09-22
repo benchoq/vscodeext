@@ -7,7 +7,7 @@ import {
   type FullTextMatch,
 } from '@shared/doc-browser';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
-import { TocTreeModel, HistoryManager } from './types.svelte';
+import { TocTreeModel, HistoryManager, type PageLoadContext } from './types.svelte';
 
 export type UiMode = 'toc' | 'index' | 'text';
 
@@ -25,11 +25,13 @@ export const ui = $state({
   mode: 'toc' as UiMode,
   tocTree: new TocTreeModel(),
   iframeEl: undefined as HTMLIFrameElement | undefined,
+  recentPageLoadContext: '' as PageLoadContext,
   sidebar: {
     width: 300,
     min: 200,
     max: 650
   },
+
 
   index: {
     filter: { keyword: '' },

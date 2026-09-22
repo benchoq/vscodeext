@@ -13,6 +13,7 @@ export interface TocTreeNode {
 }
 
 export type FindAction = 'new' | 'prev' | 'next' | 'clear';
+export type PageLoadContext = 'list' | 'history' | '';
 
 export class TocTreeModel {
   private _topLevels = $state([] as TocTreeNode[]);

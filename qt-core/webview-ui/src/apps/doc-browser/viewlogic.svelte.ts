@@ -13,9 +13,7 @@ import {
   ViewerMessageId,
 } from '@shared/doc-browser';
 import { data, ui, type UiMode } from './states.svelte';
-import type { FindAction } from './types.svelte';
-
-let pageLoadContext = '';
+import type { FindAction, PageLoadContext } from './types.svelte';
 
 export async function onAppMount() {
   ui.theme.monitor.start();
@@ -67,12 +65,12 @@ export function setMode(mode: UiMode) {
 }
 
 export async function openHtml(info: HtmlPageInfo) {
-  loadHtmlPage(info, 'list');
+  loadPage(info, 'list');
   // ui.history.push(info);
 }
 
 export function navigate(dir: 'back' | 'forward') {
-  loadHtmlPage(ui.history.go(dir), 'history');
+  loadPage(ui.history.go(dir), 'history');
 }
 
 export async function search(keyword: string) {
@@ -139,11 +137,11 @@ async function onMessageFromVscode(reply: CommandReply) {
 
 function onMessageFromViewer(e: MessageEvent) {
   if (e.data?.type === ViewerMessageId.Loaded) {
-    if (pageLoadContext !== 'history') {
+    if (ui.recentPageLoadContext !== 'history') {
       ui.history.pushUrl(new URL(e.data.href));
     }
 
-    pageLoadContext = '';
+    ui.recentPageLoadContext = '';
     postToViewer(ViewerMessageId.ApplyVscodeTheme, {
       vars: ui.theme.getAllVscodeCssVars()
     });
@@ -156,10 +154,7 @@ function postToViewer(id: ViewerMessageId, data = {}) {
   );
 }
 
-function loadHtmlPage(
-  info: HtmlPageInfo | undefined,
-  context: 'list' | 'history'
-) {
+function loadPage(info: HtmlPageInfo | undefined, context: PageLoadContext) {
   if (!info) {
     return;
   }
@@ -171,6 +166,6 @@ function loadHtmlPage(
     info.anchor ? '#' + info.anchor : ''
   ].join('');
 
-  pageLoadContext = context;
+  ui.recentPageLoadContext = context;
   postToViewer(ViewerMessageId.LoadPage, { href });
 }
