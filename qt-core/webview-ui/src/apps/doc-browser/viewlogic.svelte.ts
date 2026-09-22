@@ -10,10 +10,12 @@ import {
   isIndexMatch,
   isFullTextMatch,
   type HtmlPageInfo,
-  ViewerMessageId
+  ViewerMessageId,
 } from '@shared/doc-browser';
 import { data, ui, type UiMode } from './states.svelte';
 import type { FindAction } from './types.svelte';
+
+let pageLoadContext = '';
 
 export async function onAppMount() {
   ui.theme.monitor.start();
@@ -64,8 +66,13 @@ export function setMode(mode: UiMode) {
   ui.mode = mode;
 }
 
+export async function openHtml(info: HtmlPageInfo) {
+  loadHtmlPage(info, 'list');
+  // ui.history.push(info);
+}
+
 export function navigate(dir: 'back' | 'forward') {
-  loadHtmlPage(ui.history.go(dir));
+  loadHtmlPage(ui.history.go(dir), 'history');
 }
 
 export async function search(keyword: string) {
@@ -87,11 +94,6 @@ export async function updateFilteredIndex() {
   });
 }
 
-export async function openHtml(info: HtmlPageInfo) {
-  loadHtmlPage(info);
-  ui.history.push(info);
-}
-
 export async function loadToc() {
   const r = await vscode.post(CommandId.DocBrowserReadToc);
   if (Array.isArray(r) && r.every(isTocEntry)) {
@@ -103,6 +105,9 @@ export async function loadToc() {
 export async function loadIndexes() {
   const r = await vscode.post(CommandId.DocBrowserReadIndexes);
   if (Array.isArray(r) && r.every(isIndexMatch)) {
+    // data.indexes = r.sort((a: IndexMatch, b: IndexMatch) => {
+    //   return a.name.localeCompare(b.name);
+    // });
     data.indexes = r;
     updateFilteredIndex();
   }
@@ -134,6 +139,11 @@ async function onMessageFromVscode(reply: CommandReply) {
 
 function onMessageFromViewer(e: MessageEvent) {
   if (e.data?.type === ViewerMessageId.Loaded) {
+    if (pageLoadContext !== 'history') {
+      ui.history.pushUrl(new URL(e.data.href));
+    }
+
+    pageLoadContext = '';
     postToViewer(ViewerMessageId.ApplyVscodeTheme, {
       vars: ui.theme.getAllVscodeCssVars()
     });
@@ -146,7 +156,10 @@ function postToViewer(id: ViewerMessageId, data = {}) {
   );
 }
 
-function loadHtmlPage(info: HtmlPageInfo | undefined) {
+function loadHtmlPage(
+  info: HtmlPageInfo | undefined,
+  context: 'list' | 'history'
+) {
   if (!info) {
     return;
   }
@@ -158,5 +171,6 @@ function loadHtmlPage(info: HtmlPageInfo | undefined) {
     info.anchor ? '#' + info.anchor : ''
   ].join('');
 
+  pageLoadContext = context;
   postToViewer(ViewerMessageId.LoadPage, { href });
 }

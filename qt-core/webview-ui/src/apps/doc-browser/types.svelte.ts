@@ -106,6 +106,14 @@ export class HistoryManager {
     ];
     this._currentIndex = this._history.length - 1;
   }
+
+  public pushUrl(url: URL) {
+    this.push({
+      title: '',
+      filePathRel: url.pathname.replace(/^\//, ''),
+      anchor: url.hash.replace(/^#/, '')
+    });
+  }
 }
 
 // helpers

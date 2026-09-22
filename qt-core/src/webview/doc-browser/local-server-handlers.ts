@@ -177,7 +177,12 @@ export function getScriptToInject() {
 
       window.addEventListener('load', (e) => {
         window.parent.postMessage(
-          { type: '${ViewerMessageId.Loaded }' },
+          {
+            type: '${ViewerMessageId.Loaded }',
+            href: location.href,
+            hash: location.hash,
+            pathname: location.pathname
+          },
           '*'
         );
       });
