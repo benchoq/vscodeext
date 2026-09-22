@@ -32,7 +32,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 >
   <span
     style:margin-left={`${entry.depth * 10}px`}
-    class='flex items-center gap-1 overflow-hidden whitespace-nowrap text-ellipsis'
+    class='flex items-center gap-1 overflow-hidden whitespace-nowrap text-ellipsis shrink-0'
   >
     {@render chevron(node, expanded)}
     {page.title}

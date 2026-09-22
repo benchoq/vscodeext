@@ -65,10 +65,7 @@ export function setMode(mode: UiMode) {
 }
 
 export function navigate(dir: 'back' | 'forward') {
-  const entry = ui.history.go(dir);
-  if (entry) {
-    ui.selected.htmlUri = entry.filePathRel;
-  }
+  loadHtmlPage(ui.history.go(dir));
 }
 
 export async function search(keyword: string) {
@@ -91,15 +88,8 @@ export async function updateFilteredIndex() {
 }
 
 export async function openHtml(info: HtmlPageInfo) {
-  const uri = [
-    data.configs.serverOrigin,
-    data.configs.serverOrigin.endsWith('/') ? '' : '/',
-    info.filePathRel,
-    info.anchor ? '#' + info.anchor : ''
-  ].join('');
-
+  loadHtmlPage(info);
   ui.history.push(info);
-  ui.selected.htmlUri = uri;
 }
 
 export async function loadToc() {
@@ -154,4 +144,19 @@ function postToViewer(id: ViewerMessageId, data = {}) {
   ui.iframeEl?.contentWindow?.postMessage(
     { type: id, ...data }, '*'
   );
+}
+
+function loadHtmlPage(info: HtmlPageInfo | undefined) {
+  if (!info) {
+    return;
+  }
+
+  const uri = [
+    data.configs.serverOrigin,
+    data.configs.serverOrigin.endsWith('/') ? '' : '/',
+    info.filePathRel,
+    info.anchor ? '#' + info.anchor : ''
+  ].join('');
+
+  ui.selected.htmlUri = uri;
 }
