@@ -20,9 +20,10 @@ import {
   CommandHandler,
   IsCommand
 } from '@/webview/shared/message';
-import { DocBrowserDataManager } from './data-manager';
-import { DocBrowserLocalServer } from './local-server';
+import { DocBrowserDataManager } from './data/data-manager';
+import { DocBrowserLocalServer } from './server/local-server';
 import { fsFile } from '@/fs-utils';
+import { isQtDocRootInfo } from '../shared/doc-browser';
 
 const logger = createLogger('doc-browser-dispatcher');
 
@@ -47,6 +48,8 @@ export class DocBrowserDispatcher {
     this._comm = new WebviewChannel(_panel.webview);
     this._handlers = new Map<CommandId, CommandHandler>([
       [CommandId.DocBrowserGetConfig, this._onGetConfig],
+      [CommandId.DocBrowserGetPackages, this._onGetPackages],
+      [CommandId.DocBrowserSelectPackage, this._onSelectPackage],
       [CommandId.DocBrowserReadToc, this._onReadToc],
       [CommandId.DocBrowserReadIndexes, this._onReadIndexes],
       [CommandId.DocBrowserSearch, this._onSearch],
@@ -94,6 +97,21 @@ export class DocBrowserDispatcher {
     this._comm.postDataReply(cmd, {
       serverOrigin: this._server?.origin ?? ''
     });
+  };
+
+  private readonly _onGetPackages = (cmd: Command) => {
+    const p = this._data.getPackages();
+    this._comm.postDataReply(cmd, p);
+  };
+
+  private readonly _onSelectPackage = (cmd: Command) => {
+    const p = _.get(cmd.payload, 'package', {});
+    if (!isQtDocRootInfo(p)) {
+      throw Error('Parameter is invalid');
+    }
+
+    this._data.selectPackage(p);
+    this._comm.postDataReply(cmd, p);
   };
 
   private readonly _onReadToc = async (cmd: Command) => {

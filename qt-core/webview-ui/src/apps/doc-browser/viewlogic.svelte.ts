@@ -13,6 +13,8 @@ import {
   type HtmlPageInfo,
   ViewerMessageId,
   isSameHtmlPage,
+  isQtDocRootInfo,
+  type QtDocRootInfo,
 } from '@shared/doc-browser';
 import { data, ui, type UiMode } from './states.svelte';
 import type { FindAction, PageLoadContext } from './types.svelte';
@@ -25,11 +27,29 @@ export async function onAppMount() {
   vscode.onDidReceiveNotification(onMessageFromVscode);
 
   await updateConfigs();
-  await loadToc();
-  await loadIndexes();
+  await loadPackages();
+
+  if (data.packages.length > 0) {
+    selectPackage(data.packages[0]);
+  }
 }
 
 export async function onAppDestroy() {
+}
+
+export async function selectPackage(p: QtDocRootInfo) {
+  if (_.isEqual(ui.selected.package, p)) {
+    return;
+  }
+
+  await vscode.post(CommandId.DocBrowserSelectPackage, {
+    package: $state.snapshot(p)
+  });
+
+  ui.selected.package = p;
+
+  await loadToc();
+  await loadIndexes();
 }
 
 export function isCurrentDoc(e: HtmlPageInfo): boolean {
@@ -118,6 +138,13 @@ export function scrollToAnchor(anchor: string | undefined) {
 async function updateConfigs() {
   const r = await vscode.post(CommandId.DocBrowserGetConfig);
   data.configs.serverOrigin = String(_.get(r, 'serverOrigin', '')).trim();
+}
+
+async function loadPackages() {
+  const r = await vscode.post(CommandId.DocBrowserGetPackages);
+  if (Array.isArray(r) && r.every(isQtDocRootInfo)) {
+    data.packages = r;
+  }
 }
 
 function onVscodeThemeChanged() {

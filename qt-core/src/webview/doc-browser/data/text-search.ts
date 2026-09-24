@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import fg from 'fast-glob';
+import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as cheerio from 'cheerio';
 import MiniSearch, { SearchResult } from 'minisearch';
-import * as fs from 'fs/promises';
-import { FullTextMatch } from '../shared/doc-browser';
+
+import { FullTextMatch } from '@/webview/shared/doc-browser';
 
 interface HtmlDoc {
   id: string;

@@ -19,7 +19,7 @@ import {
   createWebviewPanelIcons,
 } from '@/webview/utils';
 import { DocBrowserDispatcher } from './dispatcher';
-import { DocBrowserLocalServerManager } from './local-servers';
+import { DocBrowserLocalServerManager } from './server/local-servers';
 import * as consts from './constants';
 
 let docServers: DocBrowserLocalServerManager | undefined;

@@ -60,6 +60,8 @@ export enum CommandId {
 
   // doc browser,
   DocBrowserGetConfig,
+  DocBrowserGetPackages,
+  DocBrowserSelectPackage,
   DocBrowserReadToc,
   DocBrowserReadIndexes,
   DocBrowserSearch,

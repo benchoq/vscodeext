@@ -1,6 +1,13 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
+
+export interface QtDocRootInfo {
+  source: 'insRoot' | 'qtpaths';
+  version: string;
+  fsPath: string;
+}
+
 export interface HtmlPageInfo {
   title: string;
   filePathRel: string;
@@ -42,6 +49,19 @@ export function isSameHtmlPage(a: HtmlPageInfo, b: HtmlPageInfo) {
 }
 
 // type guard functions
+export function isQtDocRootInfo(x: unknown): x is QtDocRootInfo {
+  if (typeof x !== 'object' || x === null) {
+    return false;
+  }
+
+  const o = x as Record<string, unknown>;
+  return (
+    (o.source === 'insRoot' || o.source === 'qtpaths') &&
+    typeof o.version === 'string' &&
+    typeof o.fsPath === 'string'
+  );
+}
+
 export function isHtmlPageInfo(x: unknown): x is HtmlPageInfo {
   if (typeof x !== 'object' || x === null) {
     return false;

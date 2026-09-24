@@ -5,6 +5,7 @@ import {
   type TocEntry,
   type IndexMatch,
   type FullTextMatch,
+  type QtDocRootInfo
 } from '@shared/doc-browser';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import { TocTreeModel, HistoryManager, type PageLoadContext } from './types.svelte';
@@ -12,6 +13,7 @@ import { TocTreeModel, HistoryManager, type PageLoadContext } from './types.svel
 export type UiMode = 'toc' | 'index' | 'text';
 
 export const data = $state({
+  packages: [] as QtDocRootInfo[],
   toc: [] as TocEntry[],
   indexes: [] as IndexMatch[],
   fullText: [] as FullTextMatch[],
@@ -32,6 +34,9 @@ export const ui = $state({
     max: 650
   },
 
+  selected: {
+    package: undefined as QtDocRootInfo | undefined
+  },
 
   index: {
     filter: { keyword: '' },
