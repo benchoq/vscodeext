@@ -47,6 +47,8 @@ export const ui = $state({
     keyword: ''
   },
 
+  hoveredLink: '',
+
   popovers: {
     qtVersions: {
       visible: false,

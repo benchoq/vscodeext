@@ -176,15 +176,36 @@ export function getScriptToInject() {
       });
 
       window.addEventListener('load', (e) => {
-        window.parent.postMessage(
-          {
-            type: '${ViewerMessageId.Loaded }',
-            href: location.href,
-            hash: location.hash,
-            pathname: location.pathname
-          },
-          '*'
-        );
+        window.parent.postMessage({
+          type: '${ViewerMessageId.Loaded }',
+          href: location.href,
+          hash: location.hash,
+          pathname: location.pathname
+        }, '*');
       });
+
+      function onMouseInOut(e) {
+        if (!(e.target instanceof HTMLElement)) {
+          return;
+        }
+
+        const link = e.target.closest('a');
+        const isLeavingWithinLink = (e.type === 'mouseout')
+          && link
+          && e.relatedTarget
+          && link.contains(e.relatedTarget);
+
+        if (!link || isLeavingWithinLink) {
+          return;
+        }
+
+        window.parent.postMessage({
+          type: '${ViewerMessageId.ViewerHoverChanged}',
+          href: ((e.type === 'mouseover') ? link.href : ''),
+        }, '*');
+      }
+
+      document.body.addEventListener('mouseout', onMouseInOut);
+      document.body.addEventListener('mouseover', onMouseInOut);
     </script>`;
 }

@@ -39,6 +39,7 @@ export enum ViewerMessageId {
   ScrollToAnchor = 'docbrowser-scroll-to-anchor',
   ApplyVscodeTheme = 'docbrowser-apply-vscode-theme',
   FindInPage = 'docbrowser-find-in-page',
+  ViewerHoverChanged = 'docbrowser-viewer-hover-changed'
 }
 
 export function isSameHtmlPage(a: HtmlPageInfo, b: HtmlPageInfo) {

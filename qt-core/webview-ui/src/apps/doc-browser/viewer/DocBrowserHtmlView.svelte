@@ -36,6 +36,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   >
   </iframe>
 
+  <div data-role='footer' class='flex items-center p-1'>
+    {ui.hoveredLink || ''}
+  </div>
+
   {#if popover.visible}
     <div
       use:portal
@@ -59,4 +63,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-role='viewer'] {
     overflow: hidden;
   }
+
+  [data-role='footer'] {
+    height: 24px;
+    border: 1px solid #444;
+  }
 </style>
+

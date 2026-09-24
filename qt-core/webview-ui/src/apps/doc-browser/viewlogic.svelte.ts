@@ -169,6 +169,8 @@ function onMessageFromViewer(e: MessageEvent) {
     postToViewer(ViewerMessageId.ApplyVscodeTheme, {
       vars: ui.theme.getAllVscodeCssVars()
     });
+  } else if (e.data?.type === ViewerMessageId.ViewerHoverChanged) {
+    ui.hoveredLink = e.data?.href ?? '';
   }
 }
 
