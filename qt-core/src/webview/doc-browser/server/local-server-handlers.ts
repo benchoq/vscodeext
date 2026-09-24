@@ -128,7 +128,9 @@ export function getScriptToInject() {
 
       window.addEventListener('message', (e) => {
         if (e.data?.type === '${ViewerMessageId.LoadPage}') {
+          console.log('iframe: loadPage received', 1);
           location.replace(e.data.href);
+          console.log('iframe: loadPage received', 2);
           return;
         }
 
@@ -205,7 +207,7 @@ export function getScriptToInject() {
         }, '*');
       }
 
-      document.body.addEventListener('mouseout', onMouseInOut);
-      document.body.addEventListener('mouseover', onMouseInOut);
+      window.addEventListener('mouseout', onMouseInOut);
+      window.addEventListener('mouseover', onMouseInOut);
     </script>`;
 }

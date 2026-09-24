@@ -69,4 +69,3 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     border: 1px solid #444;
   }
 </style>
-

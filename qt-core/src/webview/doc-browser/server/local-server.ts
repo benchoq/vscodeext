@@ -71,6 +71,22 @@ export class DocBrowserLocalServer implements Disposable {
       this._onRequest(req, res);
     });
 
+    this._server.on('connection', () => {
+      logger.text("Server connection")
+        .data('port', this.port)
+        .info();
+
+      console.log('server: on-connection', performance.now().toFixed(2));
+    })
+
+     this._server.on('close', () => {
+      logger.text("Server close")
+        .data('port', this.port)
+        .info();
+
+      console.log('server: on-close', performance.now().toFixed(2));
+    })
+
     return new Promise((resolve, reject) => {
       if (this._server) {
         const anyPort = 0;
@@ -91,9 +107,14 @@ export class DocBrowserLocalServer implements Disposable {
   }
 
   private _onRequest(req: http.IncomingMessage, res: http.ServerResponse) {
+    const start = performance.now();
+    console.log(`request took 0 ${req.url ?? '-'}`, performance.now().toFixed(2));
+
     const urlPath = decodeURIComponent((req.url ?? '/').split('?')[0] ?? '');
     const filePath = path.join(this._contentRoot, urlPath);
     const fileName = path.basename(filePath);
+
+    console.log(`request took 1 ${(performance.now() - start).toFixed(2)}ms`);
 
     if (req.url === '/') {
       const html = /*html*/ `
@@ -124,8 +145,11 @@ export class DocBrowserLocalServer implements Disposable {
       res
     };
 
+    console.log(`request took 2 ${(performance.now() - start).toFixed(2)}ms`);
     const handler = this._handlers.find((h) => h.canHandle(c));
     handler?.handle(c);
+
+    console.log(`request took 3 ${(performance.now() - start).toFixed(2)}ms`);
   }
 
   private _isAccessAllowed(filePath: string): boolean {

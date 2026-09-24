@@ -192,6 +192,8 @@ function loadPage(info: HtmlPageInfo | undefined, context: PageLoadContext) {
     info.anchor ? '#' + info.anchor : ''
   ].join('');
 
+  console.log('loadPage', href);
+
   ui.recentPageLoadContext = context;
   postToViewer(ViewerMessageId.LoadPage, { href });
 }

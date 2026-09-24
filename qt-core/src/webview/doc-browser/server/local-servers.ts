@@ -19,11 +19,18 @@ export class DocBrowserLocalServerManager {
   }
 
   public async prepare(rootDir: string) {
+    console.time('server');
+    console.timeLog('server');
+
     if (!this._servers.has(rootDir)) {
       this._servers.set(rootDir, new DocBrowserLocalServer(rootDir));
     }
 
     const s = this._servers.get(rootDir);
+    console.timeLog('server', 'before starting');
+
     await s?.start();
+    console.timeLog('server', 'after starting');
+    console.timeEnd('server');
   }
 }
