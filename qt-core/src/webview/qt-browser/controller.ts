@@ -2,13 +2,15 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import {
+  window,
   commands,
   WebviewPanel as Panel,
   ExtensionContext as Context
 } from 'vscode';
 
-import { DisposableStore } from 'qt-lib';
+import { telemetry, DisposableStore } from 'qt-lib';
 import { WebAppId } from '@/webview/shared/types';
+import { getWebAppInfo } from '@/webview/info';
 import { setupWebApp, createPanel } from '@/webview/utils';
 import { QtBrowserLocalServer } from './local-server';
 import { QtBrowserDispatcher } from './dispatcher';
@@ -21,12 +23,20 @@ let instance: QtBrowserController | undefined;
 export function addQtBrowser(context: Context) {
   const openCmd = 'openQtBrowser';
   const openCmdFull = `${consts.EXTENSION_ID}.${openCmd}`;
+  const info = getWebAppInfo(appId);
 
   context.subscriptions.push(
     commands.registerCommand(openCmdFull, () => {
-      // telemetry.sendAction(openCmd);
+      telemetry.sendAction(openCmd);
       QtBrowserController.render(context);
-    })
+    }),
+
+    window.registerWebviewPanelSerializer(info.viewType, {
+          async deserializeWebviewPanel(panel: Panel) {
+            QtBrowserController.restore(context, panel);
+            return Promise.resolve();
+          }
+        })
   );
 }
 
@@ -58,12 +68,13 @@ class QtBrowserController {
 
     void localServer.start();
   }
-}
 
-// // helpers
-// function getCssFilePath(context: Context) {
-//   return [
-//     path.join(context.extensionPath, 'res/others'),
-//     'doc-styles.css'
-//   ];
-// }
+  public static restore(context: Context, panel: Panel) {
+    if (instance) {
+      panel.dispose();
+      return;
+    }
+
+    instance = new QtBrowserController(context, panel);
+  }
+}

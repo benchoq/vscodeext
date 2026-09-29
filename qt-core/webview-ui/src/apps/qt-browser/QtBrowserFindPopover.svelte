@@ -7,9 +7,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { type Component } from 'svelte';
   import { ChevronUp, ChevronDown, X } from '@lucide/svelte';
 
-  import { ui } from '../states.svelte';
-  import * as viewlogic from '../viewlogic.svelte';
-  import { type FindAction } from '../types.svelte';
+  import { ui } from './states.svelte';
+  import * as viewlogic from './viewlogic.svelte';
+  import { type FindAction } from './types.svelte';
 
 </script>
 

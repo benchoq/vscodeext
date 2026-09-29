@@ -3,6 +3,7 @@
 
 import _ from 'lodash';
 import {
+  env,
   Uri,
   WebviewPanel as Panel,
   ExtensionContext as Context,
@@ -48,12 +49,22 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
       this._localServer.setCssOverride(String(cssFile.readAll()));
     }
 
-    const original = Uri.parse(String(_.get(cmd.payload, 'uri', '')));
-    const target = original.scheme === 'file'
-      ? Uri.parse(`${this._localServer.origin}${original.path}`)
-      : original;
+    const given = Uri.parse(String(_.get(cmd.payload, 'uri', '')));
+    if (given.scheme === 'file') {
+      const target = given.with({
+        scheme: this._localServer.scheme,
+        authority: this._localServer.authority
+      })
 
-    this.channel.replyData(cmd, { uri: target.toString() });
+      this.channel.replyData(cmd, { uri: target.toString() });
+    } else if (given.toString().startsWith(this._localServer.origin)) {
+      this.channel.replyData(cmd, { uri: given.toString() });
+    } else {
+      env.openExternal(given);
+      // const opt = { viewColumn: ViewColumn.Beside };
+      // commands.executeCommand('simpleBrowser.api.open', given, opt);
+      this.channel.replyDone(cmd);
+    }
   }
 }
 

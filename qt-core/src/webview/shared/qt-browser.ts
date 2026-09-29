@@ -39,7 +39,8 @@ export enum ViewerMessageId {
   ScrollToAnchor = 'qt-browser-scroll-to-anchor',
   ApplyVscodeTheme = 'qt-browser-apply-vscode-theme',
   FindInPage = 'qt-browser-find-in-page',
-  ViewerHoverChanged = 'qt-browser-viewer-hover-changed'
+  ViewerHoverChanged = 'qt-browser-viewer-hover-changed',
+  ViewerClickExternal = 'qt-browser-viewer-click-external'
 }
 
 export function isSameHtmlPage(a: HtmlPageInfo, b: HtmlPageInfo) {

@@ -5,12 +5,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import ChevronRight from "@/symbols/ChevronRight.svelte";
-  import { Bookmark } from "@lucide/svelte";
+  import { Bookmark, TextSearch } from "@lucide/svelte";
 
   import * as viewlogic from './viewlogic.svelte';
   import { ui } from './states.svelte';
 
-  // const popover = $derived(ui.popovers.find);
+  const popover = $derived(ui.popovers.find);
   // const loc = $derived.by(() => {
   //   const e = ui.history.currentEntry;
   //   return e
@@ -36,7 +36,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     onkeydown={onKeyDown}
   />
 
-  <!-- <button
+  <button
     bind:this={popover.refEl}
     data-role='nav-button'
     class='qt-button flex items-center justify-center'
@@ -47,7 +47,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }}
   >
     <TextSearch />
-  </button> -->
+  </button>
 
 </div>
 

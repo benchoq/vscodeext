@@ -6,7 +6,7 @@ import * as http from 'http';
 import * as path from 'path';
 import { createWrappedLogger } from 'qt-lib';
 
-import { ViewerMessageId } from '@/webview/shared/qt-viewer';
+import { ViewerMessageId } from '@/webview/shared/qt-browser';
 
 export interface RequestContext {
   filePath: string;
@@ -125,6 +125,25 @@ export function getScriptToInject() {
           false, // showDialog
         );
       }
+
+      window.addEventListener('click', (e) => {
+        const anchor = e.target.closest('a');
+        if (!anchor) {
+          return;
+        }
+
+        const url = new URL(anchor.href, document.baseURI);
+        console.log("+++++++", url);
+
+        if (url.protocol === 'http:' || url.protocol === 'https:') {
+          e.preventDefault();
+
+          window.parent.postMessage({
+            type: '${ViewerMessageId.ViewerClickExternal }',
+            href: url.href
+          }, '*');
+        }
+      });
 
       window.addEventListener('message', (e) => {
         if (e.data?.type === '${ViewerMessageId.LoadPage}') {

@@ -32,6 +32,15 @@ export const ui = $state({
 
   theme: VscodeThemeMonitor.createController(),
 
+  popovers: {
+    find: {
+      keyword: '',
+      visible: false,
+      refEl: undefined as HTMLButtonElement | undefined,
+    },
+  },
+
+
   // theme: VscodeThemeMonitor.createController(),
   // mode: 'toc' as UiMode,
   // tocTree: new TocTreeModel(),

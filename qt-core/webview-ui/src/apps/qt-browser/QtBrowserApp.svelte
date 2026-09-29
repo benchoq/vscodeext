@@ -7,7 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { onMount, onDestroy } from 'svelte';
 
   import '@/styles/components/components.css';
-  // import './QtBrowserApp.css';
+  import './QtBrowserApp.css';
 
   import QtBrowserToolbar from './QtBrowserToolbar.svelte';
   import QtBrowserHtmlView from './QtBrowserHtmlView.svelte';

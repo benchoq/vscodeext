@@ -49,6 +49,11 @@ export class QtBrowserLocalServer implements Disposable {
     return (typeof addr === 'object') ? addr?.port : undefined;
   }
 
+  public get authority() {
+    const port = this.port;
+    return port ? `${this.host}:${String(port)}` : '';
+  }
+
   public get origin() {
     const port = this.port;
     return port ? `${this.scheme}://${this.host}:${String(port)}` : '';
