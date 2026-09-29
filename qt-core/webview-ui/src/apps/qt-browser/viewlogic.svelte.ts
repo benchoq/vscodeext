@@ -82,7 +82,9 @@ function onMessageFromViewer(e: MessageEvent) {
       break;
 
     case ViewerMessageId.ViewerHoverChanged:
-      console.log('hovered', e.data);
+      if (typeof e.data.href === 'string') {
+        ui.hoveredLink = e.data.href;
+      }
       break;
 
     case ViewerMessageId.ViewerClickExternal:

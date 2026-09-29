@@ -40,7 +40,6 @@ export const ui = $state({
     },
   },
 
-
   // theme: VscodeThemeMonitor.createController(),
   // mode: 'toc' as UiMode,
   // tocTree: new TocTreeModel(),
@@ -65,7 +64,7 @@ export const ui = $state({
   //   keyword: ''
   // },
 
-  // hoveredLink: '',
+  hoveredLink: '',
 
   // popovers: {
   //   qtVersions: {

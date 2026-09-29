@@ -42,4 +42,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       </div>
     {/if}
   </iframe>
+
+  {#if ui.hoveredLink.length !== 0}
+    <span
+      class='absolute left-0 bottom-0 max-w-full truncate px-2 bg-[var(--vscode-editor-background)] text-[var(--vscode-foreground)]'
+    >
+      {ui.hoveredLink}
+    </span>
+  {/if}
 </div>

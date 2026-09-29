@@ -13,9 +13,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const popover = $derived(ui.popovers.find);
   // const loc = $derived.by(() => {
   //   const e = ui.history.currentEntry;
-  //   return e
-  //     ? `${e.filePathRel}${e.anchor ? '#' + e.anchor : ''}`
-  //     : '<none>';
+  //   return e ? e.href : '';
   // });
 
   function onKeyDown(e: KeyboardEvent) {
@@ -31,7 +29,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {@render navButton('forward')}
   {@render bookmarkButton()}
   <input
-    bind:value={ui.history.currentEntry.href}
+    bind:value={ui.uri}
     class='qt-input grow px-2'
     onkeydown={onKeyDown}
   />
