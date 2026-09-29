@@ -7,6 +7,7 @@ import { type WebAppId } from '@shared/types';
 type Loader = () => Promise<{ default: Component }>;
 const loaders: Record<WebAppId, Loader> = {
   'new-item': () => import('./new-item/NewItemApp.svelte'),
+  'qt-browser': () => import('./qt-browser/QtBrowserApp.svelte'),
   'ex-browser': () => import('./ex-browser/ExBrowserApp.svelte'),
   'welcome-page': () => import('./welcome/WelcomePageApp.svelte'),
   'courses-browser': () => import('./courses/CoursesBrowserApp.svelte'),

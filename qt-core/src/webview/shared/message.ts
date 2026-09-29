@@ -61,6 +61,9 @@ export enum CommandId {
   UiFileOpenInDesigner,
   UiFileOpenInTextEditor,
 
+  // qt browser
+  QtBrowser,
+
   // common
   CommonViewClosed,
   CommonRevealFolder,

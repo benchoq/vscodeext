@@ -3,6 +3,7 @@
 
 export type WebAppId =
   | 'new-item'
+  | 'qt-browser'
   | 'ex-browser'
   | 'welcome-page'
   | 'courses-browser'

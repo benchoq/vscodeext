@@ -124,6 +124,11 @@
         "command": "qt-core.openInWidgetsDesigner",
         "title": "%qt-core.command.openInWidgetsDesigner.title%",
         "category": "Qt"
+      },
+      {
+        "command": "qt-core.openQtBrowser",
+        "title": "%qt-core.command.openQtBrowser.title%",
+        "category": "Qt"
       }
     ],
     "customEditors": [
