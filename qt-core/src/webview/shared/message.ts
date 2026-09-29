@@ -62,7 +62,8 @@ export enum CommandId {
   UiFileOpenInTextEditor,
 
   // qt browser
-  QtBrowser,
+  QtBrowserGetConfig,
+  QtBrowserResolveUri,
 
   // common
   CommonViewClosed,

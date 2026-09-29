@@ -1,0 +1,91 @@
+<!--
+Copyright (C) 2026 The Qt Company Ltd.
+SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+-->
+
+<script lang="ts">
+  import ChevronRight from "@/symbols/ChevronRight.svelte";
+  import { Bookmark } from "@lucide/svelte";
+
+  import * as viewlogic from './viewlogic.svelte';
+  import { ui } from './states.svelte';
+
+  // const popover = $derived(ui.popovers.find);
+  // const loc = $derived.by(() => {
+  //   const e = ui.history.currentEntry;
+  //   return e
+  //     ? `${e.filePathRel}${e.anchor ? '#' + e.anchor : ''}`
+  //     : '<none>';
+  // });
+
+  function onKeyDown(e: KeyboardEvent) {
+    if (e.key === 'Enter') {
+      viewlogic.openUri(ui.uri);
+    }
+  }
+
+</script>
+
+<div data-role='root' class='flex flex-row h-[32px] gap-1'>
+  {@render navButton('back')}
+  {@render navButton('forward')}
+  {@render bookmarkButton()}
+  <input
+    bind:value={ui.uri}
+    class='qt-input grow px-2'
+    onkeydown={onKeyDown}
+  />
+
+  <!-- <button
+    bind:this={popover.refEl}
+    data-role='nav-button'
+    class='qt-button flex items-center justify-center'
+    aria-pressed={popover.visible}
+    onclick={(e: MouseEvent) => {
+      popover.visible = !popover.visible;
+      e.stopPropagation();
+    }}
+  >
+    <TextSearch />
+  </button> -->
+
+</div>
+
+{#snippet navButton(dir: 'back' | 'forward')}
+  <button
+    data-role='nav-button'
+    class='qt-button flex items-center justify-center'
+    class:rotate-180={dir==='back'}
+    onclick={() => {
+
+      // viewlogic.navigate(dir);
+    }}
+  >
+    <ChevronRight />
+  </button>
+{/snippet}
+
+{#snippet bookmarkButton()}
+  <button
+    data-role='nav-button'
+    class='qt-button flex items-center justify-center'
+  >
+    <Bookmark />
+  </button>
+{/snippet}
+
+<style>
+  [data-role='root'] {
+    min-height: 36px;
+    padding: 2px;
+  }
+
+  [data-role='nav-button'] {
+    width: 32px;
+    height: 32px;
+
+    &:disabled {
+      background-color: transparent;
+    }
+  }
+</style>

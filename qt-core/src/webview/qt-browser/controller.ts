@@ -10,10 +10,12 @@ import {
 import { DisposableStore } from 'qt-lib';
 import { WebAppId } from '@/webview/shared/types';
 import { setupWebApp, createPanel } from '@/webview/utils';
+import { QtBrowserLocalServer } from './local-server';
 import { QtBrowserDispatcher } from './dispatcher';
 import * as consts from './constants';
 
 const appId: WebAppId = 'qt-browser';
+const localServer = new QtBrowserLocalServer();
 let instance: QtBrowserController | undefined;
 
 export function addQtBrowser(context: Context) {
@@ -38,7 +40,7 @@ class QtBrowserController {
   ) {
     setupWebApp(appId, context, this._panel);
 
-    this._dispatcher = new QtBrowserDispatcher(context, this._panel);
+    this._dispatcher = new QtBrowserDispatcher(context, this._panel, localServer);
     this._disposables.push(
       this._dispatcher,
       this._panel.onDidDispose(this.dispose.bind(this))
@@ -53,14 +55,15 @@ class QtBrowserController {
   public static render(context: Context) {
     instance ??= new QtBrowserController(context, createPanel(appId));
     instance._panel.reveal();
-  }
 
-  public static restore(context: Context, panel: Panel) {
-    if (instance) {
-      panel.dispose();
-      return;
-    }
-
-    instance = new QtBrowserController(context, panel);
+    void localServer.start();
   }
 }
+
+// // helpers
+// function getCssFilePath(context: Context) {
+//   return [
+//     path.join(context.extensionPath, 'res/others'),
+//     'doc-styles.css'
+//   ];
+// }
