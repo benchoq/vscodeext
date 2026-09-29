@@ -8,7 +8,7 @@
 //   type QtDocRootInfo
 // } from '@shared/doc-browser';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
-// import { TocTreeModel, HistoryManager, type PageLoadContext } from './types.svelte';
+import { HistoryManager } from './types.svelte';
 
 // export type UiMode = 'toc' | 'index' | 'text';
 
@@ -79,5 +79,5 @@ export const ui = $state({
   //   },
   // },
 
-  // history: new HistoryManager()
+  history: new HistoryManager()
 });

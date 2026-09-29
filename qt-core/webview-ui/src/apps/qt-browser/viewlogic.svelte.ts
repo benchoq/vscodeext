@@ -28,10 +28,21 @@ export async function openUri(uri: string) {
   const r = await vscode.post(CommandId.QtBrowserResolveUri, { uri })
   const resolved = _.get(r, 'uri', '');
 
-
   if (typeof resolved === 'string' && resolved.length > 0) {
     ui.iframe.src = resolved;
+    ui.history.push({
+      title: 'aaa',
+      href: resolved,
+    })
     console.log('resolved change', ui.iframe.src);
+  }
+}
+
+export function navigate(dir: 'back' | 'forward') {
+  const e = ui.history.go(dir);
+  console.log("navigate", $state.snapshot(e));
+  if (typeof e?.href === 'string') {
+    openUri(e?.href);
   }
 }
 

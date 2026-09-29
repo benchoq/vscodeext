@@ -1,11 +1,10 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-// import {
-//   type TocEntry,
-//   type HtmlPageInfo,
-//   isSameHtmlPage,
-// } from "@shared/doc-browser";
+import {
+  type HtmlPageInfo,
+  isSameHtmlPage,
+} from "@shared/qt-browser";
 
 // export interface TocTreeNode {
 //   id: number;
@@ -67,62 +66,63 @@ export type FindAction = 'new' | 'prev' | 'next' | 'clear';
 //   }
 // }
 
-// export class HistoryManager {
-//   private _history = $state([] as HtmlPageInfo[]);
-//   private _currentIndex = $state(-1);
+export class HistoryManager {
+  private _history = $state([] as HtmlPageInfo[]);
+  private _currentIndex = $state(-1);
 
-//   public go(dir: 'back' | 'forward') {
-//     if (dir === 'back') {
-//       if (this._currentIndex > 0) {
-//         this._currentIndex--;
-//         return this.currentEntry;
-//       }
-//     }
+  public go(dir: 'back' | 'forward') {
+    if (dir === 'back') {
+      if (this._currentIndex > 0) {
+        this._currentIndex--;
+        return this.currentEntry;
+      }
+    }
 
-//     if (dir === 'forward') {
-//       if (this._currentIndex + 1 < this._history.length) {
-//         this._currentIndex++;
-//         return this.currentEntry;
-//       }
-//     }
+    if (dir === 'forward') {
+      if (this._currentIndex + 1 < this._history.length) {
+        this._currentIndex++;
+        return this.currentEntry;
+      }
+    }
 
-//     return undefined;
-//   }
+    return undefined;
+  }
 
-//   public canGo(dir: 'back' | 'forward') {
-//     if (dir === 'back') {
-//       return this._currentIndex > 0;
-//     }
+  public canGo(dir: 'back' | 'forward') {
+    if (dir === 'back') {
+      return this._currentIndex > 0;
+    }
 
-//     return this._currentIndex + 1 < this._history.length;
-//   }
+    return this._currentIndex + 1 < this._history.length;
+  }
 
-//   public get currentEntry() {
-//     return this._history[this._currentIndex];
-//   }
+  public get currentEntry() {
+    return this._history[this._currentIndex];
+  }
 
-//   public push(entry: HtmlPageInfo) {
-//     if ((entry.filePathRel.length === 0)
-//       || (this.currentEntry && isSameHtmlPage(entry, this.currentEntry))) {
-//       return;
-//     }
+  public push(entry: HtmlPageInfo) {
+    if ((entry.href.length === 0)
+      || (this.currentEntry && isSameHtmlPage(entry, this.currentEntry))) {
+      return;
+    }
 
-//     this._history = [
-//       ...this._history.slice(0, this._currentIndex + 1),
-//       entry
-//     ];
+    this._history = [
+      ...this._history.slice(0, this._currentIndex + 1),
+      entry
+    ];
 
-//     this._currentIndex = this._history.length - 1;
-//   }
+    this._currentIndex = this._history.length - 1;
+  }
 
-//   public pushUrl(url: URL) {
-//     this.push({
-//       title: '',
-//       filePathRel: url.pathname.replace(/^\//, ''),
-//       anchor: url.hash.replace(/^#/, '')
-//     });
-//   }
-// }
+  public pushUrl(url: URL) {
+    this.push({
+      title: '',
+      href: url.href
+      // filePathRel: url.pathname.replace(/^\//, ''),
+      // anchor: url.hash.replace(/^#/, '')
+    });
+  }
+}
 
 // // helpers
 // function build(flatEntries: TocEntry[]) {

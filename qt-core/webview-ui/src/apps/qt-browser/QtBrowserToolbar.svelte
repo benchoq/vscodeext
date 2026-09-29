@@ -31,7 +31,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {@render navButton('forward')}
   {@render bookmarkButton()}
   <input
-    bind:value={ui.uri}
+    bind:value={ui.history.currentEntry.href}
     class='qt-input grow px-2'
     onkeydown={onKeyDown}
   />
@@ -56,9 +56,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-role='nav-button'
     class='qt-button flex items-center justify-center'
     class:rotate-180={dir==='back'}
+    disabled={!ui.history.canGo(dir)}
     onclick={() => {
-
-      // viewlogic.navigate(dir);
+      viewlogic.navigate(dir);
     }}
   >
     <ChevronRight />

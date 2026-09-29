@@ -10,7 +10,8 @@ export interface QtDocRootInfo {
 
 export interface HtmlPageInfo {
   title: string;
-  filePathRel: string;
+  href: string;
+  filePathRel?: string;
   anchor?: string;
 }
 
@@ -44,10 +45,7 @@ export enum ViewerMessageId {
 }
 
 export function isSameHtmlPage(a: HtmlPageInfo, b: HtmlPageInfo) {
-  return (
-    a.filePathRel === b.filePathRel &&
-    (a.anchor ?? '') === (b.anchor ?? '')
-  );
+  return (a.href === b.href);
 }
 
 // type guard functions
@@ -71,8 +69,7 @@ export function isHtmlPageInfo(x: unknown): x is HtmlPageInfo {
 
   const o = x as Record<string, unknown>;
   return (
-    typeof o.title === 'string' &&
-    typeof o.filePathRel === 'string' &&
+    typeof o.href === 'string' &&
     (o.anchor === undefined || typeof o.anchor === 'string')
   );
 }
