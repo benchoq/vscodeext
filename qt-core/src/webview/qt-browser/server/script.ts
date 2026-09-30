@@ -104,4 +104,21 @@ export const ScriptToInject = /*html*/`
 
   window.addEventListener('mouseout', onMouseInOut);
   window.addEventListener('mouseover', onMouseInOut);
+
+  window.addEventListener('keydown', (e) => {
+    window.parent.postMessage({
+      type: '${ViewerMessageId.ViewerKeyDown}',
+      fields: {
+        key: e.key,
+        code: e.code,
+        keyCode: e.keyCode,
+        ctrlKey: e.ctrlKey,
+        shiftKey: e.shiftKey,
+        altKey: e.altKey,
+        metaKey: e.metaKey,
+        repeat: e.repeat,
+      },
+    }, '*');
+  }, true);
 </script>`;
+

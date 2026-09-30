@@ -39,6 +39,7 @@ export enum ViewerMessageId {
   ApplyVscodeTheme = 'qt-browser-apply-vscode-theme',
   ViewerLoaded = 'qt-browser-loaded',
   ViewerClicked = 'qt-browser-viewer-clicked',
+  ViewerKeyDown = 'qt-browser-viewer-key-down',
   ViewerHoverChanged = 'qt-browser-viewer-hover-changed',
 }
 

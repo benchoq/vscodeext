@@ -99,10 +99,17 @@ function onMessageFromViewer(e: MessageEvent) {
       break;
 
     case ViewerMessageId.ViewerClicked:
-      // console.log('clicked', e.data, typeof e.data?.href);
       if (typeof e.data?.href === 'string') {
         openUri(e.data?.href);
       }
+      break;
+
+    case ViewerMessageId.ViewerKeyDown:
+      document.dispatchEvent(new KeyboardEvent('keydown', {
+        ...e.data.fields,
+        bubbles: true,
+        cancelable: true,
+      }));
       break;
 
     default:
