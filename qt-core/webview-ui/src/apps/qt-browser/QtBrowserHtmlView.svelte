@@ -33,6 +33,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     title='viewer'
     class='w-full h-full'
     src={ui.iframe.src}
+    allow='clipboard-write'
   ></iframe>
 
   {#if popover.visible}

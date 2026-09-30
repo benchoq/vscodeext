@@ -49,6 +49,10 @@ export function navigate(dir: 'back' | 'forward') {
   }
 }
 
+export function copySelection() {
+  helpers.postToViewer(ViewerMessageId.CopySelection);
+}
+
 export function findInPage(action: FindAction) {
   const w = ui.iframe.el?.contentWindow
   if (!w) {
@@ -104,47 +108,40 @@ function onMessageFromViewer(e: MessageEvent) {
       }
       break;
 
-    case ViewerMessageId.ViewerKeyDown:
+    case ViewerMessageId.ViewerKeyDown: {
+      const fields = e.data.fields;
+
+      if (fields.key.toLowerCase() === 'c') {
+        if (fields.metaKey || fields.ctrlKey) {
+          helpers.postToViewer(ViewerMessageId.CopySelection);
+          return;
+        }
+      }
+
       document.dispatchEvent(new KeyboardEvent('keydown', {
-        ...e.data.fields,
+        ...fields,
         bubbles: true,
         cancelable: true,
       }));
       break;
+    }
 
     case ViewerMessageId.ViewerContextMenu: {
       const r = ui.iframe.el?.getBoundingClientRect();
       if (r) {
-        ui.popovers.contextMenu.pos = {
-          x: r.left + e.data.x,
-          y: r.top + e.data.y,
-        };
+        const x = r.left + e.data.x;
+        const y = r.top + e.data.y;
+        ui.popovers.contextMenu.pos = { x, y };
         ui.popovers.contextMenu.visible = true;
       }
-
-      console.log('contextmenu', $state.snapshot(
-        ui.popovers.contextMenu.pos)
-      );
       break;
     }
 
     case ViewerMessageId.ViewerMouseDown:
       ui.popovers.contextMenu.visible = false;
-      console.log('mousedown');
       break;
 
     default:
       break;
   }
-    // if (ui.recentPageLoadContext !== 'history') {
-    //   ui.history.pushUrl(new URL(e.data.href));
-    // }
-
-  //   ui.recentPageLoadContext = '';
-  //   postToViewer(ViewerMessageId.ApplyVscodeTheme, {
-  //     vars: ui.theme.getAllVscodeCssVars()
-  //   });
-  // } else if (e.data?.type === ViewerMessageId.ViewerHoverChanged) {
-  //   ui.hoveredLink = e.data?.href ?? '';
-  // }
 }

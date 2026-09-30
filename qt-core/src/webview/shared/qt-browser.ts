@@ -36,6 +36,7 @@ export interface FullTextMatch {
 export enum ViewerMessageId {
   FindInPage = 'qt-browser-find-in-page',
   ReloadPage = 'qt-browser-reload-page',
+  CopySelection = 'qt-browser-copy-selection',
   ApplyVscodeTheme = 'qt-browser-apply-vscode-theme',
   ViewerLoaded = 'qt-browser-loaded',
   ViewerClicked = 'qt-browser-viewer-clicked',

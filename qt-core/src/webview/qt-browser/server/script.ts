@@ -17,6 +17,7 @@ export function getScriptToInject() {
       LinkHoverScript,
       KeyForwardScript,
       ContextMenuScript,
+      CopySelectionScript
     ];
 
     cached = /*html*/`
@@ -179,5 +180,20 @@ const ContextMenuScript = /*js*/`
 
   addListener('mousedown', () => {
     notifyParent('${ViewerMessageId.ViewerMouseDown}');
+  });
+`;
+
+const CopySelectionScript = /*js*/`
+  onParentMessage('${ViewerMessageId.CopySelection}', async () => {
+    const text = window.getSelection()?.toString() ?? '';
+    if (!text) {
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      document.execCommand('copy');
+    }
   });
 `;
