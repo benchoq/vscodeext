@@ -6,7 +6,7 @@ import { data, ui } from './states.svelte';
 
 export function postToViewer(id: ViewerMessageId, data = {}) {
   ui.iframe.el?.contentWindow?.postMessage(
-    { type: id, ...data }, '*'
+    { id, ...data }, '*'
   );
 }
 

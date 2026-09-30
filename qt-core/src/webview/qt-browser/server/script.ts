@@ -3,13 +3,61 @@
 
 import { ViewerMessageId } from '@/webview/shared/qt-browser';
 
-export const ScriptToInject = /*html*/`
-<script>
+let cached: string | undefined;
+
+export function getScriptToInject() {
+  if (!cached) {
+    const all = [
+      CommonScript,
+      FindInPageScript,
+      ReloadScript,
+      ThemeScript,
+      LoadedScript,
+      LinkClickScript,
+      LinkHoverScript,
+      KeyForwardScript,
+      ContextMenuScript,
+    ];
+
+    cached = /*html*/`
+      <script>
+        ${all.join('\n')}
+      </script>
+    `;
+  }
+
+  return cached;
+}
+
+// all scripts to inject
+const CommonScript = /*js*/`
+  function notifyParent(id, fields) {
+    window.parent.postMessage({ id, ...fields }, '*');
+  }
+
+  function addListener(eventName, handler) {
+    window.addEventListener(eventName, handler, true);
+  }
+
+  function addListenerNoCapture(eventName, handler) {
+    window.addEventListener(eventName, handler, false);
+  }
+
+  function onParentMessage(id, handler) {
+    addListenerNoCapture('message', (e) => {
+      if (e.data?.id === id) {
+        handler(e.data);
+      }
+    });
+  }
+`;
+
+const FindInPageScript = /*js*/`
   function findInPage(keyword, dir) {
     return window.find(
       keyword,
       false, // caseSensitive
-      (dir === 'backward') ? true : false,
+      dir === 'backward',
       true, // wrapAround
       false, // wholeWord
       false, // searchInFrames
@@ -17,70 +65,68 @@ export const ScriptToInject = /*html*/`
     );
   }
 
-  window.addEventListener('message', (e) => {
-    if (e.data?.type === '${ViewerMessageId.FindInPage}') {
-      const keyword = e.data.keyword;
-      const action = e.data.action;
+  onParentMessage('${ViewerMessageId.FindInPage}', ({ keyword, action }) => {
+    switch (action) {
+      case 'new':
+        window.getSelection()?.removeAllRanges();
+        findInPage(keyword, 'forward');
+        break;
 
-      switch (action) {
-        case 'new':
-          window.getSelection()?.removeAllRanges();
-          findInPage(e.data.keyword, 'forward');
-          break;
+      case 'prev':
+        findInPage(keyword, 'backward');
+        break;
 
-        case 'prev':
-          findInPage(e.data.keyword, 'backward');
-          break;
+      case 'next':
+        findInPage(keyword, 'forward');
+        break;
 
-        case 'next':
-          findInPage(e.data.keyword, 'forward');
-          break;
-
-        case 'clear':
-          window.getSelection()?.removeAllRanges();
-          break;
-      }
-      return;
-    }
-
-    if (e.data?.type === '${ViewerMessageId.ReloadPage}') {
-      location.reload();
-      return;
-    }
-
-    if (e.data?.type === '${ViewerMessageId.ApplyVscodeTheme}') {
-      for (const [name, value] of Object.entries(e.data.vars)) {
-        document.documentElement.style.setProperty(name, value);
-      }
-      return;
+      case 'clear':
+        window.getSelection()?.removeAllRanges();
+        break;
     }
   });
+`;
 
-  window.addEventListener('load', (e) => {
-    window.parent.postMessage({
-      type: '${ViewerMessageId.ViewerLoaded }',
+const ReloadScript = /*js*/`
+  onParentMessage('${ViewerMessageId.ReloadPage}', () => {
+    location.reload();
+  });
+`;
+
+const ThemeScript = /*js*/`
+  onParentMessage('${ViewerMessageId.ApplyVscodeTheme}', ({ vars }) => {
+    for (const [name, value] of Object.entries(vars)) {
+      document.documentElement.style.setProperty(name, value);
+    }
+  });
+`;
+
+const LoadedScript = /*js*/`
+  addListenerNoCapture('load', () => {
+    notifyParent('${ViewerMessageId.ViewerLoaded}', {
       title: document.title,
       href: location.href,
       hash: location.hash,
       pathname: location.pathname,
-    }, '*');
+    });
   });
+`;
 
-  window.addEventListener('click', (e) => {
+const LinkClickScript = /*js*/`
+  addListenerNoCapture('click', (e) => {
     const anchor = e.target.closest('a');
     if (!anchor) {
       return;
     }
 
     const url = new URL(anchor.href, document.baseURI);
-    window.parent.postMessage({
-      type: '${ViewerMessageId.ViewerClicked }',
-      href: url.href
-    }, '*');
+    notifyParent('${ViewerMessageId.ViewerClicked}', { href: url.href });
 
     e.preventDefault();
   });
+`;
 
+const LinkHoverScript = /*js*/`
   function onMouseInOut(e) {
     if (!(e.target instanceof HTMLElement)) {
       return;
@@ -96,18 +142,18 @@ export const ScriptToInject = /*html*/`
       return;
     }
 
-    window.parent.postMessage({
-      type: '${ViewerMessageId.ViewerHoverChanged}',
-      href: ((e.type === 'mouseover') ? link.href : ''),
-    }, '*');
+    notifyParent('${ViewerMessageId.ViewerHoverChanged}', {
+      href: (e.type === 'mouseover') ? link.href : '',
+    });
   }
 
-  window.addEventListener('mouseout', onMouseInOut);
-  window.addEventListener('mouseover', onMouseInOut);
+  addListenerNoCapture('mouseout', onMouseInOut);
+  addListenerNoCapture('mouseover', onMouseInOut);
+`;
 
-  window.addEventListener('keydown', (e) => {
-    window.parent.postMessage({
-      type: '${ViewerMessageId.ViewerKeyDown}',
+const KeyForwardScript = /*js*/`
+  addListener('keydown', (e) => {
+    notifyParent('${ViewerMessageId.ViewerKeyDown}', {
       fields: {
         key: e.key,
         code: e.code,
@@ -118,20 +164,19 @@ export const ScriptToInject = /*html*/`
         metaKey: e.metaKey,
         repeat: e.repeat,
       },
-    }, '*');
-  }, true);
+    });
+  });
+`;
 
-  window.addEventListener('contextmenu', (e) => {
+const ContextMenuScript = /*js*/`
+  addListener('contextmenu', (e) => {
     e.preventDefault();
-    window.parent.postMessage({
-      type: '${ViewerMessageId.ViewerContextMenu}',
+    notifyParent('${ViewerMessageId.ViewerContextMenu}', {
       fields: { x: e.clientX, y: e.clientY },
-    }, '*');
-  }, true);
+    });
+  });
 
-  window.addEventListener('mousedown', () => {
-    window.parent.postMessage({
-      type: '${ViewerMessageId.ViewerMouseDown}',
-    }, '*');
-  }, true);
-</script>`;
+  addListener('mousedown', () => {
+    notifyParent('${ViewerMessageId.ViewerMouseDown}');
+  });
+`;

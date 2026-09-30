@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as http from 'http';
 import * as path from 'path';
 import { createWrappedLogger } from 'qt-lib';
-import { ScriptToInject } from './script';
+import { getScriptToInject } from './script';
 import { NotFoundPage } from './not-found';
 
 export interface RequestContext {
@@ -55,7 +55,7 @@ export class ScriptInjectionHandler implements RequestHandler {
 
       const html = String(data).replace(
         '</body>',
-        `${ScriptToInject}</body>`
+        `${getScriptToInject()}</body>`
       );
 
       c.res.writeHead(200, { 'Content-Type': getMimeType(c.filePath) });

@@ -85,7 +85,7 @@ function onMessageFromVscode(reply: CommandReply) {
 }
 
 function onMessageFromViewer(e: MessageEvent) {
-  switch (e.data?.type) {
+  switch (e.data?.id) {
     case ViewerMessageId.ViewerLoaded:
       ui.iframe.hoveredUri = '';
       ui.iframe.title = e.data.title;
