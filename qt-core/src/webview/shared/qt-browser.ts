@@ -34,14 +34,12 @@ export interface FullTextMatch {
 }
 
 export enum ViewerMessageId {
-  Loaded = 'qt-browser-loaded',
-  LoadPage = 'qt-browser-load-page',
-  ReloadPage = 'qt-browser-reload-page',
-  ScrollToAnchor = 'qt-browser-scroll-to-anchor',
-  ApplyVscodeTheme = 'qt-browser-apply-vscode-theme',
   FindInPage = 'qt-browser-find-in-page',
+  ReloadPage = 'qt-browser-reload-page',
+  ApplyVscodeTheme = 'qt-browser-apply-vscode-theme',
+  ViewerLoaded = 'qt-browser-loaded',
+  ViewerClicked = 'qt-browser-viewer-clicked',
   ViewerHoverChanged = 'qt-browser-viewer-hover-changed',
-  ViewerClickExternal = 'qt-browser-viewer-click-external'
 }
 
 export function isSameHtmlPage(a: HtmlPageInfo, b: HtmlPageInfo) {

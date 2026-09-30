@@ -63,7 +63,7 @@ export enum CommandId {
 
   // qt browser
   QtBrowserGetConfig,
-  QtBrowserResolveUri,
+  QtBrowserOpenUriExt,
 
   // common
   CommonViewClosed,

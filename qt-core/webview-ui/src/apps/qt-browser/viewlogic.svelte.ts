@@ -15,7 +15,6 @@ import { type FindAction } from './types.svelte';
 export async function onAppMount() {
   ui.theme.monitor.start();
   ui.theme.monitor.onChanged(onVscodeThemeChanged);
-
   window.addEventListener('message', onMessageFromViewer);
 
   await loadConfigs();
@@ -25,22 +24,25 @@ export async function onAppDestroy() {
 }
 
 export async function openUri(uri: string) {
-  const r = await vscode.post(CommandId.QtBrowserResolveUri, { uri })
-  const resolved = _.get(r, 'uri', '');
-
-  if (typeof resolved === 'string' && resolved.length > 0) {
-    ui.iframe.src = resolved;
-    ui.history.push({
-      title: 'aaa',
-      href: resolved,
-    })
-    console.log('resolved change', ui.iframe.src);
+  const u = normalizeUri(uri);
+  if (!u.startsWith(data.configs.serverOrigin)) {
+    void vscode.post(CommandId.QtBrowserOpenUriExt, { uri });
+    return;
   }
+
+  console.log("++++++++++", u);
+
+  // TODO: check if it's allowed to access
+  ui.iframe.src = u;
+  ui.history.push({
+    title: 'aaa',
+    href: u,
+  });
 }
 
 export function navigate(dir: 'back' | 'forward') {
   const e = ui.history.go(dir);
-  console.log("navigate", $state.snapshot(e));
+
   if (typeof e?.href === 'string') {
     openUri(e?.href);
   }
@@ -77,8 +79,8 @@ function onVscodeThemeChanged() {
 
 function onMessageFromViewer(e: MessageEvent) {
   switch (e.data?.type) {
-    case ViewerMessageId.Loaded:
-      console.log('loaded from viewer', e.data);
+    case ViewerMessageId.ViewerLoaded:
+      // console.log('loaded from viewer', e.data);
       break;
 
     case ViewerMessageId.ViewerHoverChanged:
@@ -87,8 +89,8 @@ function onMessageFromViewer(e: MessageEvent) {
       }
       break;
 
-    case ViewerMessageId.ViewerClickExternal:
-      console.log('ext-clicked', e.data, typeof e.data?.href);
+    case ViewerMessageId.ViewerClicked:
+      // console.log('clicked', e.data, typeof e.data?.href);
       if (typeof e.data?.href === 'string') {
         openUri(e.data?.href);
       }
@@ -115,4 +117,17 @@ function postToViewer(id: ViewerMessageId, data = {}) {
   ui.iframe.el?.contentWindow?.postMessage(
     { type: id, ...data }, '*'
   );
+}
+
+function normalizeUri(uri: string) {
+  try {
+    const u = new URL(uri);
+    if (u.protocol === 'file:') {
+      return `${data.configs.serverOrigin}${u.pathname}${u.hash}`;
+    }
+  } catch (e) {
+    void e;
+  }
+
+  return uri;
 }

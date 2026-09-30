@@ -8,11 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { clickOutside, portal, placeNear } from '@/utils/actions';
   import QtBrowserFindPopover from './QtBrowserFindPopover.svelte';
 
-  function onLoad() {
-    console.log('onLoad', ui.iframe.el?.contentWindow?.location);
-  }
-
-   const popover = $derived(ui.popovers.find);
+  const popover = $derived(ui.popovers.find);
 </script>
 
 <div class='w-full h-full relative'>
@@ -21,7 +17,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     title='viewer'
     class='w-full h-full'
     src={ui.iframe.src}
-    onload={onLoad}
   >
 
     {#if popover.visible}
@@ -44,10 +39,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </iframe>
 
   {#if ui.hoveredLink.length !== 0}
-    <span
-      class='absolute left-0 bottom-0 max-w-full truncate px-2 bg-[var(--vscode-editor-background)] text-[var(--vscode-foreground)]'
-    >
+    <span data-role='hover-link' class='absolute'>
       {ui.hoveredLink}
     </span>
   {/if}
 </div>
+
+<style>
+  [data-role='hover-link'] {
+    left: 0;
+    bottom: 0;
+    padding: 1px 5px;
+    opacity: 0.9;
+    border: 1px solid gray;
+    color: var(--vscode-editor-foreground);
+    background-color: var(--vscode-editor-background);
+  }
+</style>

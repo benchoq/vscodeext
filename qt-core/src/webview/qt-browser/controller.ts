@@ -7,8 +7,10 @@ import {
   WebviewPanel as Panel,
   ExtensionContext as Context
 } from 'vscode';
+import * as path from 'path';
 
 import { telemetry, DisposableStore } from 'qt-lib';
+import { fsFile } from '@/fs-utils';
 import { WebAppId } from '@/webview/shared/types';
 import { getWebAppInfo } from '@/webview/info';
 import { setupWebApp, createPanel } from '@/webview/utils';
@@ -32,11 +34,11 @@ export function addQtBrowser(context: Context) {
     }),
 
     window.registerWebviewPanelSerializer(info.viewType, {
-          async deserializeWebviewPanel(panel: Panel) {
-            QtBrowserController.restore(context, panel);
-            return Promise.resolve();
-          }
-        })
+      async deserializeWebviewPanel(panel: Panel) {
+        QtBrowserController.restore(context, panel);
+        return Promise.resolve();
+      }
+    })
   );
 }
 
@@ -66,7 +68,9 @@ class QtBrowserController {
     instance ??= new QtBrowserController(context, createPanel(appId));
     instance._panel.reveal();
 
-    void localServer.start();
+    void localServer.start().then(() => {
+      loadCss(localServer, context);
+    });
   }
 
   public static restore(context: Context, panel: Panel) {
@@ -76,5 +80,15 @@ class QtBrowserController {
     }
 
     instance = new QtBrowserController(context, panel);
+  }
+}
+
+function loadCss(server: QtBrowserLocalServer, context: Context) {
+  const css = fsFile(path.join(
+    context.extensionPath, 'res/others/doc-styles.css'
+  ));
+
+  if (css.exists()) {
+    server.setCssOverride(String(css.readAll()));
   }
 }

@@ -8,11 +8,9 @@ import {
   WebviewPanel as Panel,
   ExtensionContext as Context,
 } from 'vscode';
-import * as path from 'path';
 
 import { WebviewDispatcher } from '@/webview/dispatcher';
 import { Command, CommandId } from '@/webview/shared/message';
-import { fsFile } from '@/fs-utils';
 import { QtBrowserLocalServer } from './local-server';
 
 export class QtBrowserDispatcher extends WebviewDispatcher  {
@@ -25,7 +23,7 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
 
     this.setHandlers([
       [CommandId.QtBrowserGetConfig, this._onGetConfig],
-      [CommandId.QtBrowserResolveUri, this._onResolveUri]
+      [CommandId.QtBrowserOpenUriExt, this._onOpenUriExt]
     ]);
 
     void this._extContext;
@@ -42,29 +40,10 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
     });
   };
 
-  private readonly _onResolveUri = (cmd: Command) => {
-    const cssPath = path.join(this._extContext.extensionPath, 'res/others/doc-styles.css');
-    const cssFile = fsFile(cssPath);
-    if (cssFile.exists()) {
-      this._localServer.setCssOverride(String(cssFile.readAll()));
-    }
-
-    const given = Uri.parse(String(_.get(cmd.payload, 'uri', '')));
-    if (given.scheme === 'file') {
-      const target = given.with({
-        scheme: this._localServer.scheme,
-        authority: this._localServer.authority
-      })
-
-      this.channel.replyData(cmd, { uri: target.toString() });
-    } else if (given.toString().startsWith(this._localServer.origin)) {
-      this.channel.replyData(cmd, { uri: given.toString() });
-    } else {
-      env.openExternal(given);
-      // const opt = { viewColumn: ViewColumn.Beside };
-      // commands.executeCommand('simpleBrowser.api.open', given, opt);
-      this.channel.replyDone(cmd);
-    }
+  private readonly _onOpenUriExt = (cmd: Command) => {
+    env.openExternal(Uri.parse(String(_.get(cmd.payload, 'uri', ''))));
+    this.channel.replyDone(cmd);
   }
 }
 
+// file:///Users/bencho/tools/Qt/Docs/Qt-6.11.1/qtdoc/qtdoc-demos-car-configurator-example.html#running-the-example

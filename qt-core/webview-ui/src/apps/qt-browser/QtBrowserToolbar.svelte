@@ -11,17 +11,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from './states.svelte';
 
   const popover = $derived(ui.popovers.find);
-  // const loc = $derived.by(() => {
-  //   const e = ui.history.currentEntry;
-  //   return e ? e.href : '';
-  // });
+  let inputEl = $state(undefined as HTMLInputElement | undefined);
+
+  function onFocus() {
+    inputEl?.select();
+  }
 
   function onKeyDown(e: KeyboardEvent) {
     if (e.key === 'Enter') {
       viewlogic.openUri(ui.uri);
     }
   }
-
 </script>
 
 <div data-role='root' class='flex flex-row h-[32px] gap-1'>
@@ -29,8 +29,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {@render navButton('forward')}
   {@render bookmarkButton()}
   <input
+    bind:this={inputEl}
     bind:value={ui.uri}
     class='qt-input grow px-2'
+    onfocus={onFocus}
     onkeydown={onKeyDown}
   />
 
