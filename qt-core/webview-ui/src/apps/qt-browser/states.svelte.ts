@@ -25,7 +25,9 @@ export const data = $state({
 export const ui = $state({
   iframe: {
     el: undefined as HTMLIFrameElement | undefined,
-    src: ''
+    src: '',
+    title: '',
+    hoveredUri: '',
   },
 
   theme: VscodeThemeMonitor.createController(),
@@ -61,8 +63,6 @@ export const ui = $state({
   // search: {
   //   keyword: ''
   // },
-
-  hoveredLink: '',
 
   // popovers: {
   //   qtVersions: {

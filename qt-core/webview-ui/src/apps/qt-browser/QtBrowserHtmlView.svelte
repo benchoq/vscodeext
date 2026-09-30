@@ -38,9 +38,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {/if}
   </iframe>
 
-  {#if ui.hoveredLink.length !== 0}
+  {#if ui.iframe.hoveredUri.length !== 0}
     <span data-role='hover-link' class='absolute'>
-      {ui.hoveredLink}
+      {ui.iframe.hoveredUri}
     </span>
   {/if}
 </div>

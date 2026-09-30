@@ -63,6 +63,7 @@ export enum CommandId {
 
   // qt browser
   QtBrowserGetConfig,
+  QtBrowserSetTitle,
   QtBrowserOpenUriExt,
   QtBrowserReloadPage,
 

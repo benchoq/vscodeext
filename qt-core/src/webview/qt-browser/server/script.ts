@@ -59,9 +59,10 @@ export const ScriptToInject = /*html*/`
   window.addEventListener('load', (e) => {
     window.parent.postMessage({
       type: '${ViewerMessageId.ViewerLoaded }',
+      title: document.title,
       href: location.href,
       hash: location.hash,
-      pathname: location.pathname
+      pathname: location.pathname,
     }, '*');
   });
 

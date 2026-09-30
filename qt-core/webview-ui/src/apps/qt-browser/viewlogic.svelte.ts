@@ -87,13 +87,14 @@ function onMessageFromVscode(reply: CommandReply) {
 function onMessageFromViewer(e: MessageEvent) {
   switch (e.data?.type) {
     case ViewerMessageId.ViewerLoaded:
-      ui.hoveredLink = '';
-      // console.log('loaded from viewer', e.data);
+      ui.iframe.hoveredUri = '';
+      ui.iframe.title = e.data.title;
+      void vscode.post(CommandId.QtBrowserSetTitle, { title: e.data.title });
       break;
 
     case ViewerMessageId.ViewerHoverChanged:
       if (typeof e.data.href === 'string') {
-        ui.hoveredLink = helpers.toFileUri(e.data.href);
+        ui.iframe.hoveredUri = helpers.toFileUri(e.data.href);
       }
       break;
 

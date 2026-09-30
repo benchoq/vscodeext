@@ -23,7 +23,8 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
 
     this.setHandlers([
       [CommandId.QtBrowserGetConfig, this._onGetConfig],
-      [CommandId.QtBrowserOpenUriExt, this._onOpenUriExt]
+      [CommandId.QtBrowserSetTitle, this._onSetTitle],
+      [CommandId.QtBrowserOpenUriExt, this._onOpenUriExt],
     ]);
 
     void this._extContext;
@@ -43,6 +44,11 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
       serverOrigin: this._localServer.origin
     });
   };
+
+  private readonly _onSetTitle = (cmd: Command) => {
+    this._panel.title = String(_.get(cmd.payload, 'title', ''));;
+    this.channel.replyDone(cmd);
+  }
 
   private readonly _onOpenUriExt = (cmd: Command) => {
     env.openExternal(Uri.parse(String(_.get(cmd.payload, 'uri', ''))));
