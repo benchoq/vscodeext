@@ -932,6 +932,20 @@ div.multi-column div {
   left:0
 }
 
+/* overrides */
+.landing .col-1 {
+    width: 75%;
+}
+
+.landing .col-2 {
+    width: 25%;
+    margin-left: 0;
+}
+
+.landing .col-1 p {
+    width: 100%;
+}
+
 /* ---------- scrollbar ---------- */
 
 * {
