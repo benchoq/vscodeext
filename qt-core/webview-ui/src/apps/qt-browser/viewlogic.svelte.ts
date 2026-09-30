@@ -112,6 +112,14 @@ function onMessageFromViewer(e: MessageEvent) {
       }));
       break;
 
+    case ViewerMessageId.ViewerContextMenu:
+      console.log('contextmenu');
+      break;
+
+    case ViewerMessageId.ViewerMouseDown:
+      console.log('mousedown');
+      break;
+
     default:
       break;
   }

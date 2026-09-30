@@ -40,6 +40,8 @@ export enum ViewerMessageId {
   ViewerLoaded = 'qt-browser-loaded',
   ViewerClicked = 'qt-browser-viewer-clicked',
   ViewerKeyDown = 'qt-browser-viewer-key-down',
+  ViewerMouseDown = 'qt-browser-viewer-mouse-down',
+  ViewerContextMenu = 'qt-browser-viewer-contextmenu',
   ViewerHoverChanged = 'qt-browser-viewer-hover-changed',
 }
 

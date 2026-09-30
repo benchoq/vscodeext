@@ -120,5 +120,18 @@ export const ScriptToInject = /*html*/`
       },
     }, '*');
   }, true);
-</script>`;
 
+  window.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    window.parent.postMessage({
+      type: '${ViewerMessageId.ViewerContextMenu}',
+      fields: { x: e.clientX, y: e.clientY },
+    }, '*');
+  }, true);
+
+  window.addEventListener('mousedown', () => {
+    window.parent.postMessage({
+      type: '${ViewerMessageId.ViewerMouseDown}',
+    }, '*');
+  }, true);
+</script>`;
