@@ -11,6 +11,7 @@ import {
 
 import { data, ui } from './states.svelte';
 import { type FindAction } from './types.svelte';
+import * as helpers from './helpers';
 
 export async function onAppMount() {
   ui.theme.monitor.start();
@@ -25,7 +26,7 @@ export async function onAppDestroy() {
 }
 
 export async function openUri(uri: string) {
-  const u = normalizeUri(uri);
+  const u = helpers.toLocalServerUri(uri);
 
   if (!u.startsWith(data.configs.serverOrigin)) {
     void vscode.post(CommandId.QtBrowserOpenUriExt, { uri });
@@ -59,7 +60,7 @@ export function findInPage(action: FindAction) {
     ui.popovers.find.visible = false;
   }
 
-  postToViewer(ViewerMessageId.FindInPage, {
+  helpers.postToViewer(ViewerMessageId.FindInPage, {
     keyword: ui.popovers.find.keyword,
     action
   });
@@ -72,26 +73,27 @@ async function loadConfigs() {
 }
 
 function onVscodeThemeChanged() {
-  postToViewer(ViewerMessageId.ApplyVscodeTheme, {
+  helpers.postToViewer(ViewerMessageId.ApplyVscodeTheme, {
     vars: ui.theme.getAllVscodeCssVars()
   });
 }
 
 function onMessageFromVscode(reply: CommandReply) {
   if (reply.id === CommandId.QtBrowserReloadPage) {
-    postToViewer(ViewerMessageId.ReloadPage);
+    helpers.postToViewer(ViewerMessageId.ReloadPage);
   }
 }
 
 function onMessageFromViewer(e: MessageEvent) {
   switch (e.data?.type) {
     case ViewerMessageId.ViewerLoaded:
+      ui.hoveredLink = '';
       // console.log('loaded from viewer', e.data);
       break;
 
     case ViewerMessageId.ViewerHoverChanged:
       if (typeof e.data.href === 'string') {
-        ui.hoveredLink = e.data.href;
+        ui.hoveredLink = helpers.toFileUri(e.data.href);
       }
       break;
 
@@ -116,24 +118,4 @@ function onMessageFromViewer(e: MessageEvent) {
   // } else if (e.data?.type === ViewerMessageId.ViewerHoverChanged) {
   //   ui.hoveredLink = e.data?.href ?? '';
   // }
-}
-
-
-function postToViewer(id: ViewerMessageId, data = {}) {
-  ui.iframe.el?.contentWindow?.postMessage(
-    { type: id, ...data }, '*'
-  );
-}
-
-function normalizeUri(uri: string) {
-  try {
-    const u = new URL(uri);
-    if (u.protocol === 'file:') {
-      return `${data.configs.serverOrigin}${u.pathname}${u.hash}`;
-    }
-  } catch (e) {
-    void e;
-  }
-
-  return uri;
 }

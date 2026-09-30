@@ -23,8 +23,6 @@ export const data = $state({
 });
 
 export const ui = $state({
-  uri: '',
-
   iframe: {
     el: undefined as HTMLIFrameElement | undefined,
     src: ''

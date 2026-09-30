@@ -7,20 +7,36 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import ChevronRight from "@/symbols/ChevronRight.svelte";
   import { Bookmark, TextSearch } from "@lucide/svelte";
 
-  import * as viewlogic from './viewlogic.svelte';
   import { ui } from './states.svelte';
+  import * as helpers from './helpers';
+  import * as viewlogic from './viewlogic.svelte';
 
+  let el = $state(undefined as HTMLInputElement | undefined);
+  let draft = $state<string | null>(null);
+  const value = $derived(helpers.toFileUri(draft ?? ui.iframe.src));
   const popover = $derived(ui.popovers.find);
-  let inputEl = $state(undefined as HTMLInputElement | undefined);
-
-  function onFocus() {
-    inputEl?.select();
-  }
 
   function onKeyDown(e: KeyboardEvent) {
     if (e.key === 'Enter') {
-      viewlogic.openUri(ui.uri);
+      viewlogic.openUri(value);
+      reset();
+    } else if (e.key === 'Escape') {
+      reset();
     }
+  }
+
+  function toggleFindPopover(e: MouseEvent) {
+    popover.visible = !popover.visible;
+    e.stopPropagation();
+  }
+
+  function reset() {
+    draft = null;
+    selectAll();
+  }
+
+  function selectAll() {
+    el?.select();
   }
 </script>
 
@@ -28,11 +44,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {@render navButton('back')}
   {@render navButton('forward')}
   {@render bookmarkButton()}
+
   <input
-    bind:this={inputEl}
-    bind:value={ui.uri}
+    bind:this={el}
+    {value}
     class='qt-input grow px-2'
-    onfocus={onFocus}
+    oninput={(e) => { draft = e.currentTarget.value; }}
+    onblur={() => { draft = null;  }}
+    onfocus={() => { selectAll(); }}
     onkeydown={onKeyDown}
   />
 
@@ -41,10 +60,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-role='nav-button'
     class='qt-button flex items-center justify-center'
     aria-pressed={popover.visible}
-    onclick={(e: MouseEvent) => {
-      popover.visible = !popover.visible;
-      e.stopPropagation();
-    }}
+    onclick={toggleFindPopover}
   >
     <TextSearch />
   </button>
