@@ -5,7 +5,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { ui } from './states.svelte';
-  import { clickOutside, portal, placeNear } from '@/utils/actions';
+
+  import Popover from './others/Popover.svelte';
   import QtBrowserFindPopover from './QtBrowserFindPopover.svelte';
   import QtBrowserContextMenu from './QtBrowserContextMenu.svelte';
 
@@ -35,34 +36,25 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   ></iframe>
 
   {#if popover.visible}
-    <div
-      use:portal
-      use:placeNear={{
-        ref: popover.refEl,
-        placement: 'bottom-end',
-        offset: 5
-      }}
-      use:clickOutside={(e: MouseEvent) => {
+    <Popover
+      reference={popover.refEl}
+      placement='bottom-end'
+      offset={5}
+      onClose={() => {
         popover.visible = false;
-        e.stopPropagation();
       }}
-      class="z-1"
     >
       <QtBrowserFindPopover />
-    </div>
+    </Popover>
   {/if}
 
   {#if ui.popovers.contextMenu.visible}
-    <div
-      use:portal
-      use:placeNear={{
-        ref: virtualRef,
-        placement: 'bottom-start',
-        offset: 0
-      }}
+    <Popover
+      reference={virtualRef}
+      placement='bottom-start'
     >
       <QtBrowserContextMenu />
-    </div>
+    </Popover>
   {/if}
 
   {#if ui.iframe.hoveredUri.length !== 0}
