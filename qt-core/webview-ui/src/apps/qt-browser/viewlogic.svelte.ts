@@ -26,12 +26,13 @@ export async function onAppDestroy() {
 
 export async function openUri(uri: string) {
   const u = normalizeUri(uri);
+
   if (!u.startsWith(data.configs.serverOrigin)) {
     void vscode.post(CommandId.QtBrowserOpenUriExt, { uri });
     return;
   }
 
-  // TODO: check if it's allowed to access
+  // TODO: check if it's allowed to access or exists
   ui.iframe.src = u;
   ui.history.push({
     title: 'aaa',

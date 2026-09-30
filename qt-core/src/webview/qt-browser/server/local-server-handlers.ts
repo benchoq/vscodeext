@@ -5,7 +5,8 @@ import * as fs from 'fs';
 import * as http from 'http';
 import * as path from 'path';
 import { createWrappedLogger } from 'qt-lib';
-import { ScriptToInject } from './injected-script';
+import { ScriptToInject } from './script';
+import { NotFoundPage } from './not-found';
 
 export interface RequestContext {
   filePath: string;
@@ -85,7 +86,7 @@ export class FallbackHandler implements RequestHandler {
 
 export function sendNotFound(res: http.ServerResponse, filePath: string) {
   res.writeHead(404);
-  res.end('Not found');
+  res.end(NotFoundPage);
   logger.text('Not found').data({ filePath }).error();
 }
 
