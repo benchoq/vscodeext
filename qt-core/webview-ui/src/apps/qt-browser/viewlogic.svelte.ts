@@ -20,6 +20,7 @@ export async function onAppMount() {
   vscode.onDidReceiveNotification(onMessageFromVscode);
 
   await loadConfigs();
+  await loadBookmarks();
 }
 
 export async function onAppDestroy() {
@@ -53,6 +54,21 @@ export function copySelection() {
   helpers.postToViewer(ViewerMessageId.CopySelection);
 }
 
+export async function updateBookmark(
+  uri: string,
+  action: 'add' | 'remove' | 'toggle'
+) {
+  const r = await vscode.post(CommandId.QtBrowserUpdateBookmark, {
+    uri, action
+  })
+
+  const uris = _.get(r, 'uris', []);
+  if (Array.isArray(uris) && uris.every((e) => typeof e === 'string')) {
+    data.bookmarks = uris;
+    console.log($state.snapshot(data.bookmarks));
+  }
+}
+
 export function findInPage(action: FindAction) {
   const w = ui.iframe.el?.contentWindow
   if (!w) {
@@ -74,6 +90,15 @@ export function findInPage(action: FindAction) {
 async function loadConfigs() {
   const r = await vscode.post(CommandId.QtBrowserGetConfig);
   data.configs.serverOrigin = String(_.get(r, 'serverOrigin', '')).trim();
+}
+
+async function loadBookmarks() {
+  const r = await vscode.post(CommandId.QtBrowserGetBookmarks);
+  const uris = _.get(r, 'uris', []);
+  if (Array.isArray(uris) && uris.every((e) => typeof e === 'string')) {
+    data.bookmarks = uris;
+    console.log($state.snapshot(data.bookmarks));
+  }
 }
 
 function onVscodeThemeChanged() {

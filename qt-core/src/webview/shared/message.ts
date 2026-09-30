@@ -66,6 +66,8 @@ export enum CommandId {
   QtBrowserSetTitle,
   QtBrowserOpenUriExt,
   QtBrowserReloadPage,
+  QtBrowserGetBookmarks,
+  QtBrowserUpdateBookmark,
 
   // common
   CommonViewClosed,

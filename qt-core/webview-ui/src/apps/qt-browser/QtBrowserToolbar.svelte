@@ -5,9 +5,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import ChevronRight from "@/symbols/ChevronRight.svelte";
-  import { Bookmark, TextSearch } from "@lucide/svelte";
+  import {
+    Bookmark,
+    BookmarkCheck,
+    TextSearch,
+    FolderArchive
+  } from "@lucide/svelte";
 
-  import { ui } from './states.svelte';
+  import { data, ui } from './states.svelte';
   import * as helpers from './helpers';
   import * as viewlogic from './viewlogic.svelte';
 
@@ -44,6 +49,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {@render navButton('back')}
   {@render navButton('forward')}
   {@render bookmarkButton()}
+  {@render bookmarkOpenButton()}
 
   <input
     bind:this={el}
@@ -85,8 +91,27 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <button
     data-role='nav-button'
     class='qt-button flex items-center justify-center'
+    onclick={() => {
+      viewlogic.updateBookmark(ui.iframe.src, 'toggle');
+    }}
   >
-    <Bookmark />
+    {#if data.bookmarks.includes(ui.iframe.src)}
+      <BookmarkCheck />
+    {:else}
+      <Bookmark />
+    {/if}
+  </button>
+{/snippet}
+
+{#snippet bookmarkOpenButton()}
+  <button
+    data-role='nav-button'
+    class='qt-button flex items-center justify-center'
+    onclick={() => {
+      ui.layers.bookmark = !ui.layers.bookmark;
+    }}
+  >
+    <FolderArchive />
   </button>
 {/snippet}
 

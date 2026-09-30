@@ -7,6 +7,7 @@ import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import { HistoryManager } from './types.svelte';
 
 export const data = $state({
+  bookmarks: [] as string[],
   configs: {
     serverOrigin: '' // expects 'http://127.0.0.1:<port>'
   }
@@ -35,41 +36,9 @@ export const ui = $state({
     }
   },
 
-  // theme: VscodeThemeMonitor.createController(),
-  // mode: 'toc' as UiMode,
-  // tocTree: new TocTreeModel(),
-  // iframeEl: undefined as HTMLIFrameElement | undefined,
-  // recentPageLoadContext: '' as PageLoadContext,
-  // sidebar: {
-  //   width: 300,
-  //   min: 200,
-  //   max: 650
-  // },
-
-  // selected: {
-  //   package: undefined as QtDocRootInfo | undefined
-  // },
-
-  // index: {
-  //   filter: { keyword: '' },
-  //   filtered: [] as IndexMatch[]
-  // },
-
-  // search: {
-  //   keyword: ''
-  // },
-
-  // popovers: {
-  //   qtVersions: {
-  //     visible: false,
-  //     refEl: undefined as HTMLButtonElement | undefined,
-  //   },
-  //   find: {
-  //     keyword: '',
-  //     visible: false,
-  //     refEl: undefined as HTMLButtonElement | undefined,
-  //   },
-  // },
+  layers: {
+    bookmark: false
+  },
 
   history: new HistoryManager()
 });

@@ -12,8 +12,11 @@ import {
 import { WebviewDispatcher } from '@/webview/dispatcher';
 import { Command, CommandId } from '@/webview/shared/message';
 import { QtBrowserLocalServer } from './server/local-server';
+import { QtBrowserBookmarkManager } from './bookmark-manager';
 
 export class QtBrowserDispatcher extends WebviewDispatcher  {
+  private readonly _bookmarks = new QtBrowserBookmarkManager();
+
   public constructor(
     private readonly _extContext: Context,
     private readonly _panel: Panel,
@@ -25,6 +28,8 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
       [CommandId.QtBrowserGetConfig, this._onGetConfig],
       [CommandId.QtBrowserSetTitle, this._onSetTitle],
       [CommandId.QtBrowserOpenUriExt, this._onOpenUriExt],
+      [CommandId.QtBrowserGetBookmarks, this._onGetBookmarks],
+      [CommandId.QtBrowserUpdateBookmark, this._onUpdateBookmark]
     ]);
 
     void this._extContext;
@@ -54,6 +59,22 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
     env.openExternal(Uri.parse(String(_.get(cmd.payload, 'uri', ''))));
     this.channel.replyDone(cmd);
   }
+
+  private readonly _onGetBookmarks = (cmd: Command) => {
+    this.channel.replyData(cmd, { uris: this._bookmarks.uris });
+  }
+
+  private readonly _onUpdateBookmark = (cmd: Command) => {
+    const uri = String(_.get(cmd.payload, 'uri', ''));
+    const action = String(_.get(cmd.payload, 'action', '')).trim();
+    const changed = this._bookmarks.update(uri, action);
+
+    this.channel.replyData(cmd, {
+      uris: this._bookmarks.uris, changed
+    });
+  }
 }
 
-// file:///Users/bencho/tools/Qt/Docs/Qt-6.11.1/qtdoc/qtdoc-demos-car-configurator-example.html#running-the-example
+/*
+file:///Users/bencho/tools/Qt/Docs/Qt-6.11.1/qtdoc/qtdoc-demos-car-configurator-example.html#running-the-example
+*/
