@@ -1,19 +1,28 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-export class QtBrowserBookmarkManager {
-  private readonly _uris: string[] = [];
+import * as vscode from "vscode";
+import { BookmarkEntry } from "@/webview/shared/qt-browser";
 
-  public get uris() {
-    return this._uris;
+const STORAGE_KEY = "qtBrowser.bookmarks";
+
+export class QtBrowserBookmarkManager {
+  private _entries: BookmarkEntry[] = [];
+
+  constructor(private readonly _memento: vscode.Memento) {
+    this.load();
+  }
+
+  public get entries() {
+    return this._entries;
   }
 
   public contains(uri: string) {
-    return this._uris.includes(uri);
+    return this._findIndex(uri) !== -1;
   }
 
-  public update(uri: string, action: string) {
-    const index = this._uris.indexOf(uri);
+  public update(uri: string, title: string, action: string) {
+    const index = this._findIndex(uri);
     const exists = index !== -1;
 
     if (action === 'toggle') {
@@ -21,15 +30,29 @@ export class QtBrowserBookmarkManager {
     }
 
     if (action === 'add' && !exists) {
-      this._uris.push(uri);
+      this._entries.push({ uri, title });
+      void this.save();
       return true;
     }
 
     if (action === 'remove' && exists) {
-      this._uris.splice(index, 1);
+      this._entries.splice(index, 1);
+      void this.save();
       return true;
     }
 
     return false;
+  }
+
+  public load() {
+    this._entries = [...this._memento.get<BookmarkEntry[]>(STORAGE_KEY, [])];
+  }
+
+  public save() {
+    return this._memento.update(STORAGE_KEY, this._entries);
+  }
+
+  private _findIndex(uri: string) {
+    return this._entries.findIndex((e) => e.uri === uri);
   }
 }

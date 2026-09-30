@@ -33,6 +33,11 @@ export interface FullTextMatch {
   snippet: string;
 }
 
+export interface BookmarkEntry {
+  uri: string;
+  title: string;
+}
+
 export enum ViewerMessageId {
   FindInPage = 'qt-browser-find-in-page',
   ReloadPage = 'qt-browser-reload-page',
@@ -112,5 +117,17 @@ export function isFullTextMatch(x: unknown): x is FullTextMatch {
     o.type === 'full-text' &&
     isHtmlPageInfo(o.page) &&
     typeof o.snippet === 'string'
+  );
+}
+
+export function isBookmarkEntry(x: unknown): x is BookmarkEntry {
+  if (typeof x !== 'object' || x === null) {
+    return false;
+  }
+
+  const o = x as Record<string, unknown>;
+  return (
+    typeof o.uri === 'string' &&
+    typeof o.title === 'string'
   );
 }

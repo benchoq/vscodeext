@@ -12,7 +12,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     FolderArchive
   } from "@lucide/svelte";
 
-  import { data, ui } from './states.svelte';
+  import { ui } from './states.svelte';
   import * as helpers from './helpers';
   import * as viewlogic from './viewlogic.svelte';
 
@@ -92,10 +92,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-role='nav-button'
     class='qt-button flex items-center justify-center'
     onclick={() => {
-      viewlogic.updateBookmark(ui.iframe.src, 'toggle');
+      viewlogic.updateBookmark(ui.iframe.src, ui.iframe.title, 'toggle');
     }}
   >
-    {#if data.bookmarks.includes(ui.iframe.src)}
+    {#if viewlogic.isBookmarked(ui.iframe.src)}
       <BookmarkCheck />
     {:else}
       <Bookmark />

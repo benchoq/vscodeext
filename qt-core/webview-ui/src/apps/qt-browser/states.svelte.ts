@@ -4,10 +4,11 @@
 import type { Coords } from '@floating-ui/dom';
 
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
+import { type BookmarkEntry } from '@shared/qt-browser';
 import { HistoryManager } from './types.svelte';
 
 export const data = $state({
-  bookmarks: [] as string[],
+  bookmarks: [] as BookmarkEntry[],
   configs: {
     serverOrigin: '' // expects 'http://127.0.0.1:<port>'
   }

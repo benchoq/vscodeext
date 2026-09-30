@@ -15,7 +15,7 @@ import { QtBrowserLocalServer } from './server/local-server';
 import { QtBrowserBookmarkManager } from './bookmark-manager';
 
 export class QtBrowserDispatcher extends WebviewDispatcher  {
-  private readonly _bookmarks = new QtBrowserBookmarkManager();
+  private readonly _bookmarks: QtBrowserBookmarkManager;
 
   public constructor(
     private readonly _extContext: Context,
@@ -24,6 +24,7 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
   ) {
     super('qt-browser', _panel);
 
+    this._bookmarks = new QtBrowserBookmarkManager(this._extContext.globalState);
     this.setHandlers([
       [CommandId.QtBrowserGetConfig, this._onGetConfig],
       [CommandId.QtBrowserSetTitle, this._onSetTitle],
@@ -61,16 +62,18 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
   }
 
   private readonly _onGetBookmarks = (cmd: Command) => {
-    this.channel.replyData(cmd, { uris: this._bookmarks.uris });
+    this.channel.replyData(cmd, { entries: this._bookmarks.entries });
   }
 
   private readonly _onUpdateBookmark = (cmd: Command) => {
     const uri = String(_.get(cmd.payload, 'uri', ''));
+    const title = String(_.get(cmd.payload, 'title', ''));
     const action = String(_.get(cmd.payload, 'action', '')).trim();
-    const changed = this._bookmarks.update(uri, action);
+
+    const changed = this._bookmarks.update(uri, title, action);
 
     this.channel.replyData(cmd, {
-      uris: this._bookmarks.uris, changed
+      entries: this._bookmarks.entries, changed
     });
   }
 }
