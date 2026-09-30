@@ -112,11 +112,24 @@ function onMessageFromViewer(e: MessageEvent) {
       }));
       break;
 
-    case ViewerMessageId.ViewerContextMenu:
-      console.log('contextmenu');
+    case ViewerMessageId.ViewerContextMenu: {
+      const r = ui.iframe.el?.getBoundingClientRect();
+      if (r) {
+        ui.popovers.contextMenu.pos = {
+          x: r.left + e.data.x,
+          y: r.top + e.data.y,
+        };
+        ui.popovers.contextMenu.visible = true;
+      }
+
+      console.log('contextmenu', $state.snapshot(
+        ui.popovers.contextMenu.pos)
+      );
       break;
+    }
 
     case ViewerMessageId.ViewerMouseDown:
+      ui.popovers.contextMenu.visible = false;
       console.log('mousedown');
       break;
 

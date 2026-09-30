@@ -7,7 +7,8 @@ import {
   offset,
   autoUpdate,
   computePosition,
-  type Placement
+  type Placement,
+  type ReferenceElement
 } from '@floating-ui/dom';
 
 export function placeNear(node: HTMLElement, o: PlaceOption) {
@@ -142,7 +143,7 @@ export function tooltip(node: HTMLElement, options: TooltipOptions) {
 
 // helpers
 interface PlaceOption {
-  ref?: HTMLElement;
+  ref?: ReferenceElement;
   width?: 'full' | number;
   offset?: number;
   placement?: Placement;
@@ -158,12 +159,15 @@ async function place(node: HTMLElement, o: PlaceOption) {
     return;
   }
 
+  node.style.position = 'fixed';
+
   if (o.width) {
     const rr = o.ref.getBoundingClientRect();
     node.style.width = `${o.width === 'full' ? rr.width : o.width}px`;
   }
 
   const { x, y } = await computePosition(o.ref, node, {
+    strategy: 'fixed',
     placement: o.placement ?? 'bottom-start',
     middleware: [offset(o.offset ?? 3), flip(), shift({ padding: 8 })]
   });

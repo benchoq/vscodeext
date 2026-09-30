@@ -1,22 +1,12 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-// import {
-//   type TocEntry,
-//   type IndexMatch,
-//   type FullTextMatch,
-//   type QtDocRootInfo
-// } from '@shared/doc-browser';
+import type { Coords } from '@floating-ui/dom';
+
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import { HistoryManager } from './types.svelte';
 
-// export type UiMode = 'toc' | 'index' | 'text';
-
 export const data = $state({
-  // packages: [] as QtDocRootInfo[],
-  // toc: [] as TocEntry[],
-  // indexes: [] as IndexMatch[],
-  // fullText: [] as FullTextMatch[],
   configs: {
     serverOrigin: '' // expects 'http://127.0.0.1:<port>'
   }
@@ -38,6 +28,11 @@ export const ui = $state({
       visible: false,
       refEl: undefined as HTMLButtonElement | undefined,
     },
+
+    contextMenu: {
+      pos: undefined as Coords | undefined,
+      visible: false,
+    }
   },
 
   // theme: VscodeThemeMonitor.createController(),

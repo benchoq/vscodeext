@@ -19,7 +19,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-role='find-input'
     class='qt-input min-w-[200px] px-2'
     placeholder="Find in page"
-
   />
   {@render toolButton('prev', ChevronUp)}
   {@render toolButton('next', ChevronDown)}

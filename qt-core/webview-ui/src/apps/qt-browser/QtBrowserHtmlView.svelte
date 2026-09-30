@@ -7,8 +7,23 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from './states.svelte';
   import { clickOutside, portal, placeNear } from '@/utils/actions';
   import QtBrowserFindPopover from './QtBrowserFindPopover.svelte';
+  import QtBrowserContextMenu from './QtBrowserContextMenu.svelte';
 
   const popover = $derived(ui.popovers.find);
+
+  const pos = $derived(ui.popovers.contextMenu.pos);
+  const virtualRef = $derived(pos
+    ? {
+        getBoundingClientRect: () => ({
+          x: pos.x, y: pos.y,
+          top: pos.y, left: pos.x,
+          right: pos.x, bottom: pos.y,
+          width: 0, height: 0,
+        }),
+      }
+    : undefined
+  );
+
 </script>
 
 <div class='w-full h-full relative'>
@@ -17,26 +32,38 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     title='viewer'
     class='w-full h-full'
     src={ui.iframe.src}
-  >
+  ></iframe>
 
-    {#if popover.visible}
-      <div
-        use:portal
-        use:placeNear={{
-          ref: popover.refEl,
-          placement: 'bottom-end',
-          offset: 5
-        }}
-        use:clickOutside={(e: MouseEvent) => {
-          popover.visible = false;
-          e.stopPropagation();
-        }}
-        class="fixed z-1"
-      >
-        <QtBrowserFindPopover />
-      </div>
-    {/if}
-  </iframe>
+  {#if popover.visible}
+    <div
+      use:portal
+      use:placeNear={{
+        ref: popover.refEl,
+        placement: 'bottom-end',
+        offset: 5
+      }}
+      use:clickOutside={(e: MouseEvent) => {
+        popover.visible = false;
+        e.stopPropagation();
+      }}
+      class="z-1"
+    >
+      <QtBrowserFindPopover />
+    </div>
+  {/if}
+
+  {#if ui.popovers.contextMenu.visible}
+    <div
+      use:portal
+      use:placeNear={{
+        ref: virtualRef,
+        placement: 'bottom-start',
+        offset: 0
+      }}
+    >
+      <QtBrowserContextMenu />
+    </div>
+  {/if}
 
   {#if ui.iframe.hoveredUri.length !== 0}
     <span data-role='hover-link' class='absolute'>

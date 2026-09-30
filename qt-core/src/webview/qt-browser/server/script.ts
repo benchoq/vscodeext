@@ -172,7 +172,8 @@ const ContextMenuScript = /*js*/`
   addListener('contextmenu', (e) => {
     e.preventDefault();
     notifyParent('${ViewerMessageId.ViewerContextMenu}', {
-      fields: { x: e.clientX, y: e.clientY },
+      x: e.clientX,
+      y: e.clientY
     });
   });
 
