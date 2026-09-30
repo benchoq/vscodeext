@@ -64,6 +64,7 @@ export enum CommandId {
   // qt browser
   QtBrowserGetConfig,
   QtBrowserOpenUriExt,
+  QtBrowserReloadPage,
 
   // common
   CommonViewClosed,
@@ -75,6 +76,7 @@ export const OneWayCommandIds = [
   CommandId.NewItemHasError,
   CommandId.NewItemCreationRequested,
   CommandId.QrcDocChanged,
+  CommandId.QtBrowserReloadPage,
   CommandId.CommonViewClosed,
   CommandId.CommonVscodeThemeChanged
 ];

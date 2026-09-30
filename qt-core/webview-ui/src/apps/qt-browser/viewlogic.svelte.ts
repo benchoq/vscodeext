@@ -4,7 +4,7 @@
 import _ from 'lodash';
 
 import { vscode } from '@/apps/vscode';
-import { CommandId } from '@shared/message';
+import { CommandId, type CommandReply } from '@shared/message';
 import {
   ViewerMessageId
 } from '@shared/qt-browser';
@@ -16,6 +16,7 @@ export async function onAppMount() {
   ui.theme.monitor.start();
   ui.theme.monitor.onChanged(onVscodeThemeChanged);
   window.addEventListener('message', onMessageFromViewer);
+  vscode.onDidReceiveNotification(onMessageFromVscode);
 
   await loadConfigs();
 }
@@ -29,8 +30,6 @@ export async function openUri(uri: string) {
     void vscode.post(CommandId.QtBrowserOpenUriExt, { uri });
     return;
   }
-
-  console.log("++++++++++", u);
 
   // TODO: check if it's allowed to access
   ui.iframe.src = u;
@@ -75,6 +74,12 @@ function onVscodeThemeChanged() {
   postToViewer(ViewerMessageId.ApplyVscodeTheme, {
     vars: ui.theme.getAllVscodeCssVars()
   });
+}
+
+function onMessageFromVscode(reply: CommandReply) {
+  if (reply.id === CommandId.QtBrowserReloadPage) {
+    postToViewer(ViewerMessageId.ReloadPage);
+  }
 }
 
 function onMessageFromViewer(e: MessageEvent) {

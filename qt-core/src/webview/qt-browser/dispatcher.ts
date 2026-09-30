@@ -11,7 +11,7 @@ import {
 
 import { WebviewDispatcher } from '@/webview/dispatcher';
 import { Command, CommandId } from '@/webview/shared/message';
-import { QtBrowserLocalServer } from './local-server';
+import { QtBrowserLocalServer } from './server/local-server';
 
 export class QtBrowserDispatcher extends WebviewDispatcher  {
   public constructor(
@@ -32,6 +32,10 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
 
   public override dispose() {
     super.dispose();
+  }
+
+  public notifyReload() {
+    this.channel.notify(CommandId.QtBrowserReloadPage);
   }
 
   private readonly _onGetConfig = (cmd: Command) => {

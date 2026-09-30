@@ -8,7 +8,7 @@ pre, .LegaleseLeft {
   font-family: var(--vscode-editor-font-family, Courier, monospace);
   font-weight: 600;
   vertical-align: top;
-  margin: 15px 85px 15px 35px;
+  margin: 50px 85px 15px 35px;
   padding: 25px;
   width: 90%;
   overflow-x:auto;

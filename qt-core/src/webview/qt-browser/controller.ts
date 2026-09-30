@@ -7,19 +7,19 @@ import {
   WebviewPanel as Panel,
   ExtensionContext as Context
 } from 'vscode';
-import * as path from 'path';
 
 import { telemetry, DisposableStore } from 'qt-lib';
-import { fsFile } from '@/fs-utils';
 import { WebAppId } from '@/webview/shared/types';
 import { getWebAppInfo } from '@/webview/info';
 import { setupWebApp, createPanel } from '@/webview/utils';
-import { QtBrowserLocalServer } from './local-server';
+import { QtBrowserLocalServer } from './server/local-server';
+import { QtBrowserDocStyleProvider } from './server/style-provider';
 import { QtBrowserDispatcher } from './dispatcher';
 import * as consts from './constants';
 
 const appId: WebAppId = 'qt-browser';
 const localServer = new QtBrowserLocalServer();
+
 let instance: QtBrowserController | undefined;
 
 export function addQtBrowser(context: Context) {
@@ -43,6 +43,7 @@ export function addQtBrowser(context: Context) {
 }
 
 class QtBrowserController {
+  private readonly _cssProvider: QtBrowserDocStyleProvider;
   private readonly _dispatcher: QtBrowserDispatcher;
   private readonly _disposables = new DisposableStore();
 
@@ -52,8 +53,14 @@ class QtBrowserController {
   ) {
     setupWebApp(appId, context, this._panel);
 
+    this._cssProvider = new QtBrowserDocStyleProvider(context);
     this._dispatcher = new QtBrowserDispatcher(context, this._panel, localServer);
     this._disposables.push(
+      this._cssProvider,
+      this._cssProvider.onCssChanged((css: string) => {
+        loadCss(css);
+        this._dispatcher.notifyReload();
+      }),
       this._dispatcher,
       this._panel.onDidDispose(this.dispose.bind(this))
     );
@@ -69,7 +76,7 @@ class QtBrowserController {
     instance._panel.reveal();
 
     void localServer.start().then(() => {
-      loadCss(localServer, context);
+      loadCss(instance?._cssProvider.cssLines);
     });
   }
 
@@ -83,12 +90,9 @@ class QtBrowserController {
   }
 }
 
-function loadCss(server: QtBrowserLocalServer, context: Context) {
-  const css = fsFile(path.join(
-    context.extensionPath, 'res/others/doc-styles.css'
-  ));
-
-  if (css.exists()) {
-    server.setCssOverride(String(css.readAll()));
+// helpers
+function loadCss(css: string | undefined) {
+  if (css) {
+    localServer.setCssOverride(css);
   }
 }
