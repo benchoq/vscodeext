@@ -7,8 +7,13 @@ import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import { type BookmarkEntry } from '@shared/qt-browser';
 import { HistoryManager } from './types.svelte';
 
+export interface BookmarkItem {
+  data: BookmarkEntry;
+  checked: boolean
+}
+
 export const data = $state({
-  bookmarks: [] as BookmarkEntry[],
+  bookmarks: [] as BookmarkItem[],
   configs: {
     serverOrigin: '' // expects 'http://127.0.0.1:<port>'
   }

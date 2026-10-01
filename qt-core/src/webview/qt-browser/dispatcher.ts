@@ -13,6 +13,7 @@ import { WebviewDispatcher } from '@/webview/dispatcher';
 import { Command, CommandId } from '@/webview/shared/message';
 import { QtBrowserLocalServer } from './server/local-server';
 import { QtBrowserBookmarkManager } from './bookmark-manager';
+import { BookmarkEntry } from '../shared/qt-browser';
 
 export class QtBrowserDispatcher extends WebviewDispatcher  {
   private readonly _bookmarks: QtBrowserBookmarkManager;
@@ -30,6 +31,7 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
       [CommandId.QtBrowserSetTitle, this._onSetTitle],
       [CommandId.QtBrowserOpenUriExt, this._onOpenUriExt],
       [CommandId.QtBrowserGetBookmarks, this._onGetBookmarks],
+      [CommandId.QtBrowserRunBookmarkAction, this._onRunBookmarkAction],
       [CommandId.QtBrowserUpdateBookmark, this._onUpdateBookmark]
     ]);
 
@@ -63,6 +65,17 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
 
   private readonly _onGetBookmarks = (cmd: Command) => {
     this.channel.replyData(cmd, { entries: this._bookmarks.entries });
+  }
+
+  private readonly _onRunBookmarkAction = (cmd: Command) => {
+    const action = String(_.get(cmd.payload, 'action', '')).trim();
+    const selection = _.get(cmd.payload, 'selection', [] as BookmarkEntry[]);
+    const affected = this._bookmarks.runAction(action, selection);
+
+    this.channel.replyData(cmd, {
+      entries: this._bookmarks.entries,
+      affected
+    });
   }
 
   private readonly _onUpdateBookmark = (cmd: Command) => {

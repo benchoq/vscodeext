@@ -1,41 +1,19 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-
-export interface QtDocRootInfo {
-  source: 'insRoot' | 'qtpaths';
-  version: string;
-  fsPath: string;
-}
-
-export interface HtmlPageInfo {
+export interface HistoryEntry {
+  uri: string;
   title: string;
-  href: string;
-  filePathRel?: string;
-  anchor?: string;
-}
-
-export interface TocEntry {
-  type: 'toc';
-  page: HtmlPageInfo;
-  depth: number;
-}
-
-export interface IndexMatch {
-  type: 'index';
-  page: HtmlPageInfo;
-  name: string;
-}
-
-export interface FullTextMatch {
-  type: 'full-text';
-  page: HtmlPageInfo;
-  snippet: string;
 }
 
 export interface BookmarkEntry {
   uri: string;
   title: string;
+}
+
+export interface BookmarkLabel {
+  id: string;
+  name: string;
 }
 
 export enum ViewerMessageId {
@@ -51,83 +29,40 @@ export enum ViewerMessageId {
   ViewerHoverChanged = 'qt-browser-viewer-hover-changed',
 }
 
-export function isSameHtmlPage(a: HtmlPageInfo, b: HtmlPageInfo) {
-  return (a.href === b.href);
-}
-
 // type guard functions
-export function isQtDocRootInfo(x: unknown): x is QtDocRootInfo {
-  if (typeof x !== 'object' || x === null) {
+export function isHistoryEntry(x: unknown): x is HistoryEntry {
+  if (!isValidObject(x)) {
     return false;
   }
 
-  const o = x as Record<string, unknown>;
   return (
-    (o.source === 'insRoot' || o.source === 'qtpaths') &&
-    typeof o.version === 'string' &&
-    typeof o.fsPath === 'string'
-  );
-}
-
-export function isHtmlPageInfo(x: unknown): x is HtmlPageInfo {
-  if (typeof x !== 'object' || x === null) {
-    return false;
-  }
-
-  const o = x as Record<string, unknown>;
-  return (
-    typeof o.href === 'string' &&
-    (o.anchor === undefined || typeof o.anchor === 'string')
-  );
-}
-
-export function isTocEntry(x: unknown): x is TocEntry {
-  if (typeof x !== 'object' || x === null) {
-    return false;
-  }
-
-  const o = x as Record<string, unknown>;
-  return (
-    o.type === 'toc' &&
-    isHtmlPageInfo(o.page) &&
-    typeof o.depth === 'number'
-  );
-}
-
-export function isIndexMatch(x: unknown): x is IndexMatch {
-  if (typeof x !== 'object' || x === null) {
-    return false;
-  }
-
-  const o = x as Record<string, unknown>;
-  return (
-    o.type === 'index' &&
-    isHtmlPageInfo(o.page) &&
-    typeof o.name === 'string'
-  );
-}
-
-export function isFullTextMatch(x: unknown): x is FullTextMatch {
-  if (typeof x !== 'object' || x === null) {
-    return false;
-  }
-
-  const o = x as Record<string, unknown>;
-  return (
-    o.type === 'full-text' &&
-    isHtmlPageInfo(o.page) &&
-    typeof o.snippet === 'string'
+    typeof x.uri === 'string' &&
+    typeof x.title === 'string'
   );
 }
 
 export function isBookmarkEntry(x: unknown): x is BookmarkEntry {
-  if (typeof x !== 'object' || x === null) {
+  if (!isValidObject(x)) {
     return false;
   }
 
-  const o = x as Record<string, unknown>;
   return (
-    typeof o.uri === 'string' &&
-    typeof o.title === 'string'
+    typeof x.uri === 'string' &&
+    typeof x.title === 'string'
   );
+}
+
+export function isBookmarkLabel(x: unknown): x is BookmarkLabel {
+  if (!isValidObject(x)) {
+    return false;
+  }
+
+  return (
+    typeof x.id === 'string' &&
+    typeof x.name === 'string'
+  );
+}
+
+function isValidObject(x: unknown): x is Record<string, unknown> {
+  return typeof x === 'object' && x !== null;
 }

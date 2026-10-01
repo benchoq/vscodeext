@@ -8,10 +8,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import '@/styles/components/components.css';
   import './QtBrowserApp.css';
-
   import QtBrowserToolbar from './QtBrowserToolbar.svelte';
   import QtBrowserHtmlView from './QtBrowserHtmlView.svelte';
-  import QtBrowserBookmarkView from './QtBrowserBookmarkView.svelte';
+  import QtBrowserBookmarkView from './bookmark/QtBrowserBookmarkView.svelte';
   import * as viewlogic from './viewlogic.svelte';
   import { ui } from './states.svelte';
 
