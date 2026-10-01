@@ -8,6 +8,7 @@ import { CommandId, type CommandReply } from '@shared/message';
 import {
   isBookmarkEntry,
   ViewerMessageId,
+  type BookmarkEdit,
   type BookmarkEntry,
 } from '@shared/qt-browser';
 
@@ -56,59 +57,46 @@ export function copySelection() {
   helpers.postToViewer(ViewerMessageId.CopySelection);
 }
 
-function setBookmarks(entries: BookmarkEntry[]) {
-  if (Array.isArray(entries) && entries.every(isBookmarkEntry)) {
-    data.bookmarks = entries.map((e) => {
-      return {
-        data: e,
-        checked: false
-      } as BookmarkItem
-    });
+// export async function updateBookmark(
+//   uri: string,
+//   title: string,
+//   action: 'add' | 'remove' | 'toggle'
+// ) {
+//   const r = await vscode.post(CommandId.QtBrowserUpdateBookmark, {
+//     uri: helpers.toFileUri(uri),
+//     title,
+//     action
+//   })
 
-    console.log($state.snapshot(data.bookmarks));
-  }
-}
+//   setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
+// }
 
-export async function updateBookmark(
-  uri: string,
-  title: string,
-  action: 'add' | 'remove' | 'toggle'
-) {
-  const r = await vscode.post(CommandId.QtBrowserUpdateBookmark, {
-    uri: helpers.toFileUri(uri),
-    title,
-    action
-  })
+// export async function runBookmarkAction(
+//   action: 'remove-all' | 'remove-selected',
+// ) {
+//   const selection = data.bookmarks
+//     .filter((e) => e.checked)
+//     .map(e => e.data);
 
-  setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
-}
+//   const r = await vscode.post(CommandId.QtBrowserRunBookmarkEdit, {
+//     action,
+//     selection: $state.snapshot(selection)
+//   })
 
-export async function runBookmarkAction(
-  action: 'remove-all' | 'remove-selected',
-) {
-  const selection = data.bookmarks
-    .filter((e) => e.checked)
-    .map(e => e.data);
+//   setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
+// }
 
-  const r = await vscode.post(CommandId.QtBrowserRunBookmarkAction, {
-    action,
-    selection: $state.snapshot(selection)
-  })
+// export async function moveBookmark(from: number, to: number) {
+//   console.log(from, to);
+//   // const [item] = data.bookmarks.splice(from, 1);
+//   // data.bookmarks.splice(to, 0, item);
+//   const r = await vscode.post(CommandId.QtBrowserRunBookmarkEdit, {
+//     action: 'move',
+//     from, to
+//   });
 
-  setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
-}
-
-export async function moveBookmark(from: number, to: number) {
-  console.log(from, to);
-  // const [item] = data.bookmarks.splice(from, 1);
-  // data.bookmarks.splice(to, 0, item);
-  const r = await vscode.post(CommandId.QtBrowserRunBookmarkAction, {
-    action: 'move',
-    from, to
-  });
-
-  setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
-}
+//   setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
+// }
 
 export function findInPage(action: FindAction) {
   const w = ui.iframe.el?.contentWindow
@@ -129,6 +117,11 @@ export function findInPage(action: FindAction) {
 
 export function isBookmarked(uri: string) {
   return data.bookmarks.findIndex((e) => e.data.uri === uri) !== -1;
+}
+
+export async function editBookmark(edit: BookmarkEdit) {
+  const r = await vscode.post(CommandId.QtBrowserEditBookmarks, { edit });
+  setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
 }
 
 // helpers
@@ -209,5 +202,18 @@ function onMessageFromViewer(e: MessageEvent) {
 
     default:
       break;
+  }
+}
+
+function setBookmarks(entries: BookmarkEntry[]) {
+  if (Array.isArray(entries) && entries.every(isBookmarkEntry)) {
+    data.bookmarks = entries.map((e) => {
+      return {
+        data: e,
+        checked: false
+      } as BookmarkItem
+    });
+
+    console.log($state.snapshot(data.bookmarks));
   }
 }

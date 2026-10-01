@@ -16,9 +16,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   function onDrop(to: number) {
     if (dragIndex !== null && dragIndex !== to) {
-      viewlogic.moveBookmark(dragIndex, to);
+      viewlogic.editBookmark({
+        action: 'move',
+        from: dragIndex,
+        to
+      });
     }
-    dragIndex = overIndex = null;
+
+    clear();
+  }
+
+  function clear() {
+    dragIndex = null;
+    overIndex = null;
   }
 </script>
 
@@ -50,9 +60,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         ondrop={() => {
           onDrop(i);
         }}
-        ondragend={() => {
-          dragIndex = overIndex = null;
-        }}
+        ondragend={clear}
       >
         <input
           type="checkbox"

@@ -16,6 +16,12 @@ export interface BookmarkLabel {
   name: string;
 }
 
+export type BookmarkEdit =
+  | { action: 'toggle'; entry: BookmarkEntry }
+  | { action: 'remove'; selection: BookmarkEntry[] }
+  | { action: 'move'; from: number; to: number }
+  | { action: 'clear' };
+
 export enum ViewerMessageId {
   FindInPage = 'qt-browser-find-in-page',
   ReloadPage = 'qt-browser-reload-page',
@@ -63,6 +69,36 @@ export function isBookmarkLabel(x: unknown): x is BookmarkLabel {
   );
 }
 
+  export function isBookmarkEdit(x: unknown): x is BookmarkEdit {
+  if (typeof x !== 'object' || x === null || !('action' in x)) {
+    return false;
+  }
+
+  const e = x as Record<string, unknown>;
+  switch (e.action) {
+    case 'toggle':
+      return isBookmarkEntry(e.entry);
+
+    case 'move':
+      return isIndex(e.from) && isIndex(e.to);
+
+    case 'remove':
+      return Array.isArray(e.selection) && e.selection.every(isBookmarkEntry);
+
+    case 'clear':
+      return true;
+
+    default:
+      return false;
+  }
+}
+
+
 function isValidObject(x: unknown): x is Record<string, unknown> {
   return typeof x === 'object' && x !== null;
 }
+
+function isIndex(v: unknown) {
+  return typeof v === 'number' && Number.isInteger(v) && v >= 0;
+}
+

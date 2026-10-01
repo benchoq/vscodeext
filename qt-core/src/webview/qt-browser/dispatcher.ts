@@ -13,7 +13,7 @@ import { WebviewDispatcher } from '@/webview/dispatcher';
 import { Command, CommandId } from '@/webview/shared/message';
 import { QtBrowserLocalServer } from './server/local-server';
 import { QtBrowserBookmarkManager } from './bookmark-manager';
-import { BookmarkEntry } from '../shared/qt-browser';
+import { isBookmarkEdit } from '../shared/qt-browser';
 
 export class QtBrowserDispatcher extends WebviewDispatcher  {
   private readonly _bookmarks: QtBrowserBookmarkManager;
@@ -31,8 +31,7 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
       [CommandId.QtBrowserSetTitle, this._onSetTitle],
       [CommandId.QtBrowserOpenUriExt, this._onOpenUriExt],
       [CommandId.QtBrowserGetBookmarks, this._onGetBookmarks],
-      [CommandId.QtBrowserRunBookmarkAction, this._onRunBookmarkAction],
-      [CommandId.QtBrowserUpdateBookmark, this._onUpdateBookmark]
+      [CommandId.QtBrowserEditBookmarks, this._onRunBookmarkEdit],
     ]);
 
     void this._extContext;
@@ -67,30 +66,18 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
     this.channel.replyData(cmd, { entries: this._bookmarks.entries });
   }
 
-  private readonly _onRunBookmarkAction = (cmd: Command) => {
-    const action = String(_.get(cmd.payload, 'action', '')).trim();
-    const selection = _.get(cmd.payload, 'selection', [] as BookmarkEntry[]);
-    const from = _.get(cmd.payload, 'from', -1);
-    const to = _.get(cmd.payload, 'to', -1);
+  private readonly _onRunBookmarkEdit = (cmd: Command) => {
+    const edit = _.get(cmd.payload, 'edit', {});
+    if (!isBookmarkEdit(edit)) {
+      return;
+    }
 
-    const affected = this._bookmarks.runAction(action, selection, from, to);
+    const affected = this._bookmarks.edit(edit);
+    if (affected) {
+      this._bookmarks.save();
+    }
 
-    this.channel.replyData(cmd, {
-      entries: this._bookmarks.entries,
-      affected
-    });
-  }
-
-  private readonly _onUpdateBookmark = (cmd: Command) => {
-    const uri = String(_.get(cmd.payload, 'uri', ''));
-    const title = String(_.get(cmd.payload, 'title', ''));
-    const action = String(_.get(cmd.payload, 'action', '')).trim();
-
-    const changed = this._bookmarks.update(uri, title, action);
-
-    this.channel.replyData(cmd, {
-      entries: this._bookmarks.entries, changed
-    });
+    this.channel.replyData(cmd, { entries: this._bookmarks.entries });
   }
 }
 

@@ -48,7 +48,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div data-role='root' class='flex flex-row h-[32px] gap-1'>
   {@render navButton('back')}
   {@render navButton('forward')}
-  {@render bookmarkButton()}
+  {@render bookmarkToggleButton()}
   {@render bookmarkOpenButton()}
 
   <input
@@ -87,15 +87,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </button>
 {/snippet}
 
-{#snippet bookmarkButton()}
+{#snippet bookmarkToggleButton()}
   <button
     data-role='nav-button'
     class='qt-button flex items-center justify-center'
     onclick={() => {
-      viewlogic.updateBookmark(ui.iframe.src, ui.iframe.title, 'toggle');
+      viewlogic.editBookmark({
+        action: 'toggle',
+        entry: {
+          uri: helpers.toFileUri(ui.iframe.src),
+          title: ui.iframe.title
+        }
+      })
     }}
   >
-    {#if viewlogic.isBookmarked(ui.iframe.src)}
+    {#if viewlogic.isBookmarked(helpers.toFileUri(ui.iframe.src))}
       <BookmarkCheck />
     {:else}
       <Bookmark />
