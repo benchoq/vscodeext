@@ -49,7 +49,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {@render navButton('back')}
   {@render navButton('forward')}
   {@render bookmarkToggleButton()}
-  {@render bookmarkOpenButton()}
+  {@render bookmarkViewToggleButton()}
 
   <input
     bind:this={el}
@@ -109,7 +109,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </button>
 {/snippet}
 
-{#snippet bookmarkOpenButton()}
+{#snippet bookmarkViewToggleButton()}
   <button
     data-role='nav-button'
     class='qt-button flex items-center justify-center'

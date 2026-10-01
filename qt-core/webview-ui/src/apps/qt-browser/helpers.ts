@@ -10,6 +10,12 @@ export function findBookmarkSelectedEntries() {
     .map(e => e.data);
 }
 
+export function setAllBookmarksChecked(checked: boolean) {
+  data.bookmarks.forEach((e) => {
+    e.checked = checked;
+  });
+}
+
 export function postToViewer(id: ViewerMessageId, data = {}) {
   ui.iframe.el?.contentWindow?.postMessage(
     { id, ...data }, '*'

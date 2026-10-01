@@ -1,14 +1,10 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-export interface HistoryEntry {
-  uri: string;
-  title: string;
-}
-
 export interface BookmarkEntry {
   uri: string;
   title: string;
+  labelIds?: string[];
 }
 
 export interface BookmarkLabel {
@@ -21,6 +17,11 @@ export type BookmarkEdit =
   | { action: 'remove'; selection: BookmarkEntry[] }
   | { action: 'move'; from: number; to: number }
   | { action: 'clear' };
+
+export interface HistoryEntry {
+  uri: string;
+  title: string;
+}
 
 export enum ViewerMessageId {
   FindInPage = 'qt-browser-find-in-page',
@@ -36,17 +37,6 @@ export enum ViewerMessageId {
 }
 
 // type guard functions
-export function isHistoryEntry(x: unknown): x is HistoryEntry {
-  if (!isValidObject(x)) {
-    return false;
-  }
-
-  return (
-    typeof x.uri === 'string' &&
-    typeof x.title === 'string'
-  );
-}
-
 export function isBookmarkEntry(x: unknown): x is BookmarkEntry {
   if (!isValidObject(x)) {
     return false;
@@ -54,7 +44,8 @@ export function isBookmarkEntry(x: unknown): x is BookmarkEntry {
 
   return (
     typeof x.uri === 'string' &&
-    typeof x.title === 'string'
+    typeof x.title === 'string' &&
+    (x.labelIds === undefined || isStringArray(x.labelIds))
   );
 }
 
@@ -93,6 +84,16 @@ export function isBookmarkLabel(x: unknown): x is BookmarkLabel {
   }
 }
 
+export function isHistoryEntry(x: unknown): x is HistoryEntry {
+  if (!isValidObject(x)) {
+    return false;
+  }
+
+  return (
+    typeof x.uri === 'string' &&
+    typeof x.title === 'string'
+  );
+}
 
 function isValidObject(x: unknown): x is Record<string, unknown> {
   return typeof x === 'object' && x !== null;
@@ -102,3 +103,6 @@ function isIndex(v: unknown) {
   return typeof v === 'number' && Number.isInteger(v) && v >= 0;
 }
 
+function isStringArray(x: unknown): x is string[] {
+  return Array.isArray(x) && x.every((e) => typeof e === 'string');
+}
