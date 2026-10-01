@@ -70,7 +70,10 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
   private readonly _onRunBookmarkAction = (cmd: Command) => {
     const action = String(_.get(cmd.payload, 'action', '')).trim();
     const selection = _.get(cmd.payload, 'selection', [] as BookmarkEntry[]);
-    const affected = this._bookmarks.runAction(action, selection);
+    const from = _.get(cmd.payload, 'from', -1);
+    const to = _.get(cmd.payload, 'to', -1);
+
+    const affected = this._bookmarks.runAction(action, selection, from, to);
 
     this.channel.replyData(cmd, {
       entries: this._bookmarks.entries,

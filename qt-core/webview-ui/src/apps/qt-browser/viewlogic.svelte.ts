@@ -98,6 +98,18 @@ export async function runBookmarkAction(
   setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
 }
 
+export async function moveBookmark(from: number, to: number) {
+  console.log(from, to);
+  // const [item] = data.bookmarks.splice(from, 1);
+  // data.bookmarks.splice(to, 0, item);
+  const r = await vscode.post(CommandId.QtBrowserRunBookmarkAction, {
+    action: 'move',
+    from, to
+  });
+
+  setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
+}
+
 export function findInPage(action: FindAction) {
   const w = ui.iframe.el?.contentWindow
   if (!w) {

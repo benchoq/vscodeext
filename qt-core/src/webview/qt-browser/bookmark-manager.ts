@@ -21,7 +21,7 @@ export class QtBrowserBookmarkManager {
     return this._findIndex(uri) !== -1;
   }
 
-  public runAction(action: string, selection: BookmarkEntry[]) {
+  public runAction(action: string, selection: BookmarkEntry[], from: number, to: number) {
     switch (action) {
       case 'remove-all':
         this._entries = [];
@@ -31,6 +31,15 @@ export class QtBrowserBookmarkManager {
         const uris = new Set(selection.map((e) => e.uri));
         this._entries = this._entries.filter((e) => !uris.has(e.uri));
         return true;
+      }
+
+      case 'move': {
+        const [item] = this._entries.splice(from, 1);
+        if (item) {
+          this._entries.splice(to, 0, item);
+          return true;
+        }
+        break;
       }
 
       default:

@@ -10,6 +10,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { data, ui } from '../states.svelte';
   import * as helpers from '../helpers';
   import * as viewlogic from '../viewlogic.svelte';
+
+  let dragIndex = $state<number | null>(null);
+  let overIndex = $state<number | null>(null);
+
+  function onDrop(to: number) {
+    if (dragIndex !== null && dragIndex !== to) {
+      viewlogic.moveBookmark(dragIndex, to);
+    }
+    dragIndex = overIndex = null;
+  }
 </script>
 
 <div class='w-full h-full qt-item-list flex flex-col relative'>
@@ -24,7 +34,26 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         <Separator />
       {/if}
 
-      <div class='flex flex-row items-center'>
+      <div
+        role='listitem'
+        class='w-full flex flex-row items-center'
+        draggable={true}
+        class:drop-target={overIndex === i}
+        ondragstart={(e) => {
+          dragIndex = i;
+          e.dataTransfer!.effectAllowed = 'move';
+        }}
+        ondragover={(e) => {
+          e.preventDefault();
+          overIndex = i;
+        }}
+        ondrop={() => {
+          onDrop(i);
+        }}
+        ondragend={() => {
+          dragIndex = overIndex = null;
+        }}
+      >
         <input
           type="checkbox"
           aria-label="check"
@@ -32,7 +61,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         />
 
         <button
-          class='item flex flex-col gap-0'
+          class='grow item flex flex-col gap-0'
           onclick={() => {
             viewlogic.openUri(item.data.uri);
             ui.layers.bookmark = false;
@@ -45,3 +74,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {/each}
   </div>
 </div>
+
+<style>
+  .drop-target {
+    box-shadow: inset 0 2px 0 var(--vscode-focusBorder);
+  }
+</style>
