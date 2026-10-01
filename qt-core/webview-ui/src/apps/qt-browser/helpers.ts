@@ -4,18 +4,6 @@
 import { ViewerMessageId } from '@shared/qt-browser';
 import { data, ui } from './states.svelte';
 
-export function findBookmarkSelectedEntries() {
-  return data.bookmarks
-    .filter((e) => e.checked)
-    .map(e => e.data);
-}
-
-export function setAllBookmarksChecked(checked: boolean) {
-  data.bookmarks.forEach((e) => {
-    e.checked = checked;
-  });
-}
-
 export function postToViewer(id: ViewerMessageId, data = {}) {
   ui.iframe.el?.contentWindow?.postMessage(
     { id, ...data }, '*'

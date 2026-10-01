@@ -5,16 +5,14 @@ import _ from 'lodash';
 
 import { vscode } from '@/apps/vscode';
 import { CommandId, type CommandReply } from '@shared/message';
-import {
-  isBookmarkEntry,
-  ViewerMessageId,
-  type BookmarkEdit,
-  type BookmarkEntry,
-} from '@shared/qt-browser';
+import { ViewerMessageId } from '@shared/qt-browser';
 
-import { data, ui, type BookmarkItem } from './states.svelte';
+import { data, ui } from './states.svelte';
 import { type FindAction } from './types.svelte';
 import * as helpers from './helpers';
+import * as bookmark from './viewlogic.bookmark.svelte';
+
+export { bookmark };
 
 export async function onAppMount() {
   ui.theme.monitor.start();
@@ -23,7 +21,7 @@ export async function onAppMount() {
   vscode.onDidReceiveNotification(onMessageFromVscode);
 
   await loadConfigs();
-  await loadBookmarks();
+  await bookmark.load();
 }
 
 export async function onAppDestroy() {
@@ -57,47 +55,6 @@ export function copySelection() {
   helpers.postToViewer(ViewerMessageId.CopySelection);
 }
 
-// export async function updateBookmark(
-//   uri: string,
-//   title: string,
-//   action: 'add' | 'remove' | 'toggle'
-// ) {
-//   const r = await vscode.post(CommandId.QtBrowserUpdateBookmark, {
-//     uri: helpers.toFileUri(uri),
-//     title,
-//     action
-//   })
-
-//   setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
-// }
-
-// export async function runBookmarkAction(
-//   action: 'remove-all' | 'remove-selected',
-// ) {
-//   const selection = data.bookmarks
-//     .filter((e) => e.checked)
-//     .map(e => e.data);
-
-//   const r = await vscode.post(CommandId.QtBrowserRunBookmarkEdit, {
-//     action,
-//     selection: $state.snapshot(selection)
-//   })
-
-//   setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
-// }
-
-// export async function moveBookmark(from: number, to: number) {
-//   console.log(from, to);
-//   // const [item] = data.bookmarks.splice(from, 1);
-//   // data.bookmarks.splice(to, 0, item);
-//   const r = await vscode.post(CommandId.QtBrowserRunBookmarkEdit, {
-//     action: 'move',
-//     from, to
-//   });
-
-//   setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
-// }
-
 export function findInPage(action: FindAction) {
   const w = ui.iframe.el?.contentWindow
   if (!w) {
@@ -115,24 +72,10 @@ export function findInPage(action: FindAction) {
   });
 }
 
-export function isBookmarked(uri: string) {
-  return data.bookmarks.findIndex((e) => e.data.uri === uri) !== -1;
-}
-
-export async function editBookmark(edit: BookmarkEdit) {
-  const r = await vscode.post(CommandId.QtBrowserEditBookmarks, { edit });
-  setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
-}
-
 // helpers
 async function loadConfigs() {
   const r = await vscode.post(CommandId.QtBrowserGetConfig);
   data.configs.serverOrigin = String(_.get(r, 'serverOrigin', '')).trim();
-}
-
-async function loadBookmarks() {
-  const r = await vscode.post(CommandId.QtBrowserGetBookmarks);
-  setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
 }
 
 function onVscodeThemeChanged() {
@@ -202,18 +145,5 @@ function onMessageFromViewer(e: MessageEvent) {
 
     default:
       break;
-  }
-}
-
-function setBookmarks(entries: BookmarkEntry[]) {
-  if (Array.isArray(entries) && entries.every(isBookmarkEntry)) {
-    data.bookmarks = entries.map((e) => {
-      return {
-        data: e,
-        checked: false
-      } as BookmarkItem
-    });
-
-    console.log($state.snapshot(data.bookmarks));
   }
 }

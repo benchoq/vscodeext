@@ -5,7 +5,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { TrashIcon, Trash2Icon, Square, SquareMinus, SquareCheck } from "@lucide/svelte";
-  import * as helpers from '../helpers';
   import * as viewlogic from '../viewlogic.svelte';
   import { data } from '../states.svelte';
 
@@ -29,7 +28,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     aria-label="check"
     onclick={() => {
       const checkAll = (checkState === 'empty') || (checkState === 'partial');
-      helpers.setAllBookmarksChecked(checkAll);
+      viewlogic.bookmark.setAllChecked(checkAll);
     }}
   >
     <CheckIcon />
@@ -38,7 +37,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <button
     class='qt-button flex items-center justify-center'
     onclick={() => {
-      viewlogic.editBookmark({ action: 'clear' });
+      viewlogic.bookmark.edit({ action: 'clear' });
     }}
   >
     <Trash2Icon />Remove All
@@ -47,9 +46,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <button
     class='qt-button flex items-center justify-center'
     onclick={() => {
-      viewlogic.editBookmark({
+      viewlogic.bookmark.edit({
         action: 'remove',
-        selection: $state.snapshot(helpers.findBookmarkSelectedEntries())
+        selection: $state.snapshot(viewlogic.bookmark.getSelection())
       });
     }}
   >

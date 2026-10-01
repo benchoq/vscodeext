@@ -92,7 +92,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-role='nav-button'
     class='qt-button flex items-center justify-center'
     onclick={() => {
-      viewlogic.editBookmark({
+      viewlogic.bookmark.edit({
         action: 'toggle',
         entry: {
           uri: helpers.toFileUri(ui.iframe.src),
@@ -101,7 +101,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       })
     }}
   >
-    {#if viewlogic.isBookmarked(helpers.toFileUri(ui.iframe.src))}
+    {#if viewlogic.bookmark.has(helpers.toFileUri(ui.iframe.src))}
       <BookmarkCheck />
     {:else}
       <Bookmark />

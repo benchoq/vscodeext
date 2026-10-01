@@ -16,7 +16,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   function onDrop(to: number) {
     if (dragIndex !== null && dragIndex !== to) {
-      viewlogic.editBookmark({
+      viewlogic.bookmark.edit({
         action: 'move',
         from: dragIndex,
         to
