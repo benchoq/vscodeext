@@ -17,6 +17,7 @@ import { isBookmarkEdit } from '../shared/qt-browser';
 
 export class QtBrowserDispatcher extends WebviewDispatcher  {
   private _homeUri = '';
+  private _currentUri = '';
   private readonly _bookmarks: QtBrowserBookmarkManager;
 
   public constructor(
@@ -30,6 +31,7 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
     this.setHandlers([
       [CommandId.QtBrowserGetConfig, this._onGetConfig],
       [CommandId.QtBrowserSetTitle, this._onSetTitle],
+      [CommandId.QtBrowserSetCurrentUri, this._onSetCurrentUri],
       [CommandId.QtBrowserOpenUriExt, this._onOpenUriExt],
       [CommandId.QtBrowserGetBookmarks, this._onGetBookmarks],
       [CommandId.QtBrowserEditBookmarks, this._onRunBookmarkEdit],
@@ -41,6 +43,10 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
 
   public override dispose() {
     super.dispose();
+  }
+
+  public get currentUri() {
+    return this._currentUri;
   }
 
   public setHomeUri(uri: string) {
@@ -60,6 +66,11 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
 
   private readonly _onSetTitle = (cmd: Command) => {
     this._panel.title = String(_.get(cmd.payload, 'title', ''));;
+    this.channel.replyDone(cmd);
+  }
+
+  private readonly _onSetCurrentUri = (cmd: Command) => {
+    this._currentUri = String(_.get(cmd.payload, 'uri', ''));;
     this.channel.replyDone(cmd);
   }
 

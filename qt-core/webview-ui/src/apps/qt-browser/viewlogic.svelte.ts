@@ -45,6 +45,8 @@ export async function openUri(uri: string) {
     title: 'aaa',
     uri: u,
   });
+
+  void vscode.post(CommandId.QtBrowserSetCurrentUri, { uri });
 }
 
 export function navigate(dir: 'back' | 'forward') {

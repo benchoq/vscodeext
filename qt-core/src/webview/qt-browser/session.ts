@@ -36,8 +36,7 @@ export class QtBrowserSession {
   }
 
   public get currentUri() {
-    void this;
-    return '';
+    return this._dispatcher.currentUri;
   }
 
   public get viewColumn() {

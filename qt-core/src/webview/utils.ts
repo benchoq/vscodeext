@@ -22,7 +22,11 @@ const WebAppDirs = {
 
 export function createPanel(id: WebAppId) {
   const info = getWebAppInfo(id);
-  return window.createWebviewPanel(info.viewType, info.title, info.viewColumn);
+  const option = { retainContextWhenHidden: true };
+
+  return window.createWebviewPanel(
+    info.viewType, info.title, info.viewColumn, option
+  );
 }
 
 export function setupWebApp(id: WebAppId, context: Context, panel: Panel) {
