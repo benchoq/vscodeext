@@ -2,16 +2,34 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import {
+  commands,
   Uri,
   ExtensionContext as Context
 } from 'vscode';
 
-import { DisposableStore } from 'qt-lib';
+import { telemetry, DisposableStore } from 'qt-lib';
 import { createPanel } from '@/webview/utils';
 import { QtBrowserSession } from './session';
 import { QtBrowserLocalServer } from './server/local-server';
 import { QtBrowserDocStyleProvider } from './server/style-provider';
 import * as consts from './constants';
+
+let controller: QtBrowserController | undefined;
+
+export function addQtBrowser(context: Context) {
+  const openCmd = 'openQtBrowser';
+  const openCmdFull = `${consts.EXTENSION_ID}.${openCmd}`;
+
+  controller = new QtBrowserController();
+  controller.init(context);
+
+  context.subscriptions.push(
+    commands.registerCommand(openCmdFull, () => {
+      telemetry.sendAction(openCmd);
+      controller?.open(context);
+    })
+  );
+}
 
 export class QtBrowserController {
   private _cssProvider: QtBrowserDocStyleProvider | undefined;
