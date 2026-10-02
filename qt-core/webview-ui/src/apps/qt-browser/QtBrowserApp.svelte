@@ -14,11 +14,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from './viewlogic.svelte';
   import { ui } from './states.svelte';
 
+  let {
+    standalone = true,
+  } = $props();
+
   onMount(() => viewlogic.onAppMount());
   onDestroy(() => viewlogic.onAppDestroy());
 </script>
 
-<div class="w-screen h-screen flex flex-col gap-1 p-2">
+<div class='
+  {standalone ? 'w-screen h-screen' : 'w-full h-full'}
+  flex flex-col gap-1 p-2
+'>
   <QtBrowserToolbar />
 
   <div class="w-full h-full relative">

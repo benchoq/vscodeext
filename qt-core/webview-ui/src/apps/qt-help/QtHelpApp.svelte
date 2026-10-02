@@ -9,7 +9,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import '@/styles/components/components.css';
   // import './QtBrowserApp.css';
 
-  import QtBrowserApp from '../qt-browser/QtBrowserApp.svelte';
+  import QtBrowserApp from '@/apps/qt-browser/QtBrowserApp.svelte';
 
   // onMount(() => viewlogic.onAppMount());
   // onDestroy(() => viewlogic.onAppDestroy());
@@ -19,7 +19,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <div class='w-[200px] h-full bg-amber-500/20'>
     hi
   </div>
-  <div>
-    <QtBrowserApp />
+  <div class='grow'>
+    <QtBrowserApp standalone={false} />
   </div>
 </div>
