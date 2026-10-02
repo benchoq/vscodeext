@@ -22,6 +22,10 @@ export async function onAppMount() {
 
   await loadConfigs();
   await bookmark.load();
+
+  if (data.configs.homeUri.length !== 0) {
+    void openUri(data.configs.homeUri);
+  }
 }
 
 export async function onAppDestroy() {
@@ -29,7 +33,6 @@ export async function onAppDestroy() {
 
 export async function openUri(uri: string) {
   const u = helpers.toLocalServerUri(uri);
-  console.log(uri, u);
 
   if (!u.startsWith(data.configs.serverOrigin)) {
     void vscode.post(CommandId.QtBrowserOpenUriExt, { uri });
@@ -76,6 +79,7 @@ export function findInPage(action: FindAction) {
 // helpers
 async function loadConfigs() {
   const r = await vscode.post(CommandId.QtBrowserGetConfig);
+  data.configs.homeUri = String(_.get(r, 'homeUri', '')).trim();
   data.configs.serverOrigin = String(_.get(r, 'serverOrigin', '')).trim();
 }
 

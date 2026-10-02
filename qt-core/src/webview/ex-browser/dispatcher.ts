@@ -167,7 +167,11 @@ export class ExBrowserDispatcher extends WebviewDispatcher {
         void file.openExternal();
       } else {
         await vscode.commands.executeCommand('workbench.action.splitEditor');
-        void file.openInSimpleBrowser();
+        // void file.openInSimpleBrowser();
+        void vscode.commands.executeCommand(
+          'qt-core.openQtBrowser',
+          file.toUri()
+        );
       }
     }
 

@@ -24,9 +24,9 @@ export function addQtBrowser(context: Context) {
   controller.init(context);
 
   context.subscriptions.push(
-    commands.registerCommand(openCmdFull, () => {
+    commands.registerCommand(openCmdFull, (uri?: Uri) => {
       telemetry.sendAction(openCmd);
-      controller?.open(context);
+      controller?.open(context, uri);
     })
   );
 }
@@ -65,6 +65,7 @@ export class QtBrowserController {
     }
 
     const s = this._add(context);
+    s.setHomeUri(uri?.toString() ?? '');
     s.reveal();
   }
 

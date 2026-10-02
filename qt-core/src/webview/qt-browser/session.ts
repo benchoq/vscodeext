@@ -43,6 +43,10 @@ export class QtBrowserSession {
     this._panel.reveal();
   }
 
+  public setHomeUri(uri: string) {
+    this._dispatcher.setHomeUri(uri);
+  }
+
   public reloadPage() {
     this._dispatcher.notifyReload();
   }

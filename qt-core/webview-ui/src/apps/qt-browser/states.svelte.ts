@@ -15,6 +15,7 @@ export interface BookmarkItem {
 export const data = $state({
   bookmarks: [] as BookmarkItem[],
   configs: {
+    homeUri: '',
     serverOrigin: '' // expects 'http://127.0.0.1:<port>'
   }
 });

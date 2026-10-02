@@ -16,6 +16,7 @@ import { QtBrowserBookmarkManager } from './bookmark-manager';
 import { isBookmarkEdit } from '../shared/qt-browser';
 
 export class QtBrowserDispatcher extends WebviewDispatcher  {
+  private _homeUri = '';
   private readonly _bookmarks: QtBrowserBookmarkManager;
 
   public constructor(
@@ -42,13 +43,18 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
     super.dispose();
   }
 
+  public setHomeUri(uri: string) {
+    this._homeUri = uri;
+  }
+
   public notifyReload() {
     this.channel.notify(CommandId.QtBrowserReloadPage);
   }
 
   private readonly _onGetConfig = (cmd: Command) => {
     this.channel.replyData(cmd, {
-      serverOrigin: this._localServer.origin
+      homeUri: this._homeUri,
+      serverOrigin: this._localServer.origin,
     });
   };
 
