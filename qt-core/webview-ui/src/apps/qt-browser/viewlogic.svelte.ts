@@ -29,6 +29,7 @@ export async function onAppDestroy() {
 
 export async function openUri(uri: string) {
   const u = helpers.toLocalServerUri(uri);
+  console.log(uri, u);
 
   if (!u.startsWith(data.configs.serverOrigin)) {
     void vscode.post(CommandId.QtBrowserOpenUriExt, { uri });

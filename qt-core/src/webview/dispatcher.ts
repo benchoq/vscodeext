@@ -31,7 +31,7 @@ export class WebviewDispatcher implements vscode.Disposable {
 
     this._disposables.push(
       this._channel.onDidReceiveMessage((m) => {
-        void this._dispatch(m);
+        void this.dispatch(m);
       })
     );
   }
@@ -54,7 +54,7 @@ export class WebviewDispatcher implements vscode.Disposable {
     });
   }
 
-  private async _dispatch(cmd: unknown) {
+  public async dispatch(cmd: unknown) {
     if (!isCommand(cmd)) {
       return;
     }
