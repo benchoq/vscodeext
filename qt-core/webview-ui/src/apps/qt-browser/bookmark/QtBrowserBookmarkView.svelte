@@ -8,7 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import QtBrowserBookmarkToolbar from './QtBrowserBookmarkToolbar.svelte';
 
   import { data, ui } from '../states.svelte';
-  import * as helpers from '../helpers';
+  // import * as helpers from '../helpers';
   import * as viewlogic from '../viewlogic.svelte';
 
   let dragIndex = $state<number | null>(null);
@@ -76,7 +76,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
           }}
         >
           <span>{item.data.title}</span>
-          <span>{helpers.toFileUri(item.data.uri)}</span>
+          <!-- <span>{helpers.toFileUri(item.data.uri)}</span> -->
         </button>
       </div>
     {/each}

@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { TrashIcon, Trash2Icon, Square, SquareMinus, SquareCheck } from "@lucide/svelte";
+  import { TrashIcon, Square, SquareMinus, SquareCheck } from "@lucide/svelte";
   import * as viewlogic from '../viewlogic.svelte';
   import { data } from '../states.svelte';
 
@@ -37,21 +37,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <button
     class='qt-button flex items-center justify-center'
     onclick={() => {
-      viewlogic.bookmark.edit({ action: 'clear' });
-    }}
-  >
-    <Trash2Icon />Remove All
-  </button>
-
-  <button
-    class='qt-button flex items-center justify-center'
-    onclick={() => {
       viewlogic.bookmark.edit({
         action: 'remove',
         selection: $state.snapshot(viewlogic.bookmark.getSelection())
       });
     }}
   >
-    <TrashIcon />Remove selected
+    <TrashIcon />Remove
   </button>
 </div>

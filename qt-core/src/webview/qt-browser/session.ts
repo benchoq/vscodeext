@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import {
+  ViewColumn,
   WebviewPanel as Panel,
   ExtensionContext as Context
 } from 'vscode';
@@ -26,7 +27,7 @@ export class QtBrowserSession {
     this._dispatcher = new QtBrowserDispatcher(context, this._panel, localServer);
     this._disposables.push(
       this._dispatcher,
-      this._panel.onDidDispose(this.dispose.bind(this))
+      this._panel.onDidDispose(this.dispose.bind(this)),
     );
   }
 
@@ -34,13 +35,17 @@ export class QtBrowserSession {
     this._disposables.dispose();
   }
 
-  get currentUri() {
+  public get currentUri() {
     void this;
     return '';
   }
 
-  public reveal() {
-    this._panel.reveal();
+  public get viewColumn() {
+    return this._panel.viewColumn;
+  }
+
+  public reveal(viewColumn?: ViewColumn) {
+    this._panel.reveal(viewColumn);
   }
 
   public setHomeUri(uri: string) {

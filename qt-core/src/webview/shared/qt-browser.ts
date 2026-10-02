@@ -1,15 +1,16 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
+export type QtBrowserTriggerSource = 'ex-browser';
+
+export interface QtBrowserOpenOptions {
+  trigger?: QtBrowserTriggerSource;
+}
+
 export interface BookmarkEntry {
   uri: string;
   title: string;
   labelIds?: string[];
-}
-
-export interface BookmarkLabel {
-  id: string;
-  name: string;
 }
 
 export type BookmarkEdit =
@@ -49,18 +50,7 @@ export function isBookmarkEntry(x: unknown): x is BookmarkEntry {
   );
 }
 
-export function isBookmarkLabel(x: unknown): x is BookmarkLabel {
-  if (!isValidObject(x)) {
-    return false;
-  }
-
-  return (
-    typeof x.id === 'string' &&
-    typeof x.name === 'string'
-  );
-}
-
-  export function isBookmarkEdit(x: unknown): x is BookmarkEdit {
+export function isBookmarkEdit(x: unknown): x is BookmarkEdit {
   if (typeof x !== 'object' || x === null || !('action' in x)) {
     return false;
   }

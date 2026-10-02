@@ -4,7 +4,8 @@
 import {
   commands,
   Uri,
-  ExtensionContext as Context
+  ExtensionContext as Context,
+  ViewColumn,
 } from 'vscode';
 
 import { telemetry, DisposableStore } from 'qt-lib';
@@ -13,6 +14,7 @@ import { QtBrowserSession } from './session';
 import { QtBrowserLocalServer } from './server/local-server';
 import { QtBrowserDocStyleProvider } from './server/style-provider';
 import * as consts from './constants';
+import { QtBrowserOpenOptions } from '../shared/qt-browser';
 
 let controller: QtBrowserController | undefined;
 
@@ -20,29 +22,23 @@ export function addQtBrowser(context: Context) {
   const openCmd = 'openQtBrowser';
   const openCmdFull = `${consts.EXTENSION_ID}.${openCmd}`;
 
-  controller = new QtBrowserController();
-  controller.init(context);
+  controller = new QtBrowserController(context);
 
   context.subscriptions.push(
-    commands.registerCommand(openCmdFull, (uri?: Uri) => {
+    commands.registerCommand(openCmdFull, (uri?: Uri, o?: QtBrowserOpenOptions) => {
       telemetry.sendAction(openCmd);
-      controller?.open(context, uri);
+      controller?.open(context, uri, o);
     })
   );
 }
 
 export class QtBrowserController {
-  private _cssProvider: QtBrowserDocStyleProvider | undefined;
-
+  private readonly _cssProvider: QtBrowserDocStyleProvider;
   private readonly _sessions = new Set<QtBrowserSession>();
   private readonly _localServer = new QtBrowserLocalServer();
   private readonly _disposables = new DisposableStore();
 
-  dispose() {
-    this._disposables.dispose();
-  }
-
-  public init(context: Context) {
+  constructor(context: Context) {
     this._cssProvider = new QtBrowserDocStyleProvider(context);
 
     this._disposables.push(
@@ -53,33 +49,52 @@ export class QtBrowserController {
     )
 
     void this._localServer.start().then(() => {
-      this._loadCss(this._cssProvider?.cssLines ?? '');
+      this._loadCss(this._cssProvider.cssLines);
     });
   }
 
-  public open(context: Context, uri?: Uri) {
+  dispose() {
+    this._disposables.dispose();
+  }
+
+  public open(context: Context, uri?: Uri, o?: QtBrowserOpenOptions) {
+    const col = o?.trigger === 'ex-browser'
+      ? this._getLastActiveColumn(ViewColumn.Beside)
+      : undefined;
+
     const existing = uri && this._find(uri);
     if (existing) {
-      existing.reveal();
+      existing.reveal(col);
       return;
     }
 
     const s = this._add(context);
     s.setHomeUri(uri?.toString() ?? '');
-    s.reveal();
+    s.reveal(col);
   }
 
   private _add(context: Context) {
     const panel = createPanel(consts.appId);
     const s = new QtBrowserSession(context, panel, this._localServer);
 
-    this._sessions.add(s);
-    panel.onDidDispose(() => {
-      this._sessions.delete(s);
-    });
+    this._disposables.push(
+      // TODO
+      panel.onDidChangeViewState((e) => {
+        if (e.webviewPanel.active) {
+          this._sessions.delete(s);
+          this._sessions.add(s); // to track the last active one
+        }
+      }),
 
+      panel.onDidDispose(() => {
+        this._sessions.delete(s);
+      })
+    );
+
+    this._sessions.add(s);
     return s;
   }
+
   private _find(uri: Uri) {
     for (const c of this._sessions) {
       if (c.currentUri === uri.toString()) {
@@ -88,6 +103,11 @@ export class QtBrowserController {
     }
 
     return undefined;
+  }
+
+  private _getLastActiveColumn(fallback: ViewColumn) {
+    const s = [...this._sessions].at(-1);
+    return s?.viewColumn ?? fallback;
   }
 
   private _loadCss(css: string) {
