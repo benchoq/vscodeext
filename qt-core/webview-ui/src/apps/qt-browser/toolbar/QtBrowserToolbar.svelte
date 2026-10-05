@@ -12,9 +12,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     FolderArchive
   } from "@lucide/svelte";
 
-  import { ui } from './states.svelte';
-  import * as helpers from './helpers';
-  import * as viewlogic from './viewlogic.svelte';
+  import './QtBrowserToolbar.css';
+  import { ui } from '../states.svelte';
+  import * as helpers from '../helpers';
+  import * as viewlogic from '../viewlogic.svelte';
 
   let el = $state(undefined as HTMLInputElement | undefined);
   let draft = $state<string | null>(null);
@@ -45,7 +46,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-<div data-role='root' class='flex flex-row h-[32px] gap-1'>
+<div data-area='toolbar' class='flex flex-row gap-1'>
   {@render navButton('back')}
   {@render navButton('forward')}
   {@render bookmarkToggleButton()}
@@ -120,19 +121,3 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <FolderArchive />
   </button>
 {/snippet}
-
-<style>
-  [data-role='root'] {
-    min-height: 36px;
-    padding: 2px;
-  }
-
-  [data-role='nav-button'] {
-    width: 32px;
-    height: 32px;
-
-    &:disabled {
-      background-color: transparent;
-    }
-  }
-</style>
