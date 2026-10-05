@@ -3,11 +3,11 @@
 
 import * as vscode from "vscode";
 
-import { BookmarkEdit, BookmarkEntry } from "@/webview/shared/qt-browser";
+import { HistoryEdit, HistoryEntry } from "@/webview/shared/qt-browser";
 import * as consts from './constants';
 
-export class QtBrowserBookmarkManager {
-  private _entries: BookmarkEntry[] = [];
+export class QtBrowserHistoryManager {
+  private _entries: HistoryEntry[] = [];
 
   constructor(private readonly _memento: vscode.Memento) {
     this.load();
@@ -21,26 +21,11 @@ export class QtBrowserBookmarkManager {
     return this._findIndex(uri) !== -1;
   }
 
-  public edit(edit: BookmarkEdit) {
+  public edit(edit: HistoryEdit) {
     switch (edit.action) {
-      case 'toggle': {
-        const index = this._findIndex(edit.entry.uri);
-        if (index === -1) {
-          this._entries.push(edit.entry);
-        } else {
-          this._entries.splice(index, 1);
-        }
-
+      case 'add': {
+        this._entries.push(edit.entry);
         return true;
-      }
-
-      case 'move': {
-        const [item] = this._entries.splice(edit.from, 1);
-        if (item) {
-          this._entries.splice(edit.to, 0, item);
-          return true;
-        }
-        break;
       }
 
       case 'remove': {
@@ -61,14 +46,14 @@ export class QtBrowserBookmarkManager {
   }
 
   public load() {
-    this._entries = [...this._memento.get<BookmarkEntry[]>(
-      consts.BookmarkStorageKey, []
+    this._entries = [...this._memento.get<HistoryEntry[]>(
+      consts.HistoryStorageKey, []
     )];
   }
 
   public save() {
     return this._memento.update(
-      consts.BookmarkStorageKey, this._entries);
+      consts.HistoryStorageKey, this._entries);
   }
 
   private _findIndex(uri: string) {

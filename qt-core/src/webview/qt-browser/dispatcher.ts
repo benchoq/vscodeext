@@ -10,14 +10,16 @@ import {
 } from 'vscode';
 
 import { WebviewDispatcher } from '@/webview/dispatcher';
+import { isBookmarkEdit, isHistoryEdit } from '@/webview/shared/qt-browser';
 import { Command, CommandId } from '@/webview/shared/message';
 import { QtBrowserLocalServer } from './server/local-server';
+import { QtBrowserHistoryManager } from './history-manager';
 import { QtBrowserBookmarkManager } from './bookmark-manager';
-import { isBookmarkEdit } from '../shared/qt-browser';
 
 export class QtBrowserDispatcher extends WebviewDispatcher  {
   private _homeUri = '';
   private _currentUri = '';
+  private readonly _histories: QtBrowserHistoryManager;
   private readonly _bookmarks: QtBrowserBookmarkManager;
 
   public constructor(
@@ -27,6 +29,7 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
   ) {
     super('qt-browser', _panel);
 
+    this._histories = new QtBrowserHistoryManager(this._extContext.globalState);
     this._bookmarks = new QtBrowserBookmarkManager(this._extContext.globalState);
     this.setHandlers([
       [CommandId.QtBrowserGetConfig, this._onGetConfig],
@@ -34,7 +37,9 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
       [CommandId.QtBrowserSetCurrentUri, this._onSetCurrentUri],
       [CommandId.QtBrowserOpenUriExt, this._onOpenUriExt],
       [CommandId.QtBrowserGetBookmarks, this._onGetBookmarks],
-      [CommandId.QtBrowserEditBookmarks, this._onRunBookmarkEdit],
+      [CommandId.QtBrowserEditBookmarks, this._onEditBookmarks],
+      [CommandId.QtBrowserGetHistories, this._onGetHistories],
+      [CommandId.QtBrowserEditHistories, this._onEditHistories],
     ]);
 
     void this._extContext;
@@ -83,7 +88,7 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
     this.channel.replyData(cmd, { entries: this._bookmarks.entries });
   }
 
-  private readonly _onRunBookmarkEdit = (cmd: Command) => {
+  private readonly _onEditBookmarks = (cmd: Command) => {
     const edit = _.get(cmd.payload, 'edit', {});
     if (!isBookmarkEdit(edit)) {
       return;
@@ -96,8 +101,22 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
 
     this.channel.replyData(cmd, { entries: this._bookmarks.entries });
   }
-}
 
-/*
-file:///Users/bencho/tools/Qt/Docs/Qt-6.11.1/qtdoc/qtdoc-demos-car-configurator-example.html#running-the-example
-*/
+    private readonly _onGetHistories = (cmd: Command) => {
+      this.channel.replyData(cmd, { entries: this._histories.entries });
+    }
+
+    private readonly _onEditHistories = (cmd: Command) => {
+      const edit = _.get(cmd.payload, 'edit', {});
+      if (!isHistoryEdit(edit)) {
+        return;
+      }
+
+      const affected = this._histories.edit(edit);
+      if (affected) {
+        this._histories.save();
+      }
+
+      this.channel.replyData(cmd, { entries: this._histories.entries });
+    }
+}

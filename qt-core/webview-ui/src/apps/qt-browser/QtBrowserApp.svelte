@@ -10,6 +10,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import './QtBrowserApp.css';
   import QtBrowserToolbar from './toolbar/QtBrowserToolbar.svelte';
   import QtBrowserHtmlView from './QtBrowserHtmlView.svelte';
+  import QtBrowserHistoryView from './history/QtBrowserHistoryView.svelte';
   import QtBrowserBookmarkView from './bookmark/QtBrowserBookmarkView.svelte';
   import * as viewlogic from './viewlogic.svelte';
   import { ui } from './states.svelte';
@@ -36,6 +37,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {#if ui.layers.bookmark}
       <div class="absolute inset-0">
         <QtBrowserBookmarkView />
+      </div>
+    {/if}
+
+    {#if ui.layers.history}
+      <div class="absolute inset-0">
+        <QtBrowserHistoryView />
       </div>
     {/if}
   </div>

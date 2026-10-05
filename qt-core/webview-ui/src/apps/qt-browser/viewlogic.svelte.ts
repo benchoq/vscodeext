@@ -10,9 +10,10 @@ import { ViewerMessageId } from '@shared/qt-browser';
 import { data, ui } from './states.svelte';
 import { type FindAction } from './types.svelte';
 import * as helpers from './helpers';
+import * as history from './viewlogic.history.svelte';
 import * as bookmark from './viewlogic.bookmark.svelte';
 
-export { bookmark };
+export { history, bookmark };
 
 export async function onAppMount() {
   ui.theme.monitor.start();
@@ -21,6 +22,7 @@ export async function onAppMount() {
   vscode.onDidReceiveNotification(onMessageFromVscode);
 
   await loadConfigs();
+  await history.load();
   await bookmark.load();
 
   if (data.configs.homeUri.length !== 0) {
@@ -41,24 +43,25 @@ export async function openUri(uri: string) {
 
   // TODO: check if it's allowed to access or exists
   ui.iframe.src = u;
-  ui.history.push({
-    title: 'aaa',
-    uri: u,
-  });
-
   void vscode.post(CommandId.QtBrowserSetCurrentUri, { uri });
 }
 
 export function navigate(dir: 'back' | 'forward') {
-  const e = ui.history.go(dir);
+  void dir;
+  // const e = ui.history.go(dir);
 
-  if (typeof e?.uri === 'string') {
-    openUri(e?.uri);
-  }
+  // if (typeof e?.uri === 'string') {
+  //   openUri(e?.uri);
+  // }
 }
 
 export function copySelection() {
   helpers.postToViewer(ViewerMessageId.CopySelection);
+}
+
+export function setLayerVisible(target: 'bookmark' | 'history', visible: boolean) {
+  ui.layers.history = (target === 'history') && visible;
+  ui.layers.bookmark = (target === 'bookmark') && visible;
 }
 
 export function findInPage(action: FindAction) {
@@ -102,6 +105,14 @@ function onMessageFromViewer(e: MessageEvent) {
     case ViewerMessageId.ViewerLoaded:
       ui.iframe.hoveredUri = '';
       ui.iframe.title = e.data.title;
+        history.edit({
+        action: 'add',
+        entry: {
+          uri: helpers.toFileUri(e.data.href),
+          title: e.data.title,
+        }
+      });
+
       void vscode.post(CommandId.QtBrowserSetTitle, { title: e.data.title });
       break;
 

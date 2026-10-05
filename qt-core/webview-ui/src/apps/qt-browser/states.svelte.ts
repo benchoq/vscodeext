@@ -4,8 +4,8 @@
 import type { Coords } from '@floating-ui/dom';
 
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
-import { type BookmarkEntry } from '@shared/qt-browser';
-import { HistoryManager } from './types.svelte';
+import { type BookmarkEntry, type HistoryEntry } from '@shared/qt-browser';
+// import { HistoryManager } from './types.svelte';
 
 export interface BookmarkItem {
   data: BookmarkEntry;
@@ -14,6 +14,7 @@ export interface BookmarkItem {
 
 export const data = $state({
   bookmarks: [] as BookmarkItem[],
+  histories: [] as HistoryEntry[],
   configs: {
     homeUri: '',
     serverOrigin: '' // expects 'http://127.0.0.1:<port>'
@@ -44,8 +45,9 @@ export const ui = $state({
   },
 
   layers: {
-    bookmark: false
+    history: false,
+    bookmark: false,
   },
 
-  history: new HistoryManager()
+  // history: new HistoryManager()
 });

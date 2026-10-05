@@ -69,6 +69,8 @@ export enum CommandId {
   QtBrowserReloadPage,
   QtBrowserGetBookmarks,
   QtBrowserEditBookmarks,
+  QtBrowserGetHistories,
+  QtBrowserEditHistories,
 
   // common
   CommonViewClosed,

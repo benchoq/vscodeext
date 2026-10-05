@@ -5,3 +5,6 @@ export { EXTENSION_ID } from '@/constants';
 import { WebAppId } from '@/webview/shared/types';
 
 export const AppId: WebAppId = 'qt-browser';
+
+export const HistoryStorageKey = "qtBrowser.histories";
+export const BookmarkStorageKey = "qtBrowser.bookmarks";

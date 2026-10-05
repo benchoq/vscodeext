@@ -39,11 +39,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   function isEnabled(id: string) {
     switch (id) {
-      case 'back':
-        return ui.history.canGo('back');
+      // case 'back':
+      //   return ui.history.canGo('back');
 
-      case 'forward':
-        return ui.history.canGo('forward');
+      // case 'forward':
+      //   return ui.history.canGo('forward');
 
       case 'copy':
         return true;

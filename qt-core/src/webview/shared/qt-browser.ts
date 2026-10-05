@@ -23,6 +23,11 @@ export interface HistoryEntry {
   title: string;
 }
 
+export type HistoryEdit =
+  | { action: 'add'; entry: HistoryEntry }
+  | { action: 'remove'; selection: HistoryEntry[] }
+  | { action: 'clear' };
+
 export enum ViewerMessageId {
   FindInPage = 'qt-browser-find-in-page',
   ReloadPage = 'qt-browser-reload-page',
@@ -81,6 +86,27 @@ export function isHistoryEntry(x: unknown): x is HistoryEntry {
     typeof x.uri === 'string' &&
     typeof x.title === 'string'
   );
+}
+
+export function isHistoryEdit(x: unknown): x is HistoryEdit {
+  if (typeof x !== 'object' || x === null || !('action' in x)) {
+    return false;
+  }
+
+  const e = x as Record<string, unknown>;
+  switch (e.action) {
+    case 'add':
+      return isHistoryEntry(e.entry);
+
+    case 'remove':
+      return Array.isArray(e.selection) && e.selection.every(isHistoryEdit);
+
+    case 'clear':
+      return true;
+
+    default:
+      return false;
+  }
 }
 
 function isValidObject(x: unknown): x is Record<string, unknown> {

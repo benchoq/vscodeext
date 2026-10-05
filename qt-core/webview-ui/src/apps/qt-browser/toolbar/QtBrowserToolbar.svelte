@@ -9,7 +9,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     Bookmark,
     BookmarkCheck,
     TextSearch,
-    FolderArchive
+    FolderArchive,
+    RotateCcw,
   } from "@lucide/svelte";
 
   import './QtBrowserToolbar.css';
@@ -51,6 +52,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {@render navButton('forward')}
   {@render bookmarkToggleButton()}
   {@render bookmarkViewToggleButton()}
+  {@render historyViewToggleButton()}
 
   <input
     bind:this={el}
@@ -79,7 +81,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-role='nav-button'
     class='qt-button flex items-center justify-center'
     class:rotate-180={dir==='back'}
-    disabled={!ui.history.canGo(dir)}
+    // disabled={!ui.history.canGo(dir)}
     onclick={() => {
       viewlogic.navigate(dir);
     }}
@@ -115,9 +117,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-role='nav-button'
     class='qt-button flex items-center justify-center'
     onclick={() => {
-      ui.layers.bookmark = !ui.layers.bookmark;
+      viewlogic.setLayerVisible('bookmark', !ui.layers.bookmark);
     }}
   >
     <FolderArchive />
+  </button>
+{/snippet}
+
+{#snippet historyViewToggleButton()}
+  <button
+    data-role='nav-button'
+    class='qt-button flex items-center justify-center'
+    onclick={() => {
+      viewlogic.setLayerVisible('history', !ui.layers.history);
+    }}
+  >
+    <RotateCcw />
   </button>
 {/snippet}
