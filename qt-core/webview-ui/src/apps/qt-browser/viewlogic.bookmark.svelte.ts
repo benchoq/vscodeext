@@ -10,7 +10,8 @@ import {
 } from '@shared/qt-browser';
 
 import { CommandId } from '@shared/message';
-import { data, type BookmarkItem } from './states.svelte';
+import { data } from './states.svelte';
+import { type BookmarkViewEntry } from './types.svelte';
 
 export async function load() {
   const r = await vscode.post(CommandId.QtBrowserGetBookmarks);
@@ -44,7 +45,7 @@ function setBookmarks(entries: BookmarkEntry[]) {
       return {
         data: e,
         checked: false
-      } as BookmarkItem
+      } as BookmarkViewEntry
     });
 
     console.log($state.snapshot(data.bookmarks));

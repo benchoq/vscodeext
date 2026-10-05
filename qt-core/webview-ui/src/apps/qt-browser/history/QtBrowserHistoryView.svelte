@@ -14,10 +14,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div class='w-full h-full qt-item-list flex flex-col relative'>
-  <div class='bg-gray-800 absolute inset-0 opacity-90'>
+  <div class='bg-gray-800 absolute inset-0 opacity-90 -z-1'>
   </div>
 
-  <div class='flex flex-col absolute inset-0 p-2'>
+  <span>Histories</span>
+
+  <div class='flex flex-col p-2'>
     <QtBrowserHistoryToolbar />
 
     {#each data.histories as item, i (i)}
@@ -28,22 +30,23 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <div
         role='listitem'
         class='w-full flex flex-row items-center'
-        draggable={true}
       >
         <input
           type="checkbox"
           aria-label="check"
+          bind:checked={item.checked}
         />
 
         <button
           class='grow item flex flex-col gap-0'
           onclick={() => {
-            viewlogic.openUri(item.uri);
+            viewlogic.openUri(item.data.uri);
             ui.layers.history = false;
           }}
         >
-          <span>{item.title}</span>
-          <span>{helpers.toFileUri(item.uri)}</span>
+          <span>{item.data.title}</span>
+          <span>{helpers.toFileUri(item.data.uri)}</span>
+          <span>{item.data.timestamp ?? 0}</span>
         </button>
       </div>
     {/each}

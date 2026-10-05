@@ -2,8 +2,19 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import {
-  type HistoryEntry
+  type HistoryEntry,
+  type BookmarkEntry
 } from "@shared/qt-browser";
+
+export interface BookmarkViewEntry {
+  data: BookmarkEntry;
+  checked: boolean
+}
+
+export interface HistoryViewEntry {
+  data: HistoryEntry;
+  checked: boolean
+}
 
 export type FindAction = 'new' | 'prev' | 'next' | 'clear';
 

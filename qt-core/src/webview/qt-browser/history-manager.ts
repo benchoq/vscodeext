@@ -24,7 +24,14 @@ export class QtBrowserHistoryManager {
   public edit(edit: HistoryEdit) {
     switch (edit.action) {
       case 'add': {
-        this._entries.push(edit.entry);
+        const last = this._entries[this._entries.length - 1];
+        const timestamp = Date.now();
+        if (last?.uri === edit.entry.uri) {
+          last.timestamp = timestamp;
+        } else {
+          this._entries.push({ ...edit.entry, timestamp });
+        }
+
         return true;
       }
 

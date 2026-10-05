@@ -21,6 +21,7 @@ export type BookmarkEdit =
 export interface HistoryEntry {
   uri: string;
   title: string;
+  timestamp?: number;
 }
 
 export type HistoryEdit =
@@ -84,7 +85,8 @@ export function isHistoryEntry(x: unknown): x is HistoryEntry {
 
   return (
     typeof x.uri === 'string' &&
-    typeof x.title === 'string'
+    typeof x.title === 'string' &&
+    (x.timestamp === undefined || typeof x.timestamp === 'number')
   );
 }
 
@@ -99,7 +101,7 @@ export function isHistoryEdit(x: unknown): x is HistoryEdit {
       return isHistoryEntry(e.entry);
 
     case 'remove':
-      return Array.isArray(e.selection) && e.selection.every(isHistoryEdit);
+      return Array.isArray(e.selection) && e.selection.every(isHistoryEntry);
 
     case 'clear':
       return true;

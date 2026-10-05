@@ -10,7 +10,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     BookmarkCheck,
     TextSearch,
     FolderArchive,
-    RotateCcw,
+    FolderClock
   } from "@lucide/svelte";
 
   import './QtBrowserToolbar.css';
@@ -132,6 +132,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       viewlogic.setLayerVisible('history', !ui.layers.history);
     }}
   >
-    <RotateCcw />
+    <FolderClock />
   </button>
 {/snippet}

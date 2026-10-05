@@ -3,6 +3,8 @@
 
 import _ from 'lodash';
 import { vscode } from '@/apps/vscode';
+import { type HistoryViewEntry } from './types.svelte';
+
 import {
   isHistoryEntry,
   type HistoryEdit,
@@ -22,31 +24,26 @@ export async function edit(edit: HistoryEdit) {
   setHistories(_.get(r, 'entries', [] as HistoryEntry[]));
 }
 
-// export function getSelection() {
-//   return data.bookmarks
-//     .filter((e) => e.checked)
-//     .map(e => e.data);
-// }
+export function getSelection() {
+  return data.histories
+    .filter((e) => e.checked)
+    .map(e => e.data);
+}
 
-// export function setAllChecked(checked: boolean) {
-//   data.bookmarks.forEach((e) => {
-//     e.checked = checked;
-//   });
-// }
-
-// export function has(uri: string) {
-//   return data.bookmarks.some((e) => e.data.uri === uri);
-// }
+export function setAllChecked(checked: boolean) {
+  data.histories.forEach((e) => {
+    e.checked = checked;
+  });
+}
 
 function setHistories(entries: HistoryEntry[]) {
   if (Array.isArray(entries) && entries.every(isHistoryEntry)) {
-    data.histories = entries;
-    // data.histories = entries.map((e) => {
-    //   return {
-    //     data: e,
-    //     checked: false
-    //   } as HistoryEntry
-    // });
+    data.histories = entries.map((e) => {
+      return {
+        data: e,
+        checked: false
+      } as HistoryViewEntry
+    });
 
     console.log($state.snapshot(data.histories));
   }
