@@ -6,42 +6,31 @@ import {
   ExtensionContext as ExtContext
 } from 'vscode';
 
-import { WebviewDispatcher } from '@/webview/dispatcher';
-import { Command, CommandId } from '@/webview/shared/message';
+import { WebviewDispatcher, WebviewDispatcherChain } from '@/webview/dispatcher';
 import { QtBrowserDispatcher } from '@/webview/qt-browser/dispatcher';
 import { QtBrowserLocalServer } from '@/webview/qt-browser/server/local-server';
 import * as consts from './constants';
 
-export class QtHelpDispatcher extends WebviewDispatcher {
-  private readonly _localServer: QtBrowserLocalServer
-  private readonly _browserDispatcher: QtBrowserDispatcher;
+export class QtHelpDispatcher extends WebviewDispatcherChain {
+  private readonly _localServer: QtBrowserLocalServer;
 
-  public constructor(
-    extContext: ExtContext,
-    panel: Panel,
-  ) {
-    super(consts.AppId, panel);
+  public constructor(extContext: ExtContext, panel: Panel) {
+    super();
 
     this._localServer = new QtBrowserLocalServer();
     void this._localServer.start();
 
-    this._browserDispatcher = new QtBrowserDispatcher(extContext, panel, this._localServer);
+    this.appendDispatchers(
+      new QtBrowserDispatcher(extContext, panel, this._localServer),
+      new QtHelpOwnDispatcher(panel)
+    )
+  }
+}
 
-    void extContext;
+class QtHelpOwnDispatcher extends WebviewDispatcher {
+  public constructor(panel: Panel) {
+    super(consts.AppId, panel);
     this.setHandlers([
-      [CommandId.QtBrowserGetConfig, this._relay],
-      [CommandId.QtBrowserSetTitle, this._relay],
-      [CommandId.QtBrowserOpenUriExt, this._relay],
-      [CommandId.QtBrowserGetBookmarks, this._relay],
-      [CommandId.QtBrowserEditBookmarks, this._relay],
     ]);
   }
-
-  public override dispose() {
-    super.dispose();
-  }
-
-  private readonly _relay = async (cmd: Command) => {
-    await this._browserDispatcher.dispatch(cmd);
-  };
 }

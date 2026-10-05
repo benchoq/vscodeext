@@ -13,7 +13,12 @@ interface DispatcherContext {
   panel: vscode.WebviewPanel;
 }
 
-export class WebviewDispatcher implements vscode.Disposable {
+interface IWebviewDispatcher extends vscode.Disposable {
+  canHandle(id: CommandId): boolean;
+  dispatch(cmd: unknown): Promise<void>;
+}
+
+export class WebviewDispatcher implements IWebviewDispatcher {
   private readonly _context: DispatcherContext;
   private readonly _channel: WebviewChannel;
   private readonly _logger: ReturnType<typeof createWrappedLogger>;
@@ -48,6 +53,10 @@ export class WebviewDispatcher implements vscode.Disposable {
     return this._channel;
   }
 
+  public canHandle(id: CommandId) {
+    return this._handlers.has(id);
+  }
+
   public setHandlers(all: [CommandId, CommandHandler][]) {
     all.forEach(([id, handler]) => {
       this._handlers.set(id, handler);
@@ -78,6 +87,43 @@ export class WebviewDispatcher implements vscode.Disposable {
         .data('name', CommandId[cmd.id])
         .data('error', String(e))
         .error();
+    }
+  }
+}
+
+export class WebviewDispatcherChain implements IWebviewDispatcher {
+  private readonly _all: IWebviewDispatcher[] = [];
+  private readonly _disposables = new DisposableStore();
+
+  public dispose() {
+    this._disposables.dispose();
+  }
+
+  public appendDispatchers(...dispatchers: IWebviewDispatcher[]) {
+    this._all.push(...dispatchers);
+    this._disposables.push(...dispatchers);
+  }
+
+  public canHandle(id: CommandId) {
+    for (const d of this._all) {
+      if (d.canHandle(id)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public async dispatch(cmd: unknown) {
+    if (!isCommand(cmd)) {
+      return;
+    }
+
+    for (const d of this._all) {
+      if (d.canHandle(cmd.id)) {
+        await d.dispatch(cmd);
+        return;
+      }
     }
   }
 }
