@@ -47,8 +47,6 @@ function setBookmarks(entries: BookmarkEntry[]) {
         checked: false
       } as BookmarkViewEntry
     });
-
-    console.log($state.snapshot(data.bookmarks));
   }
 }
 

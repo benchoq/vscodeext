@@ -51,8 +51,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {@render navButton('back')}
   {@render navButton('forward')}
   {@render bookmarkToggleButton()}
-  {@render bookmarkViewToggleButton()}
-  {@render historyViewToggleButton()}
 
   <input
     bind:this={el}
@@ -73,6 +71,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   >
     <TextSearch />
   </button>
+
+  {@render bookmarkViewToggleButton()}
+  {@render historyViewToggleButton()}
 
 </div>
 

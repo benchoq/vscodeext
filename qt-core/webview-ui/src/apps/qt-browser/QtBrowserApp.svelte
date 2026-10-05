@@ -35,7 +35,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </div>
 
     {#if ui.layers.bookmark || ui.layers.history}
-      <div class='absolute inset-0 bg-gray-800 opacity-90'>
+      <div
+        data-role='background'
+        class='absolute inset-0'
+      >
       </div>
 
       <div class='absolute inset-0'>
@@ -50,3 +53,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {/if}
   </div>
 </div>
+
+<style>
+  [data-role='background'] {
+    background: var(--qt-bg-subtle);
+    opacity: 0.95;
+  }
+</style>

@@ -11,37 +11,73 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { data } from '../states.svelte';
   import * as helpers from '../helpers';
   import * as viewlogic from '../viewlogic.svelte';
+  import type { HistoryViewEntry } from '../types.svelte';
+
+  const groups = $derived.by(() => {
+    const map = new Map<string, { label: string; items: HistoryViewEntry[] }>();
+
+    for (const item of data.histories.toReversed()) {
+      const date = new Date(item.data.timestamp ?? 0);
+      const key = date.toDateString();
+      let group = map.get(key);
+      if (!group) {
+        group = {
+          items: [],
+          label: date.toLocaleDateString(undefined, { dateStyle: 'full' }),
+        };
+
+        map.set(key, group);
+      }
+
+      group.items.push(item);
+    }
+
+    return [...map.values()];
+  });
+
 </script>
 
 <div class='flex flex-col'>
-  {#each data.histories.toReversed() as item, i (i)}
-    {#if i !== 0}
-      <Separator />
-    {/if}
+  {#each groups as group (group.label)}
+    <div data-role='date-header'>{group.label}</div>
 
-    <div class='qt-item-list w-full flex flex-row items-center'>
-      <CheckBox bind:checked={item.checked} />
+    {#each group.items as item, i (item)}
+      {#if i !== 0}
+        <div class='pl-4'>
+          <Separator />
+        </div>
+      {/if}
 
-      <button
-        class='item grow flex flex-row items-center gap-4'
-        class:active={item.checked}
-        title={helpers.toFileUri(item.data.uri)}
-        onclick={() => {
-          viewlogic.openUri(item.data.uri);
-          viewlogic.setLayerVisible('history', false);
-        }}
-      >
-        <span data-role='time'>
-          {format.timeAsLocaleString(new Date(item.data.timestamp ?? 0))}
-        </span>
-        <span data-role='title'>{item.data.title}</span>
-        <span class='grow'></span>
-      </button>
-    </div>
+      <div class='qt-item-list w-full flex flex-row items-center pl-4'>
+        <CheckBox bind:checked={item.checked} />
+
+        <button
+          class='item grow flex flex-row items-center gap-4'
+          class:active={item.checked}
+          title={helpers.toFileUri(item.data.uri)}
+          onclick={() => {
+            viewlogic.openUri(item.data.uri);
+            viewlogic.setLayerVisible('history', false);
+          }}
+        >
+          <span data-role='time'>
+            {format.timeAsLocaleString(new Date(item.data.timestamp ?? 0))}
+          </span>
+          <span data-role='title'>{item.data.title}</span>
+          <span class='grow'></span>
+        </button>
+      </div>
+    {/each}
   {/each}
 </div>
 
 <style>
+  [data-role='date-header'] {
+    color: var(--qt-text-muted);
+    font-size: var(--qt-font-s);
+    padding: 1.0rem 0 0.5rem 0;
+  }
+
   [data-role='title'] {
     color: var(--qt-text-default);
   }
