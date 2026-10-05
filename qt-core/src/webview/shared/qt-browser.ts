@@ -10,7 +10,6 @@ export interface QtBrowserOpenOptions {
 export interface BookmarkEntry {
   uri: string;
   title: string;
-  labelIds?: string[];
 }
 
 export type BookmarkEdit =
@@ -45,8 +44,7 @@ export function isBookmarkEntry(x: unknown): x is BookmarkEntry {
 
   return (
     typeof x.uri === 'string' &&
-    typeof x.title === 'string' &&
-    (x.labelIds === undefined || isStringArray(x.labelIds))
+    typeof x.title === 'string'
   );
 }
 
@@ -93,6 +91,6 @@ function isIndex(v: unknown) {
   return typeof v === 'number' && Number.isInteger(v) && v >= 0;
 }
 
-function isStringArray(x: unknown): x is string[] {
-  return Array.isArray(x) && x.every((e) => typeof e === 'string');
-}
+// function isStringArray(x: unknown): x is string[] {
+//   return Array.isArray(x) && x.every((e) => typeof e === 'string');
+// }
