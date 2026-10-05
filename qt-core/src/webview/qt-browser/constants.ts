@@ -4,4 +4,4 @@
 export { EXTENSION_ID } from '@/constants';
 import { WebAppId } from '@/webview/shared/types';
 
-export const appId: WebAppId = 'qt-browser';
+export const AppId: WebAppId = 'qt-browser';

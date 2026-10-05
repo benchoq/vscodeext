@@ -74,7 +74,7 @@ export class QtBrowserController {
   }
 
   private _add(context: Context) {
-    const panel = createPanel(consts.appId);
+    const panel = createPanel(consts.AppId);
     const s = new QtBrowserSession(context, panel, this._localServer);
 
     this._disposables.push(

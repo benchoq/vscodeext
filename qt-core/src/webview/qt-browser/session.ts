@@ -22,7 +22,7 @@ export class QtBrowserSession {
     private readonly _panel: Panel,
     localServer: QtBrowserLocalServer
   ) {
-    setupWebApp(consts.appId, context, this._panel);
+    setupWebApp(consts.AppId, context, this._panel);
 
     this._dispatcher = new QtBrowserDispatcher(context, this._panel, localServer);
     this._disposables.push(
