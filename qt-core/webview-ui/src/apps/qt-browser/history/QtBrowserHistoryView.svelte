@@ -4,51 +4,25 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import Separator from '@/comps/Separator.svelte';
+  import QtBrowserHistoryList from './QtBrowserHistoryList.svelte';
   import QtBrowserHistoryToolbar from './QtBrowserHistoryToolbar.svelte';
-
-  import { data, ui } from '../states.svelte';
-  import * as helpers from '../helpers';
-  import * as viewlogic from '../viewlogic.svelte';
-
 </script>
 
-<div class='w-full h-full qt-item-list flex flex-col relative'>
-  <div class='bg-gray-800 absolute inset-0 opacity-90 -z-1'>
-  </div>
+<div class='w-full h-full flex flex-col gap-2 px-4 py-2'>
+  <span data-role='title'>
+    Histories
+  </span>
 
-  <span>Histories</span>
-
-  <div class='flex flex-col p-2'>
-    <QtBrowserHistoryToolbar />
-
-    {#each data.histories as item, i (i)}
-      {#if i !== 0}
-        <Separator />
-      {/if}
-
-      <div
-        role='listitem'
-        class='w-full flex flex-row items-center'
-      >
-        <input
-          type="checkbox"
-          aria-label="check"
-          bind:checked={item.checked}
-        />
-
-        <button
-          class='grow item flex flex-col gap-0'
-          onclick={() => {
-            viewlogic.openUri(item.data.uri);
-            ui.layers.history = false;
-          }}
-        >
-          <span>{item.data.title}</span>
-          <span>{helpers.toFileUri(item.data.uri)}</span>
-          <span>{item.data.timestamp ?? 0}</span>
-        </button>
-      </div>
-    {/each}
-  </div>
+  <QtBrowserHistoryToolbar />
+  <QtBrowserHistoryList />
 </div>
+
+<style>
+  [data-role='title'] {
+    color: var(--qt-text-muted);
+    font-weight: bold;
+    font-size: var(--qt-font-s);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+</style>

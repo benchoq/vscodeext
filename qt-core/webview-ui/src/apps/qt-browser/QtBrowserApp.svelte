@@ -34,15 +34,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <QtBrowserHtmlView />
     </div>
 
-    {#if ui.layers.bookmark}
-      <div class="absolute inset-0">
-        <QtBrowserBookmarkView />
+    {#if ui.layers.bookmark || ui.layers.history}
+      <div class='absolute inset-0 bg-gray-800 opacity-90'>
       </div>
-    {/if}
 
-    {#if ui.layers.history}
-      <div class="absolute inset-0">
-        <QtBrowserHistoryView />
+      <div class='absolute inset-0'>
+        {#if ui.layers.bookmark}
+          <QtBrowserBookmarkView />
+        {/if}
+
+        {#if ui.layers.history}
+          <QtBrowserHistoryView />
+        {/if}
       </div>
     {/if}
   </div>

@@ -22,6 +22,19 @@ export class HistoryManager {
   private _history = $state([] as HistoryEntry[]);
   private _currentIndex = $state(-1);
 
+  public get currentEntry() {
+    return this._history[this._currentIndex];
+  }
+
+  public canGo(dir: 'back' | 'forward') {
+    if (dir === 'back') {
+      return this._currentIndex > 0;
+    }
+
+    return this._currentIndex + 1 < this._history.length;
+  }
+
+
   public go(dir: 'back' | 'forward') {
     if (dir === 'back') {
       if (this._currentIndex > 0) {
@@ -38,18 +51,6 @@ export class HistoryManager {
     }
 
     return undefined;
-  }
-
-  public canGo(dir: 'back' | 'forward') {
-    if (dir === 'back') {
-      return this._currentIndex > 0;
-    }
-
-    return this._currentIndex + 1 < this._history.length;
-  }
-
-  public get currentEntry() {
-    return this._history[this._currentIndex];
   }
 
   public push(entry: HistoryEntry) {

@@ -33,9 +33,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div class='w-full h-full qt-item-list flex flex-col relative'>
-  <div class='bg-gray-800 absolute inset-0 opacity-90'>
-  </div>
-
   <div class='flex flex-col absolute inset-0 p-2'>
     <QtBrowserBookmarkToolbar />
 
