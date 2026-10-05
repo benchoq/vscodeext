@@ -5,6 +5,7 @@ import type { Coords } from '@floating-ui/dom';
 
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import {
+  HistoryManager,
   type HistoryViewEntry,
   type BookmarkViewEntry
 } from './types.svelte';
@@ -46,5 +47,5 @@ export const ui = $state({
     bookmark: false,
   },
 
-  // history: new HistoryManager()
+  history: new HistoryManager()
 });

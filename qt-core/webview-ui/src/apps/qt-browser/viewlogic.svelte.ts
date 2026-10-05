@@ -18,6 +18,7 @@ export { history, bookmark };
 export async function onAppMount() {
   ui.theme.monitor.start();
   ui.theme.monitor.onChanged(onVscodeThemeChanged);
+
   window.addEventListener('message', onMessageFromViewer);
   vscode.onDidReceiveNotification(onMessageFromVscode);
 
@@ -43,16 +44,15 @@ export async function openUri(uri: string) {
 
   // TODO: check if it's allowed to access or exists
   ui.iframe.src = u;
-  void vscode.post(CommandId.QtBrowserSetCurrentUri, { uri });
+  // void vscode.post(CommandId.QtBrowserSetCurrentUri, { uri });
 }
 
 export function navigate(dir: 'back' | 'forward') {
-  void dir;
-  // const e = ui.history.go(dir);
+  const e = ui.history.go(dir);
 
-  // if (typeof e?.uri === 'string') {
-  //   openUri(e?.uri);
-  // }
+  if (typeof e?.uri === 'string') {
+    openUri(e?.uri);
+  }
 }
 
 export function copySelection() {
@@ -84,6 +84,7 @@ export function findInPage(action: FindAction) {
 // helpers
 async function loadConfigs() {
   const r = await vscode.post(CommandId.QtBrowserGetConfig);
+
   data.configs.homeUri = String(_.get(r, 'homeUri', '')).trim();
   data.configs.serverOrigin = String(_.get(r, 'serverOrigin', '')).trim();
 }
@@ -103,9 +104,15 @@ function onMessageFromVscode(reply: CommandReply) {
 function onMessageFromViewer(e: MessageEvent) {
   switch (e.data?.id) {
     case ViewerMessageId.ViewerLoaded:
-      ui.iframe.hoveredUri = '';
       ui.iframe.title = e.data.title;
-        history.edit({
+      ui.iframe.hoveredUri = '';
+
+      ui.history.push({
+        uri: e.data.href,
+        title: e.data.title
+      });
+
+      history.edit({
         action: 'add',
         entry: {
           uri: helpers.toFileUri(e.data.href),
@@ -113,6 +120,7 @@ function onMessageFromViewer(e: MessageEvent) {
         }
       });
 
+      void vscode.post(CommandId.QtBrowserSetCurrentUri, { uri: e.data.href });
       void vscode.post(CommandId.QtBrowserSetTitle, { title: e.data.title });
       break;
 

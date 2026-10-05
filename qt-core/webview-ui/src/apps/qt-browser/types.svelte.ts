@@ -54,7 +54,7 @@ export class HistoryManager {
 
   public push(entry: HistoryEntry) {
     if ((entry.uri.length === 0)
-      || (this.currentEntry && (entry.uri, this.currentEntry.uri))) {
+      || (this.currentEntry && (entry.uri === this.currentEntry.uri))) {
       return;
     }
 

@@ -81,7 +81,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-role='nav-button'
     class='qt-button flex items-center justify-center'
     class:rotate-180={dir==='back'}
-    // disabled={!ui.history.canGo(dir)}
+    disabled={!ui.history.canGo(dir)}
     onclick={() => {
       viewlogic.navigate(dir);
     }}

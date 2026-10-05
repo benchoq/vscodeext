@@ -24,7 +24,10 @@ export class QtBrowserSession {
   ) {
     setupWebApp(consts.AppId, context, this._panel);
 
-    this._dispatcher = new QtBrowserDispatcher(context, this._panel, localServer);
+    this._dispatcher = new QtBrowserDispatcher(
+      context, this._panel, localServer
+    );
+
     this._disposables.push(
       this._dispatcher,
       this._panel.onDidDispose(this.dispose.bind(this)),
