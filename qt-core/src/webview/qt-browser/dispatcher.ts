@@ -10,7 +10,7 @@ import {
 } from 'vscode';
 
 import { WebviewDispatcher } from '@/webview/dispatcher';
-import { isBookmarkEdit, isHistoryEdit } from '@/webview/shared/qt-browser';
+import { isBookmarkEdit, isHistoryEdit, QtBrowserOpenOptions } from '@/webview/shared/qt-browser';
 import { Command, CommandId } from '@/webview/shared/message';
 import { QtBrowserLocalServer } from './server/local-server';
 import { QtBrowserHistoryManager } from './history-manager';
@@ -19,6 +19,7 @@ import { QtBrowserBookmarkManager } from './bookmark-manager';
 export class QtBrowserDispatcher extends WebviewDispatcher  {
   private _homeUri = '';
   private _currentUri = '';
+  private _openOptions: QtBrowserOpenOptions | undefined;
   private readonly _histories: QtBrowserHistoryManager;
   private readonly _bookmarks: QtBrowserBookmarkManager;
 
@@ -58,6 +59,10 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
     this._homeUri = uri;
   }
 
+  public setOpenOptions(o: QtBrowserOpenOptions) {
+    this._openOptions = o;
+  }
+
   public notifyReload() {
     this.channel.notify(CommandId.QtBrowserReloadPage);
   }
@@ -70,7 +75,10 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
   };
 
   private readonly _onSetTitle = (cmd: Command) => {
-    this._panel.title = String(_.get(cmd.payload, 'title', ''));;
+    if (this._openOptions?.trigger !== 'qt-help') {
+      this._panel.title = String(_.get(cmd.payload, 'title', ''));
+    }
+
     this.channel.replyDone(cmd);
   }
 

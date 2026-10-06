@@ -13,6 +13,7 @@ import { setupWebApp } from '@/webview/utils';
 import { QtBrowserLocalServer } from './server/local-server';
 import { QtBrowserDispatcher } from './dispatcher';
 import * as consts from './constants';
+import { QtBrowserOpenOptions } from '../shared/qt-browser';
 
 export class QtBrowserSession {
   private readonly _dispatcher: QtBrowserDispatcher;
@@ -56,6 +57,10 @@ export class QtBrowserSession {
 
   public setHomeUri(uri: string) {
     this._dispatcher.setHomeUri(uri);
+  }
+
+  public setOpenOptions(o: QtBrowserOpenOptions) {
+    this._dispatcher.setOpenOptions(o);
   }
 
   public reloadPage() {

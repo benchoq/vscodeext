@@ -69,6 +69,10 @@ export class QtBrowserController {
     }
 
     const s = this._add(context);
+    if (o) {
+      s.setOpenOptions(o);
+    }
+
     s.setHomeUri(uri?.toString() ?? '');
     s.reveal(col);
   }

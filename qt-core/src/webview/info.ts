@@ -30,7 +30,7 @@ export function getWebAppInfo(appId: WebAppId): WebAppInfo {
     case 'qt-help':
       return {
         appId,
-        title: texts.qtBrowser.tabText,
+        title: texts.qtHelp.tabText,
         viewType: 'ViewTypeQtHelp',
         viewColumn,
         iconPathPrefix
