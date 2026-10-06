@@ -8,9 +8,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import QtBrowserHistoryToolbar from './QtBrowserHistoryToolbar.svelte';
 </script>
 
-<div class='w-full h-full flex flex-col gap-2 px-4 py-2'>
+<div class='w-full h-full flex flex-col gap-2 pl-4 py-2'>
   <span data-role='title'>
-    Histories
+    History
   </span>
 
   <QtBrowserHistoryToolbar />

@@ -70,8 +70,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         }}
       >
         <span data-role='title'>{item.data.title}</span>
-        <span class='grow'></span>
-        <span data-role='url'>{item.data.uri}</span>
       </button>
     </div>
   {/each}
@@ -86,16 +84,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     min-width: 0;
     flex-shrink: 0;
     color: var(--qt-text-default);
-  }
-
-  [data-role='url'] {
-    min-width: 0;
-    flex-shrink: 10;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    color: var(--qt-text-muted);
-    font-size: var(--qt-font-xs);
-
   }
 </style>

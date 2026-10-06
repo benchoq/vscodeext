@@ -37,7 +37,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 </script>
 
-<div class='flex flex-col'>
+<div class='qt-item-list flex flex-col'>
   {#each groups as group (group.label)}
     <div data-role='date-header'>{group.label}</div>
 
@@ -48,11 +48,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         </div>
       {/if}
 
-      <div class='qt-item-list w-full flex flex-row items-center pl-4'>
+      <div class='w-full flex flex-row items-center'>
         <CheckBox bind:checked={item.checked} />
 
         <button
-          class='item grow flex flex-row items-center gap-4'
+          class='item grow flex min-w-0 flex-row items-center gap-4'
           class:active={item.checked}
           title={helpers.toFileUri(item.data.uri)}
           onclick={() => {
@@ -78,12 +78,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     padding: 1.0rem 0 0.5rem 0;
   }
 
-  [data-role='title'] {
-    color: var(--qt-text-default);
-  }
-
   [data-role='time'] {
     color: var(--qt-text-muted);
     font-size: var(--qt-font-xs);
+    white-space: nowrap;
   }
+
+  [data-role='title'] {
+    color: var(--qt-text-default);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
 </style>

@@ -60,8 +60,8 @@ export function copySelection() {
 }
 
 export function setLayerVisible(target: 'bookmark' | 'history', visible: boolean) {
-  ui.layers.history = (target === 'history') && visible;
-  ui.layers.bookmark = (target === 'bookmark') && visible;
+  ui.popovers.history.visible = (target === 'history') && visible;
+  ui.popovers.bookmark.visible = (target === 'bookmark') && visible;
 }
 
 export function findInPage(action: FindAction) {

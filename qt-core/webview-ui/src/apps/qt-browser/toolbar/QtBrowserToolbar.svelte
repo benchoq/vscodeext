@@ -118,7 +118,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-role='nav-button'
     class='qt-button flex items-center justify-center'
     onclick={() => {
-      viewlogic.setLayerVisible('bookmark', !ui.layers.bookmark);
+      viewlogic.setLayerVisible('bookmark', !ui.popovers.bookmark.visible);
     }}
   >
     <FolderArchive />
@@ -130,7 +130,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-role='nav-button'
     class='qt-button flex items-center justify-center'
     onclick={() => {
-      viewlogic.setLayerVisible('history', !ui.layers.history);
+      viewlogic.setLayerVisible('history', !ui.popovers.history.visible);
     }}
   >
     <FolderClock />

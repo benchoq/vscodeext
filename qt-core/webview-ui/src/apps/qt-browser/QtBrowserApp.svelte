@@ -8,10 +8,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import '@/styles/components/components.css';
   import './QtBrowserApp.css';
+
   import QtBrowserToolbar from './toolbar/QtBrowserToolbar.svelte';
   import QtBrowserHtmlView from './QtBrowserHtmlView.svelte';
   import QtBrowserHistoryView from './history/QtBrowserHistoryView.svelte';
   import QtBrowserBookmarkView from './bookmark/QtBrowserBookmarkView.svelte';
+
   import * as viewlogic from './viewlogic.svelte';
   import { ui } from './states.svelte';
 
@@ -34,19 +36,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <QtBrowserHtmlView />
     </div>
 
-    {#if ui.layers.bookmark || ui.layers.history}
+    {#if ui.popovers.bookmark.visible || ui.popovers.history.visible}
       <div
         data-role='background'
-        class='absolute inset-0'
+        class='absolute top-0 right-0 w-[400px] h-full'
       >
-      </div>
-
-      <div class='absolute inset-0'>
-        {#if ui.layers.bookmark}
+        {#if ui.popovers.bookmark.visible}
           <QtBrowserBookmarkView />
         {/if}
 
-        {#if ui.layers.history}
+        {#if ui.popovers.history.visible}
           <QtBrowserHistoryView />
         {/if}
       </div>
@@ -57,6 +56,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <style>
   [data-role='background'] {
     background: var(--qt-bg-subtle);
-    opacity: 0.95;
+    border-left: 1px solid var(--qt-stroke-subtle);
+    opacity: 0.90;
   }
 </style>

@@ -39,12 +39,15 @@ export const ui = $state({
     contextMenu: {
       pos: undefined as Coords | undefined,
       visible: false,
-    }
-  },
+    },
 
-  layers: {
-    history: false,
-    bookmark: false,
+    bookmark: {
+      visible: false,
+    },
+
+    history: {
+      visible: false,
+    }
   },
 
   history: new HistoryManager()
