@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import {
+  commands,
   ViewColumn,
   WebviewPanel as Panel,
   ExtensionContext as Context
@@ -46,8 +47,11 @@ export class QtBrowserSession {
     return this._panel.viewColumn;
   }
 
-  public reveal(viewColumn?: ViewColumn) {
-    this._panel.reveal(viewColumn);
+  public reveal(viewColumn?: ViewColumn, preserveFocus?: boolean) {
+    this._panel.reveal(viewColumn, preserveFocus);
+
+    // to remove preview mode
+    void commands.executeCommand('workbench.action.keepEditor');
   }
 
   public setHomeUri(uri: string) {

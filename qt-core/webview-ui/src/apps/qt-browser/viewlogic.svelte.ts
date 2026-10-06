@@ -103,10 +103,11 @@ function onMessageFromVscode(reply: CommandReply) {
 
 function onMessageFromViewer(e: MessageEvent) {
   switch (e.data?.id) {
-    case ViewerMessageId.ViewerLoaded:
+    case ViewerMessageId.ViewerLoaded: {
+      const fileUri = helpers.toFileUri(e.data.href);
+
       ui.iframe.title = e.data.title;
       ui.iframe.hoveredUri = '';
-
       ui.history.push({
         uri: e.data.href,
         title: e.data.title
@@ -115,7 +116,7 @@ function onMessageFromViewer(e: MessageEvent) {
       history.edit({
         action: 'add',
         entry: {
-          uri: helpers.toFileUri(e.data.href),
+          uri: fileUri,
           title: e.data.title,
         }
       });
@@ -124,9 +125,10 @@ function onMessageFromViewer(e: MessageEvent) {
         vars: ui.theme.getAllVscodeCssVars()
       });
 
-      void vscode.post(CommandId.QtBrowserSetCurrentUri, { uri: e.data.href });
+      void vscode.post(CommandId.QtBrowserSetCurrentUri, { uri: fileUri });
       void vscode.post(CommandId.QtBrowserSetTitle, { title: e.data.title });
       break;
+    }
 
     case ViewerMessageId.ViewerHoverChanged:
       if (typeof e.data.href === 'string') {
