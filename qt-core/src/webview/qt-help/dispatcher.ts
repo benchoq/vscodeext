@@ -9,26 +9,35 @@ import {
 import { WebviewDispatcher, WebviewDispatcherChain } from '@/webview/dispatcher';
 import { QtBrowserDispatcher } from '@/webview/qt-browser/dispatcher';
 import { QtBrowserLocalServer } from '@/webview/qt-browser/server/local-server';
+import { QtBrowserDocStyleProvider } from '@/webview/qt-browser/server/style-provider';
 import * as consts from './constants';
 
 export class QtHelpDispatcher extends WebviewDispatcherChain {
   private readonly _localServer: QtBrowserLocalServer;
+  private readonly _cssProvider: QtBrowserDocStyleProvider;
+  private readonly _viewerDispatcher: QtBrowserDispatcher;
 
   public constructor(extContext: ExtContext, panel: Panel) {
     super();
 
+    this._cssProvider = new QtBrowserDocStyleProvider(extContext);
     this._localServer = new QtBrowserLocalServer();
-    void this._localServer.start();
-
-    const viewer = new QtBrowserDispatcher(extContext, panel, this._localServer);
-    viewer.setOpenOptions({
-      trigger: "qt-help"
+    void this._localServer.start().then(() => {
+      this._loadCss(this._cssProvider.cssLines);
     });
 
+    this._viewerDispatcher = new QtBrowserDispatcher(extContext, panel, this._localServer);
+    this._viewerDispatcher.setOpenOptions({ trigger: "qt-help" });
+
     this.appendDispatchers(
-      viewer,
+      this._viewerDispatcher,
       new QtHelpOwnDispatcher(panel)
     )
+  }
+
+  private _loadCss(css: string) {
+    this._localServer.setCssOverride(css);
+    this._viewerDispatcher.notifyReload();
   }
 }
 
