@@ -71,6 +71,10 @@ export enum CommandId {
   QtBrowserGetHistories,
   QtBrowserEditHistories,
 
+  // qt help
+  QtHelpReadToc,
+  QtHelpReadIndexes,
+
   // common
   CommonViewClosed,
   CommonRevealFolder,

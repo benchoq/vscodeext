@@ -1,0 +1,137 @@
+// Copyright (C) 2026 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+
+import * as fs from 'fs';
+import * as path from 'path';
+import { Database, SqlJsStatic } from 'sql.js';
+
+import { IndexMatch, TocEntry } from '@/webview/shared/qt-help';
+import { fetchSql } from './sql';
+
+// const logger = createWrappedLogger('qch-reader');
+
+export class QchReader {
+  private readonly _db: Database;
+
+  private constructor(
+    private readonly _sql: SqlJsStatic,
+    private readonly _filePath: string
+  ) {
+    const data = fs.readFileSync(this._filePath);
+    this._db = new this._sql.Database(data);
+  }
+
+  public static async create(qchPath: string) {
+    return new QchReader(await fetchSql(), qchPath);
+  }
+
+  public readToc() {
+    const entries: TocEntry[] = [];
+    const s = this._db.prepare(Sqls.readContentData);
+
+    while (s.step()) {
+      const o = s.getAsObject();
+      const bytes = o.Data as Uint8Array;
+      entries.push(...parseContentsTable(bytes, String(o.FolderName ?? '')));
+    }
+
+    s.free();
+    return entries;
+  }
+
+  public readIndexes() {
+    const entries: IndexMatch[] = [];
+    const s = this._db.prepare(Sqls.readIndexes);
+
+    while (s.step()) {
+      const o = s.getAsObject();
+      const data: IndexMatch = {
+        type: 'index',
+        page: {
+          title: String(o.FileTitle ?? ''),
+          filePathRel: path.join(String(o.FolderName ?? ''),  String(o.FileName ?? '')),
+          anchor: String(o.Anchor ?? '')
+        },
+        name: String(o.Name ?? '')
+      }
+
+      entries.push(data);
+    }
+
+    s.free();
+    return entries;
+  }
+
+  public searchFullText(keyword: string) {
+    console.log(this, keyword);
+    return [];
+  }
+}
+
+// helpers
+function parseContentsTable(data: Uint8Array, folderName: string): TocEntry[] {
+  const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
+  const entries: TocEntry[] = [];
+  let pos = 0;
+
+  function readUint32(): number {
+    const i = view.getUint32(pos, false);
+    pos += 4;
+    return i;
+  }
+
+  function readUtf16BE(length: number): string {
+    const chars: string[] = [];
+    for (let i = 0; i < length; i += 2) {
+      chars.push(String.fromCharCode(view.getUint16(pos + i, false)));
+    }
+    pos += length;
+    return chars.join('');
+  }
+
+  while (pos < data.length) {
+    const depth = readUint32();
+    const fileName = readUtf16BE(readUint32());
+    const title = readUtf16BE(readUint32());
+
+    entries.push({
+      type: 'toc',
+      page: {
+        title,
+        filePathRel: path.join(folderName, fileName)
+      },
+      depth
+    } satisfies TocEntry);
+  }
+
+  return entries;
+}
+
+const Sqls = {
+  readIndexes: `
+    SELECT
+      IndexTable.Name,
+      IndexTable.Anchor,
+      FolderTable.Name as FolderName,
+      FileNameTable.Name as FileName,
+      FileNameTable.Title as FileTitle
+    FROM
+      IndexTable,
+      FolderTable,
+      FileNameTable
+    WHERE
+      IndexTable.FileId == FileNameTable.FileId
+      AND FileNameTable.FolderId == FolderTable.Id
+  `,
+
+  readContentData: `
+    SELECT
+      ContentsTable.Data,
+      FolderTable.Name as FolderName
+    FROM
+      ContentsTable,
+      FolderTable
+    WHERE
+      ContentsTable.NamespaceID == FolderTable.NamespaceID
+  `
+};

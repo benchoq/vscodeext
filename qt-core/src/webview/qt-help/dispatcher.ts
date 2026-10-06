@@ -6,9 +6,12 @@ import {
   ExtensionContext as ExtContext
 } from 'vscode';
 
+import { Command, CommandId } from '@/webview/shared/message';
 import { WebviewDispatcher, WebviewDispatcherChain } from '@/webview/dispatcher';
 import { QtBrowserDispatcher } from '@/webview/qt-browser/dispatcher';
 import { QtBrowserDocServer } from '@/webview/qt-browser/server/doc-server';
+import { QtHelpDataManager } from './data/data-manager';
+
 import * as consts from './constants';
 
 export class QtHelpDispatcher extends WebviewDispatcherChain {
@@ -36,9 +39,26 @@ export class QtHelpDispatcher extends WebviewDispatcherChain {
 }
 
 class QtHelpOwnDispatcher extends WebviewDispatcher {
+  private readonly _data: QtHelpDataManager;
+
   public constructor(panel: Panel) {
     super(consts.AppId, panel);
+
+    this._data = new QtHelpDataManager();
     this.setHandlers([
+      [CommandId.QtHelpReadToc, this._onReadToc],
+      [CommandId.QtHelpReadIndexes, this._onReadIndexes]
     ]);
   }
+
+  private readonly _onReadToc = async (cmd: Command) => {
+    const data = await this._data.readToc();
+    this.channel.replyData(cmd, data);
+  };
+
+
+  private readonly _onReadIndexes = async (cmd: Command) => {
+    const data = await this._data.readIndexes();
+    this.channel.replyData(cmd, data);
+  };
 }
