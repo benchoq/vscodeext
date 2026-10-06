@@ -22,12 +22,13 @@ export class QtBrowserSession {
   constructor(
     context: Context,
     private readonly _panel: Panel,
-    localServer: QtBrowserLocalServer
+    localServer: QtBrowserLocalServer,
+    openOptions: QtBrowserOpenOptions
   ) {
     setupWebApp(consts.AppId, context, this._panel);
 
     this._dispatcher = new QtBrowserDispatcher(
-      context, this._panel, localServer
+      context, this._panel, localServer, openOptions
     );
 
     this._disposables.push(
@@ -53,14 +54,6 @@ export class QtBrowserSession {
 
     // to remove preview mode
     void commands.executeCommand('workbench.action.keepEditor');
-  }
-
-  public setHomeUri(uri: string) {
-    this._dispatcher.setHomeUri(uri);
-  }
-
-  public setOpenOptions(o: QtBrowserOpenOptions) {
-    this._dispatcher.setOpenOptions(o);
   }
 
   public reloadPage() {

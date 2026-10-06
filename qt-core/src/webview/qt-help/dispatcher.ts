@@ -26,8 +26,9 @@ export class QtHelpDispatcher extends WebviewDispatcherChain {
       this._loadCss(this._cssProvider.cssLines);
     });
 
-    this._viewerDispatcher = new QtBrowserDispatcher(extContext, panel, this._localServer);
-    this._viewerDispatcher.setOpenOptions({ trigger: "qt-help" });
+    this._viewerDispatcher = new QtBrowserDispatcher(
+      extContext, panel, this._localServer, { trigger: "qt-help" }
+    );
 
     this.appendDispatchers(
       this._viewerDispatcher,

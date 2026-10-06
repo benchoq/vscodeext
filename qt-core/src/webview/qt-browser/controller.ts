@@ -68,18 +68,18 @@ export class QtBrowserController {
       return;
     }
 
-    const s = this._add(context);
-    if (o) {
-      s.setOpenOptions(o);
-    }
+    const openOptions: QtBrowserOpenOptions = {
+      ...(o ?? {}),
+      ...(uri && { homeUrl: uri.toString() })
+    };
 
-    s.setHomeUri(uri?.toString() ?? '');
+    const s = this._add(context, openOptions);
     s.reveal(col);
   }
 
-  private _add(context: Context) {
+  private _add(context: Context, openOptions: QtBrowserOpenOptions) {
     const panel = createPanel(consts.AppId);
-    const s = new QtBrowserSession(context, panel, this._localServer);
+    const s = new QtBrowserSession(context, panel, this._localServer, openOptions);
 
     this._disposables.push(
       // TODO

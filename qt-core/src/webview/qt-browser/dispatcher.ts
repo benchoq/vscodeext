@@ -17,16 +17,15 @@ import { QtBrowserHistoryManager } from './history-manager';
 import { QtBrowserBookmarkManager } from './bookmark-manager';
 
 export class QtBrowserDispatcher extends WebviewDispatcher  {
-  private _homeUri = '';
   private _currentUri = '';
-  private _openOptions: QtBrowserOpenOptions | undefined;
   private readonly _histories: QtBrowserHistoryManager;
   private readonly _bookmarks: QtBrowserBookmarkManager;
 
   public constructor(
     private readonly _extContext: Context,
     private readonly _panel: Panel,
-    private readonly _localServer: QtBrowserLocalServer
+    private readonly _localServer: QtBrowserLocalServer,
+    private readonly _openOptions: QtBrowserOpenOptions
   ) {
     super('qt-browser', _panel);
 
@@ -55,27 +54,19 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
     return this._currentUri;
   }
 
-  public setHomeUri(uri: string) {
-    this._homeUri = uri;
-  }
-
-  public setOpenOptions(o: QtBrowserOpenOptions) {
-    this._openOptions = o;
-  }
-
   public notifyReload() {
     this.channel.notify(CommandId.QtBrowserReloadPage);
   }
 
   private readonly _onGetConfig = (cmd: Command) => {
     this.channel.replyData(cmd, {
-      homeUri: this._homeUri,
+      homeUri: this._openOptions.homeUrl ?? '',
       serverOrigin: this._localServer.origin,
     });
   };
 
   private readonly _onSetTitle = (cmd: Command) => {
-    if (this._openOptions?.trigger !== 'qt-help') {
+    if (this._openOptions.trigger !== 'qt-help') {
       this._panel.title = String(_.get(cmd.payload, 'title', ''));
     }
 

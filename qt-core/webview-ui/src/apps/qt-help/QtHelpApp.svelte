@@ -17,7 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div class="w-screen h-screen flex flex-row gap-1 p-2">
   <div class='w-[300px] h-full bg-amber-500/20'>
-    hi
+    TOC, Search, Index...
   </div>
   <div class='grow'>
     <QtBrowserApp standalone={false} />

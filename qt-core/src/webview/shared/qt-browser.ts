@@ -4,6 +4,7 @@
 export type QtBrowserTriggerSource = 'ex-browser' | 'qt-help';
 
 export interface QtBrowserOpenOptions {
+  homeUrl?: string;
   trigger?: QtBrowserTriggerSource;
 }
 
