@@ -28,7 +28,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   <div class='grow'></div>
 
-  <div class='flex flex-row gap-0'>
+  <div data-area='toolbar' class='flex flex-row gap-1'>
     {@render modeButton('toc', Book)}
     {@render modeButton('text', Search)}
     {@render modeButton('index', ListOrdered)}
@@ -51,10 +51,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 <style>
+  [data-area='toolbar'] {
+    padding: 8px;
+    background: var(--qt-bg-subtle);
+    border-bottom: 1px solid var(--qt-stroke-subtle);
+  }
+
   .qt-button[data-role='mode-button'] {
-    width: 32px;
+    width: 28px;
     height: 100%;
-    padding: 3px 3px;
 
     &:hover {
       color: var(--qt-text-default);
@@ -78,3 +83,4 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }
   }
 </style>
+

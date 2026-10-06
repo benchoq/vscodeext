@@ -8,8 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import QtHelpTocView from './QtHelpTocView.svelte';
   import QtHelpIndexView from './QtHelpIndexView.svelte';
-  // import DocBrowserIndexView from './DocBrowserIndexView.svelte';
-  // import DocBrowserSearchResultView from './DocBrowserSearchResultView.svelte';
+  import QtHelpSearchResultView from './QtHelpSearchResultView.svelte';
   import QtHelpSidebarToolbar from './QtHelpSidebarToolbar.svelte';
   // import DocBrowserQtVersionPopover from './DocBrowserQtVersionPopover.svelte';
 
@@ -24,8 +23,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   {#if ui.mode === 'index'}
     <QtHelpIndexView />
-  <!-- {:else if ui.mode === 'text'}
-    <DocBrowserSearchResultView /> -->
+  {:else if ui.mode === 'text'}
+    <QtHelpSearchResultView />
   {:else}
     <QtHelpTocView />
   {/if}

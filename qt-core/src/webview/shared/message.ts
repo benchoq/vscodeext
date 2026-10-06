@@ -74,6 +74,7 @@ export enum CommandId {
   // qt help
   QtHelpReadToc,
   QtHelpReadIndexes,
+  QtHelpSearchFullText,
 
   // common
   CommonViewClosed,

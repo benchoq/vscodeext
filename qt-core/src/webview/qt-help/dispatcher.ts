@@ -1,6 +1,7 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
+import _ from 'lodash';
 import {
   WebviewPanel as Panel,
   ExtensionContext as ExtContext
@@ -47,7 +48,8 @@ class QtHelpOwnDispatcher extends WebviewDispatcher {
     this._data = new QtHelpDataManager();
     this.setHandlers([
       [CommandId.QtHelpReadToc, this._onReadToc],
-      [CommandId.QtHelpReadIndexes, this._onReadIndexes]
+      [CommandId.QtHelpReadIndexes, this._onReadIndexes],
+      [CommandId.QtHelpSearchFullText, this._onSearchFullText]
     ]);
   }
 
@@ -56,9 +58,15 @@ class QtHelpOwnDispatcher extends WebviewDispatcher {
     this.channel.replyData(cmd, data);
   };
 
-
   private readonly _onReadIndexes = async (cmd: Command) => {
     const data = await this._data.readIndexes();
+    this.channel.replyData(cmd, data);
+  };
+
+  private readonly _onSearchFullText = async (cmd: Command) => {
+    const keyword = String(_.get(cmd.payload, 'keyword', '')).trim();
+
+    const data = await this._data.searchFullText(keyword);
     this.channel.replyData(cmd, data);
   };
 }

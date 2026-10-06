@@ -7,7 +7,7 @@ import { CommandId } from '@shared/message';
 import {
   isTocEntry,
   isIndexMatch,
-  type IndexMatch,
+  isFullTextMatch,
   type HtmlPageInfo,
 } from '@shared/qt-help';
 import { data, ui, type UiMode } from './states.svelte';
@@ -41,6 +41,13 @@ export async function loadIndexes() {
     console.log(r);
     data.indexes = r;
     updateFilteredIndex();
+  }
+}
+
+export async function search(keyword: string) {
+  const r = await vscode.post(CommandId.QtHelpSearchFullText, { keyword });
+  if (Array.isArray(r) && r.every(isFullTextMatch)) {
+    data.fullText = r;
   }
 }
 
