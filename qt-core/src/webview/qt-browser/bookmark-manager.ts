@@ -24,6 +24,10 @@ export class QtBrowserBookmarkManager {
   public edit(edit: BookmarkEdit) {
     switch (edit.action) {
       case 'toggle': {
+        if (edit.entry.uri.length === 0) {
+          break;
+        }
+
         const index = this._findIndex(edit.entry.uri);
         if (index === -1) {
           this._entries.push(edit.entry);
