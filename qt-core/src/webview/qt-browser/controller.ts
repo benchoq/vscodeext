@@ -63,10 +63,6 @@ export class QtBrowserController {
       : undefined;
 
     const existing = uri && this._find(uri);
-
-    console.log("++++++++ col =", col);
-    console.log("++++++++ existing =", existing, uri);
-
     if (existing) {
       existing.reveal(col);
       return;

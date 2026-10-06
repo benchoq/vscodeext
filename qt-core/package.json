@@ -129,11 +129,6 @@
         "command": "qt-core.openQtHelp",
         "title": "%qt-core.command.openQtHelp.title%",
         "category": "Qt"
-      },
-      {
-        "command": "qt-core.openQtBrowser",
-        "title": "%qt-core.command.openQtBrowser.title%",
-        "category": "Qt"
       }
     ],
     "customEditors": [
