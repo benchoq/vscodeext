@@ -125,8 +125,10 @@ function onMessageFromViewer(e: MessageEvent) {
         vars: ui.theme.getAllVscodeCssVars()
       });
 
-      void vscode.post(CommandId.QtBrowserSetCurrentUri, { uri: fileUri });
-      void vscode.post(CommandId.QtBrowserSetTitle, { title: e.data.title });
+      void vscode.post(CommandId.QtBrowserSetViewerState, {
+        uri: fileUri,
+        title: e.data.title
+      });
       break;
     }
 

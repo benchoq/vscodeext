@@ -6,6 +6,12 @@ export type QtBrowserTriggerSource = 'ex-browser' | 'qt-help';
 export interface QtBrowserOpenOptions {
   homeUrl?: string;
   trigger?: QtBrowserTriggerSource;
+  syncPanelTitle?: boolean;
+}
+
+export interface QtBrowserViewerState {
+  uri?: string;
+  title?: string;
 }
 
 export interface BookmarkEntry {

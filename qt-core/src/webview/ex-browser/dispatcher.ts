@@ -168,8 +168,12 @@ export class ExBrowserDispatcher extends WebviewDispatcher {
         void file.openExternal();
       } else {
         const openCmd = 'qt-core.openQtBrowser';
-        const o = { trigger: 'ex-browser' } as QtBrowserOpenOptions;
-        void vscode.commands.executeCommand(openCmd, file.toUri(), o);
+        const openOptions: QtBrowserOpenOptions = {
+          trigger: 'ex-browser',
+          syncPanelTitle: true
+        };
+
+        void vscode.commands.executeCommand(openCmd, file.toUri(), openOptions);
       }
     }
 

@@ -10,14 +10,19 @@ import {
 } from 'vscode';
 
 import { WebviewDispatcher } from '@/webview/dispatcher';
-import { isBookmarkEdit, isHistoryEdit, QtBrowserOpenOptions } from '@/webview/shared/qt-browser';
+import {
+  isBookmarkEdit,
+  isHistoryEdit,
+  QtBrowserOpenOptions,
+  QtBrowserViewerState
+} from '@/webview/shared/qt-browser';
 import { Command, CommandId } from '@/webview/shared/message';
 import { QtBrowserLocalServer } from './server/local-server';
 import { QtBrowserHistoryManager } from './history-manager';
 import { QtBrowserBookmarkManager } from './bookmark-manager';
 
 export class QtBrowserDispatcher extends WebviewDispatcher  {
-  private _currentUri = '';
+  private readonly _viewerState: QtBrowserViewerState = {};
   private readonly _histories: QtBrowserHistoryManager;
   private readonly _bookmarks: QtBrowserBookmarkManager;
 
@@ -33,8 +38,7 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
     this._bookmarks = new QtBrowserBookmarkManager(this._extContext.globalState);
     this.setHandlers([
       [CommandId.QtBrowserGetConfig, this._onGetConfig],
-      [CommandId.QtBrowserSetTitle, this._onSetTitle],
-      [CommandId.QtBrowserSetCurrentUri, this._onSetCurrentUri],
+      [CommandId.QtBrowserSetViewerState, this._onSetViewerState],
       [CommandId.QtBrowserOpenUriExt, this._onOpenUriExt],
       [CommandId.QtBrowserGetBookmarks, this._onGetBookmarks],
       [CommandId.QtBrowserEditBookmarks, this._onEditBookmarks],
@@ -51,7 +55,7 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
   }
 
   public get currentUri() {
-    return this._currentUri;
+    return this._viewerState.uri;
   }
 
   public notifyReload() {
@@ -65,16 +69,14 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
     });
   };
 
-  private readonly _onSetTitle = (cmd: Command) => {
-    if (this._openOptions.trigger !== 'qt-help') {
-      this._panel.title = String(_.get(cmd.payload, 'title', ''));
+  private readonly _onSetViewerState = (cmd: Command) => {
+    this._viewerState.uri = String(_.get(cmd.payload, 'uri', ''));
+    this._viewerState.title = String(_.get(cmd.payload, 'title', ''));
+
+    if (this._openOptions.syncPanelTitle === true) {
+      this._panel.title = this._viewerState.title;
     }
 
-    this.channel.replyDone(cmd);
-  }
-
-  private readonly _onSetCurrentUri = (cmd: Command) => {
-    this._currentUri = String(_.get(cmd.payload, 'uri', ''));;
     this.channel.replyDone(cmd);
   }
 
