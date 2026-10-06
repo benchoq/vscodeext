@@ -6,6 +6,7 @@ import {
   env,
   Uri,
   WebviewPanel as Panel,
+  ExtensionMode as Mode,
   ExtensionContext as Context,
 } from 'vscode';
 
@@ -17,7 +18,7 @@ import {
   QtBrowserViewerState
 } from '@/webview/shared/qt-browser';
 import { Command, CommandId } from '@/webview/shared/message';
-import { QtBrowserLocalServer } from './server/local-server';
+import { QtBrowserDocServer } from './server/doc-server';
 import { QtBrowserHistoryManager } from './history-manager';
 import { QtBrowserBookmarkManager } from './bookmark-manager';
 
@@ -29,7 +30,7 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
   public constructor(
     private readonly _extContext: Context,
     private readonly _panel: Panel,
-    private readonly _localServer: QtBrowserLocalServer,
+    private readonly _docServer: QtBrowserDocServer,
     private readonly _openOptions: QtBrowserOpenOptions
   ) {
     super('qt-browser', _panel);
@@ -46,6 +47,12 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
       [CommandId.QtBrowserEditHistories, this._onEditHistories],
     ]);
 
+    if (this._extContext.extensionMode === Mode.Development) {
+      this._docServer.onCssChanged(() => {
+        this.channel.notify(CommandId.QtBrowserReloadPage);
+      });
+    }
+
     void this._extContext;
     void this._panel;
   }
@@ -58,14 +65,10 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
     return this._viewerState.uri;
   }
 
-  public notifyReload() {
-    this.channel.notify(CommandId.QtBrowserReloadPage);
-  }
-
   private readonly _onGetConfig = (cmd: Command) => {
     this.channel.replyData(cmd, {
       homeUri: this._openOptions.homeUrl ?? '',
-      serverOrigin: this._localServer.origin,
+      serverOrigin: this._docServer.origin,
     });
   };
 

@@ -10,7 +10,7 @@ import {
 
 import { DisposableStore } from 'qt-lib';
 import { setupWebApp } from '@/webview/utils';
-import { QtBrowserLocalServer } from './server/local-server';
+import { QtBrowserDocServer } from './server/doc-server';
 import { QtBrowserDispatcher } from './dispatcher';
 import * as consts from './constants';
 import { QtBrowserOpenOptions } from '../shared/qt-browser';
@@ -22,13 +22,13 @@ export class QtBrowserSession {
   constructor(
     context: Context,
     private readonly _panel: Panel,
-    localServer: QtBrowserLocalServer,
+    docServer: QtBrowserDocServer,
     openOptions: QtBrowserOpenOptions
   ) {
     setupWebApp(consts.AppId, context, this._panel);
 
     this._dispatcher = new QtBrowserDispatcher(
-      context, this._panel, localServer, openOptions
+      context, this._panel, docServer, openOptions
     );
 
     this._disposables.push(
@@ -54,9 +54,5 @@ export class QtBrowserSession {
 
     // to remove preview mode
     void commands.executeCommand('workbench.action.keepEditor');
-  }
-
-  public reloadPage() {
-    this._dispatcher.notifyReload();
   }
 }

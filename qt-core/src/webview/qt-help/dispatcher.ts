@@ -8,26 +8,21 @@ import {
 
 import { WebviewDispatcher, WebviewDispatcherChain } from '@/webview/dispatcher';
 import { QtBrowserDispatcher } from '@/webview/qt-browser/dispatcher';
-import { QtBrowserLocalServer } from '@/webview/qt-browser/server/local-server';
-import { QtBrowserDocStyleProvider } from '@/webview/qt-browser/server/style-provider';
+import { QtBrowserDocServer } from '@/webview/qt-browser/server/doc-server';
 import * as consts from './constants';
 
 export class QtHelpDispatcher extends WebviewDispatcherChain {
-  private readonly _localServer: QtBrowserLocalServer;
-  private readonly _cssProvider: QtBrowserDocStyleProvider;
+  private readonly _docServer: QtBrowserDocServer;
   private readonly _viewerDispatcher: QtBrowserDispatcher;
 
   public constructor(extContext: ExtContext, panel: Panel) {
     super();
 
-    this._cssProvider = new QtBrowserDocStyleProvider(extContext);
-    this._localServer = new QtBrowserLocalServer();
-    void this._localServer.start().then(() => {
-      this._loadCss(this._cssProvider.cssLines);
-    });
+    this._docServer = new QtBrowserDocServer(extContext);
+    void this._docServer.start();
 
     this._viewerDispatcher = new QtBrowserDispatcher(
-      extContext, panel, this._localServer, {
+      extContext, panel, this._docServer, {
         trigger: "qt-help",
         syncPanelTitle: false
       }
@@ -37,11 +32,6 @@ export class QtHelpDispatcher extends WebviewDispatcherChain {
       this._viewerDispatcher,
       new QtHelpOwnDispatcher(panel)
     )
-  }
-
-  private _loadCss(css: string) {
-    this._localServer.setCssOverride(css);
-    this._viewerDispatcher.notifyReload();
   }
 }
 

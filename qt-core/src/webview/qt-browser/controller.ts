@@ -11,8 +11,7 @@ import {
 import { telemetry, DisposableStore } from 'qt-lib';
 import { createPanel } from '@/webview/utils';
 import { QtBrowserSession } from './session';
-import { QtBrowserLocalServer } from './server/local-server';
-import { QtBrowserDocStyleProvider } from './server/style-provider';
+import { QtBrowserDocServer } from './server/doc-server';
 import * as consts from './constants';
 import { QtBrowserOpenOptions } from '../shared/qt-browser';
 
@@ -33,24 +32,13 @@ export function addQtBrowser(context: Context) {
 }
 
 export class QtBrowserController {
-  private readonly _cssProvider: QtBrowserDocStyleProvider;
   private readonly _sessions = new Set<QtBrowserSession>();
-  private readonly _localServer = new QtBrowserLocalServer();
+  private readonly _docServer: QtBrowserDocServer;
   private readonly _disposables = new DisposableStore();
 
   constructor(context: Context) {
-    this._cssProvider = new QtBrowserDocStyleProvider(context);
-
-    this._disposables.push(
-      this._cssProvider,
-      this._cssProvider.onCssChanged((css: string) => {
-        this._loadCss(css);
-      })
-    )
-
-    void this._localServer.start().then(() => {
-      this._loadCss(this._cssProvider.cssLines);
-    });
+    this._docServer = new QtBrowserDocServer(context);
+    void this._docServer.start();
   }
 
   dispose() {
@@ -79,7 +67,7 @@ export class QtBrowserController {
 
   private _add(context: Context, openOptions: QtBrowserOpenOptions) {
     const panel = createPanel(consts.AppId);
-    const s = new QtBrowserSession(context, panel, this._localServer, openOptions);
+    const s = new QtBrowserSession(context, panel, this._docServer, openOptions);
 
     this._disposables.push(
       // TODO
@@ -112,13 +100,5 @@ export class QtBrowserController {
   private _getLastActiveColumn(fallback: ViewColumn) {
     const s = [...this._sessions].at(-1);
     return s?.viewColumn ?? fallback;
-  }
-
-  private _loadCss(css: string) {
-    this._localServer.setCssOverride(css);
-
-    for (const c of this._sessions.values()) {
-      c.reloadPage();
-    }
   }
 }

@@ -3,32 +3,25 @@
 
 import * as net from 'net';
 import * as http from 'http';
-import * as path from 'path';
-import { Disposable } from 'vscode';
+import {
+  Disposable,
+  EventEmitter,
+  ExtensionContext as Context,
+ } from 'vscode';
 
 import { createWrappedLogger } from 'qt-lib';
-import {
-  RequestHandler,
-  RequestContext,
-  CssOverrideHandler,
-  ScriptInjectionHandler,
-  FallbackHandler,
-  sendForbidden,
-} from './local-server-handlers';
+import { QtBrowserDocServerDispatcher } from './dispatcher';
+const logger = createWrappedLogger('qt-browser-doc-server');
 
-const logger = createWrappedLogger('qt-browser-localserver');
-
-export class QtBrowserLocalServer implements Disposable {
+export class QtBrowserDocServer implements Disposable {
   private _server: http.Server | undefined;
-  private readonly _cssOverrideHandler = new CssOverrideHandler()
-  private readonly _handlers: RequestHandler[] = []
+  private readonly _dispatcher: QtBrowserDocServerDispatcher;
+  private readonly _cssChangedEmitter = new EventEmitter<void>();
 
-  constructor(private readonly _contentRoot = '') {
-    this._handlers.push(
-      this._cssOverrideHandler,
-      new ScriptInjectionHandler(),
-      new FallbackHandler()
-    );
+  constructor(private readonly _context: Context) {
+    this._dispatcher = new QtBrowserDocServerDispatcher(this._context, () => {
+      this._cssChangedEmitter.fire();
+    });
   }
 
   dispose(): void {
@@ -40,6 +33,10 @@ export class QtBrowserLocalServer implements Disposable {
     }
   }
 
+  public get onCssChanged() {
+    return this._cssChangedEmitter.event;
+  }
+
   public readonly scheme = 'http';
   public readonly host = '127.0.0.1';
 
@@ -48,18 +45,9 @@ export class QtBrowserLocalServer implements Disposable {
     return (typeof addr === 'object') ? addr?.port : undefined;
   }
 
-  public get authority() {
-    const port = this.port;
-    return port ? `${this.host}:${String(port)}` : '';
-  }
-
   public get origin() {
     const port = this.port;
     return port ? `${this.scheme}://${this.host}:${String(port)}` : '';
-  }
-
-  public setCssOverride(css: string) {
-    this._cssOverrideHandler.setCss(css);
   }
 
   async start(): Promise<void> {
@@ -72,7 +60,7 @@ export class QtBrowserLocalServer implements Disposable {
     }
 
     this._server = http.createServer((req, res) => {
-      this._onRequest(req, res);
+      this._dispatcher.dispatch(req, res);
     });
 
     this._server.on('connection', () => {
@@ -106,29 +94,6 @@ export class QtBrowserLocalServer implements Disposable {
     });
   }
 
-  private _onRequest(req: http.IncomingMessage, res: http.ServerResponse) {
-    const urlPath = decodeURIComponent((req.url ?? '/').split('?')[0] ?? '');
-    const filePath = path.join(this._contentRoot, urlPath);
-    const fileName = path.basename(filePath);
-
-    if (!this._isAccessAllowed(filePath)) {
-      sendForbidden(res, filePath);
-      return;
-    }
-
-    const c: RequestContext = {
-      filePath,
-      fileName,
-      res
-    };
-
-    const handler = this._handlers.find((h) => h.canHandle(c));
-    handler?.handle(c);
-  }
-
-  private _isAccessAllowed(filePath: string): boolean {
-    return filePath.startsWith(this._contentRoot);
-  }
 }
 
 //helpers
