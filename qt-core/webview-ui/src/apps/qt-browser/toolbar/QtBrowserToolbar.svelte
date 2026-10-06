@@ -4,13 +4,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import ChevronRight from "@/symbols/ChevronRight.svelte";
   import {
-    Bookmark,
-    BookmarkCheck,
+    Star,
     TextSearch,
-    FolderArchive,
-    FolderClock
+    Clock4 as HistoryIcon,
+    Bookmark as BookmarkIcon,
+    ArrowRight,
   } from "@lucide/svelte";
 
   import './QtBrowserToolbar.css';
@@ -87,7 +86,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       viewlogic.navigate(dir);
     }}
   >
-    <ChevronRight />
+    <ArrowRight />
   </button>
 {/snippet}
 
@@ -105,11 +104,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       })
     }}
   >
-    {#if viewlogic.bookmark.has(helpers.toFileUri(ui.iframe.src))}
-      <BookmarkCheck />
-    {:else}
-      <Bookmark />
-    {/if}
+    <Star fill={
+      viewlogic.bookmark.has(helpers.toFileUri(ui.iframe.src))
+      ? 'currentColor' : 'transparent'
+    }/>
   </button>
 {/snippet}
 
@@ -121,7 +119,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       viewlogic.setLayerVisible('bookmark', !ui.popovers.bookmark.visible);
     }}
   >
-    <FolderArchive />
+    <BookmarkIcon />
   </button>
 {/snippet}
 
@@ -133,6 +131,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       viewlogic.setLayerVisible('history', !ui.popovers.history.visible);
     }}
   >
-    <FolderClock />
+    <HistoryIcon />
   </button>
 {/snippet}
