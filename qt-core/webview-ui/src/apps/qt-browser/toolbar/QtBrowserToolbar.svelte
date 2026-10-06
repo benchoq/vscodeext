@@ -10,6 +10,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     Clock4 as HistoryIcon,
     Bookmark as BookmarkIcon,
     ArrowRight,
+    Files as Share
   } from "@lucide/svelte";
 
   import './QtBrowserToolbar.css';
@@ -73,6 +74,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   {@render bookmarkViewToggleButton()}
   {@render historyViewToggleButton()}
+  {@render openInNewViewer()}
 
 </div>
 
@@ -132,5 +134,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }}
   >
     <HistoryIcon />
+  </button>
+{/snippet}
+
+{#snippet openInNewViewer()}
+  <button
+    data-role='nav-button'
+    class='qt-button flex items-center justify-center'
+    onclick={() => {
+      viewlogic.openInNewViewer(ui.iframe.src);
+    }}
+  >
+    <Share />
   </button>
 {/snippet}

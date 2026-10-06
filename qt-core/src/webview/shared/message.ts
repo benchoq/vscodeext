@@ -65,6 +65,7 @@ export enum CommandId {
   QtBrowserGetConfig,
   QtBrowserSetViewerState,
   QtBrowserOpenUriExt,
+  QtBrowserOpenInNewViewer,
   QtBrowserReloadPage,
   QtBrowserGetBookmarks,
   QtBrowserEditBookmarks,

@@ -50,10 +50,12 @@ export class QtBrowserController {
       ? this._getLastActiveColumn(ViewColumn.Beside)
       : undefined;
 
-    const existing = uri && this._find(uri);
-    if (existing) {
-      existing.reveal(col);
-      return;
+    if (o?.forceNewWindow !== true) {
+      const existing = uri && this._find(uri);
+      if (existing) {
+        existing.reveal(col);
+        return;
+      }
     }
 
     const openOptions: QtBrowserOpenOptions = {

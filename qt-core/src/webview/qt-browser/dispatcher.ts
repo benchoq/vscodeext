@@ -4,6 +4,7 @@
 import _ from 'lodash';
 import {
   env,
+  commands,
   Uri,
   WebviewPanel as Panel,
   ExtensionMode as Mode,
@@ -41,6 +42,7 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
       [CommandId.QtBrowserGetConfig, this._onGetConfig],
       [CommandId.QtBrowserSetViewerState, this._onSetViewerState],
       [CommandId.QtBrowserOpenUriExt, this._onOpenUriExt],
+      [CommandId.QtBrowserOpenInNewViewer, this._onOpenInNewViewer],
       [CommandId.QtBrowserGetBookmarks, this._onGetBookmarks],
       [CommandId.QtBrowserEditBookmarks, this._onEditBookmarks],
       [CommandId.QtBrowserGetHistories, this._onGetHistories],
@@ -85,6 +87,19 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
 
   private readonly _onOpenUriExt = (cmd: Command) => {
     env.openExternal(Uri.parse(String(_.get(cmd.payload, 'uri', ''))));
+    this.channel.replyDone(cmd);
+  }
+
+   private readonly _onOpenInNewViewer = (cmd: Command) => {
+    const uri = String(_.get(cmd.payload, 'uri', ''));
+    const openCmd = 'qt-core.openQtBrowser';
+    const openOptions: QtBrowserOpenOptions = {
+      trigger: 'doc-viewer',
+      syncPanelTitle: true,
+      forceNewWindow: true
+    };
+
+    void commands.executeCommand(openCmd, uri, openOptions);
     this.channel.replyDone(cmd);
   }
 

@@ -113,16 +113,58 @@ const LoadedScript = /*js*/`
   });
 `;
 
+// const LinkClickScript = /*js*/`
+//   addListenerNoCapture('click', (e) => {
+//     const anchor = e.target.closest('a');
+//     if (!anchor) {
+//       return;
+//     }
+
+//     const url = new URL(anchor.href, document.baseURI);
+//     notifyParent('${ViewerMessageId.ViewerClicked}', { href: url.href });
+
+//     e.preventDefault();
+//   });
+// `;
+
 const LinkClickScript = /*js*/`
+  function findAnchor(e) {
+    return e.target instanceof Element ? e.target.closest('a[href]') : null;
+  }
+
+  function notifyLinkClicked(anchor, newWindow) {
+    const url = new URL(anchor.href, document.baseURI);
+    notifyParent('${ViewerMessageId.ViewerClicked}', { href: url.href, newWindow });
+  }
+
   addListenerNoCapture('click', (e) => {
-    const anchor = e.target.closest('a');
+    const anchor = findAnchor(e);
     if (!anchor) {
       return;
     }
 
-    const url = new URL(anchor.href, document.baseURI);
-    notifyParent('${ViewerMessageId.ViewerClicked}', { href: url.href });
+    const newWindow = e.ctrlKey || e.metaKey || e.shiftKey || anchor.target === '_blank';
+    notifyLinkClicked(anchor, newWindow);
+    e.preventDefault();
+  });
 
+  addListener('mousedown', (e) => {
+    if (e.button === 1) {
+      e.preventDefault();
+    }
+  });
+
+  addListenerNoCapture('auxclick', (e) => {
+    if (e.button !== 1) {
+      return;
+    }
+
+    const anchor = findAnchor(e);
+    if (!anchor) {
+      return;
+    }
+
+    notifyLinkClicked(anchor, true);
     e.preventDefault();
   });
 `;

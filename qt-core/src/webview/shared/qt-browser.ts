@@ -1,12 +1,13 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-export type QtBrowserTriggerSource = 'ex-browser' | 'qt-help';
+export type QtBrowserTriggerSource = 'ex-browser' | 'qt-help' | 'doc-viewer';
 
 export interface QtBrowserOpenOptions {
   homeUrl?: string;
   trigger?: QtBrowserTriggerSource;
   syncPanelTitle?: boolean;
+  forceNewWindow?: boolean;
 }
 
 export interface QtBrowserViewerState {

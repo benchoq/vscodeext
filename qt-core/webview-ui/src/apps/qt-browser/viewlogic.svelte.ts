@@ -44,7 +44,11 @@ export async function openUri(uri: string) {
 
   // TODO: check if it's allowed to access or exists
   ui.iframe.src = u;
-  // void vscode.post(CommandId.QtBrowserSetCurrentUri, { uri });
+}
+
+export function openInNewViewer(uri: string) {
+  const u = helpers.toFileUri(uri);
+  void vscode.post(CommandId.QtBrowserOpenInNewViewer, { uri: u });
 }
 
 export function navigate(dir: 'back' | 'forward') {
@@ -140,7 +144,12 @@ function onMessageFromViewer(e: MessageEvent) {
 
     case ViewerMessageId.ViewerClicked:
       if (typeof e.data?.href === 'string') {
-        openUri(e.data?.href);
+        // TODO: file: vs http: ...
+        if (e.data.newWindow === true) {
+          openInNewViewer(e.data?.href);
+        } else {
+          openUri(e.data?.href);
+        }
       }
       break;
 
