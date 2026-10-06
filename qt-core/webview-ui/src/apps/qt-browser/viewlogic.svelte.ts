@@ -120,6 +120,10 @@ function onMessageFromViewer(e: MessageEvent) {
         }
       });
 
+      helpers.postToViewer(ViewerMessageId.ApplyVscodeTheme, {
+        vars: ui.theme.getAllVscodeCssVars()
+      });
+
       void vscode.post(CommandId.QtBrowserSetCurrentUri, { uri: e.data.href });
       void vscode.post(CommandId.QtBrowserSetTitle, { title: e.data.title });
       break;
