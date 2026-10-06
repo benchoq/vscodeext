@@ -20,7 +20,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   onDestroy(() => viewlogic.onAppDestroy());
 </script>
 
-<div class="w-screen h-screen flex flex-row gap-1">
+<div class="w-screen h-screen flex flex-row">
   <div data-body class='flex flex-row grow'>
     <div style:width={`${ui.sidebar.width}px`} class="shrink-0">
       <QtHelpSidebar />

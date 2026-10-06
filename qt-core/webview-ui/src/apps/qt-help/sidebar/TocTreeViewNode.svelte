@@ -31,7 +31,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }}
 >
   <span
-    style:margin-left={`${entry.depth * 10}px`}
+    style:margin-left={`${5 + (entry.depth - 1) * 10}px`}
     class='flex items-center gap-1 overflow-hidden whitespace-nowrap text-ellipsis shrink-0'
   >
     {@render chevron(node, expanded)}
@@ -57,8 +57,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
           e.stopPropagation();
         }}
       >
-        <icons.ChevronRight size={16} />
+        <icons.ChevronRight size={12} />
       </button>
     {/if}
   </div>
 {/snippet}
+
+<style>
+  .item {
+    padding: 3px 12px;
+  }
+</style>

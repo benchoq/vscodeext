@@ -18,7 +18,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 </script>
 
-<div class="h-full flex flex-col gap-1.5">
+<div class="h-full flex flex-col">
   <QtHelpSidebarToolbar />
 
   {#if ui.mode === 'index'}

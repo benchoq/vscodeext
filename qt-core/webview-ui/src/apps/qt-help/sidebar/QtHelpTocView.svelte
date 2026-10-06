@@ -41,7 +41,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   [data-role='area'] {
-    border: 1px solid #333333;
     height: 100%;
     min-height: 0;
     overflow: auto;

@@ -36,4 +36,11 @@ export const ui = $state({
     filter: { keyword: '' },
     filtered: [] as IndexMatch[]
   },
+
+  popovers: {
+    qtVersions: {
+      visible: false,
+      refEl: undefined as HTMLButtonElement | undefined,
+    }
+  }
 });
