@@ -6,7 +6,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import {
     Star,
-    TextSearch,
+    Search,
     Clock4 as HistoryIcon,
     Bookmark as BookmarkIcon,
     ArrowRight,
@@ -71,7 +71,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     aria-pressed={popover.visible}
     onclick={toggleFindPopover}
   >
-    <TextSearch />
+    <Search />
   </button>
 
   {@render bookmarkViewToggleButton()}

@@ -19,6 +19,7 @@ export async function onAppMount() {
   ui.theme.monitor.start();
   ui.theme.monitor.onChanged(onVscodeThemeChanged);
 
+  window.addEventListener('keydown', onKeydown);
   window.addEventListener('message', onMessageFromViewer);
   vscode.onDidReceiveNotification(onMessageFromVscode);
 
@@ -103,6 +104,12 @@ function onVscodeThemeChanged() {
 function onMessageFromVscode(reply: CommandReply) {
   if (reply.id === CommandId.QtBrowserReloadPage) {
     helpers.postToViewer(ViewerMessageId.ReloadPage);
+  }
+}
+
+function onKeydown(e: KeyboardEvent) {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLocaleLowerCase() === 'f') {
+    ui.popovers.find.visible = true;
   }
 }
 

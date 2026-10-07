@@ -43,7 +43,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {#if popover.visible}
     <Popover
       reference={popover.refEl}
-      placement='bottom-end'
+      placement='bottom'
       offset={5}
       onClose={() => {
         popover.visible = false;
