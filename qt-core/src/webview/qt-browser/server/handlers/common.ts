@@ -8,7 +8,7 @@ import {
 } from 'http';
 
 import { createWrappedLogger } from 'qt-lib';
-import { NotFoundPage } from '../static/not-found-page';
+import { createErrorPage } from '../static/error-page';
 
 const logger = createWrappedLogger('qt-browser-doc-server-handler');
 
@@ -39,7 +39,7 @@ export function sendData(c: HandlerContext, data: unknown) {
 
 export function sendNotFound(c: HandlerContext) {
   c.http.res.writeHead(404);
-  c.http.res.end(NotFoundPage);
+  c.http.res.end(createErrorPage(404));
 
   logger
     .text('Not found')
@@ -49,7 +49,7 @@ export function sendNotFound(c: HandlerContext) {
 
 export function sendForbidden(c: HandlerContext) {
   c.http.res.writeHead(403);
-  c.http.res.end('Forbidden');
+  c.http.res.end(createErrorPage(403));
 
   logger
     .text('Forbidden')

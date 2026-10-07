@@ -25,6 +25,7 @@ export const ui = $state({
     src: '',
     title: '',
     hoveredUri: '',
+    errorCode: undefined as string | undefined
   },
 
   theme: VscodeThemeMonitor.createController(),

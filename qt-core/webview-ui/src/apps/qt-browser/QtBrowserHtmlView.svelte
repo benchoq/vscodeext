@@ -7,11 +7,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from './states.svelte';
 
   import Popover from './others/Popover.svelte';
+  import QtBrowserErrorPage from './QtBrowserErrorPage.svelte';
   import QtBrowserFindPopover from './QtBrowserFindPopover.svelte';
   import QtBrowserContextMenu from './QtBrowserContextMenu.svelte';
 
   const popover = $derived(ui.popovers.find);
-
   const pos = $derived(ui.popovers.contextMenu.pos);
   const virtualRef = $derived(pos
     ? {
@@ -28,13 +28,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div class='w-full h-full relative'>
-  <iframe
-    bind:this={ui.iframe.el}
-    title='viewer'
-    class='w-full h-full'
-    src={ui.iframe.src}
-    allow='clipboard-write'
-  ></iframe>
+  {#if ui.iframe.errorCode}
+    <QtBrowserErrorPage />
+  {:else}
+    <iframe
+      bind:this={ui.iframe.el}
+      title='viewer'
+      class='w-full h-full'
+      src={ui.iframe.src}
+      allow='clipboard-write'
+    ></iframe>
+  {/if}
 
   {#if popover.visible}
     <Popover

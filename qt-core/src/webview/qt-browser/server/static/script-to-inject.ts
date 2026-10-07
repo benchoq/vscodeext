@@ -9,13 +9,13 @@ export function getScriptToInject() {
   if (!cached) {
     const all = [
       CommonScript,
+      DocLoadedScript,
+      DocReloadScript,
       FindInPageScript,
-      ReloadScript,
-      ThemeScript,
-      LoadedScript,
-      LinkClickScript,
-      LinkHoverScript,
-      KeyForwardScript,
+      ApplyThemeScript,
+      LinkClickedScript,
+      LinkHoverChangedScript,
+      ForwardKeyDownScript,
       ContextMenuScript,
       CopySelectionScript
     ];
@@ -53,6 +53,24 @@ const CommonScript = /*js*/`
   }
 `;
 
+const DocLoadedScript = /*js*/`
+  addListenerNoCapture('load', () => {
+    notifyParent('${ViewerMessageId.ViewerLoaded}', {
+      title: document.title,
+      href: location.href,
+      hash: location.hash,
+      pathname: location.pathname,
+      errorCode: document?.body?.dataset.errorCode
+    });
+  });
+`;
+
+const DocReloadScript = /*js*/`
+  onParentMessage('${ViewerMessageId.ReloadPage}', () => {
+    location.reload();
+  });
+`;
+
 const FindInPageScript = /*js*/`
   function findInPage(keyword, dir) {
     return window.find(
@@ -88,28 +106,11 @@ const FindInPageScript = /*js*/`
   });
 `;
 
-const ReloadScript = /*js*/`
-  onParentMessage('${ViewerMessageId.ReloadPage}', () => {
-    location.reload();
-  });
-`;
-
-const ThemeScript = /*js*/`
+const ApplyThemeScript = /*js*/`
   onParentMessage('${ViewerMessageId.ApplyVscodeTheme}', ({ vars }) => {
     for (const [name, value] of Object.entries(vars)) {
       document.documentElement.style.setProperty(name, value);
     }
-  });
-`;
-
-const LoadedScript = /*js*/`
-  addListenerNoCapture('load', () => {
-    notifyParent('${ViewerMessageId.ViewerLoaded}', {
-      title: document.title,
-      href: location.href,
-      hash: location.hash,
-      pathname: location.pathname,
-    });
   });
 `;
 
@@ -127,7 +128,7 @@ const LoadedScript = /*js*/`
 //   });
 // `;
 
-const LinkClickScript = /*js*/`
+const LinkClickedScript = /*js*/`
   function findAnchor(e) {
     return e.target instanceof Element ? e.target.closest('a[href]') : null;
   }
@@ -169,7 +170,7 @@ const LinkClickScript = /*js*/`
   });
 `;
 
-const LinkHoverScript = /*js*/`
+const LinkHoverChangedScript = /*js*/`
   function onMouseInOut(e) {
     if (!(e.target instanceof HTMLElement)) {
       return;
@@ -194,7 +195,7 @@ const LinkHoverScript = /*js*/`
   addListenerNoCapture('mouseover', onMouseInOut);
 `;
 
-const KeyForwardScript = /*js*/`
+const ForwardKeyDownScript = /*js*/`
   addListener('keydown', (e) => {
     notifyParent('${ViewerMessageId.ViewerKeyDown}', {
       fields: {

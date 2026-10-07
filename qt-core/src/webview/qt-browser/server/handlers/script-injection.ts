@@ -3,7 +3,7 @@
 
 import * as fs from 'fs';
 
-import { getScriptToInject } from '../static/script';
+import { getScriptToInject } from '../static/script-to-inject';
 import { Handler, HandlerContext, sendData, sendNotFound } from './common';
 
 /* eslint-disable @typescript-eslint/class-methods-use-this */

@@ -108,6 +108,13 @@ function onMessageFromVscode(reply: CommandReply) {
 function onMessageFromViewer(e: MessageEvent) {
   switch (e.data?.id) {
     case ViewerMessageId.ViewerLoaded: {
+      ui.iframe.errorCode = e.data.errorCode;
+
+      if (ui.iframe.errorCode) {
+        console.log('err ------', ui.iframe.errorCode);
+        return;
+      }
+
       const fileUri = helpers.toFileUri(e.data.href);
 
       ui.iframe.title = e.data.title;
