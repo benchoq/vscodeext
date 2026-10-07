@@ -36,11 +36,11 @@ export function getWebAppInfo(appId: WebAppId): WebAppInfo {
         iconPathPrefix
       };
 
-    case 'qt-browser':
+    case 'doc-viewer':
       return {
         appId,
-        title: texts.qtBrowser.tabText,
-        viewType: 'ViewTypeQtBrowser',
+        title: texts.docViewer.tabText,
+        viewType: 'ViewTypeDocViewer',
         viewColumn,
         iconPathPrefix
       };

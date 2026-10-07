@@ -34,7 +34,7 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
     private readonly _docServer: QtBrowserDocServer,
     private readonly _openOptions: QtBrowserOpenOptions
   ) {
-    super('qt-browser', _panel);
+    super('doc-viewer', _panel);
 
     this._histories = new QtBrowserHistoryManager(this._extContext.globalState);
     this._bookmarks = new QtBrowserBookmarkManager(this._extContext.globalState);

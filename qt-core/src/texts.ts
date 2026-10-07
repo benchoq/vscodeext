@@ -13,8 +13,8 @@ export const qtHelp = {
   tabText: 'Qt help'
 };
 
-export const qtBrowser = {
-  tabText: 'Qt browser'
+export const docViewer = {
+  tabText: 'Qt documentation'
 };
 
 export const exBrowser = {

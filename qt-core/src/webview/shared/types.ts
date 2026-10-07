@@ -4,7 +4,7 @@
 export type WebAppId =
   | 'new-item'
   | 'qt-help'
-  | 'qt-browser'
+  | 'doc-viewer'
   | 'ex-browser'
   | 'welcome-page'
   | 'courses-browser'
