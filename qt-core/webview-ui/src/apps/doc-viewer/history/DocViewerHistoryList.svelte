@@ -64,6 +64,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
             {format.timeAsLocaleString(new Date(item.data.timestamp ?? 0))}
           </span>
           <span data-role='title'>{item.data.title}</span>
+          <span data-role='hash'>
+            {helpers.extractHash(item.data.uri)}
+          </span>
           <span class='grow'></span>
         </button>
       </div>
@@ -91,4 +94,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     text-overflow: ellipsis;
   }
 
+
+  [data-role='hash'] {
+    min-width: 0;
+    flex-shrink: 0;
+    font-size: var(--qt-font-xs);
+    color: var(--qt-text-muted);
+  }
 </style>

@@ -16,7 +16,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from '../states.svelte';
   import * as helpers from '../helpers';
   import * as viewlogic from '../viewlogic.svelte';
-
   import './DocViewerToolbar.css';
 
   let el = $state(undefined as HTMLInputElement | undefined);

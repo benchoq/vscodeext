@@ -7,6 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import CheckBox from '@/comps/CheckBox.svelte';
   import Separator from '@/comps/Separator.svelte';
   import { data } from '../states.svelte';
+  import * as helpers from '../helpers';
   import * as viewlogic from '../viewlogic.svelte';
 
   let dragIndex = $state<number | null>(null);
@@ -70,6 +71,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         }}
       >
         <span data-role='title'>{item.data.title}</span>
+        <span data-role='hash'>
+          {helpers.extractHash(item.data.uri)}
+        </span>
       </button>
     </div>
   {/each}
@@ -84,5 +88,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     min-width: 0;
     flex-shrink: 0;
     color: var(--qt-text-default);
+  }
+
+  [data-role='hash'] {
+    min-width: 0;
+    flex-shrink: 0;
+    font-size: var(--qt-font-xs);
+    color: var(--qt-text-muted);
   }
 </style>

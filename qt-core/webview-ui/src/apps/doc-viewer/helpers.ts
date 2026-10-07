@@ -28,3 +28,14 @@ export function toFileUri(uri: string) {
 
   return uri;
 }
+
+export function extractHash(uri: string) {
+  try {
+    const u = new URL(uri);
+    return u.hash;
+  } catch (e) {
+    void e;
+  }
+
+  return '';
+}
