@@ -5,13 +5,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import {
-    Plus,
     Star,
-    Search,
     Clock4,
+    Columns2,
     Bookmark,
     ArrowLeft,
-    ArrowRight
+    ArrowRight,
+    Binoculars
+
   } from "@lucide/svelte";
   import { type Component } from 'svelte';
 
@@ -24,7 +25,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let draft = $state<string | null>(null);
 
   const value = $derived(helpers.toFileUri(draft ?? ui.iframe.src));
-  const popover = $derived(ui.popovers.find);
   const bookmarked = $derived(viewlogic.bookmark.has(
     helpers.toFileUri(ui.iframe.src)
   ));
@@ -48,11 +48,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   type ButtonRole =
-    | 'back' | 'forward'
-    | 'openInNewViewer' | 'toggleBookmark'
-    | 'toggleFindPopover' | 'toggleBookmarksList' | 'toggleHistoryList';
+    | 'back' | 'forward' | 'openInNewViewer' | 'toggleBookmark'
+    | 'findDialog' | 'bookmarkView' | 'historyView';
 
-  function isEnabled(role: ButtonRole) {
+  function isButtonEnabled(role: ButtonRole) {
     if (role === 'back' || role === 'forward') {
       return ui.history.canGo(role);
     }
@@ -60,7 +59,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     return true;
   }
 
-  function onRoleButtonClicked(role: ButtonRole) {
+  function isButtonChecked(role: ButtonRole) {
+    switch (role) {
+      case 'findDialog': return ui.popovers.find.visible;
+      case 'bookmarkView': return ui.popovers.bookmark.visible;
+      case 'historyView': return ui.popovers.history.visible;
+      default:
+        return false;
+    }
+  }
+
+  function onButtonClicked(role: ButtonRole) {
     switch (role) {
       case 'back':
       case 'forward':
@@ -81,15 +90,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         })
         break;
 
-      case 'toggleFindPopover':
-        popover.visible = !popover.visible;
+      case 'findDialog':
+        ui.popovers.find.visible = !ui.popovers.find.visible;
         break;
 
-      case 'toggleBookmarksList':
+      case 'bookmarkView':
         viewlogic.setLayerVisible('bookmark', !ui.popovers.bookmark.visible);
         break;
 
-      case 'toggleHistoryList':
+      case 'historyView':
         viewlogic.setLayerVisible('history', !ui.popovers.history.visible);
         break;
 
@@ -100,8 +109,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div data-area='toolbar' class='flex flex-row gap-1'>
-  {@render roleButton('back', ArrowLeft)}
-  {@render roleButton('forward', ArrowRight)}
+  <div class='flex flex-row gap-0'>
+    {@render roleButton('back', ArrowLeft)}
+    {@render roleButton('forward', ArrowRight)}
+  </div>
 
   <div class='grow flex relative'>
     <input
@@ -119,10 +130,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </div>
   </div>
 
-  {@render roleButton('openInNewViewer', Plus)}
-  {@render roleButton('toggleFindPopover', Search)}
-  {@render roleButton('toggleBookmarksList', Bookmark)}
-  {@render roleButton('toggleHistoryList', Clock4)}
+  {@render roleButton('openInNewViewer', Columns2)}
+  {@render roleButton('findDialog', Binoculars)}
+
+  <div class='flex flex-row'>
+    {@render roleButton('bookmarkView', Bookmark)}
+    {@render roleButton('historyView', Clock4)}
+  </div>
 </div>
 
 {#snippet roleButton(role: ButtonRole, Icon: Component)}
@@ -130,16 +144,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     bind:this={
       () => null,
       (el) => {
-        if (role === 'toggleFindPopover') {
-          popover.refEl = el;
+        if (role === 'findDialog') {
+          ui.popovers.find.refEl = el;
         }
       }
     }
     data-role={role}
+    aria-pressed={isButtonChecked(role)}
     class='qt-button flex items-center justify-center'
-    disabled={!isEnabled(role)}
+    disabled={!isButtonEnabled(role)}
     onclick={(e: MouseEvent) => {
-      onRoleButtonClicked(role);
+      onButtonClicked(role);
       e.stopPropagation();
     }}
   >
@@ -154,5 +169,31 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-role='toggleBookmark'] {
     border: none;
     background: none;
+  }
+
+  .qt-button[data-role='back'],
+  .qt-button[data-role='forward'],
+  .qt-button[data-role='historyView'],
+  .qt-button[data-role='bookmarkView'] {
+    &:hover {
+      color: var(--qt-text-default);
+      background: var(--qt-hover-bg);
+    }
+
+    &[aria-pressed='true'] {
+      color: var(--qt-accent-active);
+      background: var(--qt-accent-blue-default);
+    }
+
+    &:has(+ &) {
+      border-right: none;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    & + & {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
   }
 </style>

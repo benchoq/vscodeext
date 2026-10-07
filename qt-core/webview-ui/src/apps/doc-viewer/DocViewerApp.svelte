@@ -27,7 +27,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <div class='
   {standalone ? 'w-screen h-screen' : 'w-full h-full'}
-  flex flex-col gap-1
+  flex flex-col
 '>
   <DocViewerToolbar />
 
