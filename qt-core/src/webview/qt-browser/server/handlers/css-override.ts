@@ -12,9 +12,9 @@ import {
 
 import { fsFile } from '@/fs-utils';
 import { DisposableStore } from 'qt-lib';
-import { RequestContext, RequestHandler } from './handler-utils';
+import { HandlerContext, Handler, sendData } from './common';
 
-export class CssOverrideHandler implements RequestHandler, Disposable {
+export class CssOverrideHandler implements Handler, Disposable {
   private _content = '';
 
   private readonly _fileDir: string;
@@ -39,15 +39,14 @@ export class CssOverrideHandler implements RequestHandler, Disposable {
     this._disposables.dispose();
   }
 
-  canHandle(c: RequestContext): boolean {
+  public canHandle(c: HandlerContext): boolean {
     return this._content.length !== 0 &&
-      c.fileName.startsWith('offline') &&
-      c.fileName.endsWith('.css');
+      c.parsed.fileName.startsWith('offline') &&
+      c.parsed.fileName.endsWith('.css');
   }
 
-  handle(c: RequestContext): void {
-    c.res.writeHead(200, { 'Content-Type': 'text/css' });
-    c.res.end(this._content);
+  public handle(c: HandlerContext) {
+    sendData(c, this._content);
   }
 
   private _loadCss() {

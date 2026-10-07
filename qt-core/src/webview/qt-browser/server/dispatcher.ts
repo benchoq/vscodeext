@@ -2,22 +2,19 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import * as path from 'path';
+import * as http from 'http';
 import {
   ExtensionContext as Context,
  } from 'vscode';
-import {
-  ServerResponse as HttpResponse,
-  IncomingMessage as HttpRequest
-} from 'http';
 
-import { RequestHandler, sendForbidden } from './handlers/handler-utils';
-import { CssOverrideHandler } from './handlers/handler-style';
-import { ScriptInjectionHandler } from './handlers/handler-script';
-import { FallbackHandler } from './handlers/handler-fallback';
 import { fsFile } from '@/fs-utils';
+import { Handler, HandlerContext, sendForbidden } from './handlers/common';
+import { FallbackHandler } from './handlers/fallback';
+import { CssOverrideHandler } from './handlers/css-override';
+import { ScriptInjectionHandler } from './handlers/script-injection';
 
 export class QtBrowserDocServerDispatcher {
-  private readonly _handlers: RequestHandler[] = [];
+  private readonly _handlers: Handler[] = [];
   private readonly _cssHandler: CssOverrideHandler;
 
   constructor(
@@ -35,22 +32,28 @@ export class QtBrowserDocServerDispatcher {
     // TODO: dispose
   }
 
-  public dispatch(req: HttpRequest, res: HttpResponse) {
+  public dispatch(req: http.IncomingMessage, res: http.ServerResponse) {
     const filePath = decodeURIComponent((req.url ?? '/').split('?')[0] ?? '');
-    const fileName = path.basename(filePath);
+    const c: HandlerContext = {
+      http: { req, res },
+      parsed: {
+        filePath,
+        fileName: path.basename(filePath)
+      }
+    };
 
-    if (!isValidFile(filePath)) {
-      sendForbidden(res, filePath);
+    const handler = this._handlers.find((h) => h.canHandle(c));
+    if (!canAccess(filePath) || !handler) {
+      sendForbidden(c);
       return;
     }
 
-    const c = { filePath, fileName, res };
-    const handler = this._handlers.find((h) => h.canHandle(c));
-    handler?.handle(c);
+    handler.handle(c);
   }
 }
 
 // helper
-function isValidFile(filePath: string): boolean {
+function canAccess(filePath: string): boolean {
+  // TODO: filter by ext, etc.
   return fsFile(filePath).exists();
 }

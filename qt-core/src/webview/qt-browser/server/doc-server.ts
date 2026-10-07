@@ -93,23 +93,14 @@ export class QtBrowserDocServer implements Disposable {
       reject(new Error('Server instance is invalid'));
     });
   }
-
 }
 
-//helpers
+// helpers
 function addrToString(server: net.Server | undefined) {
-  if (!server) {
-    return '';
-  }
-
-  const addr = server.address();
+  const addr = server?.address();
   if (typeof addr === 'string') {
     return addr;
   }
 
-  if (addr) {
-    return `${addr.address}:${String(addr.port)}`;
-  }
-
-  return '';
+  return addr ? `${addr.address}:${String(addr.port)}` : '';
 }
