@@ -6,9 +6,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import {
     Square,
+    TrashIcon,
     SquareMinus,
-    SquareCheck,
-    TrashIcon
+    SquareCheck
   } from "@lucide/svelte";
 
   import { data } from '../states.svelte';

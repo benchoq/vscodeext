@@ -13,7 +13,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div class='w-full h-full flex flex-col gap-2 px-4 py-2'>
-  <div class='flex flex-row'>
+  <div class='flex flex-row gap-2'>
     <span data-role='title'>Bookmarks</span>
     <CloseButton
       onClicked={() => {
