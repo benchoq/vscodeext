@@ -110,7 +110,10 @@ function onMessageFromViewer(e: MessageEvent) {
   switch (e.data?.id) {
     case ViewerMessageId.ViewerLoaded: {
       ui.iframe.errorCode = e.data.errorCode;
+
       if (ui.iframe.errorCode) {
+        ui.iframe.hoveredUri = '';
+        void vscode.post(CommandId.QtBrowserSetViewerState, { title: 'Error' });
         return;
       }
 
