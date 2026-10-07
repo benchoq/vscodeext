@@ -14,12 +14,12 @@ import { data } from './states.svelte';
 import { type BookmarkViewEntry } from './types.svelte';
 
 export async function load() {
-  const r = await vscode.post(CommandId.QtBrowserGetBookmarks);
+  const r = await vscode.post(CommandId.DocViewerGetBookmarks);
   setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
 }
 
 export async function edit(edit: BookmarkEdit) {
-  const r = await vscode.post(CommandId.QtBrowserEditBookmarks, { edit });
+  const r = await vscode.post(CommandId.DocViewerEditBookmarks, { edit });
   setBookmarks(_.get(r, 'entries', [] as BookmarkEntry[]));
 }
 

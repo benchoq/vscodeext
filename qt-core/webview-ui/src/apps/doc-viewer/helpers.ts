@@ -1,14 +1,7 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import { ViewerMessageId } from '@shared/doc-viewer';
-import { data, ui } from './states.svelte';
-
-export function postToViewer(id: ViewerMessageId, data = {}) {
-  ui.iframe.el?.contentWindow?.postMessage(
-    { id, ...data }, '*'
-  );
-}
+import { data } from './states.svelte';
 
 export function toLocalServerUri(uri: string) {
   if (uri.startsWith('file:')) {

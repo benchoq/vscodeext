@@ -37,17 +37,17 @@ export type HistoryEdit =
   | { action: 'remove'; selection: HistoryEntry[] }
   | { action: 'clear' };
 
-export enum ViewerMessageId {
-  FindInPage = 'doc-viewer-find-in-page',
-  ReloadPage = 'doc-viewer-reload-page',
-  CopySelection = 'doc-viewer-copy-selection',
-  ApplyVscodeTheme = 'doc-viewer-apply-vscode-theme',
-  ViewerLoaded = 'doc-viewer-loaded',
-  ViewerClicked = 'doc-viewer-viewer-clicked',
-  ViewerKeyDown = 'doc-viewer-viewer-key-down',
-  ViewerMouseDown = 'doc-viewer-viewer-mouse-down',
-  ViewerContextMenu = 'doc-viewer-viewer-contextmenu',
-  ViewerHoverChanged = 'doc-viewer-viewer-hover-changed',
+export enum IframeMessageId {
+  RequestFindInPage = 'request-find-in-page',
+  RequestReloadPage = 'request-reload-page',
+  RequestCopySelected = 'request-copy-selected',
+  RequestApplyVscodeTheme = 'request-apply-vscode-theme',
+  EventLoaded = 'event-loaded',
+  EventClicked = 'event-clicked',
+  EventKeyDown = 'event-key-down',
+  EventMouseDown = 'event-mouse-down',
+  EventContextMenu = 'event-contextmenu',
+  EventHoverChanged = 'event-hover-changed',
 }
 
 // type guard functions

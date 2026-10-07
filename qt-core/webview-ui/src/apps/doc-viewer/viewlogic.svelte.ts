@@ -4,7 +4,7 @@
 import _ from 'lodash';
 
 import { vscode } from '@/apps/vscode';
-import { ViewerMessageId } from '@shared/doc-viewer';
+import { IframeMessageId } from '@shared/doc-viewer';
 import { CommandId, type CommandReply } from '@shared/message';
 
 import { data, ui } from './states.svelte';
@@ -20,7 +20,7 @@ export async function onAppMount() {
   ui.theme.monitor.onChanged(onVscodeThemeChanged);
 
   window.addEventListener('keydown', onKeydown);
-  window.addEventListener('message', onMessageFromViewer);
+  window.addEventListener('message', onMessageFromIframe);
   vscode.onDidReceiveNotification(onMessageFromVscode);
 
   await loadConfigs();
@@ -39,7 +39,7 @@ export async function openUri(uri: string) {
   const u = helpers.toLocalServerUri(uri);
 
   if (!u.startsWith(data.configs.serverOrigin)) {
-    void vscode.post(CommandId.QtBrowserOpenUriExt, { uri });
+    void vscode.post(CommandId.DocViewerOpenUriExt, { uri });
     return;
   }
 
@@ -50,7 +50,7 @@ export async function openUri(uri: string) {
 
 export function openInNewViewer(uri: string) {
   const u = helpers.toFileUri(uri);
-  void vscode.post(CommandId.QtBrowserOpenInNewViewer, { uri: u });
+  void vscode.post(CommandId.DocViewerOpenInNewViewer, { uri: u });
 }
 
 export function navigate(dir: 'back' | 'forward') {
@@ -62,7 +62,7 @@ export function navigate(dir: 'back' | 'forward') {
 }
 
 export function copySelection() {
-  helpers.postToViewer(ViewerMessageId.CopySelection);
+  postToIframe(IframeMessageId.RequestCopySelected);
 }
 
 export function setLayerVisible(target: 'bookmark' | 'history', visible: boolean) {
@@ -81,7 +81,7 @@ export function findInPage(action: FindAction) {
     ui.popovers.find.visible = false;
   }
 
-  helpers.postToViewer(ViewerMessageId.FindInPage, {
+  postToIframe(IframeMessageId.RequestFindInPage, {
     keyword: ui.popovers.find.keyword,
     action
   });
@@ -89,21 +89,21 @@ export function findInPage(action: FindAction) {
 
 // helpers
 async function loadConfigs() {
-  const r = await vscode.post(CommandId.QtBrowserGetConfig);
+  const r = await vscode.post(CommandId.DocViewerGetConfig);
 
   data.configs.homeUri = String(_.get(r, 'homeUri', '')).trim();
   data.configs.serverOrigin = String(_.get(r, 'serverOrigin', '')).trim();
 }
 
 function onVscodeThemeChanged() {
-  helpers.postToViewer(ViewerMessageId.ApplyVscodeTheme, {
+  postToIframe(IframeMessageId.RequestApplyVscodeTheme, {
     vars: ui.theme.getAllVscodeCssVars()
   });
 }
 
 function onMessageFromVscode(reply: CommandReply) {
-  if (reply.id === CommandId.QtBrowserReloadPage) {
-    helpers.postToViewer(ViewerMessageId.ReloadPage);
+  if (reply.id === CommandId.DocViewerReloadPage) {
+    postToIframe(IframeMessageId.RequestReloadPage);
   }
 }
 
@@ -113,14 +113,14 @@ function onKeydown(e: KeyboardEvent) {
   }
 }
 
-function onMessageFromViewer(e: MessageEvent) {
+function onMessageFromIframe(e: MessageEvent) {
   switch (e.data?.id) {
-    case ViewerMessageId.ViewerLoaded: {
+    case IframeMessageId.EventLoaded: {
       ui.iframe.errorCode = e.data.errorCode;
 
       if (ui.iframe.errorCode) {
         ui.iframe.hoveredUri = '';
-        void vscode.post(CommandId.QtBrowserSetViewerState, { title: 'Error' });
+        void vscode.post(CommandId.DocViewerSetViewerState, { title: 'Error' });
         return;
       }
 
@@ -141,24 +141,24 @@ function onMessageFromViewer(e: MessageEvent) {
         }
       });
 
-      helpers.postToViewer(ViewerMessageId.ApplyVscodeTheme, {
+      postToIframe(IframeMessageId.RequestApplyVscodeTheme, {
         vars: ui.theme.getAllVscodeCssVars()
       });
 
-      void vscode.post(CommandId.QtBrowserSetViewerState, {
+      void vscode.post(CommandId.DocViewerSetViewerState, {
         uri: fileUri,
         title: e.data.title
       });
       break;
     }
 
-    case ViewerMessageId.ViewerHoverChanged:
+    case IframeMessageId.EventHoverChanged:
       if (typeof e.data.href === 'string') {
         ui.iframe.hoveredUri = helpers.toFileUri(e.data.href);
       }
       break;
 
-    case ViewerMessageId.ViewerClicked:
+    case IframeMessageId.EventClicked:
       if (typeof e.data?.href === 'string') {
         // TODO: file: vs http: ...
         if (e.data.newWindow === true) {
@@ -169,12 +169,12 @@ function onMessageFromViewer(e: MessageEvent) {
       }
       break;
 
-    case ViewerMessageId.ViewerKeyDown: {
+    case IframeMessageId.EventKeyDown: {
       const fields = e.data.fields;
 
       if (fields.key.toLowerCase() === 'c') {
         if (fields.metaKey || fields.ctrlKey) {
-          helpers.postToViewer(ViewerMessageId.CopySelection);
+          postToIframe(IframeMessageId.RequestCopySelected);
           return;
         }
       }
@@ -187,7 +187,7 @@ function onMessageFromViewer(e: MessageEvent) {
       break;
     }
 
-    case ViewerMessageId.ViewerContextMenu: {
+    case IframeMessageId.EventContextMenu: {
       const r = ui.iframe.el?.getBoundingClientRect();
       if (r) {
         const x = r.left + e.data.x;
@@ -198,11 +198,17 @@ function onMessageFromViewer(e: MessageEvent) {
       break;
     }
 
-    case ViewerMessageId.ViewerMouseDown:
+    case IframeMessageId.EventMouseDown:
       ui.popovers.contextMenu.visible = false;
       break;
 
     default:
       break;
   }
+}
+
+function postToIframe(id: IframeMessageId, data = {}) {
+  ui.iframe.el?.contentWindow?.postMessage(
+    { id, ...data }, '*'
+  );
 }

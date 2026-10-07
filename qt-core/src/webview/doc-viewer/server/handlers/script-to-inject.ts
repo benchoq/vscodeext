@@ -1,7 +1,7 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import { ViewerMessageId } from '@/webview/shared/doc-viewer';
+import { IframeMessageId } from '@/webview/shared/doc-viewer';
 
 let cached: string | undefined;
 
@@ -55,7 +55,7 @@ const CommonScript = /*js*/`
 
 const DocLoadedScript = /*js*/`
   addListenerNoCapture('load', () => {
-    notifyParent('${ViewerMessageId.ViewerLoaded}', {
+    notifyParent('${IframeMessageId.EventLoaded}', {
       title: document.title,
       href: location.href,
       hash: location.hash,
@@ -66,7 +66,7 @@ const DocLoadedScript = /*js*/`
 `;
 
 const DocReloadScript = /*js*/`
-  onParentMessage('${ViewerMessageId.ReloadPage}', () => {
+  onParentMessage('${IframeMessageId.RequestReloadPage}', () => {
     location.reload();
   });
 `;
@@ -84,7 +84,7 @@ const FindInPageScript = /*js*/`
     );
   }
 
-  onParentMessage('${ViewerMessageId.FindInPage}', ({ keyword, action }) => {
+  onParentMessage('${IframeMessageId.RequestFindInPage}', ({ keyword, action }) => {
     switch (action) {
       case 'new':
         window.getSelection()?.removeAllRanges();
@@ -107,7 +107,7 @@ const FindInPageScript = /*js*/`
 `;
 
 const ApplyThemeScript = /*js*/`
-  onParentMessage('${ViewerMessageId.ApplyVscodeTheme}', ({ vars }) => {
+  onParentMessage('${IframeMessageId.RequestApplyVscodeTheme}', ({ vars }) => {
     for (const [name, value] of Object.entries(vars)) {
       document.documentElement.style.setProperty(name, value);
     }
@@ -121,7 +121,7 @@ const LinkClickedScript = /*js*/`
 
   function notifyLinkClicked(anchor, newWindow) {
     const url = new URL(anchor.href, document.baseURI);
-    notifyParent('${ViewerMessageId.ViewerClicked}', { href: url.href, newWindow });
+    notifyParent('${IframeMessageId.EventClicked}', { href: url.href, newWindow });
   }
 
   addListenerNoCapture('click', (e) => {
@@ -172,7 +172,7 @@ const LinkHoverChangedScript = /*js*/`
       return;
     }
 
-    notifyParent('${ViewerMessageId.ViewerHoverChanged}', {
+    notifyParent('${IframeMessageId.EventHoverChanged}', {
       href: (e.type === 'mouseover') ? link.href : '',
     });
   }
@@ -183,7 +183,7 @@ const LinkHoverChangedScript = /*js*/`
 
 const ForwardKeyDownScript = /*js*/`
   addListener('keydown', (e) => {
-    notifyParent('${ViewerMessageId.ViewerKeyDown}', {
+    notifyParent('${IframeMessageId.EventKeyDown}', {
       fields: {
         key: e.key,
         code: e.code,
@@ -201,19 +201,19 @@ const ForwardKeyDownScript = /*js*/`
 const ContextMenuScript = /*js*/`
   addListener('contextmenu', (e) => {
     e.preventDefault();
-    notifyParent('${ViewerMessageId.ViewerContextMenu}', {
+    notifyParent('${IframeMessageId.EventContextMenu}', {
       x: e.clientX,
       y: e.clientY
     });
   });
 
   addListener('mousedown', () => {
-    notifyParent('${ViewerMessageId.ViewerMouseDown}');
+    notifyParent('${IframeMessageId.EventMouseDown}');
   });
 `;
 
 const CopySelectionScript = /*js*/`
-  onParentMessage('${ViewerMessageId.CopySelection}', async () => {
+  onParentMessage('${IframeMessageId.RequestCopySelected}', async () => {
     const text = window.getSelection()?.toString() ?? '';
     if (!text) {
       return;

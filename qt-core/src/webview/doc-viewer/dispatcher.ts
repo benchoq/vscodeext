@@ -39,19 +39,19 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
     this._histories = new DocViewerHistoryManager(this._extContext.globalState);
     this._bookmarks = new DocViewerBookmarkManager(this._extContext.globalState);
     this.setHandlers([
-      [CommandId.QtBrowserGetConfig, this._onGetConfig],
-      [CommandId.QtBrowserSetViewerState, this._onSetViewerState],
-      [CommandId.QtBrowserOpenUriExt, this._onOpenUriExt],
-      [CommandId.QtBrowserOpenInNewViewer, this._onOpenInNewViewer],
-      [CommandId.QtBrowserGetBookmarks, this._onGetBookmarks],
-      [CommandId.QtBrowserEditBookmarks, this._onEditBookmarks],
-      [CommandId.QtBrowserGetHistories, this._onGetHistories],
-      [CommandId.QtBrowserEditHistories, this._onEditHistories],
+      [CommandId.DocViewerGetConfig, this._onGetConfig],
+      [CommandId.DocViewerSetViewerState, this._onSetViewerState],
+      [CommandId.DocViewerOpenUriExt, this._onOpenUriExt],
+      [CommandId.DocViewerOpenInNewViewer, this._onOpenInNewViewer],
+      [CommandId.DocViewerGetBookmarks, this._onGetBookmarks],
+      [CommandId.DocViewerEditBookmarks, this._onEditBookmarks],
+      [CommandId.DocViewerGetHistories, this._onGetHistories],
+      [CommandId.DocViewerEditHistories, this._onEditHistories],
     ]);
 
     if (this._extContext.extensionMode === Mode.Development) {
       this._docServer.onCssChanged(() => {
-        this.channel.notify(CommandId.QtBrowserReloadPage);
+        this.channel.notify(CommandId.DocViewerReloadPage);
       });
     }
 

@@ -10,17 +10,16 @@ import {
   type HistoryEdit,
   type HistoryEntry,
 } from '@shared/doc-viewer';
-
 import { CommandId } from '@shared/message';
 import { data } from './states.svelte';
 
 export async function load() {
-  const r = await vscode.post(CommandId.QtBrowserGetHistories);
+  const r = await vscode.post(CommandId.DocViewerGetHistories);
   setHistories(_.get(r, 'entries', [] as HistoryEntry[]));
 }
 
 export async function edit(edit: HistoryEdit) {
-  const r = await vscode.post(CommandId.QtBrowserEditHistories, { edit });
+  const r = await vscode.post(CommandId.DocViewerEditHistories, { edit });
   setHistories(_.get(r, 'entries', [] as HistoryEntry[]));
 }
 

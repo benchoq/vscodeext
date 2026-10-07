@@ -62,15 +62,15 @@ export enum CommandId {
   UiFileOpenInTextEditor,
 
   // qt browser
-  QtBrowserGetConfig,
-  QtBrowserSetViewerState,
-  QtBrowserOpenUriExt,
-  QtBrowserOpenInNewViewer,
-  QtBrowserReloadPage,
-  QtBrowserGetBookmarks,
-  QtBrowserEditBookmarks,
-  QtBrowserGetHistories,
-  QtBrowserEditHistories,
+  DocViewerGetConfig,
+  DocViewerSetViewerState,
+  DocViewerOpenUriExt,
+  DocViewerOpenInNewViewer,
+  DocViewerReloadPage,
+  DocViewerGetBookmarks,
+  DocViewerEditBookmarks,
+  DocViewerGetHistories,
+  DocViewerEditHistories,
 
   // qt help
   QtHelpReadToc,
@@ -87,7 +87,7 @@ export const OneWayCommandIds = [
   CommandId.NewItemHasError,
   CommandId.NewItemCreationRequested,
   CommandId.QrcDocChanged,
-  CommandId.QtBrowserReloadPage,
+  CommandId.DocViewerReloadPage,
   CommandId.CommonViewClosed,
   CommandId.CommonVscodeThemeChanged
 ];
