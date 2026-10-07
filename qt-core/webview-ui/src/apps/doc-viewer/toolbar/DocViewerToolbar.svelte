@@ -50,17 +50,22 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div data-area='toolbar' class='flex flex-row gap-1'>
   {@render navButton('back')}
   {@render navButton('forward')}
-  {@render bookmarkToggleButton()}
 
-  <input
-    bind:this={el}
-    {value}
-    class='qt-input grow px-2'
-    oninput={(e) => { draft = e.currentTarget.value; }}
-    onblur={() => { draft = null;  }}
-    onfocus={() => { selectAll(); }}
-    onkeydown={onKeyDown}
-  />
+  <div class='grow flex relative'>
+    <input
+      bind:this={el}
+      {value}
+      class='qt-input grow self-stretch px-2'
+      oninput={(e) => { draft = e.currentTarget.value; }}
+      onblur={() => { draft = null;  }}
+      onfocus={() => { selectAll(); }}
+      onkeydown={onKeyDown}
+    />
+
+    <div class='qt-absolute-cy right-[5px]'>
+      {@render bookmarkToggleButton()}
+    </div>
+  </div>
 
   {@render openInNewViewer()}
 
