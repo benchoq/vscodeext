@@ -11,7 +11,7 @@ import {
   type HtmlPageInfo,
 } from '@shared/qt-help';
 import { data, ui, type UiMode } from './states.svelte';
-import * as vl from '../qt-browser/viewlogic.svelte';
+import * as docViewer from '../doc-viewer/viewlogic.svelte';
 
 export async function onAppMount() {
   await loadToc();
@@ -70,6 +70,6 @@ export function setMode(mode: UiMode) {
 export async function openHtml(info: HtmlPageInfo) {
   const prefix = 'file:///Users/bencho/tools/Qt/Docs/Qt-6.11.1/';
 
-  vl.openUri(prefix + info.filePathRel);
+  docViewer.openUri(prefix + info.filePathRel);
   console.log(info);
 }

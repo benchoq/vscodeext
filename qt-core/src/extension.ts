@@ -40,7 +40,7 @@ import { checkVcpkg } from '@/vcpkg';
 
 import { addNewItem } from '@/webview/new-item/controller';
 import { addQtHelp } from '@/webview/qt-help/controller';
-import { addQtBrowser } from '@/webview/qt-browser/controller';
+import { addQtBrowser } from '@/webview/doc-viewer/controller';
 import { addExBrowser } from '@/webview/ex-browser/controller';
 import { addWelcomePage, showEntryPage } from '@/webview/welcome/controller';
 import { addCoursesBrowser } from '@/webview/courses/controller';

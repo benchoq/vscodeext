@@ -23,7 +23,7 @@ import * as helpers from './helpers';
 import { ExDataManager } from './data-manager';
 import { ExImageUriResolver } from './resolvers';
 import { isOpenInPreference } from '../shared/types';
-import { QtBrowserOpenOptions } from '../shared/qt-browser';
+import { QtBrowserOpenOptions } from '../shared/doc-viewer';
 
 type Panel = vscode.WebviewPanel;
 type Context = vscode.ExtensionContext;

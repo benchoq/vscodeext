@@ -9,8 +9,8 @@ import {
 
 import { Command, CommandId } from '@/webview/shared/message';
 import { WebviewDispatcher, WebviewDispatcherChain } from '@/webview/dispatcher';
-import { QtBrowserDispatcher } from '@/webview/qt-browser/dispatcher';
-import { QtBrowserDocServer } from '@/webview/qt-browser/server/doc-server';
+import { QtBrowserDispatcher } from '@/webview/doc-viewer/dispatcher';
+import { QtBrowserDocServer } from '@/webview/doc-viewer/server/doc-server';
 import { QtHelpDataManager } from './data/data-manager';
 
 import * as consts from './constants';

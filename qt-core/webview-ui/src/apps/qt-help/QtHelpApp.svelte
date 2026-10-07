@@ -7,14 +7,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { onMount, onDestroy } from 'svelte';
 
   import '@/styles/components/components.css';
-  // import './QtBrowserApp.css';
+  import './QtHelpApp.css';
 
+  import DocViewerApp from '@/apps/doc-viewer/DocViewerApp.svelte';
   import QtHelpSidebar from './sidebar/QtHelpSidebar.svelte';
   import QtHelpSidebarHandle from './sidebar/QtHelpSidebarHandle.svelte';
-
-  import QtBrowserApp from '@/apps/qt-browser/QtBrowserApp.svelte';
-  import * as viewlogic from './viewlogic.svelte';
   import { ui } from './states.svelte';
+  import * as viewlogic from './viewlogic.svelte';
 
   onMount(() => viewlogic.onAppMount());
   onDestroy(() => viewlogic.onAppDestroy());
@@ -27,11 +26,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </div>
 
     <QtHelpSidebarHandle />
-    <QtBrowserApp standalone={false} />
-    <!-- <DocBrowserHtmlView /> -->
+    <DocViewerApp standalone={false} />
   </div>
-<!--
-  <div class='grow'>
-    <QtBrowserApp standalone={false} />
-  </div> -->
 </div>

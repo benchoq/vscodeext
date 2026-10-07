@@ -5,7 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { data, ui } from '../states.svelte';
-  import TocTreeViewNode from './TocTreeViewNode.svelte';
+  import QtHelpTocTreeNode from './QtHelpTocTreeNode.svelte';
 </script>
 
 <div
@@ -30,7 +30,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   <div class='qt-item-list flex flex-col h-full'>
     {#each ui.tocTree.topLevels as node (node.id)}
-      <TocTreeViewNode {node} />
+      <QtHelpTocTreeNode {node} />
     {/each}
   </div>
 
