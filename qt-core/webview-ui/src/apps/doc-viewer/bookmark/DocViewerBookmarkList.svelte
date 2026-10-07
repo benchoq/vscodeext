@@ -4,9 +4,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { ChevronLeft } from '@lucide/svelte';
   import CheckBox from '@/comps/CheckBox.svelte';
   import Separator from '@/comps/Separator.svelte';
-  import { data } from '../states.svelte';
+
+  import { data, ui } from '../states.svelte';
   import * as helpers from '../helpers';
   import * as viewlogic from '../viewlogic.svelte';
 
@@ -67,7 +69,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         class:active={item.checked}
         onclick={() => {
           viewlogic.openUri(item.data.uri);
-          viewlogic.setLayerVisible('bookmark', false);
         }}
       >
         <span data-role='title'>{item.data.title}</span>
@@ -75,6 +76,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
           {helpers.extractHash(item.data.uri)}
         </span>
       </button>
+
+      {#if item.data.uri === helpers.toFileUri(ui.iframe.src)}
+        <ChevronLeft />
+      {/if}
     </div>
   {/each}
 </div>

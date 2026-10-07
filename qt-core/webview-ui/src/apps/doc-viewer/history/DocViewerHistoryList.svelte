@@ -57,7 +57,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
           title={helpers.toFileUri(item.data.uri)}
           onclick={() => {
             viewlogic.openUri(item.data.uri);
-            viewlogic.setLayerVisible('history', false);
           }}
         >
           <span data-role='time'>
@@ -67,7 +66,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
           <span data-role='hash'>
             {helpers.extractHash(item.data.uri)}
           </span>
-          <span class='grow'></span>
         </button>
       </div>
     {/each}
@@ -93,7 +91,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
 
   [data-role='hash'] {
     min-width: 0;
