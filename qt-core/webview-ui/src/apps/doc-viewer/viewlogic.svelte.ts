@@ -71,16 +71,6 @@ export function setLayerVisible(target: 'bookmark' | 'history', visible: boolean
 }
 
 export function findInPage(action: FindAction) {
-  const w = ui.iframe.el?.contentWindow
-  if (!w) {
-    return;
-  }
-
-  if (action === 'clear') {
-    ui.popovers.find.keyword = '';
-    ui.popovers.find.visible = false;
-  }
-
   postToIframe(IframeMessageId.RequestFindInPage, {
     keyword: ui.popovers.find.keyword,
     action
