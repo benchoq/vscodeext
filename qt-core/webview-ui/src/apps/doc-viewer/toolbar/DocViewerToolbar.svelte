@@ -5,13 +5,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import {
+    Plus,
     Star,
     Search,
-    Clock4 as HistoryIcon,
-    Bookmark as BookmarkIcon,
-    ArrowRight,
-    Files as Share
+    Clock4,
+    Bookmark,
+    ArrowLeft,
+    ArrowRight
   } from "@lucide/svelte";
+  import { type Component } from 'svelte';
 
   import { ui } from '../states.svelte';
   import * as helpers from '../helpers';
@@ -20,8 +22,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   let el = $state(undefined as HTMLInputElement | undefined);
   let draft = $state<string | null>(null);
+
   const value = $derived(helpers.toFileUri(draft ?? ui.iframe.src));
   const popover = $derived(ui.popovers.find);
+  const bookmarked = $derived(viewlogic.bookmark.has(
+    helpers.toFileUri(ui.iframe.src)
+  ));
 
   function onKeyDown(e: KeyboardEvent) {
     if (e.key === 'Enter') {
@@ -32,11 +38,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }
   }
 
-  function toggleFindPopover(e: MouseEvent) {
-    popover.visible = !popover.visible;
-    e.stopPropagation();
-  }
-
   function reset() {
     draft = null;
     requestAnimationFrame(() => { selectAll(); });
@@ -45,11 +46,62 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   function selectAll() {
     el?.select();
   }
+
+  type ButtonRole =
+    | 'back' | 'forward'
+    | 'openInNewViewer' | 'toggleBookmark'
+    | 'toggleFindPopover' | 'toggleBookmarksList' | 'toggleHistoryList';
+
+  function isEnabled(role: ButtonRole) {
+    if (role === 'back' || role === 'forward') {
+      return ui.history.canGo(role);
+    }
+
+    return true;
+  }
+
+  function onRoleButtonClicked(role: ButtonRole) {
+    switch (role) {
+      case 'back':
+      case 'forward':
+        viewlogic.navigate(role);
+        break;
+
+      case 'openInNewViewer':
+        viewlogic.openInNewViewer(ui.iframe.src);
+        break;
+
+      case 'toggleBookmark':
+        viewlogic.bookmark.edit({
+          action: 'toggle',
+          entry: {
+            uri: helpers.toFileUri(ui.iframe.src),
+            title: ui.iframe.title
+          }
+        })
+        break;
+
+      case 'toggleFindPopover':
+        popover.visible = !popover.visible;
+        break;
+
+      case 'toggleBookmarksList':
+        viewlogic.setLayerVisible('bookmark', !ui.popovers.bookmark.visible);
+        break;
+
+      case 'toggleHistoryList':
+        viewlogic.setLayerVisible('history', !ui.popovers.history.visible);
+        break;
+
+      default:
+        break;
+    }
+  }
 </script>
 
 <div data-area='toolbar' class='flex flex-row gap-1'>
-  {@render navButton('back')}
-  {@render navButton('forward')}
+  {@render roleButton('back', ArrowLeft)}
+  {@render roleButton('forward', ArrowRight)}
 
   <div class='grow flex relative'>
     <input
@@ -62,95 +114,45 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       onkeydown={onKeyDown}
     />
 
-    <div class='qt-absolute-cy right-[5px]'>
-      {@render bookmarkToggleButton()}
+    <div class='qt-absolute-cy right-[2px]'>
+      {@render roleButton('toggleBookmark', Star)}
     </div>
   </div>
 
-  {@render openInNewViewer()}
-
-  <button
-    bind:this={popover.refEl}
-    data-role='nav-button'
-    class='qt-button flex items-center justify-center'
-    aria-pressed={popover.visible}
-    onclick={toggleFindPopover}
-  >
-    <Search />
-  </button>
-
-  {@render bookmarkViewToggleButton()}
-  {@render historyViewToggleButton()}
-
+  {@render roleButton('openInNewViewer', Plus)}
+  {@render roleButton('toggleFindPopover', Search)}
+  {@render roleButton('toggleBookmarksList', Bookmark)}
+  {@render roleButton('toggleHistoryList', Clock4)}
 </div>
 
-{#snippet navButton(dir: 'back' | 'forward')}
+{#snippet roleButton(role: ButtonRole, Icon: Component)}
   <button
-    data-role='nav-button'
-    class='qt-button flex items-center justify-center'
-    class:rotate-180={dir==='back'}
-    disabled={!ui.history.canGo(dir)}
-    onclick={() => {
-      viewlogic.navigate(dir);
-    }}
-  >
-    <ArrowRight />
-  </button>
-{/snippet}
-
-{#snippet bookmarkToggleButton()}
-  <button
-    data-role='nav-button'
-    class='qt-button flex items-center justify-center'
-    onclick={() => {
-      viewlogic.bookmark.edit({
-        action: 'toggle',
-        entry: {
-          uri: helpers.toFileUri(ui.iframe.src),
-          title: ui.iframe.title
+    bind:this={
+      () => null,
+      (el) => {
+        if (role === 'toggleFindPopover') {
+          popover.refEl = el;
         }
-      })
+      }
+    }
+    data-role={role}
+    class='qt-button flex items-center justify-center'
+    disabled={!isEnabled(role)}
+    onclick={(e: MouseEvent) => {
+      onRoleButtonClicked(role);
+      e.stopPropagation();
     }}
   >
-    <Star fill={
-      viewlogic.bookmark.has(helpers.toFileUri(ui.iframe.src))
+    <Icon fill={
+      (role === 'toggleBookmark' && bookmarked)
       ? 'currentColor' : 'transparent'
     }/>
   </button>
 {/snippet}
 
-{#snippet bookmarkViewToggleButton()}
-  <button
-    data-role='nav-button'
-    class='qt-button flex items-center justify-center'
-    onclick={() => {
-      viewlogic.setLayerVisible('bookmark', !ui.popovers.bookmark.visible);
-    }}
-  >
-    <BookmarkIcon />
-  </button>
-{/snippet}
-
-{#snippet historyViewToggleButton()}
-  <button
-    data-role='nav-button'
-    class='qt-button flex items-center justify-center'
-    onclick={() => {
-      viewlogic.setLayerVisible('history', !ui.popovers.history.visible);
-    }}
-  >
-    <HistoryIcon />
-  </button>
-{/snippet}
-
-{#snippet openInNewViewer()}
-  <button
-    data-role='nav-button'
-    class='qt-button flex items-center justify-center'
-    onclick={() => {
-      viewlogic.openInNewViewer(ui.iframe.src);
-    }}
-  >
-    <Share />
-  </button>
-{/snippet}
+<style>
+  [data-role='toggleBookmark'] {
+    border: none;
+    background: none;
+  }
+</style>
