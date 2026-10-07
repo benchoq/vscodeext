@@ -4,6 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { fly } from 'svelte/transition';
   import { ui } from './states.svelte';
 
   import Popover from './others/Popover.svelte';
@@ -49,7 +50,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         popover.visible = false;
       }}
     >
-      <DocViewerFindPopover />
+      <div transition:fly={{ duration: 120, y: -20, opacity: 0 }}>
+        <DocViewerFindPopover />
+      </div>
     </Popover>
   {/if}
 

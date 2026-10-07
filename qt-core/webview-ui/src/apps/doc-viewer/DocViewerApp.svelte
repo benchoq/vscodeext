@@ -5,6 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
+  import { fly } from 'svelte/transition';
 
   import '@/styles/components/components.css';
   import './DocViewerApp.css';
@@ -40,6 +41,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <div
         data-role='background'
         class='absolute top-0 right-0 w-[400px] h-full'
+        transition:fly={{ duration: 120, x: 200, opacity: 0 }}
       >
         {#if ui.popovers.bookmark.visible}
           <DocViewerBookmarkView />

@@ -5,6 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import {
+    Dot,
     Star,
     Clock4,
     Columns2,
@@ -108,10 +109,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-<div data-area='toolbar' class='flex flex-row gap-1'>
+<div data-area='toolbar' class='flex flex-row gap-2'>
   <div class='flex flex-row gap-0'>
-    {@render roleButton('back', ArrowLeft)}
-    {@render roleButton('forward', ArrowRight)}
+    {@render roleButton('back', isButtonEnabled('back') ? ArrowLeft : Dot)}
+    {@render roleButton('forward', isButtonEnabled('forward') ? ArrowRight : Dot)}
   </div>
 
   <div class='grow flex relative'>

@@ -4,7 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { ChevronLeft } from '@lucide/svelte';
+  import { Check } from '@lucide/svelte';
   import CheckBox from '@/comps/CheckBox.svelte';
   import Separator from '@/comps/Separator.svelte';
 
@@ -75,11 +75,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         <span data-role='hash'>
           {helpers.extractHash(item.data.uri)}
         </span>
+
+        {#if item.data.uri === helpers.toFileUri(ui.iframe.src)}
+          <Check class='ml-auto'/>
+        {/if}
       </button>
 
-      {#if item.data.uri === helpers.toFileUri(ui.iframe.src)}
-        <ChevronLeft />
-      {/if}
     </div>
   {/each}
 </div>
