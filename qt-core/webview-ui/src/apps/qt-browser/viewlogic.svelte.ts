@@ -44,6 +44,7 @@ export async function openUri(uri: string) {
 
   // TODO: check if it's allowed to access or exists
   ui.iframe.src = u;
+  ui.iframe.errorCode = undefined;
 }
 
 export function openInNewViewer(uri: string) {
@@ -109,9 +110,7 @@ function onMessageFromViewer(e: MessageEvent) {
   switch (e.data?.id) {
     case ViewerMessageId.ViewerLoaded: {
       ui.iframe.errorCode = e.data.errorCode;
-
       if (ui.iframe.errorCode) {
-        console.log('err ------', ui.iframe.errorCode);
         return;
       }
 

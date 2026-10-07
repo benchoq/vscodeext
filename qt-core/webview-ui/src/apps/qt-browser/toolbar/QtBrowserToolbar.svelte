@@ -62,6 +62,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     onkeydown={onKeyDown}
   />
 
+  {@render openInNewViewer()}
+
   <button
     bind:this={popover.refEl}
     data-role='nav-button'
@@ -74,7 +76,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   {@render bookmarkViewToggleButton()}
   {@render historyViewToggleButton()}
-  {@render openInNewViewer()}
 
 </div>
 
