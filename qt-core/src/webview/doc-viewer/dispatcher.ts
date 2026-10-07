@@ -4,40 +4,40 @@
 import _ from 'lodash';
 import {
   env,
-  commands,
   Uri,
   WebviewPanel as Panel,
   ExtensionMode as Mode,
   ExtensionContext as Context,
 } from 'vscode';
 
-import { WebviewDispatcher } from '@/webview/dispatcher';
 import {
-  isBookmarkEdit,
   isHistoryEdit,
-  QtBrowserOpenOptions,
-  QtBrowserViewerState
+  isBookmarkEdit,
+  OpenOptions,
+  UiState
 } from '@/webview/shared/doc-viewer';
+import { WebviewDispatcher } from '@/webview/dispatcher';
 import { Command, CommandId } from '@/webview/shared/message';
-import { QtBrowserDocServer } from './server/doc-server';
-import { QtBrowserHistoryManager } from './history-manager';
-import { QtBrowserBookmarkManager } from './bookmark-manager';
+import { openDocViewer } from './controller';
+import { DocViewerHttpServer } from './server/http-server';
+import { DocViewerHistoryManager } from './history-manager';
+import { DocViewerBookmarkManager } from './bookmark-manager';
 
-export class QtBrowserDispatcher extends WebviewDispatcher  {
-  private readonly _viewerState: QtBrowserViewerState = {};
-  private readonly _histories: QtBrowserHistoryManager;
-  private readonly _bookmarks: QtBrowserBookmarkManager;
+export class DocViewerDispatcher extends WebviewDispatcher  {
+  private readonly _viewerState: UiState = {};
+  private readonly _histories: DocViewerHistoryManager;
+  private readonly _bookmarks: DocViewerBookmarkManager;
 
   public constructor(
     private readonly _extContext: Context,
     private readonly _panel: Panel,
-    private readonly _docServer: QtBrowserDocServer,
-    private readonly _openOptions: QtBrowserOpenOptions
+    private readonly _docServer: DocViewerHttpServer,
+    private readonly _openOptions: OpenOptions
   ) {
     super('doc-viewer', _panel);
 
-    this._histories = new QtBrowserHistoryManager(this._extContext.globalState);
-    this._bookmarks = new QtBrowserBookmarkManager(this._extContext.globalState);
+    this._histories = new DocViewerHistoryManager(this._extContext.globalState);
+    this._bookmarks = new DocViewerBookmarkManager(this._extContext.globalState);
     this.setHandlers([
       [CommandId.QtBrowserGetConfig, this._onGetConfig],
       [CommandId.QtBrowserSetViewerState, this._onSetViewerState],
@@ -91,15 +91,14 @@ export class QtBrowserDispatcher extends WebviewDispatcher  {
   }
 
    private readonly _onOpenInNewViewer = (cmd: Command) => {
-    const uri = String(_.get(cmd.payload, 'uri', ''));
-    const openCmd = 'qt-core.openQtBrowser';
-    const openOptions: QtBrowserOpenOptions = {
+    const uri = Uri.parse(String(_.get(cmd.payload, 'uri', '')));
+    const openOptions: OpenOptions = {
       trigger: 'doc-viewer',
       syncPanelTitle: true,
       forceNewWindow: true
     };
 
-    void commands.executeCommand(openCmd, uri, openOptions);
+    void openDocViewer(uri, openOptions);
     this.channel.replyDone(cmd);
   }
 

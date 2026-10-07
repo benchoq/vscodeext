@@ -10,25 +10,25 @@ import {
  } from 'vscode';
 
 import { createWrappedLogger } from 'qt-lib';
-import { QtBrowserDocServerDispatcher } from './dispatcher';
+import { DocViewerHttpDispatcher } from './http-dispatcher';
 const logger = createWrappedLogger('doc-viewer-server');
 
-export class QtBrowserDocServer implements Disposable {
-  private _server: http.Server | undefined;
-  private readonly _dispatcher: QtBrowserDocServerDispatcher;
+export class DocViewerHttpServer implements Disposable {
+  private _http: http.Server | undefined;
+  private readonly _dispatcher: DocViewerHttpDispatcher;
   private readonly _cssChangedEmitter = new EventEmitter<void>();
 
   constructor(private readonly _context: Context) {
-    this._dispatcher = new QtBrowserDocServerDispatcher(this._context, () => {
+    this._dispatcher = new DocViewerHttpDispatcher(this._context, () => {
       this._cssChangedEmitter.fire();
     });
   }
 
   dispose(): void {
-    if (this._server) {
-      this._server.close();
+    if (this._http) {
+      this._http.close();
       logger.text("Server closing")
-        .data('address', addrToString(this._server))
+        .data('address', addrToString(this._http))
         .info();
     }
   }
@@ -41,7 +41,7 @@ export class QtBrowserDocServer implements Disposable {
   public readonly host = '127.0.0.1';
 
   public get port(): number | undefined {
-    const addr = this._server?.address();
+    const addr = this._http?.address();
     return (typeof addr === 'object') ? addr?.port : undefined;
   }
 
@@ -51,35 +51,35 @@ export class QtBrowserDocServer implements Disposable {
   }
 
   async start(): Promise<void> {
-    if (this._server) {
+    if (this._http) {
       logger.text("Server is already running")
-        .data('address', addrToString(this._server))
+        .data('address', addrToString(this._http))
         .debug();
 
       return;
     }
 
-    this._server = http.createServer((req, res) => {
+    this._http = http.createServer((req, res) => {
       this._dispatcher.dispatch(req, res);
     });
 
-    this._server.on('connection', () => {
+    this._http.on('connection', () => {
       logger.text("Server connection")
         .data('port', this.port)
         .info();
     })
 
-     this._server.on('close', () => {
+     this._http.on('close', () => {
       logger.text("Server close")
         .data('port', this.port)
         .info();
     })
 
     return new Promise((resolve, reject) => {
-      if (this._server) {
+      if (this._http) {
         const anyPort = 0;
-        this._server.once('error', reject);
-        this._server.listen(anyPort, this.host, () => {
+        this._http.once('error', reject);
+        this._http.listen(anyPort, this.host, () => {
           logger.text("Server listening...")
             .data('port', this.port)
             .info();

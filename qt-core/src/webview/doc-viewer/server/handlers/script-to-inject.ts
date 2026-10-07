@@ -114,20 +114,6 @@ const ApplyThemeScript = /*js*/`
   });
 `;
 
-// const LinkClickScript = /*js*/`
-//   addListenerNoCapture('click', (e) => {
-//     const anchor = e.target.closest('a');
-//     if (!anchor) {
-//       return;
-//     }
-
-//     const url = new URL(anchor.href, document.baseURI);
-//     notifyParent('${ViewerMessageId.ViewerClicked}', { href: url.href });
-
-//     e.preventDefault();
-//   });
-// `;
-
 const LinkClickedScript = /*js*/`
   function findAnchor(e) {
     return e.target instanceof Element ? e.target.closest('a[href]') : null;

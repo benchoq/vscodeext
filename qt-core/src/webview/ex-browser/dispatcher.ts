@@ -19,11 +19,12 @@ import { getNewProjectBaseDir } from '@/qtcli/commands';
 import { QtcliRestClient, QtcliRestError } from '@/qtcli/rest';
 import * as texts from '@/texts';
 import { fsDir, fsFile } from '@/fs-utils';
+
 import * as helpers from './helpers';
 import { ExDataManager } from './data-manager';
 import { ExImageUriResolver } from './resolvers';
 import { isOpenInPreference } from '../shared/types';
-import { QtBrowserOpenOptions } from '../shared/doc-viewer';
+import { openDocViewer } from '@/webview/doc-viewer/controller';
 
 type Panel = vscode.WebviewPanel;
 type Context = vscode.ExtensionContext;
@@ -167,13 +168,10 @@ export class ExBrowserDispatcher extends WebviewDispatcher {
       if (action === 'doc-open-external') {
         void file.openExternal();
       } else {
-        const openCmd = 'qt-core.openQtBrowser';
-        const openOptions: QtBrowserOpenOptions = {
+        void openDocViewer(file.toUri(), {
           trigger: 'ex-browser',
           syncPanelTitle: true
-        };
-
-        void vscode.commands.executeCommand(openCmd, file.toUri(), openOptions);
+        });
       }
     }
 

@@ -8,24 +8,26 @@ import {
 } from 'vscode';
 
 import { Command, CommandId } from '@/webview/shared/message';
-import { WebviewDispatcher, WebviewDispatcherChain } from '@/webview/dispatcher';
-import { QtBrowserDispatcher } from '@/webview/doc-viewer/dispatcher';
-import { QtBrowserDocServer } from '@/webview/doc-viewer/server/doc-server';
+import {
+  WebviewDispatcher,
+  WebviewDispatcherChain
+} from '@/webview/dispatcher';
+import { DocViewerDispatcher } from '@/webview/doc-viewer/dispatcher';
+import { DocViewerHttpServer } from '@/webview/doc-viewer/server/http-server';
 import { QtHelpDataManager } from './data/data-manager';
-
 import * as consts from './constants';
 
 export class QtHelpDispatcher extends WebviewDispatcherChain {
-  private readonly _docServer: QtBrowserDocServer;
-  private readonly _viewerDispatcher: QtBrowserDispatcher;
+  private readonly _docServer: DocViewerHttpServer;
+  private readonly _viewerDispatcher: DocViewerDispatcher;
 
   public constructor(extContext: ExtContext, panel: Panel) {
     super();
 
-    this._docServer = new QtBrowserDocServer(extContext);
+    this._docServer = new DocViewerHttpServer(extContext);
     void this._docServer.start();
 
-    this._viewerDispatcher = new QtBrowserDispatcher(
+    this._viewerDispatcher = new DocViewerDispatcher(
       extContext, panel, this._docServer, {
         trigger: "qt-help",
         syncPanelTitle: false

@@ -6,7 +6,7 @@ import * as vscode from "vscode";
 import { HistoryEdit, HistoryEntry } from "@/webview/shared/doc-viewer";
 import * as consts from './constants';
 
-export class QtBrowserHistoryManager {
+export class DocViewerHistoryManager {
   private _entries: HistoryEntry[] = [];
 
   constructor(private readonly _memento: vscode.Memento) {

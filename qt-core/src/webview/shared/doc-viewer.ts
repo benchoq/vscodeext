@@ -1,16 +1,16 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-export type QtBrowserTriggerSource = 'ex-browser' | 'qt-help' | 'doc-viewer';
+export type TriggerSource = 'ex-browser' | 'qt-help' | 'doc-viewer';
 
-export interface QtBrowserOpenOptions {
+export interface OpenOptions {
+  trigger?: TriggerSource;
   homeUrl?: string;
-  trigger?: QtBrowserTriggerSource;
   syncPanelTitle?: boolean;
   forceNewWindow?: boolean;
 }
 
-export interface QtBrowserViewerState {
+export interface UiState {
   uri?: string;
   title?: string;
 }
@@ -126,7 +126,3 @@ function isValidObject(x: unknown): x is Record<string, unknown> {
 function isIndex(v: unknown) {
   return typeof v === 'number' && Number.isInteger(v) && v >= 0;
 }
-
-// function isStringArray(x: unknown): x is string[] {
-//   return Array.isArray(x) && x.every((e) => typeof e === 'string');
-// }

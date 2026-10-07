@@ -40,7 +40,7 @@ import { checkVcpkg } from '@/vcpkg';
 
 import { addNewItem } from '@/webview/new-item/controller';
 import { addQtHelp } from '@/webview/qt-help/controller';
-import { addQtBrowser } from '@/webview/doc-viewer/controller';
+import { addDocViewer } from '@/webview/doc-viewer/controller';
 import { addExBrowser } from '@/webview/ex-browser/controller';
 import { addWelcomePage, showEntryPage } from '@/webview/welcome/controller';
 import { addCoursesBrowser } from '@/webview/courses/controller';
@@ -138,7 +138,7 @@ export function initCoreValues() {
 function registerWebApps(context: vscode.ExtensionContext) {
   addNewItem(context);
   addQtHelp(context);
-  addQtBrowser(context);
+  addDocViewer(context);
   addExBrowser(context);
   addWelcomePage(context);
   addCoursesBrowser(context);

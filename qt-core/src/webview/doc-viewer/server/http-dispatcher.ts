@@ -13,7 +13,7 @@ import { FallbackHandler } from './handlers/fallback';
 import { CssOverrideHandler } from './handlers/css-override';
 import { ScriptInjectionHandler } from './handlers/script-injection';
 
-export class QtBrowserDocServerDispatcher {
+export class DocViewerHttpDispatcher {
   private readonly _handlers: Handler[] = [];
   private readonly _cssHandler: CssOverrideHandler;
 

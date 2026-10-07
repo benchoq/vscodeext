@@ -6,7 +6,7 @@ import * as vscode from "vscode";
 import { BookmarkEdit, BookmarkEntry } from "@/webview/shared/doc-viewer";
 import * as consts from './constants';
 
-export class QtBrowserBookmarkManager {
+export class DocViewerBookmarkManager {
   private _entries: BookmarkEntry[] = [];
 
   constructor(private readonly _memento: vscode.Memento) {

@@ -8,7 +8,7 @@ import {
 } from 'http';
 
 import { createWrappedLogger } from 'qt-lib';
-import { createErrorPage } from '../static/error-page';
+import { getScriptToInject } from "./script-to-inject";
 
 const logger = createWrappedLogger('doc-viewer-server-handler');
 
@@ -70,4 +70,14 @@ function getMimeType(filePath: string): string {
   };
 
   return map[ext] ?? 'application/octet-stream';
+}
+
+export function createErrorPage(code: number) {
+  return /*html*/`
+    <!DOCTYPE html>
+    <html>
+      <head>${getScriptToInject()}</head>
+      <body data-error-code='${String(code)}'></body>
+    </html>
+  `;
 }

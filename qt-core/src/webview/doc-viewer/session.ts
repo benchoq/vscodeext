@@ -10,24 +10,24 @@ import {
 
 import { DisposableStore } from 'qt-lib';
 import { setupWebApp } from '@/webview/utils';
-import { QtBrowserDocServer } from './server/doc-server';
-import { QtBrowserDispatcher } from './dispatcher';
+import { OpenOptions } from '../shared/doc-viewer';
+import { DocViewerDispatcher } from './dispatcher';
+import { DocViewerHttpServer } from './server/http-server';
 import * as consts from './constants';
-import { QtBrowserOpenOptions } from '../shared/doc-viewer';
 
-export class QtBrowserSession {
-  private readonly _dispatcher: QtBrowserDispatcher;
+export class DocViewerSession {
+  private readonly _dispatcher: DocViewerDispatcher;
   private readonly _disposables = new DisposableStore();
 
   constructor(
     context: Context,
     private readonly _panel: Panel,
-    docServer: QtBrowserDocServer,
-    openOptions: QtBrowserOpenOptions
+    docServer: DocViewerHttpServer,
+    openOptions: OpenOptions
   ) {
     setupWebApp(consts.AppId, context, this._panel);
 
-    this._dispatcher = new QtBrowserDispatcher(
+    this._dispatcher = new DocViewerDispatcher(
       context, this._panel, docServer, openOptions
     );
 

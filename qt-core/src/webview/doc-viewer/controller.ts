@@ -4,40 +4,44 @@
 import {
   commands,
   Uri,
-  ExtensionContext as Context,
   ViewColumn,
+  ExtensionContext as Context
 } from 'vscode';
 
 import { telemetry, DisposableStore } from 'qt-lib';
 import { createPanel } from '@/webview/utils';
-import { QtBrowserSession } from './session';
-import { QtBrowserDocServer } from './server/doc-server';
+import { OpenOptions } from '@/webview/shared/doc-viewer';
+import { DocViewerSession } from './session';
+import { DocViewerHttpServer } from './server/http-server';
 import * as consts from './constants';
-import { QtBrowserOpenOptions } from '../shared/doc-viewer';
 
-let controller: QtBrowserController | undefined;
+const openCmd = 'openDocViewer';
+const openCmdFull = `${consts.EXTENSION_ID}.${openCmd}`;
 
-export function addQtBrowser(context: Context) {
-  const openCmd = 'openQtBrowser';
-  const openCmdFull = `${consts.EXTENSION_ID}.${openCmd}`;
+let controller: DocViewerController | undefined;
 
-  controller = new QtBrowserController(context);
+export function addDocViewer(context: Context) {
+  controller = new DocViewerController(context);
 
   context.subscriptions.push(
-    commands.registerCommand(openCmdFull, (uri?: Uri, o?: QtBrowserOpenOptions) => {
+    commands.registerCommand(openCmdFull, (uri?: Uri, o?: OpenOptions) => {
       telemetry.sendAction(openCmd);
       controller?.open(context, uri, o);
     })
   );
 }
 
-export class QtBrowserController {
-  private readonly _sessions = new Set<QtBrowserSession>();
-  private readonly _docServer: QtBrowserDocServer;
+export async function openDocViewer(uri: Uri, o: OpenOptions) {
+  await commands.executeCommand(openCmdFull, uri, o);
+}
+
+export class DocViewerController {
+  private readonly _sessions = new Set<DocViewerSession>();
+  private readonly _docServer: DocViewerHttpServer;
   private readonly _disposables = new DisposableStore();
 
   constructor(context: Context) {
-    this._docServer = new QtBrowserDocServer(context);
+    this._docServer = new DocViewerHttpServer(context);
     void this._docServer.start();
   }
 
@@ -45,7 +49,7 @@ export class QtBrowserController {
     this._disposables.dispose();
   }
 
-  public open(context: Context, uri?: Uri, o?: QtBrowserOpenOptions) {
+  public open(context: Context, uri?: Uri, o?: OpenOptions) {
     const col = o?.trigger === 'ex-browser'
       ? this._getLastActiveColumn(ViewColumn.Beside)
       : undefined;
@@ -58,7 +62,7 @@ export class QtBrowserController {
       }
     }
 
-    const openOptions: QtBrowserOpenOptions = {
+    const openOptions: OpenOptions = {
       ...(o ?? {}),
       ...(uri && { homeUrl: uri.toString() })
     };
@@ -67,9 +71,9 @@ export class QtBrowserController {
     s.reveal(col);
   }
 
-  private _add(context: Context, openOptions: QtBrowserOpenOptions) {
+  private _add(context: Context, openOptions: OpenOptions) {
     const panel = createPanel(consts.AppId);
-    const s = new QtBrowserSession(context, panel, this._docServer, openOptions);
+    const s = new DocViewerSession(context, panel, this._docServer, openOptions);
 
     this._disposables.push(
       // TODO
