@@ -24,7 +24,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-variant='primary'
     class='qt-button flex flex-row min-w-[100px] min-h-[50px] items-center justify-center mt-5'
     onclick={() => {
-      viewlogic.openUri(ui.history.currentEntry.uri);
+      viewlogic.openDoc(ui.history.currentEntry.uri);
     }}
   >
     <ArrowLeft />Back

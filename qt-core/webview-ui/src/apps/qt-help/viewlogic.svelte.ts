@@ -70,6 +70,6 @@ export function setMode(mode: UiMode) {
 export async function openHtml(info: HtmlPageInfo) {
   const prefix = 'file:///Users/bencho/tools/Qt/Docs/Qt-6.11.1/';
 
-  docViewer.openUri(prefix + info.filePathRel);
+  docViewer.openDoc(prefix + info.filePathRel);
   console.log(info);
 }

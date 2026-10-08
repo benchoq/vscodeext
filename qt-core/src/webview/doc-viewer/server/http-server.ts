@@ -4,6 +4,7 @@
 import * as net from 'net';
 import * as http from 'http';
 import {
+  Uri,
   Disposable,
   EventEmitter,
   ExtensionContext as Context,
@@ -37,17 +38,26 @@ export class DocViewerHttpServer implements Disposable {
     return this._cssChangedEmitter.event;
   }
 
-  public readonly scheme = 'http';
-  public readonly host = '127.0.0.1';
-
-  public get port(): number | undefined {
-    const addr = this._http?.address();
-    return (typeof addr === 'object') ? addr?.port : undefined;
+  public get baseUri(): Uri {
+    return Uri.from({
+      scheme: this._scheme,
+      authority: this._authority,
+    });
   }
 
-  public get origin() {
-    const port = this.port;
-    return port ? `${this.scheme}://${this.host}:${String(port)}` : '';
+  public getRedirectUri(uri: Uri) {
+    if (uri.scheme === 'file') {
+      return uri.with({
+        scheme: this._scheme,
+        authority: this._authority
+      })
+    }
+
+    return uri;
+  }
+
+  public isServableUri(uri: Uri){
+    return (uri.scheme === this._scheme) && (uri.authority === this._authority);
   }
 
   async start(): Promise<void> {
@@ -65,13 +75,13 @@ export class DocViewerHttpServer implements Disposable {
 
     this._http.on('connection', () => {
       logger.text("Server connection")
-        .data('port', this.port)
+        .data('port', this._port)
         .info();
     })
 
      this._http.on('close', () => {
       logger.text("Server close")
-        .data('port', this.port)
+        .data('port', this._port)
         .info();
     })
 
@@ -79,9 +89,9 @@ export class DocViewerHttpServer implements Disposable {
       if (this._http) {
         const anyPort = 0;
         this._http.once('error', reject);
-        this._http.listen(anyPort, this.host, () => {
+        this._http.listen(anyPort, this._host, () => {
           logger.text("Server listening...")
-            .data('port', this.port)
+            .data('port', this._port)
             .info();
 
           resolve();
@@ -92,6 +102,19 @@ export class DocViewerHttpServer implements Disposable {
 
       reject(new Error('Server instance is invalid'));
     });
+  }
+
+  private readonly _scheme = 'http';
+  private readonly _host = '127.0.0.1';
+
+  private get _authority() {
+    const p = this._port;
+    return p ? `${this._host}:${String(this._port)}` : '';
+  }
+
+  private get _port(): number | undefined {
+    const addr = this._http?.address();
+    return (typeof addr === 'object') ? addr?.port : undefined;
   }
 }
 

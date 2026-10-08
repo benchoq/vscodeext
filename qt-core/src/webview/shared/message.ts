@@ -64,8 +64,7 @@ export enum CommandId {
   // qt browser
   DocViewerGetConfig,
   DocViewerSetViewerState,
-  DocViewerOpenUriExt,
-  DocViewerOpenInNewViewer,
+  DocViewerOpenDoc,
   DocViewerReloadPage,
   DocViewerGetBookmarks,
   DocViewerEditBookmarks,

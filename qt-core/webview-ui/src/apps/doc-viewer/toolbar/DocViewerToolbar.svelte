@@ -23,7 +23,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   let inputEl = $state(undefined as HTMLInputElement | undefined);
   const bookmarked = $derived(viewlogic.bookmark.has(
-    helpers.toFileUri(ui.iframe.src)
+    helpers.toPersistentUri(ui.iframe.src)
   ));
 
   function selectAll() {
@@ -60,14 +60,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         break;
 
       case 'openInNewViewer':
-        viewlogic.openInNewViewer(ui.iframe.src);
+        viewlogic.openDoc(ui.iframe.src, true);
         break;
 
       case 'toggleBookmark':
         viewlogic.bookmark.edit({
           action: 'toggle',
           entry: {
-            uri: helpers.toFileUri(ui.iframe.src),
+            uri: helpers.toPersistentUri(ui.iframe.src),
             title: ui.iframe.title
           }
         })
@@ -101,7 +101,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <input
       bind:this={inputEl}
       value={ui.iframe.title}
-      title={helpers.toFileUri(ui.iframe.src)}
+      title={helpers.toDisplayUri(ui.iframe.src)}
       class='qt-input grow self-stretch pl-2 pr-[30px]'
       onfocus={() => { selectAll(); }}
     />

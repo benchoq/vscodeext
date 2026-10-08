@@ -16,6 +16,7 @@ import {
   OpenOptions,
   UiState
 } from '@/webview/shared/doc-viewer';
+import { fsFile } from '@/fs-utils';
 import { WebviewDispatcher } from '@/webview/dispatcher';
 import { Command, CommandId } from '@/webview/shared/message';
 import { openDocViewer } from './controller';
@@ -41,8 +42,7 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
     this.setHandlers([
       [CommandId.DocViewerGetConfig, this._onGetConfig],
       [CommandId.DocViewerSetViewerState, this._onSetViewerState],
-      [CommandId.DocViewerOpenUriExt, this._onOpenUriExt],
-      [CommandId.DocViewerOpenInNewViewer, this._onOpenInNewViewer],
+      [CommandId.DocViewerOpenDoc, this._onOpenDoc],
       [CommandId.DocViewerGetBookmarks, this._onGetBookmarks],
       [CommandId.DocViewerEditBookmarks, this._onEditBookmarks],
       [CommandId.DocViewerGetHistories, this._onGetHistories],
@@ -70,7 +70,7 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
   private readonly _onGetConfig = (cmd: Command) => {
     this.channel.replyData(cmd, {
       openOptions: this._openOptions,
-      serverOrigin: this._docServer.origin,
+      serverOrigin: this._docServer.baseUri.toString(),
     });
   };
 
@@ -85,21 +85,46 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
     this.channel.replyDone(cmd);
   }
 
-  private readonly _onOpenUriExt = (cmd: Command) => {
-    env.openExternal(Uri.parse(String(_.get(cmd.payload, 'uri', ''))));
-    this.channel.replyDone(cmd);
-  }
+  private readonly _onOpenDoc = (cmd: Command) => {
+    const uri_s = String(_.get(cmd.payload, 'uri', ''));
+    const newWindow = Boolean(_.get(cmd.payload, 'forceNewWindow', false));
 
-   private readonly _onOpenInNewViewer = (cmd: Command) => {
-    const uri = Uri.parse(String(_.get(cmd.payload, 'uri', '')));
-    const openOptions: OpenOptions = {
-      trigger: this._openOptions.trigger,
-      syncPanelTitle: true,
-      forceNewWindow: true
-    };
+    try {
+      const parsed = Uri.parse(uri_s, true);
+      const redirect = this._docServer.getRedirectUri(parsed);
 
-    void openDocViewer(uri, openOptions);
-    this.channel.replyDone(cmd);
+      if (this._docServer.isServableUri(redirect)) {
+        if (!fsFile(redirect.path).exists()) {
+          this.channel.replyData(cmd, { uri_s, status: 'qt-doc:not-exists'});
+          return;
+        }
+
+        if (newWindow) {
+          const openOptions: OpenOptions = {
+            trigger: this._openOptions.trigger,
+            syncPanelTitle: true,
+            forceNewWindow: true
+          };
+
+          void openDocViewer(redirect, openOptions);
+          this.channel.replyData(cmd, {
+            uri_s,
+            status: 'qt-doc:valid-in-new-window'
+          });
+        } else {
+          this.channel.replyData(cmd, {
+            uri_s,
+            serviceUri: redirect.toString(),
+            status: 'qt-doc:valid'
+          });
+        }
+      } else {
+        env.openExternal(parsed);
+        this.channel.replyData(cmd, { uri_s, status: 'url-external' });
+      }
+    } catch {
+      this.channel.replyData(cmd, { uri_s, status: 'url-invalid'});
+    }
   }
 
   private readonly _onGetBookmarks = (cmd: Command) => {

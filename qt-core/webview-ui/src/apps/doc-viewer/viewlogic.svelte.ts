@@ -28,36 +28,31 @@ export async function onAppMount() {
   await bookmark.load();
 
   if (data.configs.openOptions.homeUri) {
-    void openUri(data.configs.openOptions.homeUri);
+    void openDoc(data.configs.openOptions.homeUri);
   }
 }
 
 export async function onAppDestroy() {
 }
 
-export async function openUri(uri: string) {
-  const u = helpers.toLocalServerUri(uri);
+export async function openDoc(uri: string, forceNewWindow = false) {
+  const r = await vscode.post(CommandId.DocViewerOpenDoc, {
+    uri,
+    forceNewWindow
+  });
 
-  if (!u.startsWith(data.configs.serverOrigin)) {
-    void vscode.post(CommandId.DocViewerOpenUriExt, { uri });
-    return;
+  const serviceUri = String(_.get(r, 'serviceUri', '')).trim();
+  if (serviceUri) {
+    ui.iframe.src = serviceUri;
+    ui.iframe.errorCode = undefined;
   }
-
-  // TODO: check if it's allowed to access or exists
-  ui.iframe.src = u;
-  ui.iframe.errorCode = undefined;
-}
-
-export function openInNewViewer(uri: string) {
-  const u = helpers.toFileUri(uri);
-  void vscode.post(CommandId.DocViewerOpenInNewViewer, { uri: u });
 }
 
 export function navigate(dir: 'back' | 'forward') {
   const e = ui.history.go(dir);
 
   if (typeof e?.uri === 'string') {
-    openUri(e?.uri);
+    openDoc(e?.uri);
   }
 }
 
@@ -119,7 +114,7 @@ function onMessageFromIframe(e: MessageEvent) {
         return;
       }
 
-      const fileUri = helpers.toFileUri(e.data.href);
+      const persistentUri = helpers.toPersistentUri(e.data.href);
 
       ui.iframe.title = e.data.title;
       ui.iframe.hoveredUri = '';
@@ -131,7 +126,7 @@ function onMessageFromIframe(e: MessageEvent) {
       history.edit({
         action: 'add',
         entry: {
-          uri: fileUri,
+          uri: persistentUri,
           title: e.data.title,
         }
       });
@@ -141,7 +136,7 @@ function onMessageFromIframe(e: MessageEvent) {
       });
 
       void vscode.post(CommandId.DocViewerSetViewerState, {
-        uri: fileUri,
+        uri: persistentUri,
         title: e.data.title
       });
       break;
@@ -155,12 +150,7 @@ function onMessageFromIframe(e: MessageEvent) {
 
     case IframeMessageId.EventClicked:
       if (typeof e.data?.href === 'string') {
-        // TODO: file: vs http: ...
-        if (e.data.newWindow === true) {
-          openInNewViewer(e.data?.href);
-        } else {
-          openUri(e.data?.href);
-        }
+        openDoc(e.data.href, e.data.newWindow === true);
       }
       break;
 

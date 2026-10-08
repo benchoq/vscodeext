@@ -68,7 +68,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         class='item grow flex flex-row items-center gap-2'
         class:active={item.checked}
         onclick={() => {
-          viewlogic.openUri(item.data.uri);
+          viewlogic.openDoc(item.data.uri);
         }}
       >
         <span data-role='title'>{item.data.title}</span>
@@ -76,7 +76,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
           {helpers.extractHash(item.data.uri)}
         </span>
 
-        {#if item.data.uri === helpers.toFileUri(ui.iframe.src)}
+        {#if item.data.uri === helpers.toPersistentUri(ui.iframe.src)}
           <Check class='ml-auto'/>
         {/if}
       </button>

@@ -67,7 +67,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   {#if ui.iframe.hoveredUri}
     <span data-role='hover-uri' class='absolute'>
-      {helpers.toFileUri(ui.iframe.hoveredUri)}
+      {helpers.toDisplayUri(ui.iframe.hoveredUri)}
     </span>
   {/if}
 </div>

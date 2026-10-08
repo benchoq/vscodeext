@@ -54,9 +54,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         <button
           class='item grow flex min-w-0 flex-row items-center gap-4'
           class:active={item.checked}
-          title={helpers.toFileUri(item.data.uri)}
+          title={helpers.toDisplayUri(item.data.uri)}
           onclick={() => {
-            viewlogic.openUri(item.data.uri);
+            viewlogic.openDoc(item.data.uri);
           }}
         >
           <span data-role='time'>
