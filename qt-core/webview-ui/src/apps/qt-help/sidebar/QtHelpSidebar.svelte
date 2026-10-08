@@ -11,6 +11,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import QtHelpSearchResultView from './QtHelpSearchResultView.svelte';
   import QtHelpSidebarToolbar from './QtHelpSidebarToolbar.svelte';
   // import DocBrowserQtVersionPopover from './DocBrowserQtVersionPopover.svelte';
+  import QtHelpSidebarHandle from './QtHelpSidebarHandle.svelte';
 
   import { ui } from '../states.svelte';
 
@@ -21,13 +22,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div class="h-full flex flex-col">
   <QtHelpSidebarToolbar />
 
-  {#if ui.mode === 'index'}
-    <QtHelpIndexView />
-  {:else if ui.mode === 'text'}
-    <QtHelpSearchResultView />
-  {:else}
-    <QtHelpTocView />
-  {/if}
+  <div class='w-full flex flex-row overflow-hidden'>
+    <div data-role='view' class='grow truncate'>
+      {#if ui.mode === 'index'}
+        <QtHelpIndexView />
+      {:else if ui.mode === 'text'}
+        <QtHelpSearchResultView />
+      {:else}
+        <QtHelpTocView />
+      {/if}
+    </div>
+
+    <QtHelpSidebarHandle />
+  </div>
 
   <!-- {#if popover.visible}
     <div
@@ -47,3 +54,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </div>
   {/if} -->
 </div>
+
+<style>
+  [data-role='view'] {
+    border-right: 1px solid var(--qt-stroke-subtle);
+  }
+</style>

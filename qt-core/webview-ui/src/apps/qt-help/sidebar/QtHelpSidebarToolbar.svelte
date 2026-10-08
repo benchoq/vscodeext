@@ -18,7 +18,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div data-area='toolbar' class='flex flex-row gap-2'>
   <button
     bind:this={ui.popovers.qtVersions.refEl}
-    class='qt-button flex flex-row'
+    class='qt-button flex flex-row !h-full justify-center'
     onclick={(e: MouseEvent) => {
       ui.popovers.qtVersions.visible = !ui.popovers.qtVersions.visible;
       e.stopPropagation();
@@ -27,13 +27,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {version ? 'Qt-' + version : '-'}
   </button>
 
-  <div class='grow'></div>
 
   <div class='flex flex-row gap-0'>
     {@render modeButton('toc', Book)}
     {@render modeButton('text', Search)}
     {@render modeButton('index', ListOrdered)}
   </div>
+  <div class='grow'></div>
 </div>
 
 {#snippet modeButton(mode: UiMode, Icon: Component)}
@@ -59,7 +59,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   .qt-button[data-role='mode-button'] {
-    width: 28px;
+    width: 32px;
     height: 100%;
 
     &:hover {

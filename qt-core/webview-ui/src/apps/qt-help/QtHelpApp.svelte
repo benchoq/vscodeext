@@ -11,7 +11,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import DocViewerApp from '@/apps/doc-viewer/DocViewerApp.svelte';
   import QtHelpSidebar from './sidebar/QtHelpSidebar.svelte';
-  import QtHelpSidebarHandle from './sidebar/QtHelpSidebarHandle.svelte';
   import { ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
 
@@ -25,7 +24,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <QtHelpSidebar />
     </div>
 
-    <QtHelpSidebarHandle />
     <DocViewerApp standalone={false} />
   </div>
 </div>
