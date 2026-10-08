@@ -6,6 +6,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { fly } from 'svelte/transition';
   import { ui } from './states.svelte';
+  import * as helpers from './helpers';
 
   import Popover from './others/Popover.svelte';
   import DocViewerErrorPage from './DocViewerErrorPage.svelte';
@@ -25,7 +26,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       }
     : undefined
   );
-
 </script>
 
 <div class='w-full h-full relative'>
@@ -65,21 +65,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </Popover>
   {/if}
 
-  {#if ui.iframe.hoveredUri.length !== 0}
-    <span data-role='hover-link' class='absolute'>
-      {ui.iframe.hoveredUri}
+  {#if ui.iframe.hoveredUri}
+    <span data-role='hover-uri' class='absolute'>
+      {helpers.toFileUri(ui.iframe.hoveredUri)}
     </span>
   {/if}
 </div>
 
 <style>
-  [data-role='hover-link'] {
-    left: 0;
+  [data-role='hover-uri'] {
+    left: 5;
     bottom: 0;
     padding: 1px 5px;
-    opacity: 0.9;
-    border: 1px solid gray;
-    color: var(--vscode-editor-foreground);
-    background-color: var(--vscode-editor-background);
+    border: 1px solid var(--qt-stroke-subtle);
+    color: var(--qt-text-muted);
+    background: var(--qt-bg-subtle);
   }
 </style>

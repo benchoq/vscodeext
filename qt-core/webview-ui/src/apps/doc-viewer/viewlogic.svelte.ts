@@ -149,7 +149,7 @@ function onMessageFromIframe(e: MessageEvent) {
 
     case IframeMessageId.EventHoverChanged:
       if (typeof e.data.href === 'string') {
-        ui.iframe.hoveredUri = helpers.toFileUri(e.data.href);
+        ui.iframe.hoveredUri = e.data.href;
       }
       break;
 

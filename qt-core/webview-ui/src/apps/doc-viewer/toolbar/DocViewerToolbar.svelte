@@ -21,30 +21,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from '../viewlogic.svelte';
   import './DocViewerToolbar.css';
 
-  let el = $state(undefined as HTMLInputElement | undefined);
-  let draft = $state<string | null>(null);
-
-  const value = $derived(helpers.toFileUri(draft ?? ui.iframe.src));
+  let inputEl = $state(undefined as HTMLInputElement | undefined);
   const bookmarked = $derived(viewlogic.bookmark.has(
     helpers.toFileUri(ui.iframe.src)
   ));
 
-  function onKeyDown(e: KeyboardEvent) {
-    if (e.key === 'Enter') {
-      viewlogic.openUri(value);
-      reset();
-    } else if (e.key === 'Escape') {
-      reset();
-    }
-  }
-
-  function reset() {
-    draft = null;
-    requestAnimationFrame(() => { selectAll(); });
-  }
-
   function selectAll() {
-    el?.select();
+    inputEl?.select();
   }
 
   type ButtonRole =
@@ -116,13 +99,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   <div class='grow flex relative'>
     <input
-      bind:this={el}
-      {value}
+      bind:this={inputEl}
+      value={ui.iframe.title}
+      title={helpers.toFileUri(ui.iframe.src)}
       class='qt-input grow self-stretch pl-2 pr-[30px]'
-      oninput={(e) => { draft = e.currentTarget.value; }}
-      onblur={() => { draft = null;  }}
       onfocus={() => { selectAll(); }}
-      onkeydown={onKeyDown}
     />
 
     <div class='qt-absolute-cy right-[2px]'>
