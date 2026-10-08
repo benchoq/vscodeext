@@ -1,11 +1,17 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-export type TriggerSource = 'ex-browser' | 'qt-help' | 'doc-viewer';
+const TriggerSourceNames = [
+  'unspecified',
+  'qt-help',
+  'ex-browser'
+] as const;
+
+export type TriggerSource = (typeof TriggerSourceNames)[number];
 
 export interface OpenOptions {
-  trigger?: TriggerSource;
-  homeUrl?: string;
+  trigger: TriggerSource;
+  homeUri?: string;
   syncPanelTitle?: boolean;
   forceNewWindow?: boolean;
 }
@@ -51,6 +57,26 @@ export enum IframeMessageId {
 }
 
 // type guard functions
+export function isTriggerSource(x: unknown): x is TriggerSource {
+  return (
+    typeof x === 'string' &&
+    (TriggerSourceNames as readonly string[]).includes(x)
+  );
+}
+
+export function isOpenOptions(x: unknown): x is OpenOptions {
+  if (!isValidObject(x)) {
+    return false;
+  }
+
+  return (
+    isTriggerSource(x.trigger) &&
+    (x.homeUri === undefined || typeof x.homeUri === 'string') &&
+    (x.syncPanelTitle === undefined || typeof x.syncPanelTitle === 'boolean') &&
+    (x.forceNewWindow === undefined || typeof x.forceNewWindow === 'boolean')
+  );
+}
+
 export function isBookmarkEntry(x: unknown): x is BookmarkEntry {
   if (!isValidObject(x)) {
     return false;

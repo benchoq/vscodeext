@@ -69,7 +69,7 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
 
   private readonly _onGetConfig = (cmd: Command) => {
     this.channel.replyData(cmd, {
-      homeUri: this._openOptions.homeUrl ?? '',
+      openOptions: this._openOptions,
       serverOrigin: this._docServer.origin,
     });
   };
@@ -93,7 +93,7 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
    private readonly _onOpenInNewViewer = (cmd: Command) => {
     const uri = Uri.parse(String(_.get(cmd.payload, 'uri', '')));
     const openOptions: OpenOptions = {
-      trigger: 'doc-viewer',
+      trigger: this._openOptions.trigger,
       syncPanelTitle: true,
       forceNewWindow: true
     };

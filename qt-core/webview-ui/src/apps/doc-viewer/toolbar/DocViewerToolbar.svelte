@@ -13,7 +13,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     ArrowLeft,
     ArrowRight,
     Binoculars
-
   } from "@lucide/svelte";
   import { type Component } from 'svelte';
 
@@ -119,7 +118,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <input
       bind:this={el}
       {value}
-      class='qt-input grow self-stretch px-2'
+      class='qt-input grow self-stretch pl-2 pr-[30px]'
       oninput={(e) => { draft = e.currentTarget.value; }}
       onblur={() => { draft = null;  }}
       onfocus={() => { selectAll(); }}

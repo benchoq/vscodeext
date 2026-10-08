@@ -4,7 +4,7 @@
 import _ from 'lodash';
 
 import { vscode } from '@/apps/vscode';
-import { IframeMessageId } from '@shared/doc-viewer';
+import { IframeMessageId, isOpenOptions } from '@shared/doc-viewer';
 import { CommandId, type CommandReply } from '@shared/message';
 
 import { data, ui } from './states.svelte';
@@ -27,8 +27,8 @@ export async function onAppMount() {
   await history.load();
   await bookmark.load();
 
-  if (data.configs.homeUri.length !== 0) {
-    void openUri(data.configs.homeUri);
+  if (data.configs.openOptions.homeUri) {
+    void openUri(data.configs.openOptions.homeUri);
   }
 }
 
@@ -80,9 +80,14 @@ export function findInPage(action: FindAction) {
 // helpers
 async function loadConfigs() {
   const r = await vscode.post(CommandId.DocViewerGetConfig);
+  const opts = _.get(r, 'openOptions', {});
+  const server = String(_.get(r, 'serverOrigin', '')).trim();
 
-  data.configs.homeUri = String(_.get(r, 'homeUri', '')).trim();
-  data.configs.serverOrigin = String(_.get(r, 'serverOrigin', '')).trim();
+  if (isOpenOptions(opts)) {
+    data.configs.openOptions = opts;
+  }
+
+  data.configs.serverOrigin = server;
 }
 
 function onVscodeThemeChanged() {

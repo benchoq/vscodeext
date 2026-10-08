@@ -63,8 +63,8 @@ export class DocViewerController {
     }
 
     const openOptions: OpenOptions = {
-      ...(o ?? {}),
-      ...(uri && { homeUrl: uri.toString() })
+      ...(o ?? { trigger: 'unspecified' }),
+      ...(uri && { homeUri: uri.toString() })
     };
 
     const s = this._add(context, openOptions);

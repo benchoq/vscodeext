@@ -1,8 +1,8 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import type { Coords } from '@floating-ui/dom';
-
+import { type Coords } from '@floating-ui/dom';
+import { type OpenOptions } from '@shared/doc-viewer';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import {
   HistoryManager,
@@ -14,7 +14,7 @@ export const data = $state({
   bookmarks: [] as BookmarkViewEntry[],
   histories: [] as HistoryViewEntry[],
   configs: {
-    homeUri: '',
+    openOptions: {} as OpenOptions,
     serverOrigin: '' // expects 'http://127.0.0.1:<port>'
   }
 });
