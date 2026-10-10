@@ -11,16 +11,17 @@ import {
  } from 'vscode';
 
 import { createWrappedLogger } from 'qt-lib';
-import { DocViewerHttpDispatcher } from './http-dispatcher';
+import { DocViewerHttpWorker } from './worker';
+
 const logger = createWrappedLogger('doc-viewer-server');
 
 export class DocViewerHttpServer implements Disposable {
   private _http: http.Server | undefined;
-  private readonly _dispatcher: DocViewerHttpDispatcher;
+  private readonly _worker: DocViewerHttpWorker;
   private readonly _cssChangedEmitter = new EventEmitter<void>();
 
   constructor(private readonly _context: Context) {
-    this._dispatcher = new DocViewerHttpDispatcher(this._context, () => {
+    this._worker = new DocViewerHttpWorker(this._context, () => {
       this._cssChangedEmitter.fire();
     });
   }
@@ -70,7 +71,7 @@ export class DocViewerHttpServer implements Disposable {
     }
 
     this._http = http.createServer((req, res) => {
-      this._dispatcher.dispatch(req, res);
+      this._worker.dispatch(req, res);
     });
 
     this._http.on('connection', () => {
