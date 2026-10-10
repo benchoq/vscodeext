@@ -8,17 +8,17 @@ import { createWrappedLogger } from 'qt-lib';
 import { getScriptToInject } from './script-to-inject';
 
 export interface HttpContext {
-  res: HttpRes;
   req: {
     filePath: string;
     fileName: string;
   },
+  res: HttpRes;
   logger: ReturnType<typeof createWrappedLogger>,
 }
 
 export function sendData(c: HttpContext, data: unknown) {
   const headers = {
-    'Content-Type': getMimeType(c.req.filePath)
+    'Content-Type': getMimeType(c.req.fileName)
   };
 
   c.res.writeHead(200, headers);
