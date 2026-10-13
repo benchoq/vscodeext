@@ -3,13 +3,13 @@ Copyright (C) 2026 The Qt Company Ltd.
 SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
-<!-- <script lang="ts">
+<script lang="ts">
   import Separator from '@/comps/Separator.svelte';
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 </script>
 
-<div class="qt-popover w-[150px] p-2">
+<div class="qt-popover w-[200px] p-2">
   <div class='qt-item-list flex flex-col'>
     {#each data.packages as p, i (i)}
       {@const prev = data.packages[i - 1]}
@@ -31,4 +31,4 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       </button>
     {/each}
     </div>
-</div> -->
+</div>

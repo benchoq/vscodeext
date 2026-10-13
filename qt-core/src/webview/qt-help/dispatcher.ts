@@ -49,11 +49,17 @@ class QtHelpOwnDispatcher extends WebviewDispatcher {
 
     this._data = new QtHelpDataManager();
     this.setHandlers([
+      [CommandId.QtHelpGetPackages, this._onGetPackages],
       [CommandId.QtHelpReadToc, this._onReadToc],
       [CommandId.QtHelpReadIndexes, this._onReadIndexes],
       [CommandId.QtHelpSearchFullText, this._onSearchFullText]
     ]);
   }
+
+  private readonly _onGetPackages = (cmd: Command) => {
+    const data = this._data.getPackages();
+    this.channel.replyData(cmd, data);
+  };
 
   private readonly _onReadToc = async (cmd: Command) => {
     const data = await this._data.readToc();

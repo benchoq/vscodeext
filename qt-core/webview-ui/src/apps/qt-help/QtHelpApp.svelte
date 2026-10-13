@@ -9,8 +9,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import '@/styles/components/components.css';
   import './QtHelpApp.css';
 
+  import Popover from '@/apps/doc-viewer/others/Popover.svelte';
   import DocViewerApp from '@/apps/doc-viewer/DocViewerApp.svelte';
+
   import QtHelpSidebar from './sidebar/QtHelpSidebar.svelte';
+  import QtHelpQtVersionPopover from './sidebar/QtHelpQtVersionPopover.svelte';
   import { ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
 
@@ -23,6 +26,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <div style:width={`${ui.sidebar.width}px`} class="shrink-0">
       <QtHelpSidebar />
     </div>
+
+    {#if ui.popovers.qtVersions.visible}
+      <Popover
+        reference={ui.popovers.qtVersions.refEl}
+        placement='bottom'
+        offset={5}
+        onClose={() => {
+          ui.popovers.qtVersions.visible = false;
+        }}
+      >
+        <QtHelpQtVersionPopover />
+      </Popover>
+    {/if}
 
     <DocViewerApp standalone={false} />
   </div>

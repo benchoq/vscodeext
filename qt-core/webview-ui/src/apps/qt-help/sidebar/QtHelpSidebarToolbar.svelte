@@ -10,8 +10,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from '../viewlogic.svelte';
   import { ui, type UiMode } from '../states.svelte';
 
-  // const version = $derived(ui.selected.package?.version);
-  const version = '6.11.1';
+  const version = $derived(ui.selected.package?.version);
 
 </script>
 
@@ -27,13 +26,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {version ? 'Qt-' + version : '-'}
   </button>
 
+  <div class='grow'></div>
 
   <div class='flex flex-row gap-0'>
     {@render modeButton('toc', Book)}
     {@render modeButton('text', Search)}
     {@render modeButton('index', ListOrdered)}
   </div>
-  <div class='grow'></div>
 </div>
 
 {#snippet modeButton(mode: UiMode, Icon: Component)}

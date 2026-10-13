@@ -5,6 +5,7 @@ import {
   type TocEntry,
   type IndexMatch,
   type FullTextMatch,
+  type QtDocRootInfo,
 } from '@shared/qt-help';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import { TocTreeModel } from './types.svelte';
@@ -12,6 +13,8 @@ import { TocTreeModel } from './types.svelte';
 export type UiMode = 'toc' | 'index' | 'text';
 
 export const data = $state({
+  packages: [] as QtDocRootInfo[],
+
   toc: [] as TocEntry[],
   indexes: [] as IndexMatch[],
   fullText: [] as FullTextMatch[],
@@ -21,6 +24,9 @@ export const ui = $state({
   theme: VscodeThemeMonitor.createController(),
   mode: 'toc' as UiMode,
   tocTree: new TocTreeModel(),
+  selected: {
+    package: undefined as QtDocRootInfo | undefined,
+  },
 
   sidebar: {
     width: 300,

@@ -9,16 +9,38 @@ import {
   isIndexMatch,
   isFullTextMatch,
   type HtmlPageInfo,
+  isQtDocRootInfo,
+  type QtDocRootInfo,
 } from '@shared/qt-help';
 import { data, ui, type UiMode } from './states.svelte';
 import * as docViewer from '../doc-viewer/viewlogic.svelte';
 
 export async function onAppMount() {
+  await loadPackages();
+  selectPackage(data.packages[0]);
+
   await loadToc();
   await loadIndexes();
 }
 
 export async function onAppDestroy() {
+}
+
+export async function loadPackages() {
+  const r = await vscode.post(CommandId.QtHelpGetPackages);
+
+  if (Array.isArray(r) && r.every(isQtDocRootInfo)) {
+    data.packages = r;
+  }
+}
+
+export async function selectPackage(p: QtDocRootInfo) {
+  ui.selected.package = p;
+  // const r = await vscode.post(CommandId.QtHelpGetPackages);
+
+  // if (Array.isArray(r) && r.every(isQtDocRootInfo)) {
+  //   data.packages = r;
+  // }
 }
 
 export async function loadToc() {
