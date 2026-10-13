@@ -11,6 +11,7 @@ import {
 import { telemetry, DisposableStore } from 'qt-lib';
 import { setupWebApp, createPanel } from '@/webview/utils';
 import { QtHelpDispatcher } from './dispatcher';
+import { docServer } from '@/webview/doc-viewer/controller';
 import * as consts from './constants';
 
 let instance: QtHelpController | undefined;
@@ -37,7 +38,7 @@ export class QtHelpController implements Disposable {
   ) {
     setupWebApp(consts.AppId, context, this._panel);
 
-    this._dispatcher = new QtHelpDispatcher(context, this._panel);
+    this._dispatcher = new QtHelpDispatcher(context, this._panel, docServer);
     this._disposables.push(
       this._dispatcher,
       this._panel.onDidDispose(this.dispose.bind(this))

@@ -19,9 +19,11 @@ const openCmd = 'openDocViewer';
 const openCmdFull = `${consts.EXTENSION_ID}.${openCmd}`;
 
 let controller: DocViewerController | undefined;
+export const docServer = new DocViewerHttpServer();
 
 export function addDocViewer(context: Context) {
   controller = new DocViewerController();
+  void docServer.start();
 
   context.subscriptions.push(
     commands.registerCommand(openCmdFull, (uri?: Uri, o?: OpenOptions) => {
@@ -37,13 +39,7 @@ export async function openDocViewer(uri: Uri, o: OpenOptions) {
 
 export class DocViewerController {
   private readonly _sessions = new Set<DocViewerSession>();
-  private readonly _docServer: DocViewerHttpServer;
   private readonly _disposables = new DisposableStore();
-
-  constructor() {
-    this._docServer = new DocViewerHttpServer();
-    void this._docServer.start();
-  }
 
   dispose() {
     this._disposables.dispose();
@@ -73,7 +69,7 @@ export class DocViewerController {
 
   private _add(context: Context, openOptions: OpenOptions) {
     const panel = createPanel(consts.AppId);
-    const s = new DocViewerSession(context, panel, this._docServer, openOptions);
+    const s = new DocViewerSession(context, panel, docServer, openOptions);
 
     this._disposables.push(
       // TODO
