@@ -37,9 +37,11 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
     private readonly _panel: Panel,
     private readonly _docServer: DocViewerHttpServer,
     private readonly _openOptions: OpenOptions
-
   ) {
-    super('doc-viewer', _panel);
+    super(
+      _openOptions.trigger === 'qt-help' ? 'qt-help' : 'doc-viewer',
+      _panel
+    );
 
     this._histories = new DocViewerHistoryManager(this._extContext.globalState);
     this._bookmarks = new DocViewerBookmarkManager(this._extContext.globalState);
