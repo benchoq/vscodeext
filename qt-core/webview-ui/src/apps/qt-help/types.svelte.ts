@@ -25,6 +25,15 @@ export class TocTreeModel {
     return this._topLevels;
   }
 
+  get expandedState(): 'empty' | 'partial' | 'full' {
+    if (this._expandedIds.size === 0) {
+      return 'empty';
+    }
+
+    return (this._expandableIds.length === this._expandedIds.size)
+      ? 'full' : 'partial';
+  }
+
   public expanded(id: number) {
     return this._expandedIds.has(id);
   }
@@ -48,13 +57,22 @@ export class TocTreeModel {
     this._expandedIds = newSet;
   }
 
-  public toggleExpandedAll() {
-    if (this._expandedIds.size === 0 && this._expandableIds.length !== 0) {
-      this._expandedIds = new Set(this._expandableIds);
-    } else {
-      if (this._expandedIds.size !== 0) {
-        this._expandedIds = new Set();
+  public setExpandedAll(expand: boolean) {
+    if (expand) {
+      if (this._expandedIds.size === 0 && this._expandableIds.length !== 0) {
+        this._expandedIds = new Set(this._expandableIds);
       }
+      return;
+    }
+
+    if (this._expandedIds.size !== 0) {
+      this._expandedIds = new Set();
+    }
+  }
+
+  public collapseAll() {
+    if (this._expandedIds.size !== 0) {
+      this._expandedIds = new Set();
     }
   }
 
