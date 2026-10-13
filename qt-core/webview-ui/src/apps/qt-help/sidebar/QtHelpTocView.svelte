@@ -28,7 +28,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </button>
   </div>
 
-  <div class='qt-item-list flex flex-col h-full'>
+  <div class='qt-item-list h-full flex flex-col'>
     {#each ui.tocTree.topLevels as node (node.id)}
       <QtHelpTocTreeNode {node} />
     {/each}

@@ -6,6 +6,7 @@ import { data } from './states.svelte';
 export function toDisplayUri(uri: string) {
   return toFileUri(uri);
 }
+
 export function toPersistentUri(uri: string) {
   return toFileUri(uri);
 }

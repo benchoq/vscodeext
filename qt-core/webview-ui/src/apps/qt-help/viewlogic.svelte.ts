@@ -65,8 +65,6 @@ export async function loadIndexes() {
 }
 
 export async function search(keyword: string) {
-  console.log("+++++", keyword);
-
   const r = await vscode.post(CommandId.QtHelpSearchFullText, { keyword });
   if (Array.isArray(r) && r.every(isFullTextMatch)) {
     data.fullText = r;
