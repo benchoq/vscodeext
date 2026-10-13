@@ -33,10 +33,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 >
   <span
     style:margin-left={`${5 + (entry.depth - 1) * 10}px`}
-    class='flex items-center gap-1 overflow-hidden whitespace-nowrap text-ellipsis shrink-0'
+    class='flex items-center gap-1 min-w-0'
   >
     {@render chevron(node, expanded)}
-    {page.title}
+    <span data-role='text'>{page.title}</span>
   </span>
 </button>
 
@@ -47,7 +47,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/if}
 
 {#snippet chevron(node: TocTreeNode, expanded: boolean)}
-  <div class='w-[16px] flex'>
+  <div class='w-[16px] flex shrink-0'>
     {#if node.children.length !== 0}
       <button
         data-chevron
@@ -67,5 +67,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <style>
   .item {
     padding: 3px 12px;
+  }
+
+  [data-role='text'] {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>

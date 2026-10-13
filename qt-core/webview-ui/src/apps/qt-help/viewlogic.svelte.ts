@@ -97,9 +97,14 @@ export async function openHtml(info: HtmlPageInfo) {
 }
 
 export function isCurrentDoc(info: HtmlPageInfo) {
-  const uri = toFileUri(info);
-  const currentUri = new URL(docViewer.currentServiceUri());
-  return (uri && uri.pathname === currentUri.pathname);
+  try {
+    const uri = toFileUri(info);
+    const currentUri = new URL(docViewer.currentServiceUri());
+    return (uri && uri.pathname === currentUri.pathname);
+  } catch (e) {
+    void e;
+    return false;
+  }
 }
 
 // helpers
