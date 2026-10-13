@@ -6,9 +6,7 @@ import * as path from 'path';
 import * as http from 'http';
 import {
   Uri,
-  Disposable,
-  EventEmitter,
-  ExtensionContext as Context,
+  Disposable
  } from 'vscode';
 
 import { createWrappedLogger, DisposableStore } from 'qt-lib';
@@ -28,24 +26,17 @@ export class DocViewerHttpServer implements Disposable {
   private _server: http.Server | undefined;
   private readonly _handlers: HandlerFunc[] = [];
   private readonly _cssManager: DocViewerCssManager;
-  private readonly _cssChangedEmitter = new EventEmitter<void>();
   private readonly _disposables = new DisposableStore();
 
-  constructor(context: Context) {
-    this._cssManager = new DocViewerCssManager(context, () => {
-      this._cssChangedEmitter.fire();
-    });
-
+  constructor() {
+    this._cssManager = new DocViewerCssManager();
     this._handlers.push(
       (c: HttpContext) => replaceCss(c, this._cssManager.cssContent),
       injectScriptToHtml,
       handleFallback,
     )
 
-    this._disposables.push(
-      this._cssManager,
-      this._cssChangedEmitter
-    )
+    this._disposables.push(this._cssManager);
   }
 
   dispose(): void {
@@ -59,8 +50,8 @@ export class DocViewerHttpServer implements Disposable {
     this._disposables.dispose();
   }
 
-  public get onCssChanged() {
-    return this._cssChangedEmitter.event;
+  public cssManager() {
+    return this._cssManager;
   }
 
   public get baseUri(): Uri {

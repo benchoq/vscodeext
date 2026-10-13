@@ -24,7 +24,7 @@ export class QtHelpDispatcher extends WebviewDispatcherChain {
   public constructor(extContext: ExtContext, panel: Panel) {
     super();
 
-    this._docServer = new DocViewerHttpServer(extContext);
+    this._docServer = new DocViewerHttpServer();
     void this._docServer.start();
 
     this._viewerDispatcher = new DocViewerDispatcher(

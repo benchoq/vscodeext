@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import _ from 'lodash';
+import * as path from 'path';
 import {
   env,
   Uri,
+  Disposable,
   WebviewPanel as Panel,
-  ExtensionMode as Mode,
-  ExtensionContext as Context,
+  ExtensionMode as ExtMode,
+  ExtensionContext as ExtContext,
 } from 'vscode';
 
 import {
@@ -28,12 +30,14 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
   private readonly _viewerState: UiState = {};
   private readonly _histories: DocViewerHistoryManager;
   private readonly _bookmarks: DocViewerBookmarkManager;
+  private readonly _disposable: Disposable | undefined;
 
   public constructor(
-    private readonly _extContext: Context,
+    private readonly _extContext: ExtContext,
     private readonly _panel: Panel,
     private readonly _docServer: DocViewerHttpServer,
     private readonly _openOptions: OpenOptions
+
   ) {
     super('doc-viewer', _panel);
 
@@ -49,17 +53,24 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
       [CommandId.DocViewerEditHistories, this._onEditHistories],
     ]);
 
-    if (this._extContext.extensionMode === Mode.Development) {
-      this._docServer.onCssChanged(() => {
+    const cssPath = path.join(
+      this._extContext.extensionPath,
+      'res/others',
+      'qt-doc-styles.css'
+    );
+
+    const css = this._docServer.cssManager();
+    css.setCssPath(cssPath);
+
+    if (this._extContext.extensionMode === ExtMode.Development) {
+      this._disposable = css.onCssChanged(() => {
         this.channel.notify(CommandId.DocViewerReloadPage);
       });
     }
-
-    void this._extContext;
-    void this._panel;
   }
 
   public override dispose() {
+    this._disposable?.dispose();
     super.dispose();
   }
 
@@ -145,21 +156,21 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
     this.channel.replyData(cmd, { entries: this._bookmarks.entries });
   }
 
-    private readonly _onGetHistories = (cmd: Command) => {
-      this.channel.replyData(cmd, { entries: this._histories.entries });
+  private readonly _onGetHistories = (cmd: Command) => {
+    this.channel.replyData(cmd, { entries: this._histories.entries });
+  }
+
+  private readonly _onEditHistories = (cmd: Command) => {
+    const edit = _.get(cmd.payload, 'edit', {});
+    if (!isHistoryEdit(edit)) {
+      return;
     }
 
-    private readonly _onEditHistories = (cmd: Command) => {
-      const edit = _.get(cmd.payload, 'edit', {});
-      if (!isHistoryEdit(edit)) {
-        return;
-      }
-
-      const affected = this._histories.edit(edit);
-      if (affected) {
-        this._histories.save();
-      }
-
-      this.channel.replyData(cmd, { entries: this._histories.entries });
+    const affected = this._histories.edit(edit);
+    if (affected) {
+      this._histories.save();
     }
+
+    this.channel.replyData(cmd, { entries: this._histories.entries });
+  }
 }

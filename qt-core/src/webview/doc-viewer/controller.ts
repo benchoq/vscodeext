@@ -21,7 +21,7 @@ const openCmdFull = `${consts.EXTENSION_ID}.${openCmd}`;
 let controller: DocViewerController | undefined;
 
 export function addDocViewer(context: Context) {
-  controller = new DocViewerController(context);
+  controller = new DocViewerController();
 
   context.subscriptions.push(
     commands.registerCommand(openCmdFull, (uri?: Uri, o?: OpenOptions) => {
@@ -40,8 +40,8 @@ export class DocViewerController {
   private readonly _docServer: DocViewerHttpServer;
   private readonly _disposables = new DisposableStore();
 
-  constructor(context: Context) {
-    this._docServer = new DocViewerHttpServer(context);
+  constructor() {
+    this._docServer = new DocViewerHttpServer();
     void this._docServer.start();
   }
 

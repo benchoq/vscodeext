@@ -5,54 +5,65 @@ import * as path from 'path';
 import {
   workspace,
   Disposable,
-  RelativePattern,
-  ExtensionMode as Mode,
-  ExtensionContext as Context,
+  EventEmitter,
+  RelativePattern
  } from 'vscode';
 
 import { fsFile } from '@/fs-utils';
-import { DisposableStore } from 'qt-lib';
 
 export class DocViewerCssManager implements Disposable {
   private _content = '';
-  private readonly _dir: string;
-  private readonly _fileName: string;
-  private readonly _disposables = new DisposableStore();
+  private _filePathAbs = '';
 
-  constructor(
-    private readonly _context: Context,
-    private readonly _onChanged: () => void
-  ) {
-    this._dir = path.join(this._context.extensionPath, 'res/others');
-    this._fileName = 'qt-doc-styles.css';
-
-    if (this._context.extensionMode === Mode.Development) {
-      const pat = new RelativePattern(this._dir, this._fileName);
-      const watcher = workspace.createFileSystemWatcher(pat);
-
-      this._disposables.push(
-        watcher,
-        watcher.onDidChange(() => {
-          this._loadCss();
-          this._onChanged();
-        })
-      );
-    }
-
-    this._loadCss();
-  }
+  private readonly _changedEmitter = new EventEmitter<void>();
+  private _watchDisposable: Disposable | undefined;
 
   public dispose() {
-    this._disposables.dispose();
+    this._watchDisposable?.dispose();
+    this._watchDisposable = undefined;
   }
 
   public get cssContent() {
     return this._content;
   }
 
+  public get onCssChanged() {
+    return this._changedEmitter.event;
+  }
+
+  public setCssPath(absPath: string) {
+    if (absPath === this._filePathAbs) {
+      return;
+    }
+
+    this._filePathAbs = absPath;
+    this._watch();
+    this._loadCss();
+    this._changedEmitter.fire();
+  }
+
+  private _watch() {
+    this._watchDisposable?.dispose();
+    this._watchDisposable = undefined;
+
+    if (fsFile(this._filePathAbs).exists()) {
+      const dir = path.dirname(this._filePathAbs);
+      const fileName = path.basename(this._filePathAbs);
+
+      const pat = new RelativePattern(dir, fileName);
+      const watcher = workspace.createFileSystemWatcher(pat);
+      this._watchDisposable = Disposable.from(
+        watcher,
+        watcher.onDidChange(() => {
+          this._loadCss();
+          this._changedEmitter.fire();
+        })
+      );
+    }
+  }
+
   private _loadCss() {
-    const f = fsFile(this._dir, this._fileName);
+    const f = fsFile(this._filePathAbs);
     this._content = f.exists() ? String(f.readAll()) : '';
   }
 }
-
