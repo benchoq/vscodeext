@@ -44,7 +44,7 @@ function setHistories(entries: HistoryEntry[]) {
       } as HistoryViewEntry
     });
 
-    console.log($state.snapshot(data.histories));
+    // console.log($state.snapshot(data.histories));
   }
 }
 

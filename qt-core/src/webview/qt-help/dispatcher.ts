@@ -16,6 +16,7 @@ import { DocViewerDispatcher } from '@/webview/doc-viewer/dispatcher';
 import { DocViewerHttpServer } from '@/webview/doc-viewer/server/http-server';
 import { QtHelpDataManager } from './data/data-manager';
 import * as consts from './constants';
+import { isQtDocRootInfo } from '../shared/qt-help';
 
 export class QtHelpDispatcher extends WebviewDispatcherChain {
   private readonly _viewerDispatcher: DocViewerDispatcher;
@@ -50,6 +51,7 @@ class QtHelpOwnDispatcher extends WebviewDispatcher {
     this._data = new QtHelpDataManager();
     this.setHandlers([
       [CommandId.QtHelpGetPackages, this._onGetPackages],
+      [CommandId.QtHelpSelectPackage, this._onSelectPackage],
       [CommandId.QtHelpReadToc, this._onReadToc],
       [CommandId.QtHelpReadIndexes, this._onReadIndexes],
       [CommandId.QtHelpSearchFullText, this._onSearchFullText]
@@ -59,6 +61,17 @@ class QtHelpOwnDispatcher extends WebviewDispatcher {
   private readonly _onGetPackages = (cmd: Command) => {
     const data = this._data.getPackages();
     this.channel.replyData(cmd, data);
+  };
+
+  private readonly _onSelectPackage = (cmd: Command) => {
+    const p = _.get(cmd.payload, 'package', {});
+    if (!isQtDocRootInfo(p)) {
+      console.log('bad data');
+      return;
+    }
+
+    this._data.selectPackage(p);
+    this.channel.replyDone(cmd);
   };
 
   private readonly _onReadToc = async (cmd: Command) => {

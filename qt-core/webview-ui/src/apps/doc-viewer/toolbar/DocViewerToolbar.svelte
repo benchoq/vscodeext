@@ -100,7 +100,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <div class='grow flex relative'>
     <input
       bind:this={inputEl}
-      value={ui.iframe.title}
+      value={ui.iframe.src}
       title={helpers.toDisplayUri(ui.iframe.src)}
       class='qt-input grow self-stretch pl-2 pr-[30px]'
       onfocus={() => { selectAll(); }}

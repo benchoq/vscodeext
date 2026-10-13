@@ -18,9 +18,6 @@ import * as docViewer from '../doc-viewer/viewlogic.svelte';
 export async function onAppMount() {
   await loadPackages();
   selectPackage(data.packages[0]);
-
-  await loadToc();
-  await loadIndexes();
 }
 
 export async function onAppDestroy() {
@@ -35,12 +32,18 @@ export async function loadPackages() {
 }
 
 export async function selectPackage(p: QtDocRootInfo) {
-  ui.selected.package = p;
-  // const r = await vscode.post(CommandId.QtHelpGetPackages);
+  if (ui.selected.package === p) {
+    return;
+  }
 
-  // if (Array.isArray(r) && r.every(isQtDocRootInfo)) {
-  //   data.packages = r;
-  // }
+  await vscode.post(CommandId.QtHelpSelectPackage, {
+    package: $state.snapshot(p)
+  });
+
+  ui.selected.package = p;
+
+  await loadToc();
+  await loadIndexes();
 }
 
 export async function loadToc() {
@@ -60,7 +63,7 @@ export async function loadIndexes() {
     //   return a.name.localeCompare(b.name);
     // });
 
-    console.log(r);
+    // console.log(r);
     data.indexes = r;
     updateFilteredIndex();
   }
@@ -90,8 +93,15 @@ export function setMode(mode: UiMode) {
 }
 
 export async function openHtml(info: HtmlPageInfo) {
-  const prefix = 'file:///Users/bencho/tools/Qt/Docs/Qt-6.11.1/';
+  if (!ui.selected.package) {
+    return;
+  }
+
+  console.log(ui.selected.package.fsPath);
+  console.log(info.filePathRel);
+
+  const prefix = `file://${ui.selected.package.fsPath}/`
+  // const prefix = 'file:///Users/bencho/tools/Qt/Docs/Qt-6.11.1/';
 
   docViewer.openDoc(prefix + info.filePathRel);
-  console.log(info);
 }
