@@ -17,7 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div data-area='toolbar' class='flex flex-row gap-2'>
   <button
     bind:this={ui.popovers.qtVersions.refEl}
-    class='qt-button flex flex-row !h-full justify-center'
+    class='qt-button flex flex-row !h-full justify-center !px-3'
     onclick={(e: MouseEvent) => {
       ui.popovers.qtVersions.visible = !ui.popovers.qtVersions.visible;
       e.stopPropagation();
