@@ -59,21 +59,20 @@ export async function loadIndexes() {
   const r = await vscode.post(CommandId.QtHelpReadIndexes);
 
   if (Array.isArray(r) && r.every(isIndexMatch)) {
-    // data.indexes = r.sort((a: IndexMatch, b: IndexMatch) => {
-    //   return a.name.localeCompare(b.name);
-    // });
-
-    // console.log(r);
     data.indexes = r;
     updateFilteredIndex();
   }
 }
 
 export async function search(keyword: string) {
+  console.log("+++++", keyword);
+
   const r = await vscode.post(CommandId.QtHelpSearchFullText, { keyword });
   if (Array.isArray(r) && r.every(isFullTextMatch)) {
     data.fullText = r;
   }
+
+  console.log(r);
 }
 
 export async function updateFilteredIndex() {

@@ -73,7 +73,8 @@ export class QtHelpDataManager {
   }
 
   private _rebuild(docRootDir: string) {
-    console.log('rebuild', this._selectedPackage);
+    const t1 = performance.now();
+    console.log('rebuild', this._selectedPackage, t1);
 
     const qchFiles = fsDir(docRootDir).findFiles("*.qch");
     this._readersPromise = Promise.all(
@@ -81,5 +82,8 @@ export class QtHelpDataManager {
     );
 
     this._fullTextIndexBuild = this._fullTextIndex.build(docRootDir);
+
+    const t2 = performance.now();
+    console.log('rebuild done', this._selectedPackage, t2 - t1);
   }
 }

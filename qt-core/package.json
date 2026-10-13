@@ -457,6 +457,7 @@
     "lodash-es": "^4.17.21",
     "minisearch": "^7.2.0",
     "module-alias": "^2.2.3",
+    "p-limit": "^7.3.3",
     "qt-lib": "file:../qt-lib",
     "rss-parser": "^3.13.0",
     "sql.js": "^1.14.2",
@@ -474,6 +475,6 @@
     "esbuild": true,
     "keytar": true,
     "@vscode/vsce-sign": true,
-    "fsevent": true
+    "fsevents": true
   }
 }

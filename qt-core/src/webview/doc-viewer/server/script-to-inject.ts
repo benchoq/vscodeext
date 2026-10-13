@@ -55,12 +55,16 @@ const CommonScript = /*js*/`
 
 const DocLoadedScript = /*js*/`
   addListenerNoCapture('load', () => {
+    const nav = performance.getEntriesByType('navigation')[0];
+
     notifyParent('${IframeMessageId.EventLoaded}', {
       title: document.title,
       href: location.href,
       hash: location.hash,
       pathname: location.pathname,
-      errorCode: document?.body?.dataset.errorCode
+      errorCode: document?.body?.dataset.errorCode,
+      load: nav.loadEventEnd,
+      ttfb: nav.responseStart
     });
   });
 `;

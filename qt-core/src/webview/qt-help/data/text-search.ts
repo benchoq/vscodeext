@@ -1,13 +1,16 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import fg from 'fast-glob';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as cheerio from 'cheerio';
+import fg from 'fast-glob';
 import MiniSearch, { SearchResult } from 'minisearch';
 
 import { FullTextMatch } from '@/webview/shared/qt-help';
+
+const NumBatch = 25;
+const NumConcurrency = 4;
 
 interface HtmlDoc {
   id: string;
@@ -26,24 +29,77 @@ export class HtmlFullTextIndex {
     searchOptions: { prefix: true, fuzzy: 0.2, boost: { title: 2 } },
   });
 
+  private generation = 0;
+
   public async build(rootDir: string): Promise<void> {
+    const gen = ++this.generation;
+    this.miniSearch.removeAll();
+    this.textById.clear();
+
     const files = await fg('**/*.html', { cwd: rootDir, absolute: true });
+    const { default: pLimit } = await import('p-limit');
+    const limit = pLimit(NumConcurrency);
 
-    const docs: HtmlDoc[] = await Promise.all(
-      files.map(async (file) => {
-        const raw = await fs.readFile(file, 'utf-8');
-        const $ = cheerio.load(raw);
-        const title = $('title').text() || path.basename(file);
-        const text = $('body').text().replace(/\s+/g, ' ').trim();
-        return { id: file, title, text, rootDir, snippet: ''};
-      })
-    );
+    for (let i = 0; i < files.length; i += NumBatch) {
+      if (gen !== this.generation) {
+        return;
+      }
 
-    this.miniSearch.addAll(docs);
-    for (const doc of docs) {
-      this.textById.set(doc.id, doc.text);
+      const docs: HtmlDoc[] = await Promise.all(
+        files.slice(i, i + NumBatch).map(async (file) =>
+          limit(async () => {
+            const raw = await fs.readFile(file, 'utf-8');
+            const $ = cheerio.load(raw);
+            const title = $('title').text() || path.basename(file);
+            const text = $('body').text().replace(/\s+/g, ' ').trim();
+            return { id: file, title, text, rootDir, snippet: '' };
+          })
+        )
+      );
+
+      if (gen !== this.generation) {
+        return;
+      }
+
+      this.miniSearch.addAll(docs);
+      for (const doc of docs) {
+        this.textById.set(doc.id, doc.text);
+      }
+
+      await new Promise((r) => setImmediate(r));
     }
   }
+
+  // public async build(rootDir: string): Promise<void> {
+  //   this.miniSearch.removeAll();
+  //   this.textById.clear();
+
+  //   const files = await fg('**/*.html', { cwd: rootDir, absolute: true });
+  //   const { default: pLimit } = await import('p-limit');
+  //   const limit = pLimit(NumConcurrency);
+
+  //   for (let i = 0; i < files.length; i += NumBatch) {
+  //     const docs: HtmlDoc[] = await Promise.all(
+  //       files.slice(i, i + NumBatch).map(async (file) =>
+  //         limit(async () => {
+  //           const raw = await fs.readFile(file, 'utf-8');
+  //           const $ = cheerio.load(raw);
+  //           const title = $('title').text() || path.basename(file);
+  //           const text = $('body').text().replace(/\s+/g, ' ').trim();
+  //           return { id: file, title, text, rootDir, snippet: '' };
+  //         })
+  //       )
+  //     )
+
+  //     this.miniSearch.addAll(docs);
+
+  //     for (const doc of docs) {
+  //       this.textById.set(doc.id, doc.text);
+  //     }
+
+  //     await new Promise((r) => setImmediate(r));
+  //   }
+  // }
 
   // eslint-disable-next-line @typescript-eslint/class-methods-use-this
   private buildSnippet(text: string, terms: string[], contextChars = 60): string {
