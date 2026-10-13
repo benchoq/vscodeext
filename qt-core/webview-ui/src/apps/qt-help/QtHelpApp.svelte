@@ -13,7 +13,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import DocViewerApp from '@/apps/doc-viewer/DocViewerApp.svelte';
 
   import QtHelpSidebar from './sidebar/QtHelpSidebar.svelte';
-  import QtHelpQtVersionPopover from './sidebar/QtHelpQtVersionPopover.svelte';
+  import QtHelpDocViewerMask from './QtHelpDocViewerMask.svelte';
+  import QtHelpQtVersionPopover from './QtHelpQtVersionPopover.svelte';
   import { ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
 
@@ -40,6 +41,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       </Popover>
     {/if}
 
-    <DocViewerApp standalone={false} />
+    <div class='w-full h-full relative'>
+      <DocViewerApp standalone={false} />
+      <QtHelpDocViewerMask />
+    </div>
   </div>
 </div>

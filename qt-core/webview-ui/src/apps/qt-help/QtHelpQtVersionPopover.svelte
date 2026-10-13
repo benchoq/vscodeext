@@ -5,8 +5,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import Separator from '@/comps/Separator.svelte';
-  import { data, ui } from '../states.svelte';
-  import * as viewlogic from '../viewlogic.svelte';
+  import { data, ui } from './states.svelte';
+  import * as viewlogic from './viewlogic.svelte';
 </script>
 
 <div class="qt-popover w-[200px] p-2">
