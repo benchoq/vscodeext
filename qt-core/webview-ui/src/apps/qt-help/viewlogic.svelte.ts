@@ -44,6 +44,10 @@ export async function selectPackage(p: QtDocRootInfo) {
 
   await loadToc();
   await loadIndexes();
+
+  const landing = `file://${ui.selected.package.fsPath}/qtdoc/index.html`;
+  docViewer.openDoc(landing);
+  console.log(landing);
 }
 
 export async function loadToc() {

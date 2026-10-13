@@ -5,7 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { type Component } from 'svelte';
-  import { Book, ListOrdered, Search } from '@lucide/svelte';
+  import { Book, ListOrdered, Search, ChevronDown } from '@lucide/svelte';
 
   import * as viewlogic from '../viewlogic.svelte';
   import { ui, type UiMode } from '../states.svelte';
@@ -23,7 +23,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       e.stopPropagation();
     }}
   >
-    {version ? 'Qt-' + version : '-'}
+    {version ? 'Qt-' + version : '-'} <ChevronDown />
   </button>
 
   <div class='grow'></div>
