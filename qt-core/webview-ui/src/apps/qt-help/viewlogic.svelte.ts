@@ -90,15 +90,27 @@ export function setMode(mode: UiMode) {
 }
 
 export async function openHtml(info: HtmlPageInfo) {
+  const uri = toFileUri(info);
+  if (uri) {
+    docViewer.openDoc(uri.toString());
+  }
+}
+
+export function isCurrentDoc(info: HtmlPageInfo) {
+  const uri = toFileUri(info);
+  const currentUri = new URL(docViewer.currentServiceUri());
+  return (uri && uri.pathname === currentUri.pathname);
+}
+
+// helpers
+function toFileUri(info: HtmlPageInfo) {
   if (!ui.selected.package) {
-    return;
+    return undefined;
   }
 
-  console.log(ui.selected.package.fsPath);
-  console.log(info.filePathRel);
+  const url = new URL('file://');
+  url.pathname = `${ui.selected.package.fsPath}/${info.filePathRel}`;
+  url.hash = info.anchor ?? '';
 
-  const prefix = `file://${ui.selected.package.fsPath}/`
-  // const prefix = 'file:///Users/bencho/tools/Qt/Docs/Qt-6.11.1/';
-
-  docViewer.openDoc(prefix + info.filePathRel);
+  return url;
 }

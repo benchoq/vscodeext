@@ -35,6 +35,10 @@ export async function onAppMount() {
 export async function onAppDestroy() {
 }
 
+export function currentServiceUri() {
+  return ui.iframe.src;
+}
+
 export async function openDoc(uri: string, forceNewWindow = false) {
   const r = await vscode.post(CommandId.DocViewerOpenDoc, {
     uri,
