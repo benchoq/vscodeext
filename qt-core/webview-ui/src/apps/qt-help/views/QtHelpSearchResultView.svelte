@@ -49,6 +49,46 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     return all.find((el) => el.scrollHeight > el.clientHeight);
   };
 
+   function hookScroller() {
+    let disposed = false;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    let cleanup: (() => void) | undefined;
+
+    function attach() {
+      if (disposed) {
+        return;
+      }
+
+      const scroller = getListScroller();
+
+      if (!scroller) {
+        timeoutId = setTimeout(attach, 100);
+        return;
+      }
+
+      const updateScrollButton = () => {
+        showScrollToTop = scroller.scrollTop > 200;
+      };
+
+      scroller.addEventListener('scroll', updateScrollButton);
+      updateScrollButton();
+
+      cleanup = () => {
+        scroller.removeEventListener('scroll', updateScrollButton);
+      };
+    }
+
+    requestAnimationFrame(attach);
+
+    return () => {
+      disposed = true;
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId);
+      }
+      cleanup?.();
+    };
+  }
+
   $effect(() => {
     void ui.search.keyword;
     untrack(() => {
@@ -59,21 +99,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   onMount(() => {
     inputEl?.focus();
     inputEl?.select();
-
-    const scroller = getListScroller();
-    const threshold = 200;
-    if (scroller) {
-      const updateScrollButton = () => {
-        showScrollToTop = scroller.scrollTop > threshold;
-      };
-
-      scroller.addEventListener('scroll', updateScrollButton);
-      updateScrollButton();
-
-      return () => {
-        scroller.removeEventListener('scroll', updateScrollButton);
-      }
-    }
+    return hookScroller();
   })
 
   export function scrollToTop() {
@@ -131,9 +157,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     bind:this={listWrapperEl}
     bind:clientHeight={listHeight}
     class='qt-item-list w-full h-full relative'
-    onscroll={(event) => {
-      showScrollToTop = event.currentTarget.scrollTop > 100;
-    }}
   >
     <VirtualList
       bind:this={listEl}
