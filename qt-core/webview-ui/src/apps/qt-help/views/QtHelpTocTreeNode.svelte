@@ -70,8 +70,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='text'] {
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    @apply truncate;
   }
 </style>
