@@ -18,7 +18,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let listWrapperEl = $state<HTMLDivElement>();
 
   let inputEl = $state<HTMLInputElement | undefined>();
-  let showScrollToTop = $state(true);
+  let showScrollToTop = $state(false);
+
   const all = $derived(data.search.result);
 
   const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

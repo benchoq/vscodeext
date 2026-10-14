@@ -24,8 +24,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {@render content?.()}
   </div>
 
-  <span data-role='footer'>
-    Total {countAsLocaleString(itemCount)} entries
+  <span data-role="footer">
+    {#if itemCount === 0}
+      No items
+    {:else}
+      Total {countAsLocaleString(itemCount)}
+      {itemCount === 1 ? 'item' : 'items'}
+    {/if}
   </span>
 </div>
 
