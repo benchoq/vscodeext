@@ -5,6 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { untrack, onMount } from 'svelte';
+  import { Dot as Bullet } from '@lucide/svelte';
   import VirtualList from 'svelte-tiny-virtual-list';
 
   import { ui } from '../states.svelte';
@@ -13,6 +14,22 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const all = $derived(ui.index.filtered);
   let virtualList: VirtualList;
   let inputEl: HTMLInputElement;
+
+  type ItemType = 'unique' | 'duplicated-start' | 'duplicated' | 'duplicated-end';
+
+  function findItemType(index: number): ItemType {
+    const prev = all[index - 1];
+    const current = all[index];
+    const next = all[index + 1];
+
+    const samePrev = prev?.name === current.name;
+    const sameNext = next?.name === current.name;
+
+    if (samePrev && sameNext) return 'duplicated';
+    if (samePrev) return 'duplicated-end';
+    if (sameNext) return 'duplicated-start';
+    return 'unique';
+  }
 
   $effect(() => {
     void ui.index.filter.keyword;
@@ -57,7 +74,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     >
       {#snippet item({ style, index })}
         {@const entry = all[index]}
+        {@const entryType = findItemType(index)}
         {#if entry}
+          <!-- {#if entryType === 'duplicated-start'}
+            <span>{entry.name}</span>
+          {/if} -->
+
           <button
             {style}
             class='item flex items-center'
@@ -66,9 +88,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
               viewlogic.openHtml(entry.page);
             }}
           >
-            <span class='truncate min-w-0'>
+            {#if entryType.startsWith('duplicated')}
+              <Bullet class='shrink-0' />
+              <span data-role='title'>
+                {entry.page.title}
+              </span>
+            {:else}
               {entry.name}
-            </span>
+            {/if}
           </button>
         {/if}
       {/snippet}
@@ -86,5 +113,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     height: 100%;
     min-height: 0;
     overflow: auto;
+  }
+
+  [data-role='title'] {
+    min-width: 0px;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--qt-font-s);
+    color: var(--qt-text-muted);
   }
 </style>

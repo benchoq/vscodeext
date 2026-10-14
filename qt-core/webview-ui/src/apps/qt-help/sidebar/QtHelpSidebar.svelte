@@ -4,11 +4,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import QtHelpTocView from './QtHelpTocView.svelte';
-  import QtHelpIndexView from './QtHelpIndexView.svelte';
-  import QtHelpSearchResultView from './QtHelpSearchResultView.svelte';
+  import QtHelpTocView from '../views/QtHelpTocView.svelte';
+  import QtHelpIndexView from '../views/QtHelpIndexView.svelte';
+  import QtHelpSearchResultView from '../views/QtHelpSearchResultView.svelte';
   import QtHelpSidebarToolbar from './QtHelpSidebarToolbar.svelte';
-  import QtHelpSidebarHandle from './QtHelpSidebarHandle.svelte';
+  import QtHelpSidebarResizeHandle from './QtHelpSidebarResizeHandle.svelte';
   import { ui } from '../states.svelte';
 
 </script>
@@ -27,7 +27,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {/if}
     </div>
 
-    <QtHelpSidebarHandle />
+    <QtHelpSidebarResizeHandle />
   </div>
 </div>
 

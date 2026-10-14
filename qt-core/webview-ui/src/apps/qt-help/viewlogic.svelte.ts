@@ -63,7 +63,7 @@ export async function loadIndexes() {
   const r = await vscode.post(CommandId.QtHelpReadIndexes);
 
   if (Array.isArray(r) && r.every(isIndexMatch)) {
-    data.indexes = r;
+    data.indexes = r.sort((a, b) => (a.name.localeCompare(b.name)));
     updateFilteredIndex();
   }
 }
