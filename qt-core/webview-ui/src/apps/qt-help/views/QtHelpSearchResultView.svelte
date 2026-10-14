@@ -5,6 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { onMount, type Snippet, untrack } from 'svelte';
+  import { ChevronUp } from '@lucide/svelte';
   import VirtualList from 'svelte-tiny-virtual-list';
 
   import QtHelpView from './QtHelpBaseView.svelte';
@@ -12,9 +13,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
-  let virtualList: VirtualList;
-  let virtualListHeight = $state(0);
-  let inputEl = $state(undefined as HTMLInputElement | undefined);
+  let listEl: VirtualList;
+  let listHeight = $state(0);
+  let listWrapperEl = $state<HTMLDivElement>();
+
+  let inputEl = $state<HTMLInputElement | undefined>();
+  let showScrollToTop = $state(true);
   const all = $derived(data.search.result);
 
   const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -31,17 +35,72 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       .filter((s) => s.text);
   }
 
+  function getListScroller() {
+    if (!listWrapperEl) {
+      return undefined;
+    }
+
+    const all = [
+      listWrapperEl,
+      ...listWrapperEl.querySelectorAll<HTMLElement>('*')
+    ]
+
+    return all.find((el) => el.scrollHeight > el.clientHeight);
+  };
+
   $effect(() => {
     void ui.search.keyword;
     untrack(() => {
-      virtualList.recomputeSizes?.(0);
+      listEl.recomputeSizes?.(0);
     });
   })
 
   onMount(() => {
     inputEl?.focus();
     inputEl?.select();
+
+    const scroller = getListScroller();
+    const threshold = 200;
+    if (scroller) {
+      const updateScrollButton = () => {
+        showScrollToTop = scroller.scrollTop > threshold;
+      };
+
+      scroller.addEventListener('scroll', updateScrollButton);
+      updateScrollButton();
+
+      return () => {
+        scroller.removeEventListener('scroll', updateScrollButton);
+      }
+    }
   })
+
+  export function scrollToTop() {
+    const listScroller = getListScroller();
+    if (!listScroller) {
+      return;
+    }
+
+    const duration = 150;
+    const start = listScroller.scrollTop;
+    const startTime = performance.now();
+
+    function animate(now: number) {
+      if (!listScroller) {
+        return;
+      }
+
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - (1 - progress) ** 3;
+
+      listScroller.scrollTop = start * (1 - eased);
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    }
+
+    requestAnimationFrame(animate);
+  }
 </script>
 
 <QtHelpView
@@ -68,12 +127,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#snippet content()}
   <div
-    bind:clientHeight={virtualListHeight}
-    class='qt-item-list w-full h-full'
+    bind:this={listWrapperEl}
+    bind:clientHeight={listHeight}
+    class='qt-item-list w-full h-full relative'
+    onscroll={(event) => {
+      showScrollToTop = event.currentTarget.scrollTop > 100;
+    }}
   >
     <VirtualList
-      bind:this={virtualList}
-      height={virtualListHeight}
+      bind:this={listEl}
+      height={listHeight}
       scrollDirection='vertical'
       itemCount={all.length}
       itemSize={70}
@@ -82,6 +145,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         {@render _item(style, index)}
       {/snippet}
     </VirtualList>
+
+    {#if showScrollToTop}
+      {@render scrollToTopButton()}
+    {/if}
   </div>
 {/snippet}
 
@@ -112,6 +179,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {/each}
 {/snippet}
 
+{#snippet scrollToTopButton()}
+  <button
+    data-role='scroll-to-top'
+    class='absolute flex items-center justify-center'
+    onclick={() => {
+      scrollToTop();
+      // wrapperEl?.scrollTo({ top: 0 });
+      console.log(listWrapperEl);
+    }}
+  >
+    <ChevronUp />
+  </button>
+{/snippet}
 
 <style>
   [data-role='title'] {
@@ -124,6 +204,22 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     @apply whitespace-normal break-all;
     opacity: 0.5;
     color: var(--qt-text-muted);
+  }
+
+  [data-role='scroll-to-top'] {
+    right: 10px;
+    bottom: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    opacity: 0.8;
+    color: var(--qt-button-fg);
+    background: var(--qt-button-primary-bg);
+
+    &:hover {
+      opacity: 1.0;
+      cursor: pointer;
+    }
   }
 
   mark {
