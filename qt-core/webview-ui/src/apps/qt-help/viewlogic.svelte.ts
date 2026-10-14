@@ -12,9 +12,11 @@ import {
   type HtmlPageInfo,
   isQtDocRootInfo,
   type QtDocRootInfo,
+  type IndexMatch,
 } from '@shared/qt-help';
 import { data, ui, type UiMode } from './states.svelte';
 import * as docViewer from '../doc-viewer/viewlogic.svelte';
+import type { IndexOrHeader } from './types.svelte';
 
 export async function onAppMount() {
   await loadPackages();
@@ -45,7 +47,6 @@ export async function selectPackage(p: QtDocRootInfo) {
 
   await loadToc();
   await loadIndexes();
-
   const landing = `file://${ui.selected.package.fsPath}/qtdoc/index.html`;
   docViewer.openDoc(landing);
 }
@@ -61,11 +62,13 @@ export async function loadToc() {
 
 export async function loadIndexes() {
   const r = await vscode.post(CommandId.QtHelpReadIndexes);
-
-  if (Array.isArray(r) && r.every(isIndexMatch)) {
-    data.indexes = r.sort((a, b) => (a.name.localeCompare(b.name)));
-    updateFilteredIndex();
+  if (!Array.isArray(r) || !r.every(isIndexMatch)) {
+    return;
   }
+
+  data.indexes = sortIndexes(r);
+  ui.index.modified = modifyIndexList(data.indexes);
+  updateFilteredIndex();
 }
 
 export async function search(keyword: string) {
@@ -127,4 +130,43 @@ function toFileUri(info: HtmlPageInfo) {
   url.hash = info.anchor ?? '';
 
   return url;
+}
+
+function sortIndexes(raw: IndexMatch[]) {
+  const isSpecial = (s: string) => !/^[a-z0-9]/i.test(s);
+  return raw.sort((a, b) => {
+    const sa = isSpecial(a.name);
+    const sb = isSpecial(b.name);
+    if (sa !== sb) {
+      return sa ? 1 : -1;
+    }
+
+    return a.name.localeCompare(b.name);
+  });
+}
+
+function modifyIndexList(raw: IndexMatch[]) {
+  const result: IndexOrHeader[] = [];
+
+  for (let i = 0; i < raw.length; ++i) {
+    const current = raw[i];
+    const samePrev = raw[i - 1]?.name === current.name;
+    const sameNext = raw[i + 1]?.name === current.name;
+
+    if (!samePrev && sameNext) {
+      result.push({
+        type: 'section-header',
+        display: current.name
+      });
+    }
+
+    const type = (!samePrev && !sameNext) ? 'item' : 'section-item';
+    result.push({
+      type,
+      data: current,
+      display: (type === 'item') ? current.name : current.page.title
+    });
+  }
+
+  return result;
 }

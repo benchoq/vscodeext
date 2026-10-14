@@ -3,9 +3,16 @@
 
 import {
   type TocEntry,
+  type IndexMatch,
   type HtmlPageInfo,
   isSameHtmlPage,
 } from "@shared/qt-help";
+
+export interface IndexOrHeader {
+  type: 'item' | 'section-item' | 'section-header'
+  display: string
+  data?: IndexMatch
+}
 
 export interface TocTreeNode {
   id: number;

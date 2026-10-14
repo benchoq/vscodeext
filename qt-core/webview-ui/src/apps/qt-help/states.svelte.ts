@@ -9,7 +9,7 @@ import {
 } from '@shared/qt-help';
 import { TaskBusyRunner } from '@/comps/TaskBusyRunner.svelte';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
-import { TocTreeModel } from './types.svelte';
+import { TocTreeModel, type IndexOrHeader } from './types.svelte';
 
 export type UiMode = 'toc' | 'index' | 'text';
 
@@ -45,7 +45,8 @@ export const ui = $state({
 
   index: {
     filter: { keyword: '' },
-    filtered: [] as IndexMatch[]
+    filtered: [] as IndexMatch[],
+    modified: [] as IndexOrHeader[]
   },
 
   popovers: {

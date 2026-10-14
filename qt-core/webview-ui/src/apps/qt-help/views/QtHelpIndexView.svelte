@@ -5,7 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { untrack, onMount, type Snippet } from 'svelte';
-  import { Dot as Bullet } from '@lucide/svelte';
+  import { Dot } from '@lucide/svelte';
   import VirtualList from 'svelte-tiny-virtual-list';
 
   import QtHelpBaseView from './QtHelpBaseView.svelte';
@@ -13,27 +13,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
+  import { type IndexOrHeader } from '../types.svelte';
 
-  const all = $derived(ui.index.filtered);
+  const all = $derived(ui.index.modified);
   let virtualList: VirtualList;
   let virtualListHeight = $state(0);
   let inputEl = $state(undefined as HTMLInputElement | undefined);
-
-  type ItemType = 'unique' | 'duplicated-start' | 'duplicated' | 'duplicated-end';
-
-  function findItemType(index: number): ItemType {
-    const prev = all[index - 1];
-    const current = all[index];
-    const next = all[index + 1];
-
-    const samePrev = prev?.name === current.name;
-    const sameNext = next?.name === current.name;
-
-    if (samePrev && sameNext) return 'duplicated';
-    if (samePrev) return 'duplicated-end';
-    if (sameNext) return 'duplicated-start';
-    return 'unique';
-  }
 
   $effect(() => {
     void ui.index.filter.keyword;
@@ -89,46 +74,56 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 {#snippet  _item(style: string, index: number)}
-  {@const entry = all[index]}
-  {@const entryType = findItemType(index)}
+  {@const entry: IndexOrHeader = all[index]}
   {#if entry}
-    <!-- {#if entryType === 'duplicated-start'}
-      <span>{entry.name}</span>
-    {/if} -->
-
     <button
       {style}
-      class='item flex items-center'
-      // class:active={viewlogic.isCurrentDoc(entry.page)}
+      class='item flex flex-row items-center'
       onclick={() => {
-        viewlogic.openHtml(entry.page);
+        if (entry.type !== 'section-header' && entry.data?.page) {
+          viewlogic.openHtml(entry.data.page);
+        }
       }}
     >
-      {#if entryType.startsWith('duplicated')}
-        <Bullet class='shrink-0' />
-        <span data-role='title'>
-          {entry.page.title}
-        </span>
-      {:else}
-        {entry.name}
+      {#if entry.type === 'section-item'}
+        <Dot class='shrink-0 ml-4' />
       {/if}
+
+      <span
+        data-role={entry.type}
+        class='w-full h-full flex items-center'
+      >
+        {entry.display}
+      </span>
     </button>
   {/if}
 {/snippet}
 
 <style>
-  [data-role='title'] {
-    min-width: 0px;
-    overflow: hidden;
-    text-align: right;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: var(--qt-font-s);
-    color: var(--qt-text-muted);
-  }
-
   .qt-item-list {
     overflow: hidden;
   }
 
+  .item {
+    padding: 0px;
+  }
+
+  [data-role='item'],
+  [data-role='section-item'],
+  [data-role='section-header'] {
+    @apply truncate;
+    min-width: 0px;
+    text-align: left;
+    font-size: var(--qt-font-s);
+    color: var(--qt-text-muted);
+    padding: 3px 12px;
+  }
+
+  [data-role='section-item'] {
+    padding-left: 3px;
+  }
+
+  [data-role='section-header'] {
+    cursor: default;
+  }
 </style>
