@@ -13,7 +13,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 </script>
 
-<div class="h-full flex flex-col">
+<div class="h-full flex flex-col select-none">
   <QtHelpSidebarToolbar />
 
   <div class='w-full flex flex-row overflow-hidden h-full'>

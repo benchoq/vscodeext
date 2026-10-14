@@ -9,12 +9,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import VirtualList from 'svelte-tiny-virtual-list';
 
   import QtHelpBaseView from './QtHelpBaseView.svelte';
+  import QtHelpSearchInput from '../others/QtHelpSearchInput.svelte';
+
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
   const all = $derived(ui.index.filtered);
   let virtualList: VirtualList;
-  let inputEl: HTMLInputElement;
+  let virtualListHeight = $state(0);
+  let inputEl = $state(undefined as HTMLInputElement | undefined);
 
   type ItemType = 'unique' | 'duplicated-start' | 'duplicated' | 'duplicated-end';
 
@@ -40,8 +43,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   })
 
   onMount(() => {
-    inputEl.focus();
-    inputEl.select();
+    inputEl?.focus();
+    inputEl?.select();
   })
 </script>
 
@@ -52,59 +55,65 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 />
 
 {#snippet header()}
-  <span class='ml-1 items-center self-center'>
-    Index
-  </span>
+  <div class='flex flex-row w-full gap-2'>
+    <span class='self-center'>Index</span>
 
-  <input
-    bind:this={inputEl}
-    bind:value={ui.index.filter.keyword}
-    class='qt-input h-[26px] shrink-0 grow m-1 px-2'
-    placeholder='filter...'
-    oninput={() => {
-      viewlogic.updateFilteredIndex();
-    }}
-  />
+    <QtHelpSearchInput
+      bind:inputEl={inputEl}
+      bind:value={ui.index.filter.keyword}
+      placeholder='filter...'
+      onSearch={() => {
+        viewlogic.updateFilteredIndex();
+      }}
+    />
+  </div>
 {/snippet}
 
 {#snippet content()}
-  <div class='qt-item-list'>
+  <div
+    bind:clientHeight={virtualListHeight}
+    class='qt-item-list w-full h-full'
+  >
     <VirtualList
       bind:this={virtualList}
-      width='100%'
-      height="100%"
+      height={virtualListHeight}
+      scrollDirection='vertical'
       itemCount={all.length}
       itemSize={24}
     >
       {#snippet item({ style, index })}
-        {@const entry = all[index]}
-        {@const entryType = findItemType(index)}
-        {#if entry}
-          <!-- {#if entryType === 'duplicated-start'}
-            <span>{entry.name}</span>
-          {/if} -->
-
-          <button
-            {style}
-            class='item flex items-center'
-            // class:active={viewlogic.isCurrentDoc(entry.page)}
-            onclick={() => {
-              viewlogic.openHtml(entry.page);
-            }}
-          >
-            {#if entryType.startsWith('duplicated')}
-              <Bullet class='shrink-0' />
-              <span data-role='title'>
-                {entry.page.title}
-              </span>
-            {:else}
-              {entry.name}
-            {/if}
-          </button>
-        {/if}
+        {@render _item(style, index)}
       {/snippet}
     </VirtualList>
   </div>
+{/snippet}
+
+{#snippet  _item(style: string, index: number)}
+  {@const entry = all[index]}
+  {@const entryType = findItemType(index)}
+  {#if entry}
+    <!-- {#if entryType === 'duplicated-start'}
+      <span>{entry.name}</span>
+    {/if} -->
+
+    <button
+      {style}
+      class='item flex items-center'
+      // class:active={viewlogic.isCurrentDoc(entry.page)}
+      onclick={() => {
+        viewlogic.openHtml(entry.page);
+      }}
+    >
+      {#if entryType.startsWith('duplicated')}
+        <Bullet class='shrink-0' />
+        <span data-role='title'>
+          {entry.page.title}
+        </span>
+      {:else}
+        {entry.name}
+      {/if}
+    </button>
+  {/if}
 {/snippet}
 
 <style>

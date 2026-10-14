@@ -30,6 +30,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     inputEl.focus();
   }
 
+  function selectAll() {
+    inputEl.select();
+  }
+
   function onKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter') {
       trigger(0);
@@ -50,6 +54,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {placeholder}
     {disabled}
     oninput={() => trigger()}
+    onfocus={() => selectAll()}
     onkeydown={onKeydown}
   />
 

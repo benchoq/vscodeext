@@ -4,18 +4,28 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { onMount, type Snippet } from 'svelte';
+  import { onMount, type Snippet, untrack } from 'svelte';
+  import VirtualList from 'svelte-tiny-virtual-list';
 
   import QtHelpView from './QtHelpBaseView.svelte';
   import QtHelpSearchInput from '../others/QtHelpSearchInput.svelte';
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
-  let inputEl: HTMLInputElement;
+  let virtualList: VirtualList;
+  let virtualListHeight = $state(0);
+  let inputEl = $state(undefined as HTMLInputElement | undefined);
+
+  $effect(() => {
+    void ui.search.keyword;
+    untrack(() => {
+      virtualList.recomputeSizes?.(0);
+    });
+  })
 
   onMount(() => {
-    inputEl.focus();
-    inputEl.select();
+    inputEl?.focus();
+    inputEl?.select();
   })
 </script>
 
@@ -28,16 +38,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <!-- snippets -->
 {#snippet header()}
   <div class='flex flex-row w-full gap-2'>
-    <span class='items-center self-center'>
-      Search
-    </span>
+    <span class='self-center'>Search</span>
 
     <QtHelpSearchInput
       bind:inputEl={inputEl}
       bind:value={ui.search.keyword}
       placeholder='keyword...'
       onSearch={() => {
-        console.log(ui.search.keyword)
         viewlogic.search(ui.search.keyword);
       }}
     />
@@ -45,33 +52,49 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 {#snippet content()}
-  <div class='qt-item-list w-full flex flex-col'>
-    {#each data.fullText as entry, i (i)}
-      <button
-        class='item w-full flex flex-col'
-        class:active={viewlogic.isCurrentDoc(entry.page)}
-        onclick={() => {
-          viewlogic.openHtml(entry.page);
-        }}
-      >
-        <span data-role='title'>{entry.page.title}</span>
-        <span data-role='detail'>{entry.snippet}</span>
-      </button>
-    {/each}
+  <div
+    bind:clientHeight={virtualListHeight}
+    class='qt-item-list w-full h-full'
+  >
+    <VirtualList
+      bind:this={virtualList}
+      height={virtualListHeight}
+      scrollDirection='vertical'
+      itemCount={data.fullText.length}
+      itemSize={70}
+    >
+      {#snippet item({ style, index })}
+        {@render _item(style, index)}
+      {/snippet}
+    </VirtualList>
   </div>
+{/snippet}
+
+{#snippet _item(style: string, index: number)}
+  {@const entry = data.fullText[index]}
+  <button
+    {style}
+    class='item flex flex-col'
+    class:active={viewlogic.isCurrentDoc(entry.page)}
+    onclick={() => {
+      viewlogic.openHtml(entry.page);
+    }}
+  >
+    <span data-role='title'>{entry.page.title}</span>
+    <span data-role='detail'>{entry.snippet}</span>
+  </button>
 {/snippet}
 
 <style>
   [data-role='title'] {
-    @apply truncate;
+    @apply truncate text-left;
     color: var(--qt-text-default);
   }
 
   [data-role='detail'] {
-    @apply line-clamp-3;
+    @apply line-clamp-2 text-left;
+    @apply whitespace-normal break-all;
     opacity: 0.65;
-    white-space: normal;
-    word-break: break-all;
     color: var(--qt-text-muted);
   }
 </style>
