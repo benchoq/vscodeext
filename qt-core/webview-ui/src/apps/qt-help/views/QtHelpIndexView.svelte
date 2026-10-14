@@ -126,4 +126,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     font-size: var(--qt-font-s);
     color: var(--qt-text-muted);
   }
+
+  .qt-item-list {
+    overflow: hidden;
+  }
+
 </style>

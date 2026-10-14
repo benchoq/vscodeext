@@ -18,7 +18,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let listWrapperEl = $state<HTMLDivElement>();
 
   let inputEl = $state<HTMLInputElement | undefined>();
-  let showScrollToTop = $state(false);
+  let canScrollToTop = $state(false);
 
   const all = $derived(data.search.result);
 
@@ -67,7 +67,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       }
 
       const updateScrollButton = () => {
-        showScrollToTop = scroller.scrollTop > 200;
+        canScrollToTop = scroller.scrollTop > 200;
       };
 
       scroller.addEventListener('scroll', updateScrollButton);
@@ -85,6 +85,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       if (timeoutId !== undefined) {
         clearTimeout(timeoutId);
       }
+
       cleanup?.();
     };
   }
@@ -170,7 +171,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {/snippet}
     </VirtualList>
 
-    {#if showScrollToTop}
+    {#if canScrollToTop}
       {@render scrollToTopButton()}
     {/if}
   </div>
@@ -207,17 +208,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <button
     data-role='scroll-to-top'
     class='absolute flex items-center justify-center'
-    onclick={() => {
-      scrollToTop();
-      // wrapperEl?.scrollTo({ top: 0 });
-      console.log(listWrapperEl);
-    }}
+    onclick={scrollToTop}
   >
     <ChevronUp />
   </button>
 {/snippet}
 
 <style>
+  .qt-item-list {
+    overflow: hidden;
+  }
+
   [data-role='title'] {
     @apply truncate text-left;
     color: var(--qt-text-default);
