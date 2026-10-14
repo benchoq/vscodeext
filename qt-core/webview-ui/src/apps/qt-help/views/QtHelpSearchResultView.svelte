@@ -215,10 +215,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 <style>
-  .qt-item-list {
-    overflow: hidden;
-  }
-
   [data-role='title'] {
     @apply truncate text-left;
     color: var(--qt-text-default);
@@ -245,6 +241,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       opacity: 1.0;
       cursor: pointer;
     }
+  }
+
+  .qt-item-list {
+    overflow: hidden;
   }
 
   mark {

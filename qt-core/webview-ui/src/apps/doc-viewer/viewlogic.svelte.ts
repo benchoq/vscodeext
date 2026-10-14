@@ -110,8 +110,6 @@ function onKeydown(e: KeyboardEvent) {
 function onMessageFromIframe(e: MessageEvent) {
   switch (e.data?.id) {
     case IframeMessageId.EventLoaded: {
-      console.log(e.data);
-
       ui.iframe.errorCode = e.data.errorCode;
 
       if (ui.iframe.errorCode) {
