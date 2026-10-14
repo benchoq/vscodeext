@@ -32,6 +32,12 @@ export interface FullTextMatch {
   snippet: string;
 }
 
+export interface ParsedTitle {
+  title: string;
+  module?: string;
+  version?: string
+};
+
 export enum ViewerMessageId {
   Loaded = 'docbrowser-loaded',
   LoadPage = 'docbrowser-load-page',

@@ -5,6 +5,7 @@ import {
   type TocEntry,
   type IndexMatch,
   type HtmlPageInfo,
+  type ParsedTitle,
   isSameHtmlPage,
 } from "@shared/qt-help";
 
@@ -12,6 +13,7 @@ export interface IndexOrHeader {
   type: 'item' | 'section-item' | 'section-header'
   display: string
   data?: IndexMatch
+  parsedTitle?: ParsedTitle
 }
 
 export interface TocTreeNode {

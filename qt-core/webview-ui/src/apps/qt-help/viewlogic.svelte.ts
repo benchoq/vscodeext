@@ -9,10 +9,11 @@ import {
   isTocEntry,
   isIndexMatch,
   isFullTextMatch,
-  type HtmlPageInfo,
   isQtDocRootInfo,
+  type HtmlPageInfo,
   type QtDocRootInfo,
   type IndexMatch,
+  type ParsedTitle
 } from '@shared/qt-help';
 import { data, ui, type UiMode } from './states.svelte';
 import * as docViewer from '../doc-viewer/viewlogic.svelte';
@@ -161,16 +162,43 @@ function modifyIndexList(raw: IndexMatch[]) {
     }
 
     const type = (!samePrev && !sameNext) ? 'item' : 'section-item';
+    const parsedTitle = parseTitle(data.page.title);
     const display = (type === 'item')
       ? data.name
-      : stripQtVersionAtEnd(data.page.title);
+      : parsedTitle.title;
 
-    result.push({ type, data, display });
+    result.push({ type, data, display, parsedTitle });
   }
 
   return result;
 }
 
-function stripQtVersionAtEnd(s: string) {
-  return s.replace(/\s*\|\s*Qt\s+\d+(\.\d+)*\s*$/, '');
-}
+const QT_MODULE_RE = /^Qt\s+\S/;
+const QT_VERSION_RE = /^Qt\s+(\d+(?:\.\d+)*)$/;
+
+function parseTitle(s: string): ParsedTitle {
+  const [first = '', ...rest] = s
+    .split('|')
+    .map((p) => p.trim());
+
+  const titleParts = [first];
+  let module: string | undefined;
+  let version: string | undefined;
+
+  for (const p of rest) {
+    const v = QT_VERSION_RE.exec(p);
+    if (v && !version) {
+      version = v[1];
+    } else if (!module && QT_MODULE_RE.test(p)) {
+      module = p;
+    } else {
+      titleParts.push(p);
+    }
+  }
+
+  return {
+    title: titleParts.join(' | '),
+    module,
+    version
+  };
+};

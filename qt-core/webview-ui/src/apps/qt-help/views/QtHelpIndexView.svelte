@@ -5,7 +5,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { untrack, onMount, type Snippet } from 'svelte';
-  import { Dot } from '@lucide/svelte';
   import VirtualList from 'svelte-tiny-virtual-list';
 
   import QtHelpBaseView from './QtHelpBaseView.svelte';
@@ -78,23 +77,24 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {#if entry}
     <button
       {style}
-      class='item flex flex-row items-center'
+      class='item w-full flex flex-row items-center'
       onclick={() => {
         if (entry.type !== 'section-header' && entry.data?.page) {
           viewlogic.openHtml(entry.data.page);
         }
       }}
     >
-      {#if entry.type === 'section-item'}
-        <Dot class='shrink-0 ml-4' />
-      {/if}
-
       <span
         data-role={entry.type}
         class='w-full h-full flex items-center'
       >
         {entry.display}
       </span>
+
+      <span data-role='qt-module'>
+        {entry.parsedTitle?.module ?? ''}
+      </span>
+
     </button>
   {/if}
 {/snippet}
@@ -120,10 +120,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='section-item'] {
-    padding-left: 3px;
+    margin-left: 20px;
+    padding-left: 10px;
+    border-left:
+      1px solid
+      color-mix(in srgb, var(--qt-text-muted) 20%, transparent);
   }
 
   [data-role='section-header'] {
     cursor: default;
+  }
+
+  [data-role='qt-module'] {
+    padding: 0px 5px;
+    color: var(--qt-text-muted);
+    opacity: 0.5;
+    font-size: var(--qt-font-xs);
   }
 </style>

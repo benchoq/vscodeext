@@ -34,9 +34,9 @@ export const ui = $state({
   },
 
   sidebar: {
-    width: 300,
+    width: 350,
     min: 200,
-    max: 650
+    max: 600
   },
 
   search: {
