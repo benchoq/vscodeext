@@ -149,24 +149,28 @@ function modifyIndexList(raw: IndexMatch[]) {
   const result: IndexOrHeader[] = [];
 
   for (let i = 0; i < raw.length; ++i) {
-    const current = raw[i];
-    const samePrev = raw[i - 1]?.name === current.name;
-    const sameNext = raw[i + 1]?.name === current.name;
+    const data = raw[i];
+    const samePrev = raw[i - 1]?.name === data.name;
+    const sameNext = raw[i + 1]?.name === data.name;
 
     if (!samePrev && sameNext) {
       result.push({
         type: 'section-header',
-        display: current.name
+        display: data.name
       });
     }
 
     const type = (!samePrev && !sameNext) ? 'item' : 'section-item';
-    result.push({
-      type,
-      data: current,
-      display: (type === 'item') ? current.name : current.page.title
-    });
+    const display = (type === 'item')
+      ? data.name
+      : stripQtVersionAtEnd(data.page.title);
+
+    result.push({ type, data, display });
   }
 
   return result;
+}
+
+function stripQtVersionAtEnd(s: string) {
+  return s.replace(/\s*\|\s*Qt\s+\d+(\.\d+)*\s*$/, '');
 }
