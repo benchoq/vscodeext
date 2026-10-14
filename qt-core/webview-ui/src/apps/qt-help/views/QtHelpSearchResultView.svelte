@@ -15,6 +15,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let virtualList: VirtualList;
   let virtualListHeight = $state(0);
   let inputEl = $state(undefined as HTMLInputElement | undefined);
+  const all = $derived(data.search.result);
+
+  const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  function splitByKeyword(text: string, keyword: string) {
+    const words = keyword.trim().split(/\s+/).filter(Boolean);
+    if (!words.length) {
+      return [{ text, match: false }];
+    }
+
+    const re = new RegExp(`(${words.map(escape).join('|')})`, 'gi');
+    return text
+      .split(re)
+      .map((t, i) => ({ text: t, match: i % 2 === 1 }))
+      .filter((s) => s.text);
+  }
 
   $effect(() => {
     void ui.search.keyword;
@@ -32,7 +47,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <QtHelpView
   header={header as Snippet}
   content={content as Snippet}
-  itemCount={data.fullText.length}
+  itemCount={all.length}
 />
 
 <!-- snippets -->
@@ -60,7 +75,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       bind:this={virtualList}
       height={virtualListHeight}
       scrollDirection='vertical'
-      itemCount={data.fullText.length}
+      itemCount={all.length}
       itemSize={70}
     >
       {#snippet item({ style, index })}
@@ -71,7 +86,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 {#snippet _item(style: string, index: number)}
-  {@const entry = data.fullText[index]}
+  {@const entry = all[index]}
   <button
     {style}
     class='item flex flex-col'
@@ -81,9 +96,22 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }}
   >
     <span data-role='title'>{entry.page.title}</span>
-    <span data-role='detail'>{entry.snippet}</span>
+    <span data-role='detail'>
+      {@render highlight(entry.snippet)}
+    </span>
   </button>
 {/snippet}
+
+{#snippet highlight(text: string)}
+  {#each splitByKeyword(text, data.search.keyword) as s, i (i)}
+    {#if s.match}
+      <mark>{s.text}</mark>
+    {:else}
+      {s.text}
+    {/if}
+  {/each}
+{/snippet}
+
 
 <style>
   [data-role='title'] {
@@ -94,7 +122,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-role='detail'] {
     @apply line-clamp-2 text-left;
     @apply whitespace-normal break-all;
-    opacity: 0.65;
+    opacity: 0.5;
     color: var(--qt-text-muted);
+  }
+
+  mark {
+    color: var(--qt-button-fg);
+    background: var(--qt-button-primary-bg);
+    border-radius: var(--qt-radius-s);
+    padding: 1px;
   }
 </style>

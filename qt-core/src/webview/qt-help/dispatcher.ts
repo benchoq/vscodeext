@@ -65,7 +65,7 @@ export class QtHelpDispatcher extends DocViewerDispatcher {
   private readonly _onSearchFullText = async (cmd: Command) => {
     const keyword = String(_.get(cmd.payload, 'keyword', '')).trim();
 
-    const data = await this._data.searchFullText(keyword);
-    this.channel.replyData(cmd, data);
+    const result = await this._data.searchFullText(keyword);
+    this.channel.replyData(cmd, { result, keyword });
   };
 }

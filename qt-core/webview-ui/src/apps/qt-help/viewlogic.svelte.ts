@@ -1,6 +1,7 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
+import _ from 'lodash';
 import { vscode } from '@/apps/vscode';
 
 import { CommandId } from '@shared/message';
@@ -70,11 +71,12 @@ export async function loadIndexes() {
 
 export async function search(keyword: string) {
   const r = await vscode.post(CommandId.QtHelpSearchFullText, { keyword });
-  if (Array.isArray(r) && r.every(isFullTextMatch)) {
-    data.fullText = r;
-  }
+  const result = _.get(r, 'result', []);
 
-  console.log(r);
+  if (Array.isArray(result) && result.every(isFullTextMatch)) {
+    data.search.result = result;
+    data.search.keyword = String(_.get(r, 'keyword', keyword)).trim();
+  }
 }
 
 export async function updateFilteredIndex() {

@@ -17,7 +17,10 @@ export const data = $state({
 
   toc: [] as TocEntry[],
   indexes: [] as IndexMatch[],
-  fullText: [] as FullTextMatch[],
+  search: {
+    keyword: '',
+    result: [] as FullTextMatch[]
+  }
 });
 
 export const ui = $state({
