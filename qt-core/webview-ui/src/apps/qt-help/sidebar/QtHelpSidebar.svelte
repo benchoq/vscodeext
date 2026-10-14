@@ -4,6 +4,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import LoadingMask from '@/comps/LoadingMask.svelte';
+
   import QtHelpTocView from '../views/QtHelpTocView.svelte';
   import QtHelpIndexView from '../views/QtHelpIndexView.svelte';
   import QtHelpSearchResultView from '../views/QtHelpSearchResultView.svelte';
@@ -16,7 +18,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div class="h-full flex flex-col select-none">
   <QtHelpSidebarToolbar />
 
-  <div class='w-full flex flex-row overflow-hidden h-full'>
+  <div class='w-full flex flex-row overflow-hidden h-full relative'>
     <div data-role='view' class='grow truncate'>
       {#if ui.mode === 'index'}
         <QtHelpIndexView />
@@ -24,6 +26,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         <QtHelpSearchResultView />
       {:else}
         <QtHelpTocView />
+      {/if}
+
+      {#if ui.task.busy}
+        <LoadingMask
+          busy={true}
+          error={ui.task.error}
+          layout='col'
+          forceHidden={ui.task.isDebouncing}
+          busyText='Searching...'
+          closeText='Close'
+        />
       {/if}
     </div>
 

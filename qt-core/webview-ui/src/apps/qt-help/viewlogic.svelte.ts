@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import _ from 'lodash';
-import { vscode } from '@/apps/vscode';
 
+import { vscode } from '@/apps/vscode';
 import { CommandId } from '@shared/message';
 import {
   isTocEntry,
@@ -70,13 +70,17 @@ export async function loadIndexes() {
 }
 
 export async function search(keyword: string) {
-  const r = await vscode.post(CommandId.QtHelpSearchFullText, { keyword });
-  const result = _.get(r, 'result', []);
+  const task = async () => {
+    const r = await vscode.post(CommandId.QtHelpSearchFullText, { keyword });
+    const result = _.get(r, 'result', []);
 
-  if (Array.isArray(result) && result.every(isFullTextMatch)) {
-    data.search.result = result;
-    data.search.keyword = String(_.get(r, 'keyword', keyword)).trim();
+    if (Array.isArray(result) && result.every(isFullTextMatch)) {
+      data.search.result = result;
+      data.search.keyword = String(_.get(r, 'keyword', keyword)).trim();
+    }
   }
+
+  await ui.task.run(task, { debounceTime_ms: 50 });
 }
 
 export async function updateFilteredIndex() {

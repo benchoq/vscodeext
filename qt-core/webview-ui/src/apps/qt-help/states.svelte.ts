@@ -7,6 +7,7 @@ import {
   type FullTextMatch,
   type QtDocRootInfo,
 } from '@shared/qt-help';
+import { TaskBusyRunner } from '@/comps/TaskBusyRunner.svelte';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import { TocTreeModel } from './types.svelte';
 
@@ -27,6 +28,7 @@ export const ui = $state({
   theme: VscodeThemeMonitor.createController(),
   mode: 'toc' as UiMode,
   tocTree: new TocTreeModel(),
+  task: new TaskBusyRunner(),
   selected: {
     package: undefined as QtDocRootInfo | undefined,
   },
