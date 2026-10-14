@@ -24,7 +24,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <button
-  class='item flex align-start'
+  class='item flex align-start w-full'
   class:active={viewlogic.isCurrentDoc(page)}
   onclick={() => {
     ui.tocTree.toggleExpanded(node.id);

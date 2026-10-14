@@ -4,31 +4,36 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { type Snippet } from 'svelte';
   import { SquareMinus } from '@lucide/svelte';
 
-  import { countAsLocaleString } from '@/utils/format';
-  import { data, ui } from '../states.svelte';
+  import QtHelpBaseView from './QtHelpBaseView.svelte';
   import QtHelpTocTreeNode from './QtHelpTocTreeNode.svelte';
+  import { data, ui } from '../states.svelte';
 
-  const collapsible = $derived(ui.tocTree.expandedState !== 'empty');
+  const isCollapsible = $derived(ui.tocTree.expandedState !== 'empty');
 </script>
 
-<div
-  data-role='area'
-  class='flex flex-col h-full'
->
-  <div data-role='header' class='flex flex-row gap-1'>
-    <span class='w-full items-center self-center'>
+<QtHelpBaseView
+  header={header as Snippet}
+  content={content as Snippet}
+  itemCount={data.toc.length}
+/>
+
+<!-- snippets -->
+{#snippet header()}
+  <div class='flex flex-row w-full'>
+    <span class='items-center self-center'>
       Table of contents
     </span>
 
     <div class='grow'></div>
 
     <button
-      data-role='collapse'
+      data-role='collapse-button'
       class='qt-button'
-      style:visibility={collapsible ? 'visible' : 'hidden'}
-      disabled={!collapsible}
+      style:visibility={isCollapsible ? 'visible' : 'hidden'}
+      disabled={!isCollapsible}
       onclick={() => {
         ui.tocTree.setExpandedAll(false);
       }}
@@ -36,37 +41,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <SquareMinus />
     </button>
   </div>
+{/snippet}
 
-  <div class='qt-item-list h-full flex flex-col'>
+{#snippet content()}
+  <div class='qt-item-list w-full'>
     {#each ui.tocTree.topLevels as node (node.id)}
       <QtHelpTocTreeNode {node} />
     {/each}
   </div>
-
-  <span data-role='status' class='w-full text-right'>
-    Total {countAsLocaleString(data.toc.length)} entries
-  </span>
-</div>
+{/snippet}
 
 <style>
-  [data-role='area'] {
-    min-height: 0;
-    overflow: auto;
-  }
-
-  [data-role='header'] {
-    padding: 5px 5px 5px 10px;
-    border-bottom: 1px solid var(--qt-stroke-subtle);
-  }
-
-  [data-role='collapse'] {
+  [data-role='collapse-button'] {
     border: none;
     background: none;
-  }
-
-  [data-role='status'] {
-    padding: 5px 10px;
-    background: var(--qt-bg-subtle);
-    border-top: 1px solid var(--qt-stroke-subtle);
   }
 </style>

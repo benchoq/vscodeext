@@ -23,27 +23,25 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div class="w-screen h-screen flex flex-row">
-  <div data-body class='flex flex-row grow'>
-    <div style:width={`${ui.sidebar.width}px`} class="shrink-0">
-      <QtHelpSidebar />
-    </div>
+  <div style:width={`${ui.sidebar.width}px`} class="shrink-0">
+    <QtHelpSidebar />
+  </div>
 
-    {#if ui.popovers.qtVersions.visible}
-      <Popover
-        reference={ui.popovers.qtVersions.refEl}
-        placement='bottom'
-        offset={5}
-        onClose={() => {
-          ui.popovers.qtVersions.visible = false;
-        }}
-      >
-        <QtHelpQtVersionPopover />
-      </Popover>
-    {/if}
+  {#if ui.popovers.qtVersions.visible}
+    <Popover
+      reference={ui.popovers.qtVersions.refEl}
+      placement='bottom'
+      offset={5}
+      onClose={() => {
+        ui.popovers.qtVersions.visible = false;
+      }}
+    >
+      <QtHelpQtVersionPopover />
+    </Popover>
+  {/if}
 
-    <div class='w-full h-full relative'>
-      <DocViewerApp standalone={false} />
-      <QtHelpDocViewerMask />
-    </div>
+  <div class='w-full h-full overflow-x-hidden'>
+    <DocViewerApp standalone={false} />
+    <QtHelpDocViewerMask />
   </div>
 </div>

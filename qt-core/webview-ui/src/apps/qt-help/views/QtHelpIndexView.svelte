@@ -4,10 +4,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { untrack, onMount } from 'svelte';
+  import { untrack, onMount, type Snippet } from 'svelte';
   import { Dot as Bullet } from '@lucide/svelte';
   import VirtualList from 'svelte-tiny-virtual-list';
 
+  import QtHelpBaseView from './QtHelpBaseView.svelte';
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
@@ -44,30 +45,33 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   })
 </script>
 
-<div
-  data-role='area'
-  class='flex flex-col gap-1'
->
-  <div class='flex flex-row gap-1 p-0.5'>
-    <span class='ml-1 items-center self-center'>
-      Index
-    </span>
+<QtHelpBaseView
+  header={header as Snippet}
+  content={content as Snippet}
+  itemCount={all.length}
+/>
 
-    <input
-      bind:this={inputEl}
-      bind:value={ui.index.filter.keyword}
-      class='qt-input h-[26px] shrink-0 grow m-1 px-2'
-      placeholder='filter...'
-      oninput={() => {
-        viewlogic.updateFilteredIndex();
-      }}
-    />
-  </div>
+{#snippet header()}
+  <span class='ml-1 items-center self-center'>
+    Index
+  </span>
 
+  <input
+    bind:this={inputEl}
+    bind:value={ui.index.filter.keyword}
+    class='qt-input h-[26px] shrink-0 grow m-1 px-2'
+    placeholder='filter...'
+    oninput={() => {
+      viewlogic.updateFilteredIndex();
+    }}
+  />
+{/snippet}
+
+{#snippet content()}
   <div class='qt-item-list'>
     <VirtualList
       bind:this={virtualList}
-      width='100'
+      width='100%'
       height="100%"
       itemCount={all.length}
       itemSize={24}
@@ -101,20 +105,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {/snippet}
     </VirtualList>
   </div>
-
-  <div class='grow'></div>
-  <span class='p-2'>
-    Total {all.length} entries
-  </span>
-</div>
+{/snippet}
 
 <style>
-  [data-role='area'] {
-    height: 100%;
-    min-height: 0;
-    overflow: auto;
-  }
-
   [data-role='title'] {
     min-width: 0px;
     overflow: hidden;

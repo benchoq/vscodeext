@@ -9,7 +9,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from './viewlogic.svelte';
 </script>
 
-<div class="qt-popover w-[200px] p-2">
+<div class="qt-popover w-[200px] p-0.5">
   <div class='qt-item-list flex flex-col'>
     {#each data.packages as p, i (i)}
       {@const prev = data.packages[i - 1]}

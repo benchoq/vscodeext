@@ -4,9 +4,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import * as viewlogic from '../viewlogic.svelte';
+  import { onMount, type Snippet } from 'svelte';
+
+  import QtHelpView from './QtHelpBaseView.svelte';
   import { data, ui } from '../states.svelte';
+  import * as viewlogic from '../viewlogic.svelte';
 
   let inputEl: HTMLInputElement;
 
@@ -16,34 +18,38 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   })
 </script>
 
-<div
-  data-role='area'
-  class='flex flex-col h-full'
->
-  <div class='flex flex-row gap-1 p-0.5'>
-    <span class='ml-1 items-center self-center'>
-      Search
-    </span>
+<QtHelpView
+  header={header as Snippet}
+  content={content as Snippet}
+  itemCount={data.fullText.length}
+/>
 
-    <input
-      bind:this={inputEl}
-      bind:value={ui.search.keyword}
-      class='qt-input h-[26px] shrink-0 grow m-1 px-2'
-      placeholder='keyword...'
-      onfocus={() => {
-        inputEl.select();
-      }}
-      oninput={() => {
-        viewlogic.search(ui.search.keyword);
-      }}
-    />
-  </div>
+<!-- snippets -->
+{#snippet header()}
+  <span class='ml-1 items-center self-center'>
+    Search
+  </span>
 
+  <input
+    bind:this={inputEl}
+    bind:value={ui.search.keyword}
+    class='qt-input h-[26px] shrink-0 grow m-1 px-2'
+    placeholder='keyword...'
+    onfocus={() => {
+      inputEl.select();
+    }}
+    oninput={() => {
+      viewlogic.search(ui.search.keyword);
+    }}
+  />
+{/snippet}
+
+{#snippet content()}
   <div class='qt-item-list flex flex-col h-full'>
     {#each data.fullText as entry, i (i)}
       <button
         class='item flex flex-col align-start'
-        // class:active={viewlogic.isCurrentDoc(entry.page)}
+        class:active={viewlogic.isCurrentDoc(entry.page)}
         onclick={() => {
           viewlogic.openHtml(entry.page);
         }}
@@ -55,16 +61,4 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       </button>
     {/each}
   </div>
-
-  <span class='p-2'>
-    Total {data.fullText.length} entries
-  </span>
-</div>
-
-<style>
-  [data-role='area'] {
-    height: 100%;
-    min-height: 0;
-    overflow: auto;
-  }
-</style>
+{/snippet}
