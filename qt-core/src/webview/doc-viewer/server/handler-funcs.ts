@@ -9,13 +9,33 @@ import { type HttpContext, sendData, sendNotFound  } from './common';
 export type HandlerFunc = (c: HttpContext) => boolean;
 
 export function replaceCss(c: HttpContext, css: string) {
-  if (!c.req.fileName.startsWith('offline')
-    || !c.req.fileName.endsWith('.css')) {
-    return false;
+  // <head>
+  //   ...
+  //   <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  //   <script type="text/javascript">
+  //     document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+  //     // loading style sheet breaks anchors that were jumped to before
+  //     // so force jumping to anchor again
+  //     setTimeout(function() {
+  //         var anchor = location.hash;
+  //         // need to jump to different anchor first (e.g. none)
+  //         location.hash = "#";
+  //         setTimeout(function() {
+  //             location.hash = anchor;
+  //         }, 0);
+  //     }, 0);
+  //   </script>
+  // </head>
+
+  const skip = (c.req.fileName === 'offline-simple.css');
+  const replace = (c.req.fileName === 'offline.css');
+
+  if (skip || replace) {
+    sendData(c, skip ? '' : css);
+    return true;
   }
 
-  sendData(c, css);
-  return true;
+  return false;
 }
 
 export function injectScriptToHtml(c: HttpContext) {
