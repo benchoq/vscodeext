@@ -10,8 +10,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { createVerticalScroller } from '@/comps/VerticalScroller.svelte';
   import QtHelpView from './QtHelpBaseView.svelte';
   import QtHelpSearchInput from '../others/QtHelpSearchInput.svelte';
+  import QtHelpHighlightedText from '../others/QtHelpHighlightedText.svelte';
   import QtHelpScrollToTopButton from '../others/QtHelpScrollToTopButton.svelte';
-
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
@@ -21,20 +21,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   const all = $derived(data.search.result);
   const scroller = createVerticalScroller();
-
-  const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  function splitByKeyword(text: string, keyword: string) {
-    const words = keyword.trim().split(/\s+/).filter(Boolean);
-    if (!words.length) {
-      return [{ text, match: false }];
-    }
-
-    const re = new RegExp(`(${words.map(escape).join('|')})`, 'gi');
-    return text
-      .split(re)
-      .map((t, i) => ({ text: t, match: i % 2 === 1 }))
-      .filter((s) => s.text);
-  }
 
   $effect(() => {
     void ui.search.keyword;
@@ -108,19 +94,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   >
     <span data-role='title'>{entry.page.title}</span>
     <span data-role='detail'>
-      {@render highlight(entry.snippet)}
+      <QtHelpHighlightedText
+        text={entry.snippet}
+        keyword={data.search.keyword}
+      />
     </span>
   </button>
-{/snippet}
-
-{#snippet highlight(text: string)}
-  {#each splitByKeyword(text, data.search.keyword) as s, i (i)}
-    {#if s.match}
-      <mark>{s.text}</mark>
-    {:else}
-      {s.text}
-    {/if}
-  {/each}
 {/snippet}
 
 <style>
@@ -136,30 +115,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     color: var(--qt-text-muted);
   }
 
-  [data-role='scroll-to-top'] {
-    right: 10px;
-    bottom: 10px;
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
-    opacity: 0.8;
-    color: var(--qt-button-fg);
-    background: var(--qt-button-primary-bg);
-
-    &:hover {
-      opacity: 1.0;
-      cursor: pointer;
-    }
-  }
-
   .qt-item-list {
     overflow: hidden;
-  }
-
-  mark {
-    color: var(--qt-button-fg);
-    background: var(--qt-button-primary-bg);
-    border-radius: var(--qt-radius-s);
-    padding: 1px;
   }
 </style>
