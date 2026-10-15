@@ -17,7 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div data-role='view' class="h-full flex flex-col select-none">
   <QtHelpSidebarToolbar />
 
-  <div class='w-full flex flex-row overflow-hidden h-full relative'>
+  <div class='w-full h-full flex flex-row overflow-hidden relative'>
     <div class='grow truncate'>
       {#if ui.mode === 'index'}
         <QtHelpIndexView />
@@ -43,6 +43,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   [data-role='view'] {
+    background: var(--qt-bg-subtle);
     border-right: 1px solid var(--qt-stroke-subtle);
   }
 </style>

@@ -53,7 +53,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <style>
   [data-area='toolbar'] {
     padding: 7px;
-    background: var(--qt-bg-subtle);
+    background: var(--qt-bg-editor-tab);
     border-bottom: 1px solid var(--qt-stroke-subtle);
   }
 
