@@ -14,11 +14,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 </script>
 
-<div class="h-full flex flex-col select-none">
+<div data-role='view' class="h-full flex flex-col select-none">
   <QtHelpSidebarToolbar />
 
   <div class='w-full flex flex-row overflow-hidden h-full relative'>
-    <div data-role='view' class='grow truncate'>
+    <div class='grow truncate'>
       {#if ui.mode === 'index'}
         <QtHelpIndexView />
       {:else if ui.mode === 'text'}

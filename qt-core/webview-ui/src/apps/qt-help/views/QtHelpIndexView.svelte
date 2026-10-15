@@ -5,6 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { untrack, onMount, type Snippet } from 'svelte';
+  import { Dot } from '@lucide/svelte';
   import VirtualList from 'svelte-tiny-virtual-list';
 
   import { createVerticalScroller } from '@/comps/VerticalScroller.svelte';
@@ -106,12 +107,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         }
       }}
     >
-      <span
+      <div
         data-role={entry.type}
         class='w-full h-full flex items-center'
       >
+        {#if entry.type === 'section-item'}
+          <Dot />
+        {/if}
+
         {entry.display}
-      </span>
+    </div>
 
       {#if entry.parsedTitle?.module}
         <span
@@ -147,11 +152,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='section-item'] {
-    margin-left: 20px;
-    padding-left: 10px;
-    border-left:
-      1px solid
-      color-mix(in srgb, var(--qt-text-muted) 15%, transparent);
+    padding-left: 20px;
   }
 
   [data-role='section-header'] {
