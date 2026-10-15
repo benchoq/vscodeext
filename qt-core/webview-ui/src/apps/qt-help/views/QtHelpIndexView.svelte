@@ -77,7 +77,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {#if entry}
     <button
       {style}
-      class='item w-full flex flex-row items-center'
+      class='item w-full flex flex-row items-center group'
       onclick={() => {
         if (entry.type !== 'section-header' && entry.data?.page) {
           viewlogic.openHtml(entry.data.page);
@@ -91,7 +91,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         {entry.display}
       </span>
 
-      <span data-role='qt-module'>
+      <span
+        data-role='qt-module'
+        class='opacity-0 group-hover:opacity-100'
+      >
         {entry.parsedTitle?.module ?? ''}
       </span>
 
@@ -124,7 +127,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     padding-left: 10px;
     border-left:
       1px solid
-      color-mix(in srgb, var(--qt-text-muted) 20%, transparent);
+      color-mix(in srgb, var(--qt-text-muted) 15%, transparent);
   }
 
   [data-role='section-header'] {
@@ -134,7 +137,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-role='qt-module'] {
     padding: 0px 5px;
     color: var(--qt-text-muted);
-    opacity: 0.5;
     font-size: var(--qt-font-xs);
   }
 </style>
