@@ -8,21 +8,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ChevronUp } from '@lucide/svelte';
   import VirtualList from 'svelte-tiny-virtual-list';
 
+  import { createVerticalScroller } from '@/comps/VerticalScroller.svelte';
   import QtHelpView from './QtHelpBaseView.svelte';
   import QtHelpSearchInput from '../others/QtHelpSearchInput.svelte';
-  import * as scroller from '../others/Scroller.svelte';
 
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
   let listEl: VirtualList;
   let listHeight = $state(0);
-  let listWrapperEl: HTMLDivElement;
-
   let inputEl = $state<HTMLInputElement | undefined>();
-  // let canScrollToTop = $state(false);
 
   const all = $derived(data.search.result);
+  const scroller = createVerticalScroller();
 
   const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   function splitByKeyword(text: string, keyword: string) {
@@ -38,19 +36,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       .filter((s) => s.text);
   }
 
-  // function getListScroller() {
-  //   if (!listWrapperEl) {
-  //     return undefined;
-  //   }
-
-  //   const all = [
-  //     listWrapperEl,
-  //     ...listWrapperEl.querySelectorAll<HTMLElement>('*')
-  //   ]
-
-  //   return all.find((el) => el.scrollHeight > el.clientHeight);
-  // };
-
   $effect(() => {
     void ui.search.keyword;
     untrack(() => {
@@ -61,35 +46,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   onMount(() => {
     inputEl?.focus();
     inputEl?.select();
-    return scroller.hookScroller(listWrapperEl);
   })
 
-  // export function scrollToTop() {
-  //   const listScroller = getListScroller();
-  //   if (!listScroller) {
-  //     return;
-  //   }
-
-  //   const duration = 150;
-  //   const start = listScroller.scrollTop;
-  //   const startTime = performance.now();
-
-  //   function animate(now: number) {
-  //     if (!listScroller) {
-  //       return;
-  //     }
-
-  //     const progress = Math.min((now - startTime) / duration, 1);
-  //     const eased = 1 - (1 - progress) ** 3;
-
-  //     listScroller.scrollTop = start * (1 - eased);
-  //     if (progress < 1) {
-  //       requestAnimationFrame(animate);
-  //     }
-  //   }
-
-  //   requestAnimationFrame(animate);
-  // }
 </script>
 
 <QtHelpView
@@ -116,7 +74,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#snippet content()}
   <div
-    bind:this={listWrapperEl}
+    use:scroller.attach
     bind:clientHeight={listHeight}
     class='qt-item-list w-full h-full relative'
   >
@@ -132,7 +90,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {/snippet}
     </VirtualList>
 
-    {#if scroller.canScrollToTop()}
+    {#if scroller.scrolledEnough}
       {@render scrollToTopButton()}
     {/if}
   </div>
