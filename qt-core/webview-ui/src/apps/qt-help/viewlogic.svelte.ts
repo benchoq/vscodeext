@@ -89,12 +89,13 @@ export async function search(keyword: string) {
 export async function updateFilteredIndex() {
   const k = ui.index.filter.keyword.trim();
   if (k.length === 0) {
-    ui.index.filtered = data.indexes;
+    ui.index.filtered = ui.index.modified;
     return;
   }
 
-  ui.index.filtered = data.indexes.filter((v) => {
-    return (v.name.toLowerCase().indexOf(ui.index.filter.keyword.toLowerCase()) !== -1);
+  const keyword_lc = ui.index.filter.keyword.toLowerCase();
+  ui.index.filtered = ui.index.modified.filter((v) => {
+    return (v.name.toLowerCase().indexOf(keyword_lc) !== -1);
   });
 }
 
@@ -157,17 +158,19 @@ function modifyIndexList(raw: IndexMatch[]) {
     if (!samePrev && sameNext) {
       result.push({
         type: 'section-header',
+        name: data.name,
         display: data.name
       });
     }
 
     const type = (!samePrev && !sameNext) ? 'item' : 'section-item';
+    const name = data.name;
     const parsedTitle = parseTitle(data.page.title);
     const display = (type === 'item')
       ? data.name
       : parsedTitle.title;
 
-    result.push({ type, data, display, parsedTitle });
+    result.push({ type, name, data, display, parsedTitle });
   }
 
   return result;

@@ -45,7 +45,7 @@ export const ui = $state({
 
   index: {
     filter: { keyword: '' },
-    filtered: [] as IndexMatch[],
+    filtered: [] as IndexOrHeader[],
     modified: [] as IndexOrHeader[]
   },
 

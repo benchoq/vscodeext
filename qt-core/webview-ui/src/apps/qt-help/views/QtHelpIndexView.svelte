@@ -17,7 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from '../viewlogic.svelte';
   import { type IndexOrHeader } from '../types.svelte';
 
-  const all = $derived(ui.index.modified);
+  const all = $derived(ui.index.filtered);
 
   let virtualList: VirtualList;
   let virtualListHeight = $state(0);

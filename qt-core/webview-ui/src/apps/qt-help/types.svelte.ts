@@ -11,6 +11,7 @@ import {
 
 export interface IndexOrHeader {
   type: 'item' | 'section-item' | 'section-header'
+  name: string,
   display: string
   data?: IndexMatch
   parsedTitle?: ParsedTitle

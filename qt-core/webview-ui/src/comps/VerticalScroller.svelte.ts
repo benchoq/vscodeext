@@ -47,8 +47,6 @@ export function createVerticalScroller() {
   }
 
   function onTargetScrolled() {
-    console.log('scrolled', targetEl, targetEl?.scrollTop);
-
     scrolledEnough =
       (targetEl?.scrollTop ?? 0) > ScrollToTopThresholdPx;
   }
