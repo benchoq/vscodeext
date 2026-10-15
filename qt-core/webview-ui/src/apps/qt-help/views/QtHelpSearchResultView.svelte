@@ -10,15 +10,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import QtHelpView from './QtHelpBaseView.svelte';
   import QtHelpSearchInput from '../others/QtHelpSearchInput.svelte';
+  import * as scroller from '../others/Scroller.svelte';
+
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
   let listEl: VirtualList;
   let listHeight = $state(0);
-  let listWrapperEl = $state<HTMLDivElement>();
+  let listWrapperEl: HTMLDivElement;
 
   let inputEl = $state<HTMLInputElement | undefined>();
-  let canScrollToTop = $state(false);
+  // let canScrollToTop = $state(false);
 
   const all = $derived(data.search.result);
 
@@ -36,59 +38,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       .filter((s) => s.text);
   }
 
-  function getListScroller() {
-    if (!listWrapperEl) {
-      return undefined;
-    }
+  // function getListScroller() {
+  //   if (!listWrapperEl) {
+  //     return undefined;
+  //   }
 
-    const all = [
-      listWrapperEl,
-      ...listWrapperEl.querySelectorAll<HTMLElement>('*')
-    ]
+  //   const all = [
+  //     listWrapperEl,
+  //     ...listWrapperEl.querySelectorAll<HTMLElement>('*')
+  //   ]
 
-    return all.find((el) => el.scrollHeight > el.clientHeight);
-  };
-
-   function hookScroller() {
-    let disposed = false;
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
-    let cleanup: (() => void) | undefined;
-
-    function attach() {
-      if (disposed) {
-        return;
-      }
-
-      const scroller = getListScroller();
-
-      if (!scroller) {
-        timeoutId = setTimeout(attach, 100);
-        return;
-      }
-
-      const updateScrollButton = () => {
-        canScrollToTop = scroller.scrollTop > 200;
-      };
-
-      scroller.addEventListener('scroll', updateScrollButton);
-      updateScrollButton();
-
-      cleanup = () => {
-        scroller.removeEventListener('scroll', updateScrollButton);
-      };
-    }
-
-    requestAnimationFrame(attach);
-
-    return () => {
-      disposed = true;
-      if (timeoutId !== undefined) {
-        clearTimeout(timeoutId);
-      }
-
-      cleanup?.();
-    };
-  }
+  //   return all.find((el) => el.scrollHeight > el.clientHeight);
+  // };
 
   $effect(() => {
     void ui.search.keyword;
@@ -100,35 +61,35 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   onMount(() => {
     inputEl?.focus();
     inputEl?.select();
-    return hookScroller();
+    return scroller.hookScroller(listWrapperEl);
   })
 
-  export function scrollToTop() {
-    const listScroller = getListScroller();
-    if (!listScroller) {
-      return;
-    }
+  // export function scrollToTop() {
+  //   const listScroller = getListScroller();
+  //   if (!listScroller) {
+  //     return;
+  //   }
 
-    const duration = 150;
-    const start = listScroller.scrollTop;
-    const startTime = performance.now();
+  //   const duration = 150;
+  //   const start = listScroller.scrollTop;
+  //   const startTime = performance.now();
 
-    function animate(now: number) {
-      if (!listScroller) {
-        return;
-      }
+  //   function animate(now: number) {
+  //     if (!listScroller) {
+  //       return;
+  //     }
 
-      const progress = Math.min((now - startTime) / duration, 1);
-      const eased = 1 - (1 - progress) ** 3;
+  //     const progress = Math.min((now - startTime) / duration, 1);
+  //     const eased = 1 - (1 - progress) ** 3;
 
-      listScroller.scrollTop = start * (1 - eased);
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    }
+  //     listScroller.scrollTop = start * (1 - eased);
+  //     if (progress < 1) {
+  //       requestAnimationFrame(animate);
+  //     }
+  //   }
 
-    requestAnimationFrame(animate);
-  }
+  //   requestAnimationFrame(animate);
+  // }
 </script>
 
 <QtHelpView
@@ -171,7 +132,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {/snippet}
     </VirtualList>
 
-    {#if canScrollToTop}
+    {#if scroller.canScrollToTop()}
       {@render scrollToTopButton()}
     {/if}
   </div>
@@ -208,7 +169,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <button
     data-role='scroll-to-top'
     class='absolute flex items-center justify-center'
-    onclick={scrollToTop}
+    onclick={scroller.scrollToTop}
   >
     <ChevronUp />
   </button>
