@@ -5,12 +5,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { onMount, type Snippet, untrack } from 'svelte';
-  import { ChevronUp } from '@lucide/svelte';
   import VirtualList from 'svelte-tiny-virtual-list';
 
   import { createVerticalScroller } from '@/comps/VerticalScroller.svelte';
   import QtHelpView from './QtHelpBaseView.svelte';
   import QtHelpSearchInput from '../others/QtHelpSearchInput.svelte';
+  import QtHelpScrollToTopButton from '../others/QtHelpScrollToTopButton.svelte';
 
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
@@ -91,7 +91,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </VirtualList>
 
     {#if scroller.scrolledEnough}
-      {@render scrollToTopButton()}
+      <QtHelpScrollToTopButton onClicked={() => scroller.scrollToTop()} />
     {/if}
   </div>
 {/snippet}
@@ -121,16 +121,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {s.text}
     {/if}
   {/each}
-{/snippet}
-
-{#snippet scrollToTopButton()}
-  <button
-    data-role='scroll-to-top'
-    class='absolute flex items-center justify-center'
-    onclick={scroller.scrollToTop}
-  >
-    <ChevronUp />
-  </button>
 {/snippet}
 
 <style>
