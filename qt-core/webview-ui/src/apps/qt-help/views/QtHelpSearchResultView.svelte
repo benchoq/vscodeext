@@ -15,17 +15,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
-  let listEl: VirtualList;
-  let listHeight = $state(0);
-  let inputEl = $state<HTMLInputElement | undefined>();
-
   const all = $derived(data.search.result);
+
+  let virtualList: VirtualList;
+  let virtualListHeight = $state(0);
+  let inputEl = $state<HTMLInputElement | undefined>();
   const scroller = createVerticalScroller();
 
   $effect(() => {
     void ui.search.keyword;
     untrack(() => {
-      listEl.recomputeSizes?.(0);
+      virtualList.recomputeSizes?.(0);
     });
   })
 
@@ -61,12 +61,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {#snippet content()}
   <div
     use:scroller.attach
-    bind:clientHeight={listHeight}
+    bind:clientHeight={virtualListHeight}
     class='qt-item-list w-full h-full relative'
   >
     <VirtualList
-      bind:this={listEl}
-      height={listHeight}
+      bind:this={virtualList}
+      height={virtualListHeight}
       scrollDirection='vertical'
       itemCount={all.length}
       itemSize={70}

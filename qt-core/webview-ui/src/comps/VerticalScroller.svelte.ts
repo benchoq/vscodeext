@@ -47,6 +47,8 @@ export function createVerticalScroller() {
   }
 
   function onTargetScrolled() {
+    console.log('scrolled', targetEl, targetEl?.scrollTop);
+
     scrolledEnough =
       (targetEl?.scrollTop ?? 0) > ScrollToTopThresholdPx;
   }
@@ -102,8 +104,11 @@ export function createVerticalScroller() {
 
 // helpers
 function getScrollTarget(el: HTMLElement | undefined) {
-  const selector = 'div.virtual-list-wrapper';
-  return el?.querySelector<HTMLDivElement>(selector) ?? undefined;
+  const children = Array.from(el?.children ?? []);
+  return children.find((el): el is HTMLDivElement =>
+    el instanceof HTMLDivElement &&
+    /auto|scroll/.test(getComputedStyle(el).overflowY)
+  );
 }
 
 function calcAnimationFrame(

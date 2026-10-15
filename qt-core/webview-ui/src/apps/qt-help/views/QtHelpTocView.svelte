@@ -7,10 +7,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { type Snippet } from 'svelte';
   import { SquareMinus } from '@lucide/svelte';
 
+  import { createVerticalScroller } from '@/comps/VerticalScroller.svelte';
+  import QtHelpScrollToTopButton from '../others/QtHelpScrollToTopButton.svelte';
   import QtHelpBaseView from './QtHelpBaseView.svelte';
   import QtHelpTocTreeNode from './QtHelpTocTreeNode.svelte';
   import { data, ui } from '../states.svelte';
 
+  const scroller = createVerticalScroller();
   const isCollapsible = $derived(ui.tocTree.expandedState !== 'empty');
 </script>
 
@@ -44,10 +47,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 {#snippet content()}
-  <div class='qt-item-list w-full'>
-    {#each ui.tocTree.topLevels as node (node.id)}
-      <QtHelpTocTreeNode {node} />
-    {/each}
+  <div
+    use:scroller.attach
+    class='w-full h-full relative'
+  >
+    <div class='qt-item-list w-full h-full'>
+      {#each ui.tocTree.topLevels as node (node.id)}
+        <QtHelpTocTreeNode {node} />
+      {/each}
+    </div>
+
+    {#if scroller.scrolledEnough}
+      <QtHelpScrollToTopButton onClicked={() => scroller.scrollToTop()} />
+    {/if}
   </div>
 {/snippet}
 

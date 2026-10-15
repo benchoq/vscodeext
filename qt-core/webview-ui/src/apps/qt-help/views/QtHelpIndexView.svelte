@@ -7,8 +7,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { untrack, onMount, type Snippet } from 'svelte';
   import VirtualList from 'svelte-tiny-virtual-list';
 
+  import { createVerticalScroller } from '@/comps/VerticalScroller.svelte';
   import QtHelpBaseView from './QtHelpBaseView.svelte';
   import QtHelpSearchInput from '../others/QtHelpSearchInput.svelte';
+  import QtHelpScrollToTopButton from '../others/QtHelpScrollToTopButton.svelte';
 
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
@@ -20,6 +22,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let virtualListHeight = $state(0);
   let inputEl = $state(undefined as HTMLInputElement | undefined);
   let hovered = $state<IndexOrHeader | undefined>();
+  const scroller = createVerticalScroller();
 
   function isModuleNameVisible(entry: IndexOrHeader) {
     const n1 = entry.data?.name;
@@ -67,8 +70,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#snippet content()}
   <div
+    use:scroller.attach
     bind:clientHeight={virtualListHeight}
-    class='qt-item-list w-full h-full'
+    class='qt-item-list w-full h-full relative'
   >
     <VirtualList
       bind:this={virtualList}
@@ -81,6 +85,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         {@render _item(style, index)}
       {/snippet}
     </VirtualList>
+
+    {#if scroller.scrolledEnough}
+      <QtHelpScrollToTopButton onClicked={() => scroller.scrollToTop()} />
+    {/if}
   </div>
 {/snippet}
 
