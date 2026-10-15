@@ -15,9 +15,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { type IndexOrHeader } from '../types.svelte';
 
   const all = $derived(ui.index.modified);
+
   let virtualList: VirtualList;
   let virtualListHeight = $state(0);
   let inputEl = $state(undefined as HTMLInputElement | undefined);
+  let hovered = $state<IndexOrHeader | undefined>();
+
+  function isModuleNameVisible(entry: IndexOrHeader) {
+    const n1 = entry.data?.name;
+    const n2 = hovered?.data?.name;
+
+    return n1 !== undefined
+      && n2 !== undefined
+      && (n1.length !== 0)
+      && (n1 === n2)
+  }
 
   $effect(() => {
     void ui.index.filter.keyword;
@@ -77,7 +89,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {#if entry}
     <button
       {style}
-      class='item w-full flex flex-row items-center group'
+      class='item w-full flex flex-row items-center relative'
+      onmouseenter={() => (hovered = entry)}
+      onmouseleave={() => (hovered = undefined)}
       onclick={() => {
         if (entry.type !== 'section-header' && entry.data?.page) {
           viewlogic.openHtml(entry.data.page);
@@ -91,13 +105,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         {entry.display}
       </span>
 
-      <span
-        data-role='qt-module'
-        class='opacity-0 group-hover:opacity-100'
-      >
-        {entry.parsedTitle?.module ?? ''}
-      </span>
-
+      {#if entry.parsedTitle?.module}
+        <span
+          data-role='qt-module'
+          class='qt-absolute-cy'
+          style:opacity={isModuleNameVisible(entry) ? 1 : 0}
+        >
+          {entry.parsedTitle.module}
+        </span>
+      {/if}
     </button>
   {/if}
 {/snippet}
@@ -135,8 +151,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='qt-module'] {
+    right: 0px;
     padding: 0px 5px;
+    margin-right: 2px;
     color: var(--qt-text-muted);
     font-size: var(--qt-font-xs);
+    background: var(--qt-bg-elevated);
+    border: 1px solid var(--qt-stroke-subtle);
+    border-radius: var(--qt-radius-s);
+    transition: opacity var(--qt-duration-fast);
   }
 </style>
