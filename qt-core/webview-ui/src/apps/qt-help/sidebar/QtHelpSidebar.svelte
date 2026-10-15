@@ -10,7 +10,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import QtHelpIndexView from '../views/QtHelpIndexView.svelte';
   import QtHelpSearchResultView from '../views/QtHelpSearchResultView.svelte';
   import QtHelpSidebarToolbar from './QtHelpSidebarToolbar.svelte';
-  import QtHelpSidebarResizeHandle from './QtHelpSidebarResizeHandle.svelte';
   import { ui } from '../states.svelte';
 
 </script>
@@ -39,8 +38,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         />
       {/if}
     </div>
-
-    <QtHelpSidebarResizeHandle />
   </div>
 </div>
 

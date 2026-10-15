@@ -39,7 +39,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div
-  data-resize-handle
+  data-role='resize-handle'
   class:dragging
   class='flex h-full items-center select-none'
   onpointerdown={startResize}
@@ -54,7 +54,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <style>
-  [data-resize-handle] {
+  [data-role='resize-handle'] {
     width: 5px;
     flex-shrink: 0;
     cursor: col-resize;
