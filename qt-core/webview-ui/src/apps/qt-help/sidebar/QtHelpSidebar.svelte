@@ -11,7 +11,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import QtHelpSearchResultView from '../views/QtHelpSearchResultView.svelte';
   import QtHelpSidebarToolbar from './QtHelpSidebarToolbar.svelte';
   import { ui } from '../states.svelte';
+  import { isUiTaskName } from '../types.svelte';
 
+  const busyText = $derived.by(() => {
+    const name_s = ui.task.recentOptions?.name ?? '';
+    if (isUiTaskName(name_s) && (name_s === 'search')) {
+      return 'Searching...';
+    }
+
+    return 'Loading...';
+  })
 </script>
 
 <div data-role='view' class="h-full flex flex-col select-none">
@@ -33,7 +42,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
           error={ui.task.error}
           layout='col'
           forceHidden={ui.task.isDebouncing}
-          busyText='Searching...'
+          busyText={busyText}
           closeText='Close'
         />
       {/if}

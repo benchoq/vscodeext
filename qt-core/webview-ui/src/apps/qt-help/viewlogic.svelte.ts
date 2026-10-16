@@ -17,7 +17,7 @@ import {
 } from '@shared/qt-help';
 import { data, ui, type UiMode } from './states.svelte';
 import * as docViewer from '../doc-viewer/viewlogic.svelte';
-import type { IndexOrHeader } from './types.svelte';
+import type { IndexOrHeader, UiTaskName } from './types.svelte';
 
 export async function onAppMount() {
   await loadPackages();
@@ -58,9 +58,8 @@ export async function selectPackage(p: QtDocRootInfo) {
     await loadIndexes();
   };
 
-  await ui.task.run(task, { debounceTime_ms: 0 });
+  await runTask(task, 'select-package');
   docViewer.openDoc(`file://${p.fsPath}/qtdoc/index.html`);
-
 }
 
 export async function revealPackageFolder(p: QtDocRootInfo) {
@@ -100,7 +99,7 @@ export async function search(keyword: string) {
     }
   }
 
-  await ui.task.run(task, { debounceTime_ms: 50 });
+  await runTask(task, 'search');
 }
 
 export async function updateFilteredIndex() {
@@ -222,3 +221,10 @@ function parseTitle(s: string): ParsedTitle {
     version
   };
 };
+
+async function runTask(task: () => Promise<void> | void, name: UiTaskName) {
+  await ui.task.run(task, {
+    name,
+    debounceTime_ms: (name === 'select-package' ? 0 : 50),
+  });
+}

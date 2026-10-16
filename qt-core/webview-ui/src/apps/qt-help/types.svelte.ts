@@ -25,7 +25,14 @@ export interface TocTreeNode {
 
 export type FindAction = 'new' | 'prev' | 'next' | 'clear';
 export type PageLoadContext = 'list' | 'history' | '';
+export type UiTaskName = 'search' | 'select-package';
 
+// type guard functions
+export function isUiTaskName(x: string): x is UiTaskName {
+  return (x === 'search' || x === 'select-package');
+}
+
+// util classes
 export class TocTreeModel {
   private _topLevels = $state([] as TocTreeNode[]);
   private _expandedIds = $state(new Set<number>());
