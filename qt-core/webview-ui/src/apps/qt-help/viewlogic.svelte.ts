@@ -58,15 +58,19 @@ export async function selectPackage(p: QtDocRootInfo) {
     await loadIndexes();
 
     // redirect to home
-    const home = _.get(r, 'homeUri', '');
-    if (home) {
-      docViewer.openDoc(home);
-    } else {
-      docViewer.reset();
-    }
+    ui.home = _.get(r, 'homeUri', '');
+    openHomeOrReset();
   };
 
   await runTask(task, 'select-package');
+}
+
+export async function openHomeOrReset() {
+  if (ui.home) {
+    docViewer.openDoc(ui.home);
+  } else {
+    docViewer.reset();
+  }
 }
 
 export async function revealPackageFolder(p: QtDocRootInfo) {
