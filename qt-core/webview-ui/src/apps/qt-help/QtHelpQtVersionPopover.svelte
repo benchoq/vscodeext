@@ -32,14 +32,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         <Separator />
       {/if}
 
-      <div
-        class='item w-full relative group bg-amber-300'
+      <button
+        class='item w-full flex group relative'
         class:active={ui.selected.package === p}
         use:tooltip={{ text: p.fsPath, placement: 'right', delay: 0 }}
+        onclick={(e: MouseEvent) => {
+          void viewlogic.selectPackage(p);
+          ui.popovers.qtVersions.visible = false;
+          e.stopPropagation();
+        }}
       >
-        {@render itemButton(p)}
+        <span data-role='version'>Qt-{p.version}</span>
         {@render revealButton(p)}
-      </div>
+      </button>
     {/each}
 
     {@render footer()}
@@ -47,20 +52,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <!-- snippets -->
-{#snippet itemButton(p: QtDocRootInfo)}
-  <button
-    class='w-full flex cursor-pointer'
-    class:active={ui.selected.package === p}
-    onclick={(e: MouseEvent) => {
-      void viewlogic.selectPackage(p);
-      ui.popovers.qtVersions.visible = false;
-      e.stopPropagation();
-    }}
-  >
-    <span data-role='version'>Qt-{p.version}</span>
-  </button>
-{/snippet}
-
 {#snippet revealButton(p: QtDocRootInfo)}
   <div
     data-role='reveal-button'
@@ -84,7 +75,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#snippet footer()}
   <Separator />
-  <div data-role='footer' class='w-full flex flex-row gap-2'>
+  <div data-role='footer' class='w-full flex flex-row gap-2 select-none'>
     <div class='grow'></div>
     <PackageCheck />
     <span data-role='annotation'>{annotation}</span>
