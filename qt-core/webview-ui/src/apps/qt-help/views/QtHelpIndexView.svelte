@@ -95,6 +95,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <button
       {style}
       class='item w-full flex flex-row items-center relative'
+      class:active={entry.data?.page && viewlogic.isCurrentDoc(entry.data?.page)}
       onmouseenter={() => (hovered = entry)}
       onmouseleave={() => (hovered = undefined)}
       onclick={() => {
