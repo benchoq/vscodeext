@@ -106,9 +106,14 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
       const parsed = Uri.parse(uri_s, true);
       const redirect = this._docServer.getRedirectUri(parsed);
 
-      if (this._docServer.isServableUri(redirect)) {
+      if (this._docServer.matchesOrigin(redirect)) {
         if (!fsFile(redirect.path).exists()) {
-          this.channel.replyData(cmd, { uri_s, status: 'qt-doc:not-exists'});
+          this.channel.replyData(cmd, {
+            uri_s,
+            status: 'qt-doc:not-exists',
+            errorCode: '404',
+            errorUri: redirect.toString(),
+          });
           return;
         }
 

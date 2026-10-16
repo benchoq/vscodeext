@@ -72,7 +72,7 @@ export class DocViewerHttpServer implements Disposable {
     return uri;
   }
 
-  public isServableUri(uri: Uri){
+  public matchesOrigin(uri: Uri){
     return (uri.scheme === this._scheme) && (uri.authority === this._authority);
   }
 

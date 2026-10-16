@@ -22,6 +22,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import './DocViewerToolbar.css';
 
   let inputEl = $state(undefined as HTMLInputElement | undefined);
+  const value = $derived(ui.iframe.errorCode ? '' : ui.iframe.title);
   const bookmarked = $derived(viewlogic.bookmark.has(
     helpers.toPersistentUri(ui.iframe.src)
   ));
@@ -100,9 +101,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <div class='grow flex relative'>
     <input
       bind:this={inputEl}
-      value={ui.iframe.title}
+      value={value}
       title={helpers.toDisplayUri(ui.iframe.src)}
       class='qt-input grow self-stretch pl-2 pr-[30px]'
+      readonly={true}
       onfocus={() => { selectAll(); }}
     />
 

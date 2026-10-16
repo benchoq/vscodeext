@@ -49,7 +49,11 @@ export async function openDoc(uri: string, forceNewWindow = false) {
   if (serviceUri) {
     ui.iframe.src = serviceUri;
     ui.iframe.errorCode = undefined;
+    return;
   }
+
+  ui.iframe.src = String(_.get(r, 'errorUri', '')).trim();
+  trySetError(String(_.get(r, 'errorCode', '')).trim());
 }
 
 export function navigate(dir: 'back' | 'forward') {
@@ -107,14 +111,25 @@ function onKeydown(e: KeyboardEvent) {
   }
 }
 
+function trySetError(code: unknown) {
+  if (typeof code !== 'string') {
+    return;
+  }
+
+  ui.iframe.errorCode = code;
+
+  if (ui.iframe.errorCode) {
+    ui.iframe.hoveredUri = '';
+    void vscode.post(CommandId.DocViewerSetViewerState, { title: 'Error' });
+  }
+}
+
 function onMessageFromIframe(e: MessageEvent) {
   switch (e.data?.id) {
     case IframeMessageId.EventLoaded: {
-      ui.iframe.errorCode = e.data.errorCode;
+      trySetError(e.data.errorCode);
 
       if (ui.iframe.errorCode) {
-        ui.iframe.hoveredUri = '';
-        void vscode.post(CommandId.DocViewerSetViewerState, { title: 'Error' });
         return;
       }
 
