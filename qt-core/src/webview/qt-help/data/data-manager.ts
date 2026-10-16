@@ -4,10 +4,11 @@
 import _ from 'lodash';
 import * as path from 'path';
 import {
+  Uri,
   ExtensionContext as Context
 } from 'vscode';
 
-import { fsDir } from '@/fs-utils';
+import { fsDir, fsFile } from '@/fs-utils';
 import { QchReader } from './qch-reader';
 import { HtmlFullTextIndex } from './text-search';
 import { findDocRoots } from './qt-discovery';
@@ -51,6 +52,16 @@ export class QtHelpDataManager {
 
     this._selectedPackage = p;
     this._rebuild(p.fsPath);
+  }
+
+  public getHomeUri() {
+    const base = this._selectedPackage?.fsPath ?? '';
+    const home = path.join(base, 'qtdoc/index.html');
+    if (path.isAbsolute(home) && fsFile(home).exists()) {
+      return Uri.file(home).toString();
+    }
+
+    return '';
   }
 
   public async readToc() {

@@ -50,7 +50,7 @@ export class QtHelpDispatcher extends DocViewerDispatcher {
     }
 
     this._data.selectPackage(p);
-    this.channel.replyDone(cmd);
+    this.channel.replyData(cmd, { homeUri: this._data.getHomeUri() });
   };
 
   private readonly _onRevealPackageFolder = (cmd: Command) => {

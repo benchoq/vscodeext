@@ -39,6 +39,19 @@ export function currentServiceUri() {
   return ui.iframe.src;
 }
 
+export async function reset() {
+  // TODO
+  ui.iframe.src = '';
+  ui.iframe.title = '';
+  ui.iframe.errorCode = '';
+  ui.iframe.hoveredUri = '';
+
+  await vscode.post(CommandId.DocViewerSetViewerState, {
+    uri: '',
+    title: ''
+  });
+}
+
 export async function openDoc(uri: string, forceNewWindow = false) {
   const r = await vscode.post(CommandId.DocViewerOpenDoc, {
     uri,
