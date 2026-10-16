@@ -89,6 +89,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   --qt-info-border: var(--vscode-inputValidation-infoBorder);
 
   /* Texts */
+  --qt-font-2xl: calc(var(--qt-font-m) + 3px);
+  --qt-font-xl:  calc(var(--qt-font-m) + 2px);
+  --qt-font-lg:  calc(var(--qt-font-m) + 1px);
   --qt-font-m:   13px;
   --qt-font-s:   calc(var(--qt-font-m) - 1px);
   --qt-font-xs:  calc(var(--qt-font-m) - 2px);

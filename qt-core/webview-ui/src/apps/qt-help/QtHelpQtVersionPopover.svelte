@@ -33,7 +33,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {/if}
 
       <div
-        class='item w-full relative group'
+        class='item w-full relative group bg-amber-300'
         class:active={ui.selected.package === p}
         use:tooltip={{ text: p.fsPath, placement: 'right', delay: 0 }}
       >

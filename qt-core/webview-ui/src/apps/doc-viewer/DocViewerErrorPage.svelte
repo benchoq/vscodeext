@@ -11,10 +11,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as helpers from './helpers';
   import * as viewlogic from './viewlogic.svelte';
 
-  const title = 'Cannot find the page';
+  const title = 'Page not found';
   const guide =
-    'You might need to install ' +
-    'missing Qt modules to read this documentation';
+    'The Qt module may not be installed, ' +
+    'or its documentation may have been removed. ' +
+    'Check your Qt installation.';
+
   const uri = $derived(helpers.toDisplayUri(ui.iframe.src));
   const keys = new Set(['Backspace', 'Escape', 'Enter', ' ']);
 
@@ -37,13 +39,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div class='w-full h-full flex items-center justify-center'>
   <div data-role='card' class='grid'>
     <TriangleAlert class='large [grid-area:1/1] self-center' />
-    <div class='[grid-area:1/2] flex flex-col'>
+    <div class='[grid-area:1/2] flex flex-col gap-2'>
       <span data-role='title'>{title}</span>
       <span data-role='guide'>{guide}</span>
     </div>
 
     <div class='[grid-area:2/2] flex flex-col gap-4'>
-      <span data-role='url'>{uri}</span>
+      <div>
+        <span>Location:</span>
+        <span data-role='url'>{uri}</span>
+      </div>
       <div class='flex flex-row justify-end'>
         <button
           bind:this={backButtonEl}
@@ -66,12 +71,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     max-width: 450px;
     grid-template-rows: auto auto;
     grid-template-columns: auto 1fr;
-    row-gap: 25px;
+    row-gap: 40px;
     column-gap: 25px;
   }
 
   [data-role='title'] {
-    font-size: var(--qt-font-m);
+    font-size: var(--qt-font-2xl);
   }
 
   [data-role='guide'] {
