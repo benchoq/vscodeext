@@ -26,13 +26,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const scroller = createVerticalScroller();
 
   function isModuleNameVisible(entry: IndexOrHeader) {
-    const n1 = entry.data?.name;
-    const n2 = hovered?.data?.name;
-
-    return n1 !== undefined
-      && n2 !== undefined
-      && (n1.length !== 0)
-      && (n1 === n2)
+    const n1 = entry.name;
+    const n2 = hovered?.name;
+    return (n1.length !== 0) && n2 && (n1 == n2);
   }
 
   $effect(() => {
