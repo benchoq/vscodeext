@@ -52,6 +52,12 @@ export async function selectPackage(p: QtDocRootInfo) {
   docViewer.openDoc(landing);
 }
 
+export async function revealPackageFolder(p: QtDocRootInfo) {
+  await vscode.post(CommandId.QtHelpRevealPackageFolder, {
+    package: $state.snapshot(p)
+  });
+}
+
 export async function loadToc() {
   const r = await vscode.post(CommandId.QtHelpReadToc);
 

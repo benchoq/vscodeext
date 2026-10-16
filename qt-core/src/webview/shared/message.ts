@@ -74,6 +74,7 @@ export enum CommandId {
   // qt help
   QtHelpGetPackages,
   QtHelpSelectPackage,
+  QtHelpRevealPackageFolder,
   QtHelpReadToc,
   QtHelpReadIndexes,
   QtHelpSearchFullText,

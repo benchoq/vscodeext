@@ -7,6 +7,7 @@ import {
   ExtensionContext as ExtContext
 } from 'vscode';
 
+import { fsDir } from '@/fs-utils';
 import { Command, CommandId } from '@/webview/shared/message';
 import { DocViewerDispatcher } from '@/webview/doc-viewer/dispatcher';
 import { DocViewerHttpServer } from '@/webview/doc-viewer/server/http-server';
@@ -30,6 +31,7 @@ export class QtHelpDispatcher extends DocViewerDispatcher {
     this.setHandlers([
       [CommandId.QtHelpGetPackages, this._onGetPackages],
       [CommandId.QtHelpSelectPackage, this._onSelectPackage],
+      [CommandId.QtHelpRevealPackageFolder, this._onRevealPackageFolder],
       [CommandId.QtHelpReadToc, this._onReadToc],
       [CommandId.QtHelpReadIndexes, this._onReadIndexes],
       [CommandId.QtHelpSearchFullText, this._onSearchFullText]
@@ -44,11 +46,20 @@ export class QtHelpDispatcher extends DocViewerDispatcher {
   private readonly _onSelectPackage = (cmd: Command) => {
     const p = _.get(cmd.payload, 'package', {});
     if (!isQtDocRootInfo(p)) {
-      console.log('bad data');
       return;
     }
 
     this._data.selectPackage(p);
+    this.channel.replyDone(cmd);
+  };
+
+  private readonly _onRevealPackageFolder = (cmd: Command) => {
+    const p = _.get(cmd.payload, 'package', {});
+    if (!isQtDocRootInfo(p)) {
+      return;
+    }
+
+    fsDir(p.fsPath).revealInFileManager();
     this.channel.replyDone(cmd);
   };
 
