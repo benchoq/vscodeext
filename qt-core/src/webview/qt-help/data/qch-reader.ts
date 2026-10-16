@@ -21,8 +21,8 @@ export class QchReader {
     this._db = new this._sql.Database(data);
   }
 
-  public static async create(qchPath: string) {
-    return new QchReader(await fetchSql(), qchPath);
+  public static async create(sqlDistPath: string, qchPath: string) {
+    return new QchReader(await fetchSql(sqlDistPath), qchPath);
   }
 
   public readToc() {

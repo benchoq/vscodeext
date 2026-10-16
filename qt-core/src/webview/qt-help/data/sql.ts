@@ -6,13 +6,10 @@ import initSqlJs, { SqlJsStatic } from 'sql.js';
 
 let sqlPromise: Promise<SqlJsStatic> | undefined;
 
-export async function fetchSql() {
+export async function fetchSql(distPath: string) {
+  // note,
+  // the distPath needs to have 'sql-wasm.wasm'
   if (!sqlPromise) {
-    const distPath = path.join(
-      '/Users/bencho/ws_vscode/0907.doc-browser/vscodeext',
-      'qt-core/node_modules/sql.js/dist'
-    );
-
     sqlPromise = initSqlJs({
       locateFile: file => {
         return path.join(distPath, file);

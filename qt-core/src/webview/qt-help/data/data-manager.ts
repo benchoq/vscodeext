@@ -2,6 +2,11 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import _ from 'lodash';
+import * as path from 'path';
+import {
+  ExtensionContext as Context
+} from 'vscode';
+
 import { fsDir } from '@/fs-utils';
 import { QchReader } from './qch-reader';
 import { HtmlFullTextIndex } from './text-search';
@@ -21,7 +26,7 @@ export class QtHelpDataManager {
   private _fullTextIndexBuild: Promise<void> = Promise.resolve();
   private _selectedPackage: QtDocRootInfo | undefined;
 
-  constructor() {
+  constructor(private readonly _context: Context) {
     this._rebuild(qchDir);
   }
 
@@ -74,8 +79,10 @@ export class QtHelpDataManager {
 
   private _rebuild(docRootDir: string) {
     const qchFiles = fsDir(docRootDir).findFiles("*.qch");
+    const sqlDistPath = path.join(this._context.extensionPath, 'res/others');
+
     this._readersPromise = Promise.all(
-      qchFiles.map(async (filePath) => QchReader.create(filePath)),
+      qchFiles.map(async (filePath) => QchReader.create(sqlDistPath, filePath)),
     );
 
     this._fullTextIndexBuild = this._fullTextIndex.build(docRootDir);

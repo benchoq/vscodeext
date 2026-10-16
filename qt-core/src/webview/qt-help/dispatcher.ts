@@ -26,7 +26,7 @@ export class QtHelpDispatcher extends DocViewerDispatcher {
       syncPanelTitle: false
     });
 
-    this._data = new QtHelpDataManager();
+    this._data = new QtHelpDataManager(extContext);
     this.setHandlers([
       [CommandId.QtHelpGetPackages, this._onGetPackages],
       [CommandId.QtHelpSelectPackage, this._onSelectPackage],
