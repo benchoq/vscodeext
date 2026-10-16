@@ -40,16 +40,27 @@ export async function selectPackage(p: QtDocRootInfo) {
     return;
   }
 
-  await vscode.post(CommandId.QtHelpSelectPackage, {
-    package: $state.snapshot(p)
-  });
+  const task = async () => {
+    await vscode.post(CommandId.QtHelpSelectPackage, {
+      package: $state.snapshot(p)
+    });
 
-  ui.selected.package = p;
+    ui.selected.package = p;
 
-  await loadToc();
-  await loadIndexes();
-  const landing = `file://${ui.selected.package.fsPath}/qtdoc/index.html`;
-  docViewer.openDoc(landing);
+    // reset states and data
+    data.toc = [];
+    data.indexes = [];
+    data.search.keyword = '';
+    data.search.result = [];
+
+    // reload content
+    await loadToc();
+    await loadIndexes();
+  };
+
+  await ui.task.run(task, { debounceTime_ms: 0 });
+  docViewer.openDoc(`file://${p.fsPath}/qtdoc/index.html`);
+
 }
 
 export async function revealPackageFolder(p: QtDocRootInfo) {

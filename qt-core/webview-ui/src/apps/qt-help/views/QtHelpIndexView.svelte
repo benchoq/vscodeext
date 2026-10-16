@@ -148,7 +148,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='section-item'] {
-    padding-left: 20px;
+    padding-left: 14px;
   }
 
   [data-role='section-header'] {
