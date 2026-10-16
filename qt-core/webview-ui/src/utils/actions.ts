@@ -97,6 +97,8 @@ export function tooltip(node: HTMLElement, options: TooltipOptions) {
   let showTimer: ReturnType<typeof setTimeout> | null = null;
 
   function show() {
+    hide();
+
     showTimer = setTimeout(() => {
       tooltipEl = document.createElement('div');
       tooltipEl.classList.add('qt-tooltip');
