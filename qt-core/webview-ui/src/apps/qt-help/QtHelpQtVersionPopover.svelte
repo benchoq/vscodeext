@@ -49,7 +49,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <!-- snippets -->
 {#snippet itemButton(p: QtDocRootInfo)}
   <button
-    class='w-full flex'
+    class='w-full flex cursor-pointer'
     class:active={ui.selected.package === p}
     onclick={(e: MouseEvent) => {
       void viewlogic.selectPackage(p);
@@ -92,7 +92,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   [data-role='area'] {
-    width: 200px;
+    min-width: 200px;
   }
 
   [data-role='version'] {
