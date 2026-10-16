@@ -85,6 +85,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {#snippet footer()}
   <Separator />
   <div data-role='footer' class='w-full flex flex-row gap-2'>
+    <div class='grow'></div>
     <PackageCheck />
     <span data-role='annotation'>{annotation}</span>
   </div>
