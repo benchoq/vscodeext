@@ -7,11 +7,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { type Component } from 'svelte';
   import { Book, ListOrdered, Search, ChevronDown } from '@lucide/svelte';
 
+  import { tooltip } from '@/utils/actions';
   import * as viewlogic from '../viewlogic.svelte';
   import { ui, type UiMode } from '../states.svelte';
 
   const version = $derived(ui.selected.package?.version);
-
+  const tooltips: Record<UiMode, string> = {
+    toc: 'Browse by table of contents',
+    text: 'Search the full text',
+    index: 'Look up by keyword index',
+  };
 </script>
 
 <div data-area='toolbar' class='flex flex-row gap-2'>
@@ -37,6 +42,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#snippet modeButton(mode: UiMode, Icon: Component)}
   <button
+    use:tooltip={{ text: tooltips[mode], placement: 'bottom'}}
     data-role='mode-button'
     class='qt-button flex flex-row self-center'
     aria-pressed={ui.mode === mode}
