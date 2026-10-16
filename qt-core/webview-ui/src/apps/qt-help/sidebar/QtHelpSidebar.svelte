@@ -41,9 +41,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
           busy={true}
           error={ui.task.error}
           layout='col'
-          forceHidden={ui.task.isDebouncing}
           busyText={busyText}
-          closeText='Close'
+          forceHidden={ui.task.isDebouncing}
         />
       {/if}
     </div>
