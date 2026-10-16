@@ -10,6 +10,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import Popover from './others/Popover.svelte';
   import DocViewerErrorPage from './DocViewerErrorPage.svelte';
+  import DocViewerEmptyPage from './DocViewerEmptyPage.svelte';
   import DocViewerFindPopover from './DocViewerFindPopover.svelte';
   import DocViewerContextMenu from './DocViewerContextMenu.svelte';
 
@@ -31,6 +32,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div class='w-full h-full relative'>
   {#if ui.iframe.errorCode}
     <DocViewerErrorPage />
+  {:else if ui.iframe.src.length === 0}
+    <DocViewerEmptyPage />
   {:else}
     <iframe
       bind:this={ui.iframe.el}
