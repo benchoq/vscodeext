@@ -29,7 +29,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <style>
   [data-role='title'] {
     flex: 1;
-    color: var(--qt-text-muted);
+    color: var(--qt-text-default);
     font-weight: bold;
     font-size: var(--qt-font-s);
     letter-spacing: 0.07em;

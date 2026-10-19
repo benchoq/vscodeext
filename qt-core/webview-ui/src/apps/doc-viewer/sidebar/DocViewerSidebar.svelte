@@ -5,9 +5,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import VerticalResizeHandle from '@/comps/VerticalResizeHandle.svelte';
-  import DocViewerHistoryView from './history/DocViewerHistoryView.svelte';
-  import DocViewerBookmarkView from './bookmark/DocViewerBookmarkView.svelte';
-  import { ui } from './states.svelte';
+  import DocViewerHistoryView from '../history/DocViewerHistoryView.svelte';
+  import DocViewerBookmarkView from '../bookmark/DocViewerBookmarkView.svelte';
+  import { ui } from '../states.svelte';
 </script>
 
 <div data-area='side-panel' class='w-full h-full'>

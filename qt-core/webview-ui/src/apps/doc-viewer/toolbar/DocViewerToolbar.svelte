@@ -4,22 +4,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import {
-    Dot,
-    Star,
-    Clock4,
-    Columns2,
-    Bookmark,
-    ArrowLeft,
-    ArrowRight,
-    Binoculars
-  } from "@lucide/svelte";
-  import { type Component } from 'svelte';
-
   import { ui } from '../states.svelte';
   import * as helpers from '../helpers';
   import * as viewlogic from '../viewlogic.svelte';
-  import './DocViewerToolbar.css';
+  import * as toolbar from './DocViewerToolbar';
 
   let inputEl = $state(undefined as HTMLInputElement | undefined);
   const value = $derived(ui.iframe.errorCode ? '' : ui.iframe.title);
@@ -30,72 +18,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   function selectAll() {
     inputEl?.select();
   }
-
-  type ButtonRole =
-    | 'back' | 'forward' | 'openInNewViewer' | 'toggleBookmark'
-    | 'findDialog' | 'bookmarkView' | 'historyView';
-
-  function isButtonEnabled(role: ButtonRole) {
-    if (role === 'back' || role === 'forward') {
-      return ui.history.canGo(role);
-    }
-
-    return true;
-  }
-
-  function isButtonChecked(role: ButtonRole) {
-    switch (role) {
-      case 'findDialog': return ui.popovers.find.visible;
-      case 'bookmarkView': return ui.popovers.bookmark.visible;
-      case 'historyView': return ui.popovers.history.visible;
-      default:
-        return false;
-    }
-  }
-
-  function onButtonClicked(role: ButtonRole) {
-    switch (role) {
-      case 'back':
-      case 'forward':
-        viewlogic.navigate(role);
-        break;
-
-      case 'openInNewViewer':
-        viewlogic.openDoc(ui.iframe.src, true);
-        break;
-
-      case 'toggleBookmark':
-        viewlogic.bookmark.edit({
-          action: 'toggle',
-          entry: {
-            uri: helpers.toPersistentUri(ui.iframe.src),
-            title: ui.iframe.title
-          }
-        })
-        break;
-
-      case 'findDialog':
-        ui.popovers.find.visible = !ui.popovers.find.visible;
-        break;
-
-      case 'bookmarkView':
-        viewlogic.setLayerVisible('bookmark', !ui.popovers.bookmark.visible);
-        break;
-
-      case 'historyView':
-        viewlogic.setLayerVisible('history', !ui.popovers.history.visible);
-        break;
-
-      default:
-        break;
-    }
-  }
 </script>
 
 <div data-area='toolbar' class='flex flex-row gap-2'>
   <div class='flex flex-row gap-0'>
-    {@render roleButton('back', isButtonEnabled('back') ? ArrowLeft : Dot)}
-    {@render roleButton('forward', isButtonEnabled('forward') ? ArrowRight : Dot)}
+    {@render actionButton('back')}
+    {@render actionButton('forward')}
   </div>
 
   <div class='grow flex relative'>
@@ -109,46 +37,51 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     />
 
     <div class='qt-absolute-cy right-[2px]'>
-      {@render roleButton('toggleBookmark', Star)}
+      {@render actionButton('toggleBookmark')}
     </div>
   </div>
 
-  {@render roleButton('openInNewViewer', Columns2)}
-  {@render roleButton('findDialog', Binoculars)}
+  {@render actionButton('openInNewViewer')}
+  {@render actionButton('findDialog')}
 
   <div class='flex flex-row'>
-    {@render roleButton('bookmarkView', Bookmark)}
-    {@render roleButton('historyView', Clock4)}
+    {@render actionButton('bookmarkView')}
+    {@render actionButton('historyView')}
   </div>
 </div>
 
-{#snippet roleButton(role: ButtonRole, Icon: Component)}
+{#snippet actionButton(action: toolbar.Action)}
+  {@const Icon = toolbar.findIcon(action)}
+  {@const needToFill = bookmarked && (action === 'toggleBookmark')}
   <button
     bind:this={
       () => null,
       (el) => {
-        if (role === 'findDialog') {
+        if (action === 'findDialog') {
           ui.popovers.find.refEl = el;
         }
       }
     }
-    data-role={role}
-    aria-pressed={isButtonChecked(role)}
+    data-role={action}
+    aria-pressed={toolbar.isChecked(action)}
     class='qt-button flex items-center justify-center'
-    disabled={!isButtonEnabled(role)}
+    disabled={!toolbar.isEnabled(action)}
     onclick={(e: MouseEvent) => {
-      onButtonClicked(role);
+      toolbar.onClicked(action);
       e.stopPropagation();
     }}
   >
-    <Icon fill={
-      (role === 'toggleBookmark' && bookmarked)
-      ? 'currentColor' : 'transparent'
-    }/>
+    <Icon fill={needToFill ? 'currentColor' : 'transparent'} />
   </button>
 {/snippet}
 
 <style>
+  [data-area='toolbar'] {
+    padding: 8px;
+    background: var(--qt-bg-editor-tab);
+    border-bottom: 1px solid var(--qt-stroke-subtle);
+  }
+
   [data-role='toggleBookmark'] {
     border: none;
     background: none;

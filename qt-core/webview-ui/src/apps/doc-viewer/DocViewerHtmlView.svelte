@@ -8,7 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { ui } from './states.svelte';
   import * as helpers from './helpers';
 
-  import Popover from './others/Popover.svelte';
+  import Popover from '@/comps/Popover.svelte';
   import DocViewerErrorPage from './DocViewerErrorPage.svelte';
   import DocViewerEmptyPage from './DocViewerEmptyPage.svelte';
   import DocViewerFindPopover from './DocViewerFindPopover.svelte';

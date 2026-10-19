@@ -12,7 +12,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import DocViewerToolbar from './toolbar/DocViewerToolbar.svelte';
   import DocViewerHtmlView from './DocViewerHtmlView.svelte';
-  import DocViewerSidePanel from './DocViewerSidePanel.svelte';
+  import DocViewerSidebar from './sidebar/DocViewerSidebar.svelte';
   import { ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
 
@@ -41,7 +41,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         style:width={`${ui.sidePanel.width}px`}
         transition:fly={{ duration: 120, x: 200, opacity: 0 }}
       >
-        <DocViewerSidePanel />
+        <DocViewerSidebar />
       </div>
     {/if}
   </div>
