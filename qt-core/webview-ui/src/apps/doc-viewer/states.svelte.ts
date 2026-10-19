@@ -30,6 +30,11 @@ export const ui = $state({
   },
 
   theme: VscodeThemeMonitor.createController(),
+  sidePanel: {
+    min: 200,
+    max: 600,
+    width: 350
+  },
 
   popovers: {
     find: {

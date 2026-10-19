@@ -12,9 +12,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   import DocViewerToolbar from './toolbar/DocViewerToolbar.svelte';
   import DocViewerHtmlView from './DocViewerHtmlView.svelte';
-  import DocViewerHistoryView from './history/DocViewerHistoryView.svelte';
-  import DocViewerBookmarkView from './bookmark/DocViewerBookmarkView.svelte';
-
+  import DocViewerSidePanel from './DocViewerSidePanel.svelte';
   import { ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
 
@@ -39,26 +37,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
     {#if ui.popovers.bookmark.visible || ui.popovers.history.visible}
       <div
-        data-role='background'
-        class='absolute top-0 right-0 w-[400px] h-full'
+        class='absolute top-0 right-0 h-full'
+        style:width={`${ui.sidePanel.width}px`}
         transition:fly={{ duration: 120, x: 200, opacity: 0 }}
       >
-        {#if ui.popovers.bookmark.visible}
-          <DocViewerBookmarkView />
-        {/if}
-
-        {#if ui.popovers.history.visible}
-          <DocViewerHistoryView />
-        {/if}
+        <DocViewerSidePanel />
       </div>
     {/if}
   </div>
 </div>
-
-<style>
-  [data-role='background'] {
-    background: var(--qt-bg-subtle);
-    border-left: 1px solid var(--qt-stroke-subtle);
-    opacity: 0.90;
-  }
-</style>
