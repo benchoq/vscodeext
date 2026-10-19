@@ -35,7 +35,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <DocViewerHtmlView />
     </div>
 
-    {#if ui.popovers.bookmark.visible || ui.popovers.history.visible}
+    {#if ui.sidePanel.mode !== undefined}
       <div
         class='absolute top-0 right-0 h-full'
         style:width={`${ui.sidePanel.width}px`}

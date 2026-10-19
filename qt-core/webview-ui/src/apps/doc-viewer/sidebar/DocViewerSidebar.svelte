@@ -18,11 +18,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     />
   </div>
 
-  {#if ui.popovers.bookmark.visible}
+  {#if ui.sidePanel.mode === 'bookmark'}
     <DocViewerBookmarkView />
-  {/if}
-
-  {#if ui.popovers.history.visible}
+  {:else if ui.sidePanel.mode === 'history'}
     <DocViewerHistoryView />
   {/if}
 </div>

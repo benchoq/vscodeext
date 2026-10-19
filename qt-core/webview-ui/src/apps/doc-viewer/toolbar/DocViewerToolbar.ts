@@ -32,8 +32,8 @@ export function isEnabled(role: Action) {
 export function isChecked(role: Action) {
   switch (role) {
     case 'findDialog': return ui.popovers.find.visible;
-    case 'bookmarkView': return ui.popovers.bookmark.visible;
-    case 'historyView': return ui.popovers.history.visible;
+    case 'bookmarkView': return ui.sidePanel.mode === 'bookmark';
+    case 'historyView': return ui.sidePanel.mode === 'history';
     default:
       return false;
   }
@@ -90,12 +90,15 @@ export function onClicked(role: Action) {
       break;
 
     case 'bookmarkView':
-      viewlogic.setLayerVisible('bookmark', !ui.popovers.bookmark.visible);
+      viewlogic.setSidePanel(
+        (ui.sidePanel.mode !== 'bookmark') ? 'bookmark' : undefined
+      );
       break;
 
     case 'historyView':
-      viewlogic.setLayerVisible('history', !ui.popovers.history.visible);
-      break;
+      viewlogic.setSidePanel(
+        (ui.sidePanel.mode !== 'history') ? 'history' : undefined
+      );break;
 
     default:
       break;

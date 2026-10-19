@@ -85,9 +85,8 @@ export function scrollToTop() {
   postToIframe(IframeMessageId.RequestScrollToTop);
 }
 
-export function setLayerVisible(target: 'bookmark' | 'history', visible: boolean) {
-  ui.popovers.history.visible = (target === 'history') && visible;
-  ui.popovers.bookmark.visible = (target === 'bookmark') && visible;
+export function setSidePanel(mode: 'bookmark' | 'history' | undefined) {
+  ui.sidePanel.mode = mode;
 }
 
 export function findInPage(action: FindAction) {

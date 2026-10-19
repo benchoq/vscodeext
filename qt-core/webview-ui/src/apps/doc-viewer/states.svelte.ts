@@ -30,10 +30,12 @@ export const ui = $state({
   },
 
   theme: VscodeThemeMonitor.createController(),
+
   sidePanel: {
     min: 200,
     max: 600,
-    width: 350
+    width: 350,
+    mode: undefined as 'bookmark' | 'history' | undefined
   },
 
   popovers: {
@@ -45,14 +47,6 @@ export const ui = $state({
 
     contextMenu: {
       pos: undefined as Coords | undefined,
-      visible: false,
-    },
-
-    bookmark: {
-      visible: false,
-    },
-
-    history: {
       visible: false,
     }
   },

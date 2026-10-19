@@ -17,7 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <span data-role='title'>History</span>
     <CloseButton
       onClicked={() => {
-        viewlogic.setLayerVisible('bookmark', false);
+        viewlogic.setSidePanel(undefined);
       }}
     />
   </div>
