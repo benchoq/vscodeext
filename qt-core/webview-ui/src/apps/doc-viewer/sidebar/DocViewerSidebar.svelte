@@ -29,6 +29,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-area='side-panel'] {
     background: var(--qt-bg-subtle);
     border-left: 1px solid var(--qt-stroke-subtle);
-    opacity: 0.90;
+    opacity: 0.95;
   }
 </style>

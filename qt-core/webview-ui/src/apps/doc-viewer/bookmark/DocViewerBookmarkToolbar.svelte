@@ -34,7 +34,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   })
 </script>
 
-<div class='flex flex-row h-[32px] items-center gap-2'>
+<div class='flex flex-row items-center gap-2'>
   <button
     type="button"
     aria-label="check"
@@ -47,18 +47,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </button>
 
   <span>{description}</span>
+  <div class='grow'></div>
 
-  {#if checkState !== 'empty'}
-    <button
-      class='qt-button flex items-center justify-center'
-      onclick={() => {
-        viewlogic.bookmark.edit({
-          action: 'remove',
-          selection: $state.snapshot(viewlogic.bookmark.getSelection())
-        });
-      }}
-    >
-      <TrashIcon />
-    </button>
-  {/if}
+  <button
+    class='qt-button flex items-center justify-center'
+    style:visibility={checkState === 'empty' ? 'hidden' : 'visible'}
+    onclick={() => {
+      viewlogic.bookmark.edit({
+        action: 'remove',
+        selection: $state.snapshot(viewlogic.bookmark.getSelection())
+      });
+    }}
+  >
+    <TrashIcon />
+  </button>
 </div>

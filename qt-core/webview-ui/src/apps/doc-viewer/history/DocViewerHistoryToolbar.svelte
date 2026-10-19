@@ -48,17 +48,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   <span>{description}</span>
 
-  {#if checkState !== 'empty'}
-    <button
-      class='qt-button flex items-center justify-center'
-      onclick={() => {
-        viewlogic.history.edit({
-          action: 'remove',
-          selection: $state.snapshot(viewlogic.history.getSelection())
-        });
-      }}
-    >
-      <TrashIcon />
-    </button>
-  {/if}
+  <button
+    class='qt-button flex items-center justify-center'
+    style:visibility={checkState === 'empty' ? 'hidden' : 'visible'}
+    onclick={() => {
+      viewlogic.history.edit({
+        action: 'remove',
+        selection: $state.snapshot(viewlogic.history.getSelection())
+      });
+    }}
+  >
+    <TrashIcon />
+  </button>
 </div>

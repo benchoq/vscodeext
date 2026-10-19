@@ -1,16 +1,16 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-  import {
-    Dot,
-    Star,
-    Clock4,
-    Columns2,
-    Bookmark,
-    ArrowLeft,
-    ArrowRight,
-    Binoculars
-  } from "@lucide/svelte";
+import {
+  Dot,
+  Star,
+  Clock4,
+  Columns2,
+  Bookmark,
+  ArrowLeft,
+  ArrowRight,
+  Binoculars
+} from "@lucide/svelte";
 
 import { ui } from '../states.svelte';
 import * as helpers from '../helpers';
