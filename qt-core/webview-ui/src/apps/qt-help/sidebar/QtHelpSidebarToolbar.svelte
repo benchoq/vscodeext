@@ -6,7 +6,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { type Component } from 'svelte';
   import {
-    Home,
     Book,
     ListOrdered,
     Search,
@@ -37,10 +36,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {version ? 'Qt-' + version : '-'} <ChevronDown />
   </button>
 
-  {#if ui.home.length !== 0}
-    {@render homeButton()}
-  {/if}
-
   <div class='grow'></div>
   <div class='flex flex-row gap-0'>
     {@render modeButton('toc', Book)}
@@ -50,20 +45,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </div>
 
 <!-- snippets -->
-{#snippet homeButton()}
-  <button
-    use:tooltip={{ text: 'Home', placement: 'bottom'}}
-    data-role='home-button'
-    class='qt-button flex flex-row self-center'
-    onclick={() => {
-      viewlogic.openHomeOrReset();
-    }}
-  >
-    <Home />
-  </button>
-{/snippet}
-
-
 {#snippet modeButton(mode: UiMode, Icon: Component)}
   <button
     use:tooltip={{ text: tooltips[mode], placement: 'bottom'}}
@@ -87,7 +68,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     border-bottom: 1px solid var(--qt-stroke-subtle);
   }
 
-  .qt-button[data-role='home-button'],
   .qt-button[data-role='mode-button'] {
     width: 32px;
     height: 100%;
