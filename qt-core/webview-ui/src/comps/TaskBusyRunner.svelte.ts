@@ -11,7 +11,7 @@ export class TaskBusyRunner {
   private _error = $state(undefined as unknown);
   private _isDebouncing = $state(false);
   private _pendingTimer = $state(null as ReturnType<typeof setTimeout> | null);
-  private _recentOptions: TaskBusyRunnerOptions | undefined;
+  private _recentOptions = $state<TaskBusyRunnerOptions | undefined>();
 
   get busy() {
     return this._busy;

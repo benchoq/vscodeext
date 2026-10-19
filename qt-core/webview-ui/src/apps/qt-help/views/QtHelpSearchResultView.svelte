@@ -26,14 +26,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   function createEmptyStateData(keyword: string) {
     const init = {
-      title: 'Enter a keyword to start',
+      title: 'Enter a keyword to search',
       help: '',
       icon: Search,
     };
 
     const noResult = {
       title: `No results for '${keyword}'`,
-      help: 'Try a different keyword to search',
+      help: 'Check the spelling or try another keyword',
       icon: TriangleAlert,
     };
 
@@ -82,7 +82,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     bind:clientHeight={virtualListHeight}
     class='qt-item-list w-full h-full relative'
   >
-    {#if all.length === 0}
+    {#if all.length === 0 && !ui.task.busy}
       {@render emptyData()}
     {:else}
       <VirtualList
@@ -127,9 +127,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {#snippet emptyData()}
   {@const data = createEmptyStateData(ui.search.keyword.trim())}
   <div data-role='empty-panel' class='w-full h-full flex flex-col'>
-    <div class='flex gap-2'>
+    <div data-role='empty-title' class='flex gap-2'>
       <data.icon />
-      <span data-role='empty-title'>{data.title}</span>
+      <span>{data.title}</span>
     </div>
     <span data-role='empty-help'>{data.help}</span>
   </div>
@@ -154,10 +154,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     gap: 10px;
   }
 
-  [data-role='empty-help'] {
+  [data-role='empty-title'] {
     padding: 0 30px 0 30px;
     white-space: normal;
     word-break: break-all;
+    color: var(--qt-text-default);
+  }
+
+  [data-role='empty-help'] {
     color: var(--qt-text-muted);
   }
 
