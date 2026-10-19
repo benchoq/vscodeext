@@ -4,28 +4,46 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { onMount, type Snippet, untrack } from 'svelte';
+  import { onMount, untrack, type Snippet } from 'svelte';
   import VirtualList from 'svelte-tiny-virtual-list';
+  import { Search, TriangleAlert } from '@lucide/svelte';
 
   import { createVerticalScroller } from '@/comps/VerticalScroller.svelte';
   import QtHelpView from './QtHelpBaseView.svelte';
   import QtHelpSearchInput from '../others/QtHelpSearchInput.svelte';
   import QtHelpHighlightedText from '../others/QtHelpHighlightedText.svelte';
   import QtHelpScrollToTopButton from '../others/QtHelpScrollToTopButton.svelte';
+
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
 
   const all = $derived(data.search.result);
 
-  let virtualList: VirtualList;
+  let virtualList = $state<VirtualList>();
   let virtualListHeight = $state(0);
   let inputEl = $state<HTMLInputElement | undefined>();
   const scroller = createVerticalScroller();
 
+  function createEmptyStateData(keyword: string) {
+    const init = {
+      title: 'Enter a keyword to start',
+      help: '',
+      icon: Search,
+    };
+
+    const noResult = {
+      title: `No results for '${keyword}'`,
+      help: 'Try a different keyword to search',
+      icon: TriangleAlert,
+    };
+
+    return keyword ? noResult : init;
+  }
+
   $effect(() => {
     void ui.search.keyword;
     untrack(() => {
-      virtualList.recomputeSizes?.(0);
+      virtualList?.recomputeSizes?.(0);
     });
   })
 
@@ -64,20 +82,24 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     bind:clientHeight={virtualListHeight}
     class='qt-item-list w-full h-full relative'
   >
-    <VirtualList
-      bind:this={virtualList}
-      height={virtualListHeight}
-      scrollDirection='vertical'
-      itemCount={all.length}
-      itemSize={70}
-    >
-      {#snippet item({ style, index })}
-        {@render _item(style, index)}
-      {/snippet}
-    </VirtualList>
+    {#if all.length === 0}
+      {@render emptyData()}
+    {:else}
+      <VirtualList
+        bind:this={virtualList}
+        height={virtualListHeight}
+        scrollDirection='vertical'
+        itemCount={all.length}
+        itemSize={70}
+      >
+        {#snippet item({ style, index })}
+          {@render _item(style, index)}
+        {/snippet}
+      </VirtualList>
 
-    {#if scroller.scrolledEnough}
-      <QtHelpScrollToTopButton onClicked={() => scroller.scrollToTop()} />
+      {#if scroller.scrolledEnough}
+        <QtHelpScrollToTopButton onClicked={() => scroller.scrollToTop()} />
+      {/if}
     {/if}
   </div>
 {/snippet}
@@ -102,6 +124,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </button>
 {/snippet}
 
+{#snippet emptyData()}
+  {@const data = createEmptyStateData(ui.search.keyword.trim())}
+  <div data-role='empty-panel' class='w-full h-full flex flex-col'>
+    <div class='flex gap-2'>
+      <data.icon />
+      <span data-role='empty-title'>{data.title}</span>
+    </div>
+    <span data-role='empty-help'>{data.help}</span>
+  </div>
+{/snippet}
+
 <style>
   [data-role='title'] {
     @apply truncate text-left;
@@ -112,6 +145,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     @apply line-clamp-2 text-left;
     @apply whitespace-normal break-all;
     opacity: 0.5;
+    color: var(--qt-text-muted);
+  }
+
+  [data-role='empty-panel'] {
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  [data-role='empty-help'] {
+    padding: 0 30px 0 30px;
+    white-space: normal;
+    word-break: break-all;
     color: var(--qt-text-muted);
   }
 

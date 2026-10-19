@@ -40,7 +40,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         <LoadingMask
           busy={true}
           error={ui.task.error}
-          layout='col'
+          direction='col'
           busyText={busyText}
           forceHidden={ui.task.isDebouncing}
         />
