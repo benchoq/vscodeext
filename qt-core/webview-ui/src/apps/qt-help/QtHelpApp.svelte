@@ -41,7 +41,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {/if}
 
   <div class='w-full h-full overflow-x-hidden relative'>
-    <DocViewerApp standalone={false} />
+    <DocViewerApp fullScreen={false} />
     <QtHelpDocViewerMask />
   </div>
 </div>

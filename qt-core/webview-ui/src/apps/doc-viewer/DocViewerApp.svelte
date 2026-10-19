@@ -19,7 +19,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from './viewlogic.svelte';
 
   let {
-    standalone = true,
+    fullScreen = true,
   } = $props();
 
   onMount(() => viewlogic.onAppMount());
@@ -27,7 +27,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 </script>
 
 <div class='
-  {standalone ? 'w-screen h-screen' : 'w-full h-full'}
+  {fullScreen ? 'w-screen h-screen' : 'w-full h-full'}
   flex flex-col
 '>
   <DocViewerToolbar />

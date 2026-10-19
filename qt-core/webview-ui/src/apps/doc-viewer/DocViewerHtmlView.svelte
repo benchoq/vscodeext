@@ -60,7 +60,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         <DocViewerFindPopover />
       </div>
     </Popover>
-  {/if}qt-core/webview-ui/src/apps/qt-help/QtHelpDocViewerMask.svelte
+  {/if}
 
   {#if ui.popovers.contextMenu.visible}
     <Popover
