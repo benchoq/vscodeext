@@ -9,10 +9,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { Search, TriangleAlert } from '@lucide/svelte';
 
   import { createVerticalScroller } from '@/comps/VerticalScroller.svelte';
+  import ScrollToTopButton from '@/comps/ScrollToTopButton.svelte';
   import QtHelpView from './QtHelpBaseView.svelte';
   import QtHelpSearchInput from '../others/QtHelpSearchInput.svelte';
   import QtHelpHighlightedText from '../others/QtHelpHighlightedText.svelte';
-  import QtHelpScrollToTopButton from '../others/QtHelpScrollToTopButton.svelte';
 
   import { data, ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
@@ -98,7 +98,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       </VirtualList>
 
       {#if scroller.scrolledEnough}
-        <QtHelpScrollToTopButton onClicked={() => scroller.scrollToTop()} />
+        <ScrollToTopButton onClicked={() => scroller.scrollToTop()} />
       {/if}
     {/if}
   </div>

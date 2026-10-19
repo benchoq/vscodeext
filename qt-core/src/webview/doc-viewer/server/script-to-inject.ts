@@ -11,11 +11,13 @@ export function getScriptToInject() {
       CommonScript,
       DocLoadedScript,
       DocReloadScript,
+      ScrollToTopScript,
       FindInPageScript,
       ApplyThemeScript,
       LinkClickedScript,
       LinkHoverChangedScript,
       ForwardKeyDownScript,
+      ScrolledScript,
       ContextMenuScript,
       CopySelectionScript
     ];
@@ -62,9 +64,8 @@ const DocLoadedScript = /*js*/`
       href: location.href,
       hash: location.hash,
       pathname: location.pathname,
+      scrollTop: window.scrollTop,
       errorCode: document?.body?.dataset.errorCode,
-      load: nav.loadEventEnd,
-      ttfb: nav.responseStart
     });
   });
 `;
@@ -107,6 +108,12 @@ const FindInPageScript = /*js*/`
         window.getSelection()?.removeAllRanges();
         break;
     }
+  });
+`;
+
+const ScrollToTopScript = /*js*/`
+  onParentMessage('${IframeMessageId.RequestScrollToTop}', ({ vars }) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });j
   });
 `;
 
@@ -198,6 +205,14 @@ const ForwardKeyDownScript = /*js*/`
         metaKey: e.metaKey,
         repeat: e.repeat,
       },
+    });
+  });
+`;
+
+const ScrolledScript = /*js*/`
+  addListener('scroll', (e) => {
+    notifyParent('${IframeMessageId.EventScrolled}', {
+      scrollTop: window.scrollY
     });
   });
 `;

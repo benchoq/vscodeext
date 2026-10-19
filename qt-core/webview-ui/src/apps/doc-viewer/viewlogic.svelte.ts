@@ -81,6 +81,10 @@ export function copySelection() {
   postToIframe(IframeMessageId.RequestCopySelected);
 }
 
+export function scrollToTop() {
+  postToIframe(IframeMessageId.RequestScrollToTop);
+}
+
 export function setLayerVisible(target: 'bookmark' | 'history', visible: boolean) {
   ui.popovers.history.visible = (target === 'history') && visible;
   ui.popovers.bookmark.visible = (target === 'bookmark') && visible;
@@ -150,6 +154,7 @@ function onMessageFromIframe(e: MessageEvent) {
 
       ui.iframe.title = e.data.title;
       ui.iframe.hoveredUri = '';
+      ui.iframe.scrollTop = e.data.scrollTop;
       ui.history.push({
         uri: e.data.href,
         title: e.data.title
@@ -201,6 +206,12 @@ function onMessageFromIframe(e: MessageEvent) {
         bubbles: true,
         cancelable: true,
       }));
+      break;
+    }
+
+    case IframeMessageId.EventScrolled: {
+      ui.iframe.scrollTop = e.data.scrollTop;
+      console.log(e.data);
       break;
     }
 

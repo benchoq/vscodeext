@@ -25,6 +25,7 @@ export const ui = $state({
     src: '',
     title: '',
     hoveredUri: '',
+    scrollTop: undefined as number | undefined,
     errorCode: undefined as string | undefined
   },
 

@@ -13,6 +13,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import DocViewerEmptyPage from './DocViewerEmptyPage.svelte';
   import DocViewerFindPopover from './DocViewerFindPopover.svelte';
   import DocViewerContextMenu from './DocViewerContextMenu.svelte';
+  import DocViewerHtmlViewMask from './DocViewerHtmlViewMask.svelte';
 
   const popover = $derived(ui.popovers.find);
   const pos = $derived(ui.popovers.contextMenu.pos);
@@ -44,6 +45,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     ></iframe>
   {/if}
 
+  <DocViewerHtmlViewMask />
+
   {#if popover.visible}
     <Popover
       reference={popover.refEl}
@@ -57,7 +60,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         <DocViewerFindPopover />
       </div>
     </Popover>
-  {/if}
+  {/if}qt-core/webview-ui/src/apps/qt-help/QtHelpDocViewerMask.svelte
 
   {#if ui.popovers.contextMenu.visible}
     <Popover

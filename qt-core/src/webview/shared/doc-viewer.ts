@@ -46,11 +46,13 @@ export type HistoryEdit =
 export enum IframeMessageId {
   RequestFindInPage = 'request-find-in-page',
   RequestReloadPage = 'request-reload-page',
+  RequestScrollToTop = 'request-scroll-to-top',
   RequestCopySelected = 'request-copy-selected',
   RequestApplyVscodeTheme = 'request-apply-vscode-theme',
   EventLoaded = 'event-loaded',
   EventClicked = 'event-clicked',
   EventKeyDown = 'event-key-down',
+  EventScrolled = 'event-scrolled',
   EventMouseDown = 'event-mouse-down',
   EventContextMenu = 'event-contextmenu',
   EventHoverChanged = 'event-hover-changed',

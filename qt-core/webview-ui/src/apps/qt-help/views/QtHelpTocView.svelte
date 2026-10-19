@@ -7,8 +7,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { type Snippet } from 'svelte';
   import { SquareMinus } from '@lucide/svelte';
 
+  import ScrollToTopButton from '@/comps/ScrollToTopButton.svelte';
   import { createVerticalScroller } from '@/comps/VerticalScroller.svelte';
-  import QtHelpScrollToTopButton from '../others/QtHelpScrollToTopButton.svelte';
   import QtHelpBaseView from './QtHelpBaseView.svelte';
   import QtHelpTocTreeNode from './QtHelpTocTreeNode.svelte';
   import { data, ui } from '../states.svelte';
@@ -58,7 +58,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     </div>
 
     {#if scroller.scrolledEnough}
-      <QtHelpScrollToTopButton onClicked={() => scroller.scrollToTop()} />
+      <ScrollToTopButton onClicked={() => scroller.scrollToTop()} />
     {/if}
   </div>
 {/snippet}
