@@ -4,55 +4,46 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { type Snippet } from 'svelte';
+  import { type Component } from 'svelte';
+  import { Bookmark, Clock } from '@lucide/svelte';
 
   import CloseButton from '@/comps/CloseButton.svelte';
   import VerticalResizeHandle from '@/comps/VerticalResizeHandle.svelte';
-  import DocViewerBookmarkList from '../bookmark/DocViewerBookmarkList.svelte';
-  import DocViewerBookmarkToolbar from '../bookmark/DocViewerBookmarkToolbar.svelte';
-  import DocViewerHistoryList from '../history/DocViewerHistoryList.svelte';
-  import DocViewerHistoryToolbar from '../history/DocViewerHistoryToolbar.svelte';
+  import DocViewerHistoryList from './DocViewerHistoryList.svelte';
+  import DocViewerBookmarkList from './DocViewerBookmarkList.svelte';
+  import DocViewerSidebarToolbar from './DocViewerSidebarToolbar.svelte';
 
   import * as viewlogic from '../viewlogic.svelte';
   import { ui } from '../states.svelte';
 
-  let info = $derived.by(() => {
-    if (ui.sidePanel.mode === 'bookmark') {
-      return {
-        title: 'Bookmarks',
-        toolbar: DocViewerBookmarkToolbar as Snippet,
-        content: DocViewerBookmarkList as Snippet
-      }
-    } else {
-      return {
-        title: 'History',
-        toolbar: DocViewerHistoryToolbar as Snippet,
-        content: DocViewerHistoryList as Snippet
-      }
-    }
-  });
-
+  const bookmark = $derived(ui.sidePanel.mode === 'bookmark');
 </script>
 
-<div data-area='side-panel' class='w-full h-full'>
+<div data-area='sidebar' class='w-full h-full'>
   {@render resizeHandle()}
 
-  {#if ui.sidePanel.mode}
-    <div class='w-full h-full flex flex-col'>
-      {@render header()}
+  <div class='w-full h-full flex flex-col'>
+    {@render header(
+      bookmark ? Bookmark : Clock,
+      bookmark ? 'Bookmarks' : 'History'
+    )}
 
-      <div data-role='content' class='h-full flex flex-col'>
-        {@render info.toolbar()}
-        {@render info.content()}
-      </div>
+    <div data-role='content' class='h-full flex flex-col'>
+      <DocViewerSidebarToolbar mode={ui.sidePanel.mode} />
+      {#if bookmark}
+        <DocViewerBookmarkList />
+      {:else}
+        <DocViewerHistoryList />
+      {/if}
     </div>
-  {/if}
+  </div>
 </div>
 
 <!-- snippets -->
-{#snippet header()}
+{#snippet header(Icon: Component, title: string)}
   <div data-role='header' class='flex flex-row items-center'>
-    <span data-role='title'>{info.title}</span>
+    <Icon />
+    <span data-role='title'>{title}</span>
     <CloseButton
       onClicked={() => {
         viewlogic.setSidePanel(undefined);
@@ -71,7 +62,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 <style>
-  [data-area='side-panel'] {
+  [data-area='sidebar'] {
     background: var(--qt-bg-subtle);
     border-left: 1px solid var(--qt-stroke-subtle);
     opacity: 0.95;

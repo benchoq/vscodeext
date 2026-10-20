@@ -6,18 +6,46 @@ import {
   type BookmarkEntry
 } from "@shared/doc-viewer";
 
-export interface BookmarkViewEntry {
-  data: BookmarkEntry;
-  checked: boolean
+export interface CheckableEntry<T> {
+  data: T;
+  checked: boolean;
 }
 
-export interface HistoryViewEntry {
-  data: HistoryEntry;
-  checked: boolean
+export type HistoryViewEntry = CheckableEntry<HistoryEntry>;
+export type BookmarkViewEntry = CheckableEntry<BookmarkEntry>;
+
+// check states
+export type CheckState = 'empty' | 'partial' | 'all';
+
+export function createCheckState(items: () => { checked: boolean }[]) {
+  const allItems = items();
+  const checkedItems = allItems.filter((e) => e.checked);
+
+  const total = $derived(allItems.length);
+  const checked = $derived(checkedItems.length);
+  const state = $derived.by<CheckState>(() => {
+    return (checked === 0)
+      ? 'empty'
+      : checked === total ? 'all' : 'partial';
+  });
+
+  const description = $derived.by(() => {
+    return (checked === 0)
+      ? `Total ${total} items`
+      : `${checked} of ${total} selected`
+  })
+
+  return {
+    get state() { return state; },
+    get total() { return total; },
+    get description() { return description }
+  };
 }
 
+// find in page
 export type FindAction = 'new' | 'prev' | 'next' | 'clear';
 
+// history
 export class HistoryManager {
   private _history = $state([] as HistoryEntry[]);
   private _currentIndex = $state(-1);

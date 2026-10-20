@@ -35,7 +35,7 @@ export const ui = $state({
     min: 200,
     max: 600,
     width: 350,
-    mode: undefined as 'bookmark' | 'history' | undefined
+    mode: 'bookmark' as 'bookmark' | 'history'
   },
 
   popovers: {
