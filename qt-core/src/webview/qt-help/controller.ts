@@ -10,7 +10,7 @@ import {
 
 import { telemetry, DisposableStore } from 'qt-lib';
 import { setupWebApp, createPanel } from '@/webview/utils';
-import { docViewerEnv } from '@/webview/doc-viewer/env/env';
+import { docViewerInfra as infra } from '@/webview/doc-viewer/infra';
 import { QtHelpDispatcher } from './dispatcher';
 import * as consts from './constants';
 
@@ -38,7 +38,7 @@ export class QtHelpController implements Disposable {
   ) {
     setupWebApp(consts.AppId, context, this._panel);
 
-    this._dispatcher = new QtHelpDispatcher(context, this._panel, docViewerEnv);
+    this._dispatcher = new QtHelpDispatcher(context, this._panel, infra);
     this._disposables.push(
       this._dispatcher,
       this._panel.onDidDispose(this.dispose.bind(this))

@@ -21,7 +21,7 @@ import {
 import { fsFile } from '@/fs-utils';
 import { WebviewDispatcher } from '@/webview/dispatcher';
 import { Command, CommandId } from '@/webview/shared/message';
-import { DocViewerEnv } from './env/env';
+import { DocViewerInfra } from './infra';
 import { openDocViewer } from './controller';
 
 export class DocViewerDispatcher extends WebviewDispatcher  {
@@ -31,7 +31,7 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
   public constructor(
     private readonly _extContext: ExtContext,
     private readonly _panel: Panel,
-    private readonly _env: DocViewerEnv,
+    private readonly _infra: DocViewerInfra,
     private readonly _openOptions: OpenOptions
   ) {
     super(
@@ -55,7 +55,7 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
       'qt-doc-styles.css'
     );
 
-    const css = this._env.server.cssManager();
+    const css = this._infra.server.cssManager();
     css.setCssPath(cssPath);
 
     if (this._extContext.extensionMode === ExtMode.Development) {
@@ -77,7 +77,7 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
   private readonly _onGetConfig = (cmd: Command) => {
     this.channel.replyData(cmd, {
       openOptions: this._openOptions,
-      serverOrigin: this._env.server.baseUri.toString(),
+      serverOrigin: this._infra.server.baseUri.toString(),
     });
   };
 
@@ -98,9 +98,9 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
 
     try {
       const parsed = Uri.parse(uri_s, true);
-      const redirect = this._env.server.getRedirectUri(parsed);
+      const redirect = this._infra.server.getRedirectUri(parsed);
 
-      if (this._env.server.matchesOrigin(redirect)) {
+      if (this._infra.server.matchesOrigin(redirect)) {
         if (!fsFile(redirect.path).exists()) {
           this.channel.replyData(cmd, {
             uri_s,
@@ -141,7 +141,7 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
 
   private readonly _onGetBookmarks = (cmd: Command) => {
     this.channel.replyData(cmd, {
-      entries: this._env.bookmarks.entries
+      entries: this._infra.bookmarks.entries
     });
   }
 
@@ -151,19 +151,19 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
       return;
     }
 
-    const affected = this._env.bookmarks.edit(edit);
+    const affected = this._infra.bookmarks.edit(edit);
     if (affected) {
-      await this._env.bookmarks.save();
+      await this._infra.bookmarks.save();
     }
 
     this.channel.replyData(cmd, {
-      entries: this._env.bookmarks.entries
+      entries: this._infra.bookmarks.entries
     });
   }
 
   private readonly _onGetHistories = (cmd: Command) => {
     this.channel.replyData(cmd, {
-      entries: this._env.history.entries
+      entries: this._infra.history.entries
     });
   }
 
@@ -173,13 +173,13 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
       return;
     }
 
-    const affected = this._env.history.edit(edit);
+    const affected = this._infra.history.edit(edit);
     if (affected) {
-      await this._env.history.save();
+      await this._infra.history.save();
     }
 
     this.channel.replyData(cmd, {
-      entries: this._env.history.entries
+      entries: this._infra.history.entries
     });
   }
 }

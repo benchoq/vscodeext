@@ -10,7 +10,7 @@ interface UriStoreFile<T> {
   entries: T[];
 }
 
-export abstract class UriEntryStore<T extends { uri: string }> {
+export abstract class UriStore<T extends { uri: string }> {
   private _file: Uri | undefined;
   protected _entries: T[] = [];
 

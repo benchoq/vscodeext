@@ -9,7 +9,7 @@ import {
 
 import { fsDir } from '@/fs-utils';
 import { Command, CommandId } from '@/webview/shared/message';
-import { DocViewerEnv } from '@/webview/doc-viewer/env/env';
+import { DocViewerInfra } from '@/webview/doc-viewer/infra';
 import { DocViewerDispatcher } from '@/webview/doc-viewer/dispatcher';
 import { QtHelpDataManager } from './data/data-manager';
 import { isQtDocRootInfo } from '../shared/qt-help';
@@ -20,9 +20,9 @@ export class QtHelpDispatcher extends DocViewerDispatcher {
   public constructor(
     extContext: ExtContext,
     panel: Panel,
-    docViewerEnv: DocViewerEnv
+    docViewerInfra: DocViewerInfra
   ) {
-    super(extContext, panel, docViewerEnv, {
+    super(extContext, panel, docViewerInfra, {
       trigger: "qt-help",
       syncPanelTitle: false
     });

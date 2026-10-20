@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import { HistoryEdit, HistoryEntry } from "@/webview/shared/doc-viewer";
-import { UriEntryStore } from './uri-entry-store';
+import { UriStore as UriStore } from './uri-store';
 
-export class DocViewerHistoryManager extends UriEntryStore<HistoryEntry> {
+export class DocViewerHistoryManager extends UriStore<HistoryEntry> {
   public edit(edit: HistoryEdit) {
     switch (edit.action) {
       case 'add': {

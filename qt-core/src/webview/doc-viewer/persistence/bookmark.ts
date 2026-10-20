@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import { BookmarkEdit, BookmarkEntry } from "@/webview/shared/doc-viewer";
-import { UriEntryStore } from './uri-entry-store';
+import { UriStore } from './uri-store';
 
-export class DocViewerBookmarkManager extends UriEntryStore<BookmarkEntry> {
+export class DocViewerBookmarkManager extends UriStore<BookmarkEntry> {
   public edit(edit: BookmarkEdit) {
     switch (edit.action) {
       case 'toggle': {

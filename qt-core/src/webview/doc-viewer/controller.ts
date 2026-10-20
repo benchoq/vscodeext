@@ -11,7 +11,7 @@ import {
 import { telemetry, DisposableStore } from 'qt-lib';
 import { createPanel } from '@/webview/utils';
 import { OpenOptions } from '@/webview/shared/doc-viewer';
-import { docViewerEnv as env } from './env/env';
+import { docViewerInfra as infra } from './infra';
 import { DocViewerSession } from './session';
 import * as consts from './constants';
 
@@ -23,9 +23,9 @@ let controller: DocViewerController | undefined;
 export function addDocViewer(context: Context) {
   controller = new DocViewerController();
 
-  void env.history.init(context.globalStorageUri, 'history.json');
-  void env.bookmarks.init(context.globalStorageUri, 'bookmarks.json');
-  void env.server.start();
+  void infra.server.start();
+  void infra.history.init(context.globalStorageUri, 'history.json');
+  void infra.bookmarks.init(context.globalStorageUri, 'bookmarks.json');
 
   context.subscriptions.push(
     commands.registerCommand(openCmdFull, (uri?: Uri, o?: OpenOptions) => {
