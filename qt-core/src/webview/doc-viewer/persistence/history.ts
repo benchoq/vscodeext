@@ -4,6 +4,8 @@
 import { HistoryEdit, HistoryEntry } from "@/webview/shared/doc-viewer";
 import { UriStore as UriStore } from './uri-store';
 
+const MaxEntries = 500;
+
 export class DocViewerHistoryManager extends UriStore<HistoryEntry> {
   public edit(edit: HistoryEdit) {
     switch (edit.action) {
@@ -14,6 +16,9 @@ export class DocViewerHistoryManager extends UriStore<HistoryEntry> {
           last.timestamp = timestamp;
         } else {
           this._entries.push({ ...edit.entry, timestamp });
+          if (this._entries.length > MaxEntries) {
+            this._entries.splice(0, this._entries.length - MaxEntries);
+          }
         }
 
         return true;

@@ -4,6 +4,8 @@
 import { BookmarkEdit, BookmarkEntry } from "@/webview/shared/doc-viewer";
 import { UriStore } from './uri-store';
 
+const MaxEntries = 500;
+
 export class DocViewerBookmarkManager extends UriStore<BookmarkEntry> {
   public edit(edit: BookmarkEdit) {
     switch (edit.action) {
@@ -14,6 +16,10 @@ export class DocViewerBookmarkManager extends UriStore<BookmarkEntry> {
 
         const index = this._findIndex(edit.entry.uri);
         if (index === -1) {
+          if (this._entries.length >= MaxEntries) {
+            return false;
+          }
+
           this._entries.push(edit.entry);
         } else {
           this._entries.splice(index, 1);
