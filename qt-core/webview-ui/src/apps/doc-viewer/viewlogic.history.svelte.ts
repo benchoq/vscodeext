@@ -43,8 +43,6 @@ function setHistories(entries: HistoryEntry[]) {
         checked: false
       } as HistoryViewEntry
     });
-
-    // console.log($state.snapshot(data.histories));
   }
 }
 

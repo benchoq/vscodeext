@@ -214,7 +214,6 @@ function onMessageFromIframe(e: MessageEvent) {
 
     case IframeMessageId.EventScrolled: {
       ui.iframe.scrollTop = e.data.scrollTop;
-      console.log(e.data);
       break;
     }
 
