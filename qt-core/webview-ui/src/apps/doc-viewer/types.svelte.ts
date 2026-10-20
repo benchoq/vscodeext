@@ -6,7 +6,7 @@ import {
   type BookmarkEntry
 } from "@shared/doc-viewer";
 
-export interface CheckableItem<T> {
+interface CheckableItem<T> {
   data: T;
   checked: boolean;
 }

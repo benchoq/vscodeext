@@ -24,6 +24,8 @@ export const data = $state({
 });
 
 export const ui = $state({
+  theme: VscodeThemeMonitor.createController(),
+
   iframe: {
     el: undefined as HTMLIFrameElement | undefined,
     src: '',
@@ -32,8 +34,6 @@ export const ui = $state({
     scrollTop: undefined as number | undefined,
     errorCode: undefined as string | undefined
   },
-
-  theme: VscodeThemeMonitor.createController(),
 
   sidePanel: {
     min: 200,

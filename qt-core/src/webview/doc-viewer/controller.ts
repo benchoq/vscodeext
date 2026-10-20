@@ -92,9 +92,9 @@ export class DocViewerController {
   }
 
   private _find(uri: Uri) {
-    for (const c of this._sessions) {
-      if (c.currentUri === uri.toString()) {
-        return c;
+    for (const s of this._sessions) {
+      if (s.currentUri === uri.toString()) {
+        return s;
       }
     }
 

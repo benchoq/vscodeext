@@ -12,7 +12,7 @@ import { DisposableStore } from 'qt-lib';
 import { setupWebApp } from '@/webview/utils';
 import { OpenOptions } from '../shared/doc-viewer';
 import { DocViewerDispatcher } from './dispatcher';
-import { docViewerInfra } from './infra';
+import { docViewerInfra as infra } from './infra';
 import * as consts from './constants';
 
 export class DocViewerSession {
@@ -27,7 +27,7 @@ export class DocViewerSession {
     setupWebApp(consts.AppId, context, this._panel);
 
     this._dispatcher = new DocViewerDispatcher(
-      context, this._panel, docViewerInfra, openOptions
+      context, this._panel, infra, openOptions
     );
 
     this._disposables.push(
