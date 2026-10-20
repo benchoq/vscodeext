@@ -4,6 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { type HistoryEntry } from '@shared/doc-viewer';
   import CheckBox from '@/comps/CheckBox.svelte';
   import Separator from '@/comps/Separator.svelte';
   import * as format from '@/utils/format';
@@ -37,65 +38,44 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 </script>
 
-<div class='qt-item-list flex flex-col'>
+<div class='w-full flex flex-col'>
   {#each groups as group (group.label)}
-    <div data-role='date-header'>{group.label}</div>
+    <div data-role='history-date'>
+      {group.label}
+    </div>
 
-    {#each group.items as item, i (item)}
-      {#if i !== 0}
-        <div class='pl-4'>
-          <Separator />
-        </div>
-      {/if}
+    <div class='qt-item-list !overflow-visible'>
+      {#each group.items as item, i (item)}
+        {#if i !== 0}
+          <Separator class='pl-4' />
+        {/if}
 
-      <div class='w-full flex flex-row items-center'>
-        <CheckBox bind:checked={item.checked} />
-
-        <button
-          class='item grow flex min-w-0 flex-row items-center gap-4'
+        <div
+          class='item w-full flex flex-row'
           class:active={item.checked}
-          title={helpers.toDisplayUri(item.data.uri)}
-          onclick={() => {
-            viewlogic.openDoc(item.data.uri);
-          }}
         >
-          <span data-role='time'>
-            {format.timeAsLocaleString(new Date(item.data.timestamp ?? 0))}
-          </span>
-          <span data-role='title'>{item.data.title}</span>
-          <span data-role='hash'>
-            {helpers.extractHash(item.data.uri)}
-          </span>
-        </button>
+          <CheckBox bind:checked={item.checked} />
+          {@render itemContent(item.data)}
+        </div>
+      {/each}
       </div>
-    {/each}
   {/each}
 </div>
 
-<style>
-  [data-role='date-header'] {
-    color: var(--qt-text-muted);
-    font-size: var(--qt-font-s);
-    padding: 1.0rem 0 0.5rem 0;
-  }
-
-  [data-role='time'] {
-    color: var(--qt-text-muted);
-    font-size: var(--qt-font-xs);
-    white-space: nowrap;
-  }
-
-  [data-role='title'] {
-    color: var(--qt-text-default);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  [data-role='hash'] {
-    min-width: 0;
-    flex-shrink: 0;
-    font-size: var(--qt-font-xs);
-    color: var(--qt-text-muted);
-  }
-</style>
+<!-- snippets -->
+{#snippet itemContent(entry: HistoryEntry)}
+  <button
+    data-role='item-content'
+    class='grow flex flex-row items-center'
+    title={helpers.toDisplayUri(entry.uri)}
+    onclick={() => {
+      viewlogic.openDoc(entry.uri);
+    }}
+  >
+    <span data-role='history-time'>
+      {format.timeAsLocaleString(new Date(entry.timestamp ?? 0))}
+    </span>
+    <span data-role='item-title'>{entry.title}</span>
+    <span data-role='item-hash'>{helpers.extractHash(entry.uri)}</span>
+  </button>
+{/snippet}

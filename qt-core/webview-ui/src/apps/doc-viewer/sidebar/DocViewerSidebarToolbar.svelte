@@ -42,13 +42,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 </script>
 
-<div class='flex flex-row items-center gap-2'>
+<div class='w-full flex items-center gap-2'>
   {@render groupCheckBox()}
-
-  <span class='grow'>
-    {checker.description}
-  </span>
-
+  <span class='grow'>{checker.description}</span>
   {@render removeButton()}
 </div>
 

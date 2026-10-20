@@ -6,6 +6,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { type Component } from 'svelte';
   import { Bookmark, Clock } from '@lucide/svelte';
+  import './DocViewerSidebar.css';
 
   import CloseButton from '@/comps/CloseButton.svelte';
   import VerticalResizeHandle from '@/comps/VerticalResizeHandle.svelte';
@@ -28,8 +29,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       bookmark ? 'Bookmarks' : 'History'
     )}
 
-    <div data-role='content' class='h-full flex flex-col'>
+    <div data-role='toolbar' class='w-full flex'>
       <DocViewerSidebarToolbar mode={ui.sidePanel.mode} />
+    </div>
+
+    <div data-role='content' class='w-full h-full flex'>
       {#if bookmark}
         <DocViewerBookmarkList />
       {:else}
@@ -75,6 +79,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     border-bottom: solid 1px var(--qt-stroke-subtle);
   }
 
+  [data-role='toolbar'] {
+    padding: 8px 10px;
+    border-bottom: solid 1px var(--qt-stroke-subtle);
+  }
+
   [data-role='title'] {
     flex: 1;
     color: var(--qt-text-default);
@@ -87,6 +96,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-role='content'] {
     gap: 6px;
     overflow: auto;
-    padding-left: calc(var(--spacing) * 2);
   }
 </style>
