@@ -20,7 +20,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   } = $props();
 
   const bm = $derived(mode === 'bookmark');
-  const items = $derived(bm ? data.bookmarks : data.histories);
+  const items = $derived(bm ? data.bookmarks : data.history.raw);
   const logic = $derived(bm ? viewlogic.bookmark : viewlogic.history);
   const checker = $derived(createCheckState(() => items));
 

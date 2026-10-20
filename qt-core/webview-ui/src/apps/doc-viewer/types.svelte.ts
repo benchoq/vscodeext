@@ -6,13 +6,17 @@ import {
   type BookmarkEntry
 } from "@shared/doc-viewer";
 
-export interface CheckableEntry<T> {
+export interface CheckableItem<T> {
   data: T;
   checked: boolean;
 }
 
-export type HistoryViewEntry = CheckableEntry<HistoryEntry>;
-export type BookmarkViewEntry = CheckableEntry<BookmarkEntry>;
+export type BookmarkItem = CheckableItem<BookmarkEntry>;
+export type HistoryItem = CheckableItem<HistoryEntry>;
+export type HistoryItemGroup = {
+  label: string;
+  items: HistoryItem[];
+};
 
 // check states
 export type CheckState = 'empty' | 'partial' | 'all';

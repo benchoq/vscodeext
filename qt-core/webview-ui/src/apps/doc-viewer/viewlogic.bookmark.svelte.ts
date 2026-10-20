@@ -11,7 +11,7 @@ import {
 
 import { CommandId } from '@shared/message';
 import { data } from './states.svelte';
-import { type BookmarkViewEntry } from './types.svelte';
+import { type BookmarkItem } from './types.svelte';
 
 export async function load() {
   const r = await vscode.post(CommandId.DocViewerGetBookmarks);
@@ -45,7 +45,7 @@ function setBookmarks(entries: BookmarkEntry[]) {
       return {
         data: e,
         checked: false
-      } as BookmarkViewEntry
+      } as BookmarkItem
     });
   }
 }

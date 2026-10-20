@@ -6,13 +6,17 @@ import { type OpenOptions } from '@shared/doc-viewer';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import {
   HistoryManager,
-  type HistoryViewEntry,
-  type BookmarkViewEntry
+  type HistoryItemGroup,
+  type HistoryItem,
+  type BookmarkItem,
 } from './types.svelte';
 
 export const data = $state({
-  bookmarks: [] as BookmarkViewEntry[],
-  histories: [] as HistoryViewEntry[],
+  bookmarks: [] as BookmarkItem[],
+  history: {
+    raw: [] as HistoryItem[],
+    groups: [] as HistoryItemGroup[]
+  },
   configs: {
     openOptions: {} as OpenOptions,
     serverOrigin: '' // expects 'http://127.0.0.1:<port>'

@@ -3,7 +3,7 @@
 
 import _ from 'lodash';
 import { vscode } from '@/apps/vscode';
-import { type HistoryViewEntry } from './types.svelte';
+import { type HistoryItem } from './types.svelte';
 
 import {
   isHistoryEntry,
@@ -24,25 +24,52 @@ export async function edit(edit: HistoryEdit) {
 }
 
 export function getSelection() {
-  return data.histories
+  return data.history.raw
     .filter((e) => e.checked)
     .map(e => e.data);
 }
 
 export function setAllChecked(checked: boolean) {
-  data.histories.forEach((e) => {
+  data.history.raw.forEach((e) => {
     e.checked = checked;
   });
 }
 
 function setHistories(entries: HistoryEntry[]) {
-  if (Array.isArray(entries) && entries.every(isHistoryEntry)) {
-    data.histories = entries.map((e) => {
-      return {
-        data: e,
-        checked: false
-      } as HistoryViewEntry
-    });
+  if (!Array.isArray(entries) || !entries.every(isHistoryEntry)) {
+    return;
   }
+
+  const raw = entries.map((e) => {
+    return {
+      data: e,
+      checked: false
+    } as HistoryItem
+  });
+
+  data.history.raw = raw;
+  data.history.groups = createHistoryGroups(raw);
 }
 
+// helpers
+function createHistoryGroups(raw: HistoryItem[]) {
+  const map = new Map<string, { label: string; items: HistoryItem[] }>();
+
+  for (const item of raw.toReversed()) {
+    const date = new Date(item.data.timestamp ?? 0);
+    const key = date.toDateString();
+    let group = map.get(key);
+    if (!group) {
+      group = {
+        items: [],
+        label: date.toLocaleDateString(undefined, { dateStyle: 'full' }),
+      };
+
+      map.set(key, group);
+    }
+
+    group.items.push(item);
+  }
+
+  return [...map.values()];
+}
