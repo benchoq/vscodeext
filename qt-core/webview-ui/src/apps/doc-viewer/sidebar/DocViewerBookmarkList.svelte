@@ -68,6 +68,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         {@render itemContent(item.data)}
       </div>
     {/each}
+
+    {@render dropSiteAtEnd()}
   </div>
 </div>
 
@@ -88,6 +90,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <Check class='ml-auto'/>
     {/if}
   </button>
+{/snippet}
+
+{#snippet dropSiteAtEnd()}
+  <div
+    data-role='item-content'
+    class:drop-target={overIndex === data.bookmarks.length}
+    draggable={true}
+    {...dndHandlers(data.bookmarks.length)}
+  >
+    &nbsp;
+  </div>
 {/snippet}
 
 <style>

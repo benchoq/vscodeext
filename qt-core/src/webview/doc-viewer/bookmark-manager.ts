@@ -40,8 +40,9 @@ export class DocViewerBookmarkManager {
 
       case 'move': {
         const [item] = this._entries.splice(edit.from, 1);
-        if (item) {
-          this._entries.splice(edit.to, 0, item);
+        if (item && edit.from !== edit.to) {
+          const to = edit.from < edit.to ? edit.to - 1 : edit.to;
+          this._entries.splice(to, 0, item);
           return true;
         }
         break;
