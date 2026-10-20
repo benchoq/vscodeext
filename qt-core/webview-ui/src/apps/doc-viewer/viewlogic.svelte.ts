@@ -58,6 +58,10 @@ export async function openDoc(uri: string, forceNewWindow = false) {
     forceNewWindow
   });
 
+  if (forceNewWindow) {
+    return;
+  }
+
   const serviceUri = String(_.get(r, 'serviceUri', '')).trim();
   if (serviceUri) {
     ui.iframe.src = serviceUri;

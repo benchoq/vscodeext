@@ -28,8 +28,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   [data-role='item-content'] {
     gap: 10px;
-    padding: 6px 0px;
     min-width: 0;
+    padding: 6px 0px;
+    cursor: pointer;
   }
 
   [data-role='history-date'] {
