@@ -1,7 +1,7 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import { DocViewerHttpServer } from './server/http-server';
+import { DocViewerHttpServer } from '../server/http-server';
 import { DocViewerBookmarkManager } from './bookmark-manager';
 import { DocViewerHistoryManager } from './history-manager';
 

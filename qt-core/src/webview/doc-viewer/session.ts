@@ -12,7 +12,7 @@ import { DisposableStore } from 'qt-lib';
 import { setupWebApp } from '@/webview/utils';
 import { OpenOptions } from '../shared/doc-viewer';
 import { DocViewerDispatcher } from './dispatcher';
-import { docViewerEnv } from './env';
+import { docViewerEnv } from './env/env';
 import * as consts from './constants';
 
 export class DocViewerSession {

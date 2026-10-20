@@ -9,7 +9,7 @@ import {
 
 import { fsDir } from '@/fs-utils';
 import { Command, CommandId } from '@/webview/shared/message';
-import { DocViewerEnv } from '@/webview/doc-viewer/env';
+import { DocViewerEnv } from '@/webview/doc-viewer/env/env';
 import { DocViewerDispatcher } from '@/webview/doc-viewer/dispatcher';
 import { QtHelpDataManager } from './data/data-manager';
 import { isQtDocRootInfo } from '../shared/qt-help';

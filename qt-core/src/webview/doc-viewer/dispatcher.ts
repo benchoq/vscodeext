@@ -21,7 +21,7 @@ import {
 import { fsFile } from '@/fs-utils';
 import { WebviewDispatcher } from '@/webview/dispatcher';
 import { Command, CommandId } from '@/webview/shared/message';
-import { DocViewerEnv } from './env';
+import { DocViewerEnv } from './env/env';
 import { openDocViewer } from './controller';
 
 export class DocViewerDispatcher extends WebviewDispatcher  {

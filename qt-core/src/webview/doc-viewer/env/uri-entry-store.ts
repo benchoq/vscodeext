@@ -15,8 +15,10 @@ export abstract class UriEntryStore<T extends { uri: string }> {
   protected _entries: T[] = [];
 
   async init(storageUri: Uri, fileName: string) {
-    this._file = Uri.joinPath(storageUri, 'doc-viewer', fileName);
-    await this.load();
+    if (!this._file) {
+      this._file = Uri.joinPath(storageUri, 'doc-viewer', fileName);
+      await this.load();
+    }
   }
 
   public get entries() {

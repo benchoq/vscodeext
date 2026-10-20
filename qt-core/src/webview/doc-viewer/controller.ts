@@ -11,7 +11,7 @@ import {
 import { telemetry, DisposableStore } from 'qt-lib';
 import { createPanel } from '@/webview/utils';
 import { OpenOptions } from '@/webview/shared/doc-viewer';
-import { docViewerEnv as env } from './env';
+import { docViewerEnv as env } from './env/env';
 import { DocViewerSession } from './session';
 import * as consts from './constants';
 

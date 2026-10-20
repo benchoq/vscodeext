@@ -10,7 +10,7 @@ import {
 
 import { telemetry, DisposableStore } from 'qt-lib';
 import { setupWebApp, createPanel } from '@/webview/utils';
-import { docViewerEnv } from '@/webview/doc-viewer/env';
+import { docViewerEnv } from '@/webview/doc-viewer/env/env';
 import { QtHelpDispatcher } from './dispatcher';
 import * as consts from './constants';
 
