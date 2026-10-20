@@ -21,21 +21,17 @@ import {
 import { fsFile } from '@/fs-utils';
 import { WebviewDispatcher } from '@/webview/dispatcher';
 import { Command, CommandId } from '@/webview/shared/message';
+import { DocViewerEnv } from './env';
 import { openDocViewer } from './controller';
-import { DocViewerHttpServer } from './server/http-server';
-import { DocViewerHistoryManager } from './history-manager';
-import { DocViewerBookmarkManager } from './bookmark-manager';
 
 export class DocViewerDispatcher extends WebviewDispatcher  {
   private readonly _viewerState: UiState = {};
-  private readonly _histories: DocViewerHistoryManager;
-  private readonly _bookmarks: DocViewerBookmarkManager;
   private readonly _disposable: Disposable | undefined;
 
   public constructor(
     private readonly _extContext: ExtContext,
     private readonly _panel: Panel,
-    private readonly _docServer: DocViewerHttpServer,
+    private readonly _env: DocViewerEnv,
     private readonly _openOptions: OpenOptions
   ) {
     super(
@@ -43,8 +39,6 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
       _panel
     );
 
-    this._histories = new DocViewerHistoryManager(this._extContext.globalState);
-    this._bookmarks = new DocViewerBookmarkManager(this._extContext.globalState);
     this.setHandlers([
       [CommandId.DocViewerGetConfig, this._onGetConfig],
       [CommandId.DocViewerSetViewerState, this._onSetViewerState],
@@ -61,7 +55,7 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
       'qt-doc-styles.css'
     );
 
-    const css = this._docServer.cssManager();
+    const css = this._env.server.cssManager();
     css.setCssPath(cssPath);
 
     if (this._extContext.extensionMode === ExtMode.Development) {
@@ -83,7 +77,7 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
   private readonly _onGetConfig = (cmd: Command) => {
     this.channel.replyData(cmd, {
       openOptions: this._openOptions,
-      serverOrigin: this._docServer.baseUri.toString(),
+      serverOrigin: this._env.server.baseUri.toString(),
     });
   };
 
@@ -104,9 +98,9 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
 
     try {
       const parsed = Uri.parse(uri_s, true);
-      const redirect = this._docServer.getRedirectUri(parsed);
+      const redirect = this._env.server.getRedirectUri(parsed);
 
-      if (this._docServer.matchesOrigin(redirect)) {
+      if (this._env.server.matchesOrigin(redirect)) {
         if (!fsFile(redirect.path).exists()) {
           this.channel.replyData(cmd, {
             uri_s,
@@ -146,38 +140,46 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
   }
 
   private readonly _onGetBookmarks = (cmd: Command) => {
-    this.channel.replyData(cmd, { entries: this._bookmarks.entries });
+    this.channel.replyData(cmd, {
+      entries: this._env.bookmarks.entries
+    });
   }
 
-  private readonly _onEditBookmarks = (cmd: Command) => {
+  private readonly _onEditBookmarks = async (cmd: Command) => {
     const edit = _.get(cmd.payload, 'edit', {});
     if (!isBookmarkEdit(edit)) {
       return;
     }
 
-    const affected = this._bookmarks.edit(edit);
+    const affected = this._env.bookmarks.edit(edit);
     if (affected) {
-      this._bookmarks.save();
+      await this._env.bookmarks.save();
     }
 
-    this.channel.replyData(cmd, { entries: this._bookmarks.entries });
+    this.channel.replyData(cmd, {
+      entries: this._env.bookmarks.entries
+    });
   }
 
   private readonly _onGetHistories = (cmd: Command) => {
-    this.channel.replyData(cmd, { entries: this._histories.entries });
+    this.channel.replyData(cmd, {
+      entries: this._env.history.entries
+    });
   }
 
-  private readonly _onEditHistories = (cmd: Command) => {
+  private readonly _onEditHistories = async (cmd: Command) => {
     const edit = _.get(cmd.payload, 'edit', {});
     if (!isHistoryEdit(edit)) {
       return;
     }
 
-    const affected = this._histories.edit(edit);
+    const affected = this._env.history.edit(edit);
     if (affected) {
-      this._histories.save();
+      await this._env.history.save();
     }
 
-    this.channel.replyData(cmd, { entries: this._histories.entries });
+    this.channel.replyData(cmd, {
+      entries: this._env.history.entries
+    });
   }
 }

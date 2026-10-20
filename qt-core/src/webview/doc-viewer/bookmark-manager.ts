@@ -1,26 +1,10 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import * as vscode from "vscode";
-
 import { BookmarkEdit, BookmarkEntry } from "@/webview/shared/doc-viewer";
-import * as consts from './constants';
+import { UriEntryStore } from './uri-entry-store';
 
-export class DocViewerBookmarkManager {
-  private _entries: BookmarkEntry[] = [];
-
-  constructor(private readonly _memento: vscode.Memento) {
-    this.load();
-  }
-
-  public get entries() {
-    return this._entries;
-  }
-
-  public contains(uri: string) {
-    return this._findIndex(uri) !== -1;
-  }
-
+export class DocViewerBookmarkManager extends UriEntryStore<BookmarkEntry> {
   public edit(edit: BookmarkEdit) {
     switch (edit.action) {
       case 'toggle': {
@@ -39,8 +23,12 @@ export class DocViewerBookmarkManager {
       }
 
       case 'move': {
+        if (edit.from === edit.to) {
+          return false;
+        }
+
         const [item] = this._entries.splice(edit.from, 1);
-        if (item && edit.from !== edit.to) {
+        if (item) {
           const to = edit.from < edit.to ? edit.to - 1 : edit.to;
           this._entries.splice(to, 0, item);
           return true;
@@ -63,20 +51,5 @@ export class DocViewerBookmarkManager {
     }
 
     return false;
-  }
-
-  public load() {
-    this._entries = [...this._memento.get<BookmarkEntry[]>(
-      consts.BookmarkStorageKey, []
-    )];
-  }
-
-  public save() {
-    return this._memento.update(
-      consts.BookmarkStorageKey, this._entries);
-  }
-
-  private _findIndex(uri: string) {
-    return this._entries.findIndex((e) => e.uri === uri);
   }
 }

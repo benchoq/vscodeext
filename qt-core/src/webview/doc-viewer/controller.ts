@@ -11,19 +11,21 @@ import {
 import { telemetry, DisposableStore } from 'qt-lib';
 import { createPanel } from '@/webview/utils';
 import { OpenOptions } from '@/webview/shared/doc-viewer';
+import { docViewerEnv as env } from './env';
 import { DocViewerSession } from './session';
-import { DocViewerHttpServer } from './server/http-server';
 import * as consts from './constants';
 
 const openCmd = 'openDocViewer';
 const openCmdFull = `${consts.EXTENSION_ID}.${openCmd}`;
 
 let controller: DocViewerController | undefined;
-export const docServer = new DocViewerHttpServer();
 
 export function addDocViewer(context: Context) {
   controller = new DocViewerController();
-  void docServer.start();
+
+  void env.history.init(context.globalStorageUri, 'history.json');
+  void env.bookmarks.init(context.globalStorageUri, 'bookmarks.json');
+  void env.server.start();
 
   context.subscriptions.push(
     commands.registerCommand(openCmdFull, (uri?: Uri, o?: OpenOptions) => {
@@ -69,7 +71,7 @@ export class DocViewerController {
 
   private _add(context: Context, openOptions: OpenOptions) {
     const panel = createPanel(consts.AppId);
-    const s = new DocViewerSession(context, panel, docServer, openOptions);
+    const s = new DocViewerSession(context, panel, openOptions);
 
     this._disposables.push(
       // TODO
