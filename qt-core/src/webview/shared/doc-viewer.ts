@@ -44,6 +44,7 @@ export enum IframeMessageId {
   EventScrolled = 'event-scrolled',
   EventMouseDown = 'event-mouse-down',
   EventContextMenu = 'event-contextmenu',
+  EventHashChanged = 'event-hash-changed',
   EventHoverChanged = 'event-hover-changed',
 }
 

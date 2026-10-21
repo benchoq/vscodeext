@@ -50,6 +50,8 @@ export async function openDoc(uri: string, newViewer = false) {
     return false;
   }
 
+  console.log('open doc', uri);
+
   const r = await vscode.post(CommandId.DocViewerOpenDoc, { uri, newViewer });
   const result = String(_.get(r, 'result', '')).trim();
   const serviceUri = String(_.get(r, 'serviceUri', '')).trim();
@@ -72,11 +74,7 @@ export async function openDoc(uri: string, newViewer = false) {
 }
 
 export function navigate(dir: 'back' | 'forward') {
-  const e = ui.history.go(dir);
-
-  if (typeof e?.uri === 'string') {
-    openDoc(e?.uri);
-  }
+  openDoc(ui.history.go(dir)?.uri ?? '');
 }
 
 export function copySelection() {
@@ -147,7 +145,10 @@ function syncViewerLoadState() {
 
 function onMessageFromIframe(e: MessageEvent) {
   switch (e.data?.id) {
-    case IframeMessageId.EventLoaded: {
+    case IframeMessageId.EventLoaded:
+    case IframeMessageId.EventHashChanged: {
+      console.log('page loaded', e.data.href);
+
       const errorCode = String(_.get(e.data, 'errorCode', '')).trim();
       if (errorCode) {
         setErrorState(errorCode);

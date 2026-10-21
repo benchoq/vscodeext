@@ -11,6 +11,7 @@ export function getScriptToInject() {
       CommonScript,
       DocLoadedScript,
       DocReloadScript,
+      DocHashChangedScript,
       ScrollToTopScript,
       FindInPageScript,
       ApplyThemeScript,
@@ -53,26 +54,32 @@ const CommonScript = /*js*/`
       }
     });
   }
+
+  function getDocLoadState() {
+    return {
+      href: location.href,
+      title: document.title,
+      scrollTop: window.scrollY,
+      errorCode: document.body?.dataset.errorCode,
+    };
+  }
 `;
 
 const DocLoadedScript = /*js*/`
   addListenerNoCapture('load', () => {
-    const nav = performance.getEntriesByType('navigation')[0];
-
-    notifyParent('${IframeMessageId.EventLoaded}', {
-      title: document.title,
-      href: location.href,
-      hash: location.hash,
-      pathname: location.pathname,
-      scrollTop: window.scrollTop,
-      errorCode: document?.body?.dataset.errorCode,
-    });
+    notifyParent('${IframeMessageId.EventLoaded}', getDocLoadState());
   });
 `;
 
 const DocReloadScript = /*js*/`
   onParentMessage('${IframeMessageId.RequestReloadPage}', () => {
     location.reload();
+  });
+`;
+
+const DocHashChangedScript = /*js*/`
+  addListenerNoCapture('hashchange', () => {
+    notifyParent('${IframeMessageId.EventHashChanged}', getDocLoadState());
   });
 `;
 
