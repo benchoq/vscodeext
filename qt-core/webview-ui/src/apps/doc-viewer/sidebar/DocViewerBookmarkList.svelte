@@ -4,12 +4,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { Check } from '@lucide/svelte';
+  // import { Check } from '@lucide/svelte';
 
   import { type BookmarkEntry } from '@shared/doc-viewer';
   import CheckBox from '@/comps/CheckBox.svelte';
   import Separator from '@/comps/Separator.svelte';
-  import { data, ui } from '../states.svelte';
+  import { tooltip } from '@/utils/actions';
+  import { data } from '../states.svelte';
   import * as helpers from '../helpers';
   import * as viewlogic from '../viewlogic.svelte';
 
@@ -66,6 +67,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       >
         <CheckBox bind:checked={item.checked} />
         {@render itemContent(item.data)}
+        {@render itemHash(item.data)}
       </div>
     {/each}
 
@@ -76,20 +78,28 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <!-- snippets -->
 {#snippet itemContent(entry: BookmarkEntry)}
   <button
+    use:tooltip={{ text: helpers.toFileUriIfServer(entry.uri) }}
     data-role='item-content'
     class='grow flex flex-row items-center'
-    title={helpers.toFileUriIfServer(entry.uri)}
     onclick={() => {
       viewlogic.openDoc(entry.uri);
     }}
   >
     <span data-role='item-title'>{entry.title}</span>
-    <span data-role='item-hash'>{helpers.extractHash(entry.uri)}</span>
-
-    {#if entry.uri === helpers.toFileUriIfServer(ui.iframe.uri)}
-      <Check class='ml-auto'/>
-    {/if}
   </button>
+{/snippet}
+
+{#snippet itemHash(entry: BookmarkEntry)}
+  {@const hash = helpers.extractHash(entry.uri)}
+  {#if hash.length !== 0}
+    <span
+      use:tooltip={{ text: hash, delay: 0 }}
+      data-role='item-hash'
+      class='flex items-center self-center'
+    >
+      #
+    </span>
+  {/if}
 {/snippet}
 
 {#snippet dropSiteAtEnd()}

@@ -7,6 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { type HistoryEntry } from '@shared/doc-viewer';
   import CheckBox from '@/comps/CheckBox.svelte';
   import Separator from '@/comps/Separator.svelte';
+  import { tooltip } from '@/utils/actions';
   import * as format from '@/utils/format';
 
   import { data } from '../states.svelte';
@@ -23,7 +24,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <div class='qt-item-list !overflow-visible'>
       {#each g.items as item, i (item)}
         {#if i !== 0}
-          <Separator class='pl-4' />
+          <Separator />
         {/if}
 
         <div
@@ -32,6 +33,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         >
           <CheckBox bind:checked={item.checked} />
           {@render itemContent(item.data)}
+          {@render itemHash(item.data)}
         </div>
       {/each}
       </div>
@@ -41,9 +43,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <!-- snippets -->
 {#snippet itemContent(entry: HistoryEntry)}
   <button
+    use:tooltip={{ text: helpers.toFileUriIfServer(entry.uri) }}
     data-role='item-content'
     class='grow flex flex-row items-center'
-    title={helpers.toFileUriIfServer(entry.uri)}
     onclick={() => {
       viewlogic.openDoc(entry.uri);
     }}
@@ -52,6 +54,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {format.timeAsLocaleString(new Date(entry.timestamp ?? 0))}
     </span>
     <span data-role='item-title'>{entry.title}</span>
-    <span data-role='item-hash'>{helpers.extractHash(entry.uri)}</span>
   </button>
+{/snippet}
+
+{#snippet itemHash(entry: HistoryEntry)}
+  {@const hash = helpers.extractHash(entry.uri)}
+  {#if hash.length !== 0}
+    <span
+      use:tooltip={{ text: hash, delay: 0 }}
+      data-role='item-hash'
+      class='flex items-center self-center'
+    >
+      #
+    </span>
+  {/if}
 {/snippet}
