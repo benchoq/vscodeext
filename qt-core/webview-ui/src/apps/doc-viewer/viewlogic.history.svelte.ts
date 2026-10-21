@@ -48,7 +48,7 @@ function setHistories(entries: HistoryEntry[]) {
   });
 
   data.history.raw = raw;
-  data.history.groups = createHistoryGroups(raw);
+  data.history.groups = createHistoryGroups(data.history.raw);
 }
 
 // helpers
