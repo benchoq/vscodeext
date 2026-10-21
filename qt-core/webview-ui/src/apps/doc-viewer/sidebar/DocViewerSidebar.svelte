@@ -70,6 +70,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     background: var(--qt-bg-subtle);
     border-left: 1px solid var(--qt-stroke-subtle);
     opacity: 0.95;
+    user-select: none;
   }
 
   [data-role='header'] {
