@@ -8,7 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as helpers from '../helpers';
   import * as viewlogic from '../viewlogic.svelte';
   import * as toolbar from './DocViewerToolbar';
-    import { tooltip } from '@/utils/actions';
+  import { tooltip } from '@/utils/actions';
 
   let inputEl = $state(undefined as HTMLInputElement | undefined);
   const value = $derived(ui.iframe.errorCode ? '' : ui.iframe.title);

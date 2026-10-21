@@ -7,8 +7,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { onMount, onDestroy } from 'svelte';
 
   import '@/styles/components/components.css';
-  import './QtHelpApp.css';
-
   import Popover from '@/comps/Popover.svelte';
   import DocViewerApp from '@/apps/doc-viewer/DocViewerApp.svelte';
 
