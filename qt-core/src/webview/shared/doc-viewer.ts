@@ -16,14 +16,15 @@ export interface OpenOptions {
   forceNewWindow?: boolean;
 }
 
-export interface UiState {
-  uri?: string;
-  title?: string;
-}
-
-export interface BookmarkEntry {
+export interface NamedUri {
   uri: string;
   title: string;
+}
+
+export type UiState = Partial<NamedUri>;
+export type BookmarkEntry = NamedUri;
+export interface HistoryEntry extends NamedUri {
+  timestamp?: number;
 }
 
 export type BookmarkEdit =
@@ -31,12 +32,6 @@ export type BookmarkEdit =
   | { action: 'remove'; selection: BookmarkEntry[] }
   | { action: 'move'; from: number; to: number }
   | { action: 'clear' };
-
-export interface HistoryEntry {
-  uri: string;
-  title: string;
-  timestamp?: number;
-}
 
 export type HistoryEdit =
   | { action: 'add'; entry: HistoryEntry }

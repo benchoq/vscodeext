@@ -33,14 +33,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <div class='w-full h-full relative'>
   {#if ui.iframe.errorCode}
     <DocViewerErrorPage />
-  {:else if ui.iframe.src.length === 0}
+  {:else if ui.iframe.uri.length === 0}
     <DocViewerEmptyPage />
   {:else}
     <iframe
       bind:this={ui.iframe.el}
       title='viewer'
       class='w-full h-full'
-      src={ui.iframe.src}
+      src={ui.iframe.uri}
       allow='clipboard-write'
     ></iframe>
   {/if}
@@ -73,7 +73,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   {#if ui.iframe.hoveredUri}
     <span data-role='hover-uri' class='absolute'>
-      {helpers.toDisplayUri(ui.iframe.hoveredUri)}
+      {helpers.toFileUri(ui.iframe.hoveredUri)}
     </span>
   {/if}
 </div>

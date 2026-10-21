@@ -4,7 +4,7 @@
 import _ from 'lodash';
 
 import { vscode } from '@/apps/vscode';
-import { IframeMessageId, isOpenOptions } from '@shared/doc-viewer';
+import { IframeMessageId, isOpenOptions, type NamedUri } from '@shared/doc-viewer';
 import { CommandId, type CommandReply } from '@shared/message';
 
 import { data, ui } from './states.svelte';
@@ -35,21 +35,14 @@ export async function onAppMount() {
 export async function onAppDestroy() {
 }
 
-export function currentServiceUri() {
-  return ui.iframe.src;
+export async function reset() {
+  setLoadState('', 0);
+  ui.iframe.uri = '';
+  syncViewerLoadState();
 }
 
-export async function reset() {
-  // TODO
-  ui.iframe.src = '';
-  ui.iframe.title = '';
-  ui.iframe.errorCode = '';
-  ui.iframe.hoveredUri = '';
-
-  await vscode.post(CommandId.DocViewerSetViewerState, {
-    uri: '',
-    title: ''
-  });
+export function currentUri() {
+  return ui.iframe.uri;
 }
 
 export async function openDoc(uri: string, forceNewWindow = false) {
@@ -58,19 +51,25 @@ export async function openDoc(uri: string, forceNewWindow = false) {
     forceNewWindow
   });
 
-  if (forceNewWindow) {
-    return;
-  }
-
+  const result = String(_.get(r, 'result', '')).trim();
   const serviceUri = String(_.get(r, 'serviceUri', '')).trim();
-  if (serviceUri) {
-    ui.iframe.src = serviceUri;
-    ui.iframe.errorCode = undefined;
-    return;
+
+  switch (result) {
+    case 'load':
+      setLoadState('', 0);
+      ui.iframe.uri = serviceUri;
+      return;
+
+    case 'error':
+      setErrorState(String(_.get(r, 'errorCode', '')).trim());
+      break;
+
+    case 'sustain':
+    default:
+      return;
   }
 
-  ui.iframe.src = String(_.get(r, 'errorUri', '')).trim();
-  trySetError(String(_.get(r, 'errorCode', '')).trim());
+  syncViewerLoadState();
 }
 
 export function navigate(dir: 'back' | 'forward') {
@@ -131,54 +130,48 @@ function onKeydown(e: KeyboardEvent) {
   }
 }
 
-function trySetError(code: unknown) {
-  if (typeof code !== 'string') {
-    return;
-  }
+function setLoadState(title: string, scrollTop: number) {
+  ui.iframe.title = title;
+  ui.iframe.errorCode = '';
+  ui.iframe.hoveredUri = '';
+  ui.iframe.scrollTop = scrollTop;
+}
 
-  ui.iframe.errorCode = code;
+function setErrorState(errorCode: string) {
+  ui.iframe.title = 'Error';
+  ui.iframe.errorCode = errorCode;
+  ui.iframe.hoveredUri = '';
+  ui.iframe.scrollTop = 0;
+}
 
-  if (ui.iframe.errorCode) {
-    ui.iframe.hoveredUri = '';
-    void vscode.post(CommandId.DocViewerSetViewerState, { title: 'Error' });
-  }
+function syncViewerLoadState() {
+  void vscode.post(CommandId.DocViewerSetViewerState, {
+    uri: helpers.toFileUri(ui.iframe.uri),
+    title: ui.iframe.title,
+  });
 }
 
 function onMessageFromIframe(e: MessageEvent) {
   switch (e.data?.id) {
     case IframeMessageId.EventLoaded: {
-      trySetError(e.data.errorCode);
+      const errorCode = String(_.get(e.data, 'errorCode', '')).trim();
+      if (errorCode) {
+        setErrorState(errorCode);
+      } else {
+        const namedUri: NamedUri = {
+          uri: helpers.toFileUri(e.data.href),
+          title: e.data.title
+        };
 
-      if (ui.iframe.errorCode) {
-        return;
+        setLoadState(namedUri.title, e.data.scrollTop);
+        ui.history.push(namedUri);
+        history.edit({ action: 'add', entry: namedUri });
+        postToIframe(IframeMessageId.RequestApplyVscodeTheme, {
+          vars: ui.theme.getAllVscodeCssVars()
+        });
       }
 
-      const persistentUri = helpers.toPersistentUri(e.data.href);
-
-      ui.iframe.title = e.data.title;
-      ui.iframe.hoveredUri = '';
-      ui.iframe.scrollTop = e.data.scrollTop;
-      ui.history.push({
-        uri: e.data.href,
-        title: e.data.title
-      });
-
-      history.edit({
-        action: 'add',
-        entry: {
-          uri: persistentUri,
-          title: e.data.title,
-        }
-      });
-
-      postToIframe(IframeMessageId.RequestApplyVscodeTheme, {
-        vars: ui.theme.getAllVscodeCssVars()
-      });
-
-      void vscode.post(CommandId.DocViewerSetViewerState, {
-        uri: persistentUri,
-        title: e.data.title
-      });
+      syncViewerLoadState();
       break;
     }
 

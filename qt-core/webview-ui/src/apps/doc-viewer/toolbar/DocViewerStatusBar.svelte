@@ -8,7 +8,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as helpers from '../helpers'
 
   const uri = $derived(
-    helpers.toDisplayUri(ui.iframe.hoveredUri || ui.iframe.src)
+    helpers.toFileUri(ui.iframe.hoveredUri || ui.iframe.uri)
   );
 </script>
 

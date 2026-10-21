@@ -72,14 +72,14 @@ export function onClicked(role: Action) {
       break;
 
     case 'openInNewViewer':
-      viewlogic.openDoc(ui.iframe.src, true);
+      viewlogic.openDoc(ui.iframe.uri, true);
       break;
 
     case 'toggleBookmark':
       viewlogic.bookmark.edit({
         action: 'toggle',
         entry: {
-          uri: helpers.toPersistentUri(ui.iframe.src),
+          uri: helpers.toFileUri(ui.iframe.uri),
           title: ui.iframe.title
         }
       })

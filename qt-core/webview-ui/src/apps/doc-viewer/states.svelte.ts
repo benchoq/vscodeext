@@ -25,14 +25,20 @@ export const data = $state({
 
 export const ui = $state({
   theme: VscodeThemeMonitor.createController(),
+  history: new HistoryManager(),
 
   iframe: {
     el: undefined as HTMLIFrameElement | undefined,
-    src: '',
+    uri: '', // http://127.0.0.1:<port>/.../...html#anchor
+
+    // load state
     title: '',
+    filePath: '',
+    errorCode: '',
+
+    // ui state
+    scrollTop: 0,
     hoveredUri: '',
-    scrollTop: undefined as number | undefined,
-    errorCode: undefined as string | undefined
   },
 
   sidePanel: {
@@ -53,7 +59,5 @@ export const ui = $state({
       pos: undefined as Coords | undefined,
       visible: false,
     }
-  },
-
-  history: new HistoryManager()
+  }
 });

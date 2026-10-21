@@ -58,19 +58,15 @@ export async function selectPackage(p: QtDocRootInfo) {
     await loadIndexes();
 
     // redirect to home
-    ui.home = _.get(r, 'homeUri', '');
-    openHomeOrReset();
+    const home = _.get(r, 'homeUri', '');
+    if (home) {
+      docViewer.openDoc(home);
+    } else {
+      docViewer.reset();
+    }
   };
 
   await runTask(task, 'select-package');
-}
-
-export async function openHomeOrReset() {
-  if (ui.home) {
-    docViewer.openDoc(ui.home);
-  } else {
-    docViewer.reset();
-  }
 }
 
 export async function revealPackageFolder(p: QtDocRootInfo) {
@@ -140,7 +136,7 @@ export async function openHtml(info: HtmlPageInfo) {
 export function isCurrentDoc(info: HtmlPageInfo) {
   try {
     const uri = toFileUri(info);
-    const currentUri = new URL(docViewer.currentServiceUri());
+    const currentUri = new URL(docViewer.currentUri());
     return (uri && uri.pathname === currentUri.pathname);
   } catch (e) {
     void e;

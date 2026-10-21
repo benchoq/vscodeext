@@ -95,48 +95,61 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
   private readonly _onOpenDoc = (cmd: Command) => {
     const uri_s = String(_.get(cmd.payload, 'uri', ''));
     const newWindow = Boolean(_.get(cmd.payload, 'forceNewWindow', false));
+    const reply = (data: object) => {
+      this.channel.replyData(cmd, data);
+    };
 
+    let uri: Uri;
     try {
-      const parsed = Uri.parse(uri_s, true);
-      const redirect = this._infra.server.getRedirectUri(parsed);
-
-      if (this._infra.server.matchesOrigin(redirect)) {
-        if (!fsFile(redirect.path).exists()) {
-          this.channel.replyData(cmd, {
-            uri_s,
-            status: 'qt-doc:not-exists',
-            errorCode: '404',
-            errorUri: redirect.toString(),
-          });
-          return;
-        }
-
-        if (newWindow) {
-          const openOptions: OpenOptions = {
-            trigger: this._openOptions.trigger,
-            syncPanelTitle: true,
-            forceNewWindow: true
-          };
-
-          void openDocViewer(redirect, openOptions);
-          this.channel.replyData(cmd, {
-            uri_s,
-            status: 'qt-doc:valid-in-new-window'
-          });
-        } else {
-          this.channel.replyData(cmd, {
-            uri_s,
-            serviceUri: redirect.toString(),
-            status: 'qt-doc:valid'
-          });
-        }
-      } else {
-        env.openExternal(parsed);
-        this.channel.replyData(cmd, { uri_s, status: 'url-external' });
-      }
+      uri = Uri.parse(uri_s, true);
     } catch {
-      this.channel.replyData(cmd, { uri_s, status: 'url-invalid'});
+      reply({
+        result: 'error',
+        desc: 'url:invalid',
+        errorCode: '400'
+      });
+      return;
     }
+
+    const redirect = this._infra.server.getRedirectUri(uri);
+
+    if (!this._infra.server.matchesOrigin(redirect)) {
+      env.openExternal(uri);
+      reply({
+        result: 'sustain',
+        desc: 'url:external'
+      });
+      return;
+    }
+
+    if (!fsFile(redirect.path).exists()) {
+      reply({
+        result: 'error',
+        desc: 'doc:not-exists',
+        errorCode: '404',
+      });
+      return;
+    }
+
+    if (newWindow) {
+      void openDocViewer(redirect, {
+        trigger: this._openOptions.trigger,
+        syncPanelTitle: true,
+        forceNewWindow: true
+      });
+
+      reply({
+        result: 'sustain',
+        desc: 'doc:new-window'
+      });
+      return;
+    }
+
+    reply({
+      result: 'load',
+      desc: 'doc:valid',
+      serviceUri: redirect.toString(),
+    });
   }
 
   private readonly _onGetBookmarks = (cmd: Command) => {

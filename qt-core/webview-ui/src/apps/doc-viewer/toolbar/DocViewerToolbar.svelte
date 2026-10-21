@@ -12,7 +12,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let inputEl = $state(undefined as HTMLInputElement | undefined);
   const value = $derived(ui.iframe.errorCode ? '' : ui.iframe.title);
   const bookmarked = $derived(viewlogic.bookmark.has(
-    helpers.toPersistentUri(ui.iframe.src)
+    helpers.toFileUri(ui.iframe.uri)
   ));
 
   function selectAll() {
@@ -30,7 +30,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <input
       bind:this={inputEl}
       value={value}
-      title={helpers.toDisplayUri(ui.iframe.src)}
+      title={helpers.toFileUri(ui.iframe.uri)}
       class='qt-input grow self-stretch pl-2 pr-[30px]'
       readonly={true}
       onfocus={() => { selectAll(); }}

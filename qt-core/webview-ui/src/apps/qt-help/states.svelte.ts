@@ -27,7 +27,6 @@ export const data = $state({
 export const ui = $state({
   theme: VscodeThemeMonitor.createController(),
   mode: 'toc' as UiMode,
-  home: '',
   tocTree: new TocTreeModel(),
   task: new TaskBusyRunner(),
   selected: {
