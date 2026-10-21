@@ -22,6 +22,10 @@ export type Action =
   | 'bookmarkView' | 'historyView';
 
 export function isEnabled(role: Action) {
+  if (ui.iframe.errorCode) {
+    return (role === 'bookmarkView' || role === 'historyView');
+  }
+
   if (role === 'back' || role === 'forward') {
     return ui.history.canGo(role);
   }
@@ -42,10 +46,10 @@ export function isChecked(role: Action) {
 export function findIcon(role: Action) {
   switch (role) {
     case 'back':
-      return isEnabled('back') ? ArrowLeft : Dot;
+      return ui.history.canGo('back') ? ArrowLeft : Dot;
 
     case 'forward':
-      return isEnabled('forward') ? ArrowRight : Dot;
+      return ui.history.canGo('forward') ? ArrowRight : Dot;
 
     case 'toggleBookmark':
       return Star;

@@ -52,7 +52,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#snippet actionButton(action: toolbar.Action)}
   {@const Icon = toolbar.findIcon(action)}
+  {@const enabled = toolbar.isEnabled(action)}
   {@const needToFill = bookmarked && (action === 'toggleBookmark')}
+
   <button
     bind:this={
       () => null,
@@ -65,7 +67,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-role={action}
     aria-pressed={toolbar.isChecked(action)}
     class='qt-button flex items-center justify-center'
-    disabled={!toolbar.isEnabled(action)}
+    disabled={!enabled}
     onclick={(e: MouseEvent) => {
       toolbar.onClicked(action);
       e.stopPropagation();
@@ -85,6 +87,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-role='toggleBookmark'] {
     border: none;
     background: none;
+
+    &:disabled {
+      visibility: hidden;
+    }
+  }
+
+  .qt-button {
+    height: 28px;
+    padding: 5px;
+
+    &:disabled {
+      cursor: not-allowed;
+      color: var(--qt-text-muted);
+      background: color-mix(in srgb, var(--qt-bg-default) 60%, transparent);
+    }
   }
 
   .qt-button[data-role='back'],

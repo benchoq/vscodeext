@@ -8,7 +8,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { fly } from 'svelte/transition';
 
   import '@/styles/components/components.css';
-  import './DocViewerApp.css';
 
   import DocViewerToolbar from './toolbar/DocViewerToolbar.svelte';
   import DocViewerHtmlView from './DocViewerHtmlView.svelte';
@@ -24,10 +23,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   onDestroy(() => viewlogic.onAppDestroy());
 </script>
 
-<div class='
-  {fullScreen ? 'w-screen h-screen' : 'w-full h-full'}
-  flex flex-col
-'>
+<div
+  data-app='doc-viewer'
+  class='
+    {fullScreen ? 'w-screen h-screen' : 'w-full h-full'}
+    flex flex-col
+  '
+>
   <DocViewerToolbar />
 
   <div class="w-full h-full relative">
