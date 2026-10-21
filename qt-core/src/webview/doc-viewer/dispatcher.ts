@@ -37,7 +37,7 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
     private readonly _openOptions: OpenOptions
   ) {
     super(
-      _openOptions.trigger === 'qt-help' ? 'qt-help' : 'doc-viewer',
+      _openOptions.origin === 'qt-help' ? 'qt-help' : 'doc-viewer',
       _panel
     );
 
@@ -104,7 +104,7 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
         void env.openExternal(res.uri);
       } else {
         void openDocViewer(res.uri, {
-          trigger: this._openOptions.trigger,
+          origin: this._openOptions.origin,
           syncPanelTitle: true,
           forceNewWindow: true,
         });

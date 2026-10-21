@@ -23,7 +23,7 @@ export class QtHelpDispatcher extends DocViewerDispatcher {
     docViewerInfra: DocViewerInfra
   ) {
     super(extContext, panel, docViewerInfra, {
-      trigger: "qt-help",
+      origin: "qt-help",
       syncPanelTitle: false
     });
 

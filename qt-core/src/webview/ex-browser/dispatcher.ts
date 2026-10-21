@@ -169,7 +169,7 @@ export class ExBrowserDispatcher extends WebviewDispatcher {
         void file.openExternal();
       } else {
         void openDocViewer(file.toUri(), {
-          trigger: 'ex-browser',
+          origin: 'ex-browser',
           syncPanelTitle: true
         });
       }

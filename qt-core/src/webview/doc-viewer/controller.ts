@@ -48,7 +48,7 @@ export class DocViewerController {
   }
 
   public open(context: Context, uri?: Uri, o?: OpenOptions) {
-    const col = o?.trigger === 'ex-browser'
+    const col = o?.origin === 'ex-browser'
       ? this._getLastActiveColumn(ViewColumn.Beside)
       : undefined;
 
@@ -61,7 +61,7 @@ export class DocViewerController {
     }
 
     const openOptions: OpenOptions = {
-      ...(o ?? { trigger: 'unspecified' }),
+      ...(o ?? { origin: 'unspecified' }),
       ...(uri && { homeUri: uri.toString() })
     };
 

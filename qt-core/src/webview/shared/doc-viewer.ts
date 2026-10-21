@@ -1,16 +1,11 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-const TriggerSourceNames = [
-  'unspecified',
-  'qt-help',
-  'ex-browser'
-] as const;
-
-export type TriggerSource = (typeof TriggerSourceNames)[number];
+const OpenOriginNames = ['unspecified', 'qt-help', 'ex-browser'] as const;
+export type OpenOrigin = (typeof OpenOriginNames)[number];
 
 export interface OpenOptions {
-  trigger: TriggerSource;
+  origin: OpenOrigin;
   homeUri?: string;
   syncPanelTitle?: boolean;
   forceNewWindow?: boolean;
@@ -54,10 +49,10 @@ export enum IframeMessageId {
 }
 
 // type guard functions
-export function isTriggerSource(x: unknown): x is TriggerSource {
+export function isOpenOrigin(x: unknown): x is OpenOrigin {
   return (
     typeof x === 'string' &&
-    (TriggerSourceNames as readonly string[]).includes(x)
+    (OpenOriginNames as readonly string[]).includes(x)
   );
 }
 
@@ -67,7 +62,7 @@ export function isOpenOptions(x: unknown): x is OpenOptions {
   }
 
   return (
-    isTriggerSource(x.trigger) &&
+    isOpenOrigin(x.origin) &&
     (x.homeUri === undefined || typeof x.homeUri === 'string') &&
     (x.syncPanelTitle === undefined || typeof x.syncPanelTitle === 'boolean') &&
     (x.forceNewWindow === undefined || typeof x.forceNewWindow === 'boolean')
