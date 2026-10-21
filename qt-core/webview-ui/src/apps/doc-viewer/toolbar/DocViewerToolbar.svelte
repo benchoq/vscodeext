@@ -43,34 +43,36 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-role='title-section'
     class='grow flex flex-row justify-around relative'
   >
+    {#if ui.iframe.errorCode.length === 0}
+      <div class='flex flex-row items-center gap-3'>
+        <span
+          data-role='title'
+          use:tooltip={{
+            placement: 'bottom',
+            text: helpers.toFileUriIfServer(ui.iframe.uri)
+          }}
+        >
+          {value}
+        </span>
+
+        {#if hash.length !== 0}
+          <button
+            use:tooltip={{ text: 'Clear hash and go to top' }}
+            in:fly={{ y: -20, duration: 150 }}
+            data-role='hash'
+            onclick={() => {
+              viewlogic.openDoc(helpers.removeHash(ui.iframe.uri));
+            }}
+          >
+            {hash}
+          </button>
+        {/if}
+      </div>
+    {/if}
+
     <div class='qt-absolute-cy right-[4px] flex flex-row'>
       {@render actionButton('findDialog')}
       {@render actionButton('toggleBookmark')}
-    </div>
-
-    <div class='flex flex-row items-center gap-3'>
-      <span
-        data-role='title'
-        use:tooltip={{
-          placement: 'bottom',
-          text: helpers.toFileUriIfServer(ui.iframe.uri)
-        }}
-      >
-        {value}
-      </span>
-
-      {#if hash.length !== 0}
-        <button
-          use:tooltip={{ text: 'Clear hash and go to top' }}
-          in:fly={{ y: 20, duration: 150 }}
-          data-role='hash'
-          onclick={() => {
-            viewlogic.openDoc(helpers.removeHash(ui.iframe.uri));
-          }}
-        >
-          {hash}
-        </button>
-      {/if}
     </div>
   </div>
 {/snippet}
