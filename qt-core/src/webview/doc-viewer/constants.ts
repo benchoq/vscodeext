@@ -6,5 +6,5 @@ import { WebAppId } from '@/webview/shared/types';
 
 export const AppId: WebAppId = 'doc-viewer';
 
-export const HistoryStorageKey = "qt-doc-viewer.history";
-export const BookmarkStorageKey = "qt-doc-viewer.bookmarks";
+export const CssSubDir = 'res/others';
+export const CssFileName = 'qt-doc-styles.css';

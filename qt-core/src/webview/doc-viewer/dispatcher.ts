@@ -24,6 +24,7 @@ import { Command, CommandId } from '@/webview/shared/message';
 import { DocViewerInfra } from './infra';
 import { openDocViewer } from './controller';
 import { DocViewerHttpServer } from './server/http-server';
+import * as consts from './constants';
 
 export class DocViewerDispatcher extends WebviewDispatcher  {
   private readonly _viewerState: UiState = {};
@@ -50,14 +51,12 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
       [CommandId.DocViewerEditHistories, this._onEditHistories],
     ]);
 
-    const cssPath = path.join(
-      this._extContext.extensionPath,
-      'res/others',
-      'qt-doc-styles.css'
-    );
-
     const css = this._infra.server.cssManager();
-    css.setCssPath(cssPath);
+    css.setCssPath(path.join(
+      this._extContext.extensionPath,
+      consts.CssSubDir,
+      consts.CssFileName
+    ));
 
     if (this._extContext.extensionMode === ExtMode.Development) {
       this._disposable = css.onCssChanged(() => {
