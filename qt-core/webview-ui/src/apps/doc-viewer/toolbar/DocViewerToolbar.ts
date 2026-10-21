@@ -5,10 +5,10 @@ import {
   Star,
   Search,
   Clock4,
-  Columns2,
   Bookmark,
   ArrowLeft,
   ArrowRight,
+  SquareArrowOutUpRight
 } from "@lucide/svelte";
 
 import { ui } from '../states.svelte';
@@ -25,7 +25,7 @@ const icons: Record<Action, typeof ArrowLeft> = {
   forward: ArrowRight,
   findDialog: Search,
   toggleBookmark: Star,
-  openInNewViewer: Columns2,
+  openInNewViewer: SquareArrowOutUpRight,
   bookmarkView: Bookmark,
   historyView: Clock4
 };

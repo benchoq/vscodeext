@@ -4,6 +4,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { fly } from 'svelte/transition';
   import { tooltip } from '@/utils/actions';
   import './DocViewerToolbar.css';
 
@@ -61,6 +62,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {#if hash.length !== 0}
         <button
           use:tooltip={{ text: 'Clear hash and go to top' }}
+          in:fly={{ y: 20, duration: 150 }}
           data-role='hash'
           onclick={() => {
             viewlogic.openDoc(helpers.removeHash(ui.iframe.uri));
