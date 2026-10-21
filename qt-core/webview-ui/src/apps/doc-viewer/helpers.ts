@@ -3,26 +3,23 @@
 
 import { data } from './states.svelte';
 
-export function toFileUri(uri: string) {
-  if (uri.startsWith(data.configs.serverOrigin)) {
-    try {
-      const u = new URL(uri);
-      return `file://${u.pathname}${u.hash}`;
-    } catch (e) {
-      void e;
-    }
-  }
-
-  return uri;
-}
-
 export function extractHash(uri: string) {
   try {
-    const u = new URL(uri);
-    return u.hash;
-  } catch (e) {
-    void e;
+    return new URL(uri).hash;
+  } catch {
+    return '';
+  }
+}
+
+export function toFileUriIfServer(uri: string) {
+  if (!uri.startsWith(data.configs.serverOrigin)) {
+    return uri;
   }
 
-  return '';
+  try {
+    const u = new URL(uri);
+    return `file://${u.pathname}${u.hash}`;
+  } catch {
+    return '';
+  }
 }

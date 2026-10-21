@@ -17,7 +17,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     'or its documentation may have been removed. ' +
     'Check your Qt installation.';
 
-  const uri = $derived(helpers.toFileUri(ui.iframe.uri));
+  const uri = $derived(helpers.toFileUriIfServer(ui.iframe.uri));
   const keys = new Set(['Backspace', 'Escape', 'Enter', ' ']);
 
   let backButtonEl: HTMLButtonElement;

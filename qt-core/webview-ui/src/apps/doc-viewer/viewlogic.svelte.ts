@@ -4,7 +4,7 @@
 import _ from 'lodash';
 
 import { vscode } from '@/apps/vscode';
-import { IframeMessageId, isOpenOptions, type NamedUri } from '@shared/doc-viewer';
+import { IframeMessageId, type NamedUri } from '@shared/doc-viewer';
 import { CommandId, type CommandReply } from '@shared/message';
 
 import { data, ui } from './states.svelte';
@@ -27,8 +27,8 @@ export async function onAppMount() {
   await history.load();
   await bookmark.load();
 
-  if (data.configs.openOptions.homeUri) {
-    void openDoc(data.configs.openOptions.homeUri);
+  if (data.configs.homeUri) {
+    void openDoc(data.configs.homeUri);
   }
 }
 
@@ -46,6 +46,10 @@ export function currentUri() {
 }
 
 export async function openDoc(uri: string, newViewer = false) {
+  if (!URL.canParse(uri)) {
+    return false;
+  }
+
   const r = await vscode.post(CommandId.DocViewerOpenDoc, { uri, newViewer });
   const result = String(_.get(r, 'result', '')).trim();
   const serviceUri = String(_.get(r, 'serviceUri', '')).trim();
@@ -97,14 +101,9 @@ export function findInPage(action: FindAction) {
 // helpers
 async function loadConfigs() {
   const r = await vscode.post(CommandId.DocViewerGetConfig);
-  const opts = _.get(r, 'openOptions', {});
-  const server = String(_.get(r, 'serverOrigin', '')).trim();
-
-  if (isOpenOptions(opts)) {
-    data.configs.openOptions = opts;
-  }
-
-  data.configs.serverOrigin = server;
+  const c = data.configs;
+  c.homeUri = String(_.get(r, 'homeUri', c.homeUri)).trim();
+  c.serverOrigin = String(_.get(r, 'serverOrigin', c.serverOrigin)).trim();
 }
 
 function onVscodeThemeChanged() {
@@ -141,7 +140,7 @@ function setErrorState(errorCode: string) {
 
 function syncViewerLoadState() {
   void vscode.post(CommandId.DocViewerSetViewerState, {
-    uri: helpers.toFileUri(ui.iframe.uri),
+    uri: helpers.toFileUriIfServer(ui.iframe.uri),
     title: ui.iframe.title,
   });
 }
@@ -154,7 +153,7 @@ function onMessageFromIframe(e: MessageEvent) {
         setErrorState(errorCode);
       } else {
         const namedUri: NamedUri = {
-          uri: helpers.toFileUri(e.data.href),
+          uri: helpers.toFileUriIfServer(e.data.href),
           title: e.data.title
         };
 

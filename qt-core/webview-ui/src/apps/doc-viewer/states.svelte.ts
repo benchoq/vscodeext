@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import { type Coords } from '@floating-ui/dom';
-import { type OpenOptions } from '@shared/doc-viewer';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import {
   HistoryManager,
@@ -18,7 +17,7 @@ export const data = $state({
     groups: [] as HistoryItemGroup[]
   },
   configs: {
-    openOptions: {} as OpenOptions,
+    homeUri: '',
     serverOrigin: '' // expects 'http://127.0.0.1:<port>'
   }
 });

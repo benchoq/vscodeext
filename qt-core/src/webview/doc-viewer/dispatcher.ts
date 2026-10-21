@@ -16,7 +16,7 @@ import {
   isHistoryEdit,
   isBookmarkEdit,
   OpenOptions,
-  UiState
+  NamedUri
 } from '@/webview/shared/doc-viewer';
 import { fsFile } from '@/fs-utils';
 import { WebviewDispatcher } from '@/webview/dispatcher';
@@ -27,7 +27,7 @@ import { DocViewerHttpServer } from './server/http-server';
 import * as consts from './constants';
 
 export class DocViewerDispatcher extends WebviewDispatcher  {
-  private readonly _viewerState: UiState = {};
+  private readonly _currentUri: NamedUri = { uri: '', title: '' };
   private readonly _disposable: Disposable | undefined;
 
   public constructor(
@@ -71,22 +71,23 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
   }
 
   public get currentUri() {
-    return this._viewerState.uri;
+    return this._currentUri;
   }
 
   private readonly _onGetConfig = (cmd: Command) => {
     this.channel.replyData(cmd, {
-      openOptions: this._openOptions,
+      homeUri: this._openOptions.homeUri ?? '',
       serverOrigin: this._infra.server.baseUri.toString(),
     });
   };
 
   private readonly _onSetViewerState = (cmd: Command) => {
-    this._viewerState.uri = String(_.get(cmd.payload, 'uri', ''));
-    this._viewerState.title = String(_.get(cmd.payload, 'title', ''));
+    const c = this._currentUri;
+    c.uri = String(_.get(cmd.payload, 'uri', c.uri)).trim();
+    c.title = String(_.get(cmd.payload, 'title', c.title)).trim();
 
     if (this._openOptions.syncPanelTitle === true) {
-      this._panel.title = this._viewerState.title;
+      this._panel.title = this._currentUri.title;
     }
 
     this.channel.replyDone(cmd);

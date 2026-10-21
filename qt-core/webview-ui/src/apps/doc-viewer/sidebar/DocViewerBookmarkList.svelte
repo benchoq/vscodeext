@@ -78,7 +78,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <button
     data-role='item-content'
     class='grow flex flex-row items-center'
-    title={helpers.toFileUri(entry.uri)}
+    title={helpers.toFileUriIfServer(entry.uri)}
     onclick={() => {
       viewlogic.openDoc(entry.uri);
     }}
@@ -86,7 +86,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <span data-role='item-title'>{entry.title}</span>
     <span data-role='item-hash'>{helpers.extractHash(entry.uri)}</span>
 
-    {#if entry.uri === helpers.toFileUri(ui.iframe.uri)}
+    {#if entry.uri === helpers.toFileUriIfServer(ui.iframe.uri)}
       <Check class='ml-auto'/>
     {/if}
   </button>

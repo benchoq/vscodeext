@@ -16,7 +16,6 @@ export interface NamedUri {
   title: string;
 }
 
-export type UiState = Partial<NamedUri>;
 export type BookmarkEntry = NamedUri;
 export interface HistoryEntry extends NamedUri {
   timestamp?: number;

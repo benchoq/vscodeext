@@ -97,7 +97,7 @@ export function onClicked(role: Action) {
       viewlogic.bookmark.edit({
         action: 'toggle',
         entry: {
-          uri: helpers.toFileUri(ui.iframe.uri),
+          uri: helpers.toFileUriIfServer(ui.iframe.uri),
           title: ui.iframe.title
         }
       })

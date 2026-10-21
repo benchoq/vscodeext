@@ -43,7 +43,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <button
     data-role='item-content'
     class='grow flex flex-row items-center'
-    title={helpers.toFileUri(entry.uri)}
+    title={helpers.toFileUriIfServer(entry.uri)}
     onclick={() => {
       viewlogic.openDoc(entry.uri);
     }}
