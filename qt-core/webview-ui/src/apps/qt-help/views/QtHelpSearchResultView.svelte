@@ -90,7 +90,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         height={virtualListHeight}
         scrollDirection='vertical'
         itemCount={all.length}
-        itemSize={70}
+        itemSize={75}
       >
         {#snippet item({ style, index })}
           {@render _item(style, index)}
@@ -108,7 +108,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {@const entry = all[index]}
   <button
     {style}
-    class='item flex flex-col'
+    class='item flex flex-col justify-center'
     class:active={viewlogic.isCurrentDoc(entry.page)}
     onclick={() => {
       viewlogic.openHtml(entry.page);
@@ -125,6 +125,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <QtHelpHighlightedText
         text={entry.snippet}
         keyword={data.search.keyword}
+        variant='dimmed'
       />
     </span>
   </button>

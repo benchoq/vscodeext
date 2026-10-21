@@ -6,7 +6,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   let {
     text = '',
-    keyword = ''
+    keyword = '',
+    variant = 'primary' as 'primary' | 'dimmed'
   } = $props();
 
   const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -41,7 +42,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 {#each parsed as s, i (i)}
   {#if s.match}
-    <mark>{s.text}</mark>
+    <mark data-variant={variant}>
+      {s.text}
+    </mark>
   {:else}
     {s.text}
   {/if}
@@ -49,9 +52,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   mark {
-    color: var(--qt-button-fg);
-    background: var(--qt-button-primary-bg);
-    border-radius: var(--qt-radius-s);
     padding: 1px;
+    border-radius: var(--qt-radius-s);
+    color: var(--qt-button-fg);
+
+    &[data-variant='primary'] {
+      background: var(--qt-button-primary-bg);
+    }
+
+    &[data-variant='dimmed'] {
+      background: color-mix(
+        in srgb,
+        var(--qt-button-primary-bg) 90%,
+        transparent
+      );
+    }
   }
 </style>
