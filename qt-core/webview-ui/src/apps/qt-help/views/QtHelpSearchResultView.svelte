@@ -114,7 +114,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       viewlogic.openHtml(entry.page);
     }}
   >
-    <span data-role='title'>{entry.page.title}</span>
+    <span data-role='title'>
+      <QtHelpHighlightedText
+        text={entry.page.title}
+        keyword={data.search.keyword}
+      />
+    </span>
+
     <span data-role='detail'>
       <QtHelpHighlightedText
         text={entry.snippet}
@@ -136,6 +142,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 {/snippet}
 
 <style>
+  .qt-item-list {
+    overflow: hidden;
+
+    & .item {
+      border-bottom: 1px solid var(--qt-stroke-subtle);
+    }
+  }
+
   [data-role='title'] {
     @apply truncate text-left;
     color: var(--qt-text-default);
@@ -163,9 +177,5 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   [data-role='empty-help'] {
     color: var(--qt-text-muted);
-  }
-
-  .qt-item-list {
-    overflow: hidden;
   }
 </style>
