@@ -68,6 +68,20 @@ export function findIcon(role: Action) {
   }
 }
 
+export function tooltip(role: Action) {
+  const Tooltips: Record<Action, string> = {
+    back: 'Go back',
+    forward: 'Go forward',
+    openInNewViewer: 'Open in new viewer',
+    toggleBookmark: 'Toggle bookmark',
+    findDialog: 'Find in page',
+    bookmarkView: 'Show bookmarks',
+    historyView: 'Show history',
+  };
+
+  return Tooltips[role];
+}
+
 export function onClicked(role: Action) {
   switch (role) {
     case 'back':

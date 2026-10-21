@@ -45,12 +45,8 @@ export function currentUri() {
   return ui.iframe.uri;
 }
 
-export async function openDoc(uri: string, forceNewWindow = false) {
-  const r = await vscode.post(CommandId.DocViewerOpenDoc, {
-    uri,
-    forceNewWindow
-  });
-
+export async function openDoc(uri: string, newViewer = false) {
+  const r = await vscode.post(CommandId.DocViewerOpenDoc, { uri, newViewer });
   const result = String(_.get(r, 'result', '')).trim();
   const serviceUri = String(_.get(r, 'serviceUri', '')).trim();
 
@@ -64,7 +60,6 @@ export async function openDoc(uri: string, forceNewWindow = false) {
       setErrorState(String(_.get(r, 'errorCode', '')).trim());
       break;
 
-    case 'sustain':
     default:
       return;
   }

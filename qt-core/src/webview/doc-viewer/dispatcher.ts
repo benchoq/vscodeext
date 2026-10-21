@@ -23,6 +23,7 @@ import { WebviewDispatcher } from '@/webview/dispatcher';
 import { Command, CommandId } from '@/webview/shared/message';
 import { DocViewerInfra } from './infra';
 import { openDocViewer } from './controller';
+import { DocViewerHttpServer } from './server/http-server';
 
 export class DocViewerDispatcher extends WebviewDispatcher  {
   private readonly _viewerState: UiState = {};
@@ -93,65 +94,26 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
   }
 
   private readonly _onOpenDoc = (cmd: Command) => {
-    const uri_s = String(_.get(cmd.payload, 'uri', ''));
-    const newWindow = Boolean(_.get(cmd.payload, 'forceNewWindow', false));
-    const reply = (data: object) => {
-      this.channel.replyData(cmd, data);
-    };
+    const res = resolveDoc(
+      String(_.get(cmd.payload, 'uri', '')),
+      Boolean(_.get(cmd.payload, 'newViewer', false)),
+      this._infra.server
+    );
 
-    let uri: Uri;
-    try {
-      uri = Uri.parse(uri_s, true);
-    } catch {
-      reply({
-        result: 'error',
-        desc: 'url:invalid',
-        errorCode: '400'
-      });
-      return;
+    if (res.result === 'open') {
+      if (res.target === 'external') {
+        void env.openExternal(res.uri);
+      } else {
+        void openDocViewer(res.uri, {
+          trigger: this._openOptions.trigger,
+          syncPanelTitle: true,
+          forceNewWindow: true,
+        });
+      }
     }
 
-    const redirect = this._infra.server.getRedirectUri(uri);
-
-    if (!this._infra.server.matchesOrigin(redirect)) {
-      env.openExternal(uri);
-      reply({
-        result: 'sustain',
-        desc: 'url:external'
-      });
-      return;
-    }
-
-    if (!fsFile(redirect.path).exists()) {
-      reply({
-        result: 'error',
-        desc: 'doc:not-exists',
-        errorCode: '404',
-      });
-      return;
-    }
-
-    if (newWindow) {
-      void openDocViewer(redirect, {
-        trigger: this._openOptions.trigger,
-        syncPanelTitle: true,
-        forceNewWindow: true
-      });
-
-      reply({
-        result: 'sustain',
-        desc: 'doc:new-window'
-      });
-      return;
-    }
-
-    reply({
-      result: 'load',
-      desc: 'doc:valid',
-      serviceUri: redirect.toString(),
-    });
+    this.channel.replyData(cmd, res);
   }
-
   private readonly _onGetBookmarks = (cmd: Command) => {
     this.channel.replyData(cmd, {
       entries: this._infra.bookmarks.entries
@@ -195,4 +157,41 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
       entries: this._infra.history.entries
     });
   }
+}
+
+// helpers
+type ResolveDocResult =
+  | { result: 'load'; serviceUri: string }
+  | { result: 'error'; errorCode: string }
+  | { result: 'open'; target: 'external' | 'newViewer'; uri: Uri };
+
+function resolveDoc(
+  uri_s: string,
+  newWindow: boolean,
+  server: DocViewerHttpServer
+): ResolveDocResult {
+  let uri: Uri;
+
+  try {
+    uri = Uri.parse(uri_s, true);
+  } catch {
+    return { result: 'error', errorCode: '400' };
+  }
+
+  const redirect = server.getRedirectUri(uri);
+  const isLocalFile = server.matchesOrigin(redirect);
+
+  if (!isLocalFile) {
+    return { result: 'open', target: 'external', uri };
+  }
+
+  if (!fsFile(redirect.path).exists()) {
+    return { result: 'error', errorCode: '404' };
+  }
+
+  if (newWindow) {
+    return { result: 'open', target: 'newViewer', uri: redirect };
+  }
+
+  return { result: 'load', serviceUri: redirect.toString() };
 }
