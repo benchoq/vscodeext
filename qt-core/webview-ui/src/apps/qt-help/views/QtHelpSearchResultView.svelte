@@ -125,7 +125,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <QtHelpHighlightedText
         text={entry.snippet}
         keyword={data.search.keyword}
-        variant='dimmed'
+        variant='underline'
       />
     </span>
   </button>

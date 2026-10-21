@@ -71,7 +71,10 @@ export class HtmlFullTextIndex {
     fields: ['title', 'text'],
     storeFields: ['title', 'id', 'rootDir', 'snippet'],
     tokenize: splitIdentifier,
-    searchOptions: { prefix: true, fuzzy: 0.2 },
+    searchOptions: {
+      prefix: (term) => term.length >= 2,
+      fuzzy: (term) => (term.length >= 4 ? 0.2 : false),
+    },
   });
 
   private _generation = 0;
@@ -112,6 +115,10 @@ export class HtmlFullTextIndex {
       }
 
       await new Promise((r) => setImmediate(r));
+    }
+
+    if (gen === this._generation) {
+      this._warmUp();
     }
   }
 
@@ -163,6 +170,10 @@ export class HtmlFullTextIndex {
   private _searchBodies(query: string) {
     return this._miniSearch
       .search(query, { fields: ['text'] });
+  }
+
+  private _warmUp() {
+    this.search('object');
   }
 }
 

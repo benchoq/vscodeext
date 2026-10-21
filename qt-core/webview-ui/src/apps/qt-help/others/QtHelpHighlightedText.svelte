@@ -7,7 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   let {
     text = '',
     keyword = '',
-    variant = 'primary' as 'primary' | 'dimmed'
+    variant = 'primary' as 'primary' | 'underline'
   } = $props();
 
   const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -53,19 +53,16 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <style>
   mark {
     padding: 1px;
-    border-radius: var(--qt-radius-s);
     color: var(--qt-button-fg);
 
     &[data-variant='primary'] {
       background: var(--qt-button-primary-bg);
+      border-radius: var(--qt-radius-s);
     }
 
-    &[data-variant='dimmed'] {
-      background: color-mix(
-        in srgb,
-        var(--qt-button-primary-bg) 90%,
-        transparent
-      );
+    &[data-variant='underline'] {
+      background: inherit;
+      text-decoration: underline;
     }
   }
 </style>
