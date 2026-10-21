@@ -11,6 +11,16 @@ export function extractHash(uri: string) {
   }
 }
 
+export function removeHash(uri: string) {
+  try {
+    const u = new URL(uri);
+    u.hash = '';
+    return u.href;
+  } catch {
+    return '';
+  }
+}
+
 export function toFileUriIfServer(uri: string) {
   if (!uri.startsWith(data.configs.serverOrigin)) {
     return uri;

@@ -4,21 +4,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { tooltip } from '@/utils/actions';
+  import './DocViewerToolbar.css';
+
   import { ui } from '../states.svelte';
   import * as helpers from '../helpers';
   import * as viewlogic from '../viewlogic.svelte';
   import * as toolbar from './DocViewerToolbar';
-  import { tooltip } from '@/utils/actions';
 
-  let inputEl = $state(undefined as HTMLInputElement | undefined);
-  const value = $derived(ui.iframe.errorCode ? '' : ui.iframe.title);
+  const value = $derived(
+    ui.iframe.errorCode ? '' : ui.iframe.title
+  );
   const bookmarked = $derived(viewlogic.bookmark.has(
     helpers.toFileUriIfServer(ui.iframe.uri)
   ));
-
-  function selectAll() {
-    inputEl?.select();
-  }
 </script>
 
 <div data-area='toolbar' class='flex flex-row gap-2'>
@@ -27,29 +26,52 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {@render actionButton('forward')}
   </div>
 
-  <div class='grow flex relative'>
-    <input
-      bind:this={inputEl}
-      value={value}
-      title={helpers.toFileUriIfServer(ui.iframe.uri)}
-      class='qt-input grow self-stretch pl-2 pr-[30px]'
-      readonly={true}
-      onfocus={() => { selectAll(); }}
-    />
-
-    <div class='qt-absolute-cy right-[2px]'>
-      {@render actionButton('toggleBookmark')}
-    </div>
-  </div>
-
+  {@render titleSection()}
   {@render actionButton('openInNewViewer')}
-  {@render actionButton('findDialog')}
 
   <div class='flex flex-row'>
     {@render actionButton('bookmarkView')}
     {@render actionButton('historyView')}
   </div>
 </div>
+
+<!-- snippets -->
+{#snippet titleSection()}
+  {@const hash = helpers.extractHash(ui.iframe.uri)}
+  <div
+    data-role='title-section'
+    class='grow flex flex-row justify-around relative'
+  >
+    <div class='qt-absolute-cy right-[4px] flex flex-row'>
+      {@render actionButton('findDialog')}
+      {@render actionButton('toggleBookmark')}
+    </div>
+
+    <div class='flex flex-row items-center gap-3'>
+      <span
+        data-role='title'
+        use:tooltip={{
+          placement: 'bottom',
+          text: helpers.toFileUriIfServer(ui.iframe.uri)
+        }}
+      >
+        {value}
+      </span>
+
+      {#if hash.length !== 0}
+        <button
+          use:tooltip={{ text: 'Clear hash and go to top' }}
+          data-role='hash'
+          onclick={() => {
+            viewlogic.openDoc(helpers.removeHash(ui.iframe.uri));
+          }}
+        >
+          {hash}
+        </button>
+      {/if}
+    </div>
+  </div>
+{/snippet}
 
 {#snippet actionButton(action: toolbar.Action)}
   {@const Icon = toolbar.findIcon(action)}
@@ -78,57 +100,3 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <Icon fill={needToFill ? 'currentColor' : 'transparent'} />
   </button>
 {/snippet}
-
-<style>
-  [data-area='toolbar'] {
-    padding: 8px;
-    background: var(--qt-bg-editor-tab);
-    border-bottom: 1px solid var(--qt-stroke-subtle);
-  }
-
-  [data-role='toggleBookmark'] {
-    border: none;
-    background: none;
-
-    &:disabled {
-      visibility: hidden;
-    }
-  }
-
-  .qt-button {
-    height: 28px;
-    padding: 5px;
-
-    &:disabled {
-      cursor: not-allowed;
-      color: var(--qt-text-muted);
-      background: color-mix(in srgb, var(--qt-bg-default) 60%, transparent);
-    }
-  }
-
-  .qt-button[data-role='back'],
-  .qt-button[data-role='forward'],
-  .qt-button[data-role='historyView'],
-  .qt-button[data-role='bookmarkView'] {
-    &:hover {
-      color: var(--qt-text-default);
-      background: var(--qt-hover-bg);
-    }
-
-    &[aria-pressed='true'] {
-      color: var(--qt-accent-active);
-      background: var(--qt-accent-blue-default);
-    }
-
-    &:has(+ &) {
-      border-right: none;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-
-    & + & {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-  }
-</style>

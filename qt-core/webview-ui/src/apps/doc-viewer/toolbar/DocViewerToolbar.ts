@@ -2,14 +2,13 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import {
-  Dot,
   Star,
+  Search,
   Clock4,
   Columns2,
   Bookmark,
   ArrowLeft,
   ArrowRight,
-  Binoculars
 } from "@lucide/svelte";
 
 import { ui } from '../states.svelte';
@@ -18,8 +17,28 @@ import * as viewlogic from '../viewlogic.svelte';
 
 export type Action =
   | 'back' | 'forward'
-  | 'openInNewViewer' | 'toggleBookmark' | 'findDialog'
-  | 'bookmarkView' | 'historyView';
+  | 'findDialog' | 'toggleBookmark'
+  | 'openInNewViewer' | 'bookmarkView' | 'historyView';
+
+const icons: Record<Action, typeof ArrowLeft> = {
+  back: ArrowLeft,
+  forward: ArrowRight,
+  findDialog: Search,
+  toggleBookmark: Star,
+  openInNewViewer: Columns2,
+  bookmarkView: Bookmark,
+  historyView: Clock4
+};
+
+const tooltips: Record<Action, string> = {
+  back: 'Go back',
+  forward: 'Go forward',
+  findDialog: 'Find in page',
+  openInNewViewer: 'Open in new viewer',
+  toggleBookmark: 'Toggle bookmark',
+  bookmarkView: 'Show bookmarks',
+  historyView: 'Show history',
+};
 
 export function isEnabled(role: Action) {
   if (ui.iframe.errorCode) {
@@ -44,42 +63,11 @@ export function isChecked(role: Action) {
 }
 
 export function findIcon(role: Action) {
-  switch (role) {
-    case 'back':
-      return ui.history.canGo('back') ? ArrowLeft : Dot;
-
-    case 'forward':
-      return ui.history.canGo('forward') ? ArrowRight : Dot;
-
-    case 'toggleBookmark':
-      return Star;
-
-  case 'openInNewViewer':
-    return Columns2;
-
-  case 'findDialog':
-    return Binoculars;
-
-  case 'bookmarkView':
-    return Bookmark;
-
-  case 'historyView':
-    return Clock4;
-  }
+  return icons[role];
 }
 
 export function tooltip(role: Action) {
-  const Tooltips: Record<Action, string> = {
-    back: 'Go back',
-    forward: 'Go forward',
-    openInNewViewer: 'Open in new viewer',
-    toggleBookmark: 'Toggle bookmark',
-    findDialog: 'Find in page',
-    bookmarkView: 'Show bookmarks',
-    historyView: 'Show history',
-  };
-
-  return Tooltips[role];
+  return tooltips[role];
 }
 
 export function onClicked(role: Action) {
@@ -87,6 +75,10 @@ export function onClicked(role: Action) {
     case 'back':
     case 'forward':
       viewlogic.navigate(role);
+      break;
+
+    case 'findDialog':
+      ui.popovers.find.visible = !ui.popovers.find.visible;
       break;
 
     case 'openInNewViewer':
@@ -101,10 +93,6 @@ export function onClicked(role: Action) {
           title: ui.iframe.title
         }
       })
-      break;
-
-    case 'findDialog':
-      ui.popovers.find.visible = !ui.popovers.find.visible;
       break;
 
     case 'bookmarkView':

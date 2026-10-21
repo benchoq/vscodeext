@@ -87,7 +87,8 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
     c.title = String(_.get(cmd.payload, 'title', c.title)).trim();
 
     if (this._openOptions.syncPanelTitle === true) {
-      this._panel.title = this._currentUri.title;
+      const parsed = this._currentUri.title.split(consts.TitleSeparator);
+      this._panel.title = parsed[0] ?? '';
     }
 
     this.channel.replyDone(cmd);

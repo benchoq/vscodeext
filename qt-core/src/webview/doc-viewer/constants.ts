@@ -8,3 +8,5 @@ export const AppId: WebAppId = 'doc-viewer';
 
 export const CssSubDir = 'res/others';
 export const CssFileName = 'qt-doc-styles.css';
+
+export const TitleSeparator = '|';
