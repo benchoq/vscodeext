@@ -41,15 +41,26 @@ const tooltips: Record<Action, string> = {
 };
 
 export function isEnabled(role: Action) {
-  if (ui.iframe.errorCode) {
-    return (role === 'bookmarkView' || role === 'historyView');
-  }
+  const empty = ui.iframe.uri.length === 0;
+  const error = ui.iframe.errorCode.length !== 0;
 
-  if (role === 'back' || role === 'forward') {
-    return ui.history.canGo(role);
-  }
+  switch (role) {
+    case 'back':
+    case 'forward':
+      return !error && ui.history.canGo(role);
 
-  return true;
+    case 'findDialog':
+    case 'toggleBookmark':
+    case 'openInNewViewer':
+      return !error && !empty;
+
+    case 'bookmarkView':
+    case 'historyView':
+      return true;
+
+    default:
+      return false;
+  }
 }
 
 export function isChecked(role: Action) {
