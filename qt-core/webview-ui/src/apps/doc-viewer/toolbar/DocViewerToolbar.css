@@ -61,7 +61,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-role='title-section'] {
     background: var(--qt-bg-subtle);
     border-radius: var(--qt-radius-s);
-    padding-right: 30px;
+    padding-right: 60px;
 
     & [data-role='title'] {
       text-align: center;
