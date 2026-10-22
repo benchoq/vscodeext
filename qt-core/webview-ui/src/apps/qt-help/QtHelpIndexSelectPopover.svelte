@@ -4,34 +4,54 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import { ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
+  import Separator from '@/comps/Separator.svelte';
 
-  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  const letters = $derived.by(() => {
+    const alphabet: string[] = [];
+    const others: string[] = [];
 
-  let {
-    active = 'A'
-  } = $props();
+    for (const s of ui.index.sectionJump) {
+      const name = s.name[0];
 
+      if (/^[a-z]$/i.test(name)) {
+        alphabet.push(name);
+      } else {
+        others.push(name);
+      }
+    }
+
+    return { alphabet, others };
+  });
+
+  const active_lc = $derived(ui.index.section.toLowerCase());
 </script>
 
 <div data-role="area" class="qt-popover flex flex-col gap-3">
-  <span data-role='guide'>Select a section to jump to:</span>
+  <span data-role='guide'>Jump to:</span>
+  {@render sectionGrid(letters.alphabet)}
+  <Separator />
+  {@render sectionGrid(letters.others)}
+</div>
+
+{#snippet sectionGrid(sections: string[])}
   <div data-role="grid">
-    {#each letters as l (l)}
+    {#each sections as l (l)}
       <button
         data-role="letter"
         class="qt-button"
-        class:active={l.toLowerCase() === active.toLowerCase()}
+        class:active={l.toLowerCase() === active_lc}
         onclick={() => {
           viewlogic.setIndexSectionAndScroll(l);
+          ui.popovers.indexSelector.visible = false;
         }}
       >
         {l}
       </button>
     {/each}
   </div>
-</div>
-
+{/snippet}
 <style>
   [data-role='area'] {
     padding: 10px;
@@ -44,8 +64,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   [data-role='grid'] {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 6px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
   }
 
   .qt-button[data-role='letter'] {
@@ -53,17 +73,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     height: 36px;
     padding: 5;
     color: var(--qt-text-muted);
-    background: var(--qt-bg-default);
-    border: 1px solid var(--qt-stroke-subtle);
+    border: none;
+    background: none;
 
     &:hover {
-      background: var(--qt-hover-bg);
       color: var(--qt-text-default);
+      background: var(--qt-hover-bg);
     }
 
     &.active {
-      background: var(--qt-selected-bg);
       color: var(--qt-selected-fg);
+      background: var(--qt-selected-bg);
+      border: 1px solid var(--qt-stroke-subtle);
     }
   }
 </style>

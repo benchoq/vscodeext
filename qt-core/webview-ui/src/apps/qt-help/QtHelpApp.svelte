@@ -43,10 +43,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <!-- snippet -->
 {#snippet popover(state: PopoverState, Content: Component)}
+  {@const v = (state === ui.popovers.qtVersions)}
   {#if state.visible}
     <Popover
       reference={state.refEl}
-      placement='bottom-start'
+      placement={v ? 'bottom' : 'bottom-start'}
       offset={5}
       onClose={() => { state.visible = false; }}
     >

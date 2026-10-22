@@ -15,7 +15,7 @@ import {
   type IndexMatch,
   type ParsedTitle
 } from '@shared/qt-help';
-import { data, ui, type UiMode } from './states.svelte';
+import { data, ui, type IndexSectionInfo, type UiMode } from './states.svelte';
 import * as docViewer from '../doc-viewer/viewlogic.svelte';
 import type { IndexOrHeader, UiTaskName } from './types.svelte';
 
@@ -93,6 +93,7 @@ export async function loadIndexes() {
   data.indexes = sortIndexes(r);
   ui.index.modified = modifyIndexList(data.indexes);
   updateFilteredIndex();
+  updateSectionJump();
 }
 
 export async function search(keyword: string) {
@@ -122,9 +123,46 @@ export async function updateFilteredIndex() {
   });
 }
 
+export function updateSectionJump() {
+  const sectionJump = ui.index.filtered.reduce<{ name: string; index: number }[]>(
+    (sections, item, index) => {
+      const name = item.data?.name.charAt(0).toUpperCase();
+
+      if (name && sections.at(-1)?.name !== name) {
+        sections.push({ name, index });
+      }
+
+      return sections;
+  }, []);
+
+  ui.index.sectionJump = sectionJump;
+  console.log(sectionJump);
+}
+
 export async function setIndexSectionAndScroll(section: string) {
-  ui.index.section = section;
-  console.log(section);
+  const list = ui.popovers.indexSelector.refVirtualList;
+  if (!list) {
+    console.log('no list valid');
+    return;
+  }
+
+  ui.index.section = section.toLowerCase();
+
+  const match = ui.index
+    .sectionJump
+    .find((s: IndexSectionInfo) => {
+      return s.name.toLowerCase() === section.toLowerCase();
+    });
+
+  const foundIndex = match?.index ?? -1;
+
+  console.log(match);
+
+  if (foundIndex >= 0) {
+    // ui.popovers.indexSelector.scrollToIndex = 10;
+    ui.popovers.indexSelector.scrollOffset = foundIndex * 24;
+    console.log(section);
+  }
 }
 
 export function setMode(mode: UiMode) {

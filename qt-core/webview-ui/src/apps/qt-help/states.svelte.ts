@@ -7,11 +7,17 @@ import {
   type FullTextMatch,
   type QtDocRootInfo,
 } from '@shared/qt-help';
+  import VirtualList from 'svelte-tiny-virtual-list';
 import { TaskBusyRunner } from '@/comps/TaskBusyRunner.svelte';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import { TocTreeModel, type IndexOrHeader } from './types.svelte';
 
 export type UiMode = 'toc' | 'index' | 'text';
+
+export interface IndexSectionInfo {
+  name: string;
+  index: number;
+};
 
 export const data = $state({
   packages: [] as QtDocRootInfo[],
@@ -47,6 +53,7 @@ export const ui = $state({
     filter: { keyword: '' },
     filtered: [] as IndexOrHeader[],
     modified: [] as IndexOrHeader[],
+    sectionJump: [] as IndexSectionInfo[],
     section: '',
   },
 
@@ -59,6 +66,9 @@ export const ui = $state({
     indexSelector: {
       visible: false,
       refEl: undefined as HTMLButtonElement | undefined,
+      refVirtualList: undefined as VirtualList | undefined,
+      scrollToIndex: -1,
+      scrollOffset: 0,
     }
   }
 });
