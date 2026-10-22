@@ -39,7 +39,6 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <!-- snippets -->
 {#snippet titleSection()}
   {@const hash = helpers.extractHash(ui.iframe.uri)}
-  {@const tooltip = helpers.toFileUriIfServer(ui.iframe.uri)}
 
   <div
     data-role='title-section'
@@ -48,7 +47,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {#if ui.iframe.errorCode.length === 0}
       <div class='flex flex-row items-center gap-2'>
         {@render actionButton('openInFileManager')}
-        {@render titleSectionText(value, tooltip)}
+        {@render titleSectionText(value)}
         {@render titleSectionHash(hash)}
       </div>
     {/if}
@@ -60,17 +59,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   </div>
 {/snippet}
 
-{#snippet titleSectionText(text: string, tooltipText: string)}
-  <span
-    data-role='title'
-    use:tooltip={{
-      placement: 'bottom',
-      offset: 10,
-      text: tooltipText
-    }}
-  >
-    {text}
-  </span>
+{#snippet titleSectionText(text: string)}
+  <span data-role='title'>{text}</span>
 {/snippet}
 
 {#snippet titleSectionHash(hash: string)}
