@@ -4,7 +4,7 @@
 import _ from 'lodash';
 
 import { vscode } from '@/apps/vscode';
-import { IframeMessageId, type NamedUri } from '@shared/doc-viewer';
+import { IframeMessageId, type NamedUri, type OpenInTarget } from '@shared/doc-viewer';
 import { CommandId, type CommandReply } from '@shared/message';
 
 import { data, ui } from './states.svelte';
@@ -45,16 +45,16 @@ export function currentUri() {
   return ui.iframe.uri;
 }
 
-export async function openDoc(uri: string, newViewer = false) {
+export async function openDoc(uri: string, target: OpenInTarget = 'current') {
   if (!URL.canParse(uri)) {
     return false;
   }
 
-  const r = await vscode.post(CommandId.DocViewerOpenDoc, { uri, newViewer });
-  const result = String(_.get(r, 'result', '')).trim();
+  const r = await vscode.post(CommandId.DocViewerOpenDoc, { uri, target });
+  const kind = String(_.get(r, 'kind', '')).trim();
   const serviceUri = String(_.get(r, 'serviceUri', '')).trim();
 
-  switch (result) {
+  switch (kind) {
     case 'load':
       setLoadState('', 0);
       ui.iframe.uri = serviceUri;
@@ -174,7 +174,10 @@ function onMessageFromIframe(e: MessageEvent) {
 
     case IframeMessageId.EventClicked:
       if (typeof e.data?.href === 'string') {
-        openDoc(e.data.href, e.data.newWindow === true);
+        openDoc(
+          e.data.href,
+          e.data.newWindow === true ? 'new' : 'current'
+        );
       }
       break;
 

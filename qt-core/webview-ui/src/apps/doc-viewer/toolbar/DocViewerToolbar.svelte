@@ -39,42 +39,53 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <!-- snippets -->
 {#snippet titleSection()}
   {@const hash = helpers.extractHash(ui.iframe.uri)}
+  {@const tooltip = helpers.toFileUriIfServer(ui.iframe.uri)}
+
   <div
     data-role='title-section'
     class='grow flex flex-row justify-around relative'
   >
     {#if ui.iframe.errorCode.length === 0}
-      <div class='flex flex-row items-center gap-3'>
-        <span
-          data-role='title'
-          use:tooltip={{
-            placement: 'bottom',
-            text: helpers.toFileUriIfServer(ui.iframe.uri)
-          }}
-        >
-          {value}
-        </span>
-
-        {#if hash.length !== 0}
-          <button
-            use:tooltip={{ text: 'Clear hash and go to top' }}
-            in:fly={{ y: -20, duration: 150 }}
-            data-role='hash'
-            onclick={() => {
-              viewlogic.openDoc(helpers.removeHash(ui.iframe.uri));
-            }}
-          >
-            {hash}
-          </button>
-        {/if}
+      <div class='flex flex-row items-center gap-2'>
+        {@render actionButton('openInFileManager')}
+        {@render titleSectionText(value, tooltip)}
+        {@render titleSectionHash(hash)}
       </div>
     {/if}
 
     <div class='qt-absolute-cy right-[4px] flex flex-row'>
-      {@render actionButton('findDialog')}
+      {@render actionButton('showFindInPage')}
       {@render actionButton('toggleBookmark')}
     </div>
   </div>
+{/snippet}
+
+{#snippet titleSectionText(text: string, tooltipText: string)}
+  <span
+    data-role='title'
+    use:tooltip={{
+      placement: 'bottom',
+      offset: 10,
+      text: tooltipText
+    }}
+  >
+    {text}
+  </span>
+{/snippet}
+
+{#snippet titleSectionHash(hash: string)}
+  {#if hash.length !== 0}
+    <button
+      use:tooltip={{ text: 'Clear hash and go to top' }}
+      in:fly={{ y: -20, duration: 150 }}
+      data-role='hash'
+      onclick={() => {
+        viewlogic.openDoc(helpers.removeHash(ui.iframe.uri));
+      }}
+    >
+      {hash}
+    </button>
+  {/if}
 {/snippet}
 
 {#snippet actionButton(action: toolbar.Action)}
@@ -86,7 +97,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     bind:this={
       () => null,
       (el) => {
-        if (action === 'findDialog') {
+        if (action === 'showFindInPage') {
           ui.popovers.find.refEl = el;
         }
       }

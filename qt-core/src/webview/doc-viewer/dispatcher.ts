@@ -13,10 +13,12 @@ import {
 } from 'vscode';
 
 import {
+  NamedUri,
+  OpenOptions,
+  OpenInTarget,
   isHistoryEdit,
   isBookmarkEdit,
-  OpenOptions,
-  NamedUri
+  isOpenInTarget
 } from '@/webview/shared/doc-viewer';
 import { fsFile } from '@/fs-utils';
 import { WebviewDispatcher } from '@/webview/dispatcher';
@@ -95,26 +97,35 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
   }
 
   private readonly _onOpenDoc = (cmd: Command) => {
-    const res = resolveDoc(
+    const resolve = resolveDoc(
       String(_.get(cmd.payload, 'uri', '')),
-      Boolean(_.get(cmd.payload, 'newViewer', false)),
+      String(_.get(cmd.payload, 'target', '')),
       this._infra.server
     );
 
-    if (res.result === 'open') {
-      if (res.target === 'external') {
-        void env.openExternal(res.uri);
-      } else {
-        void openDocViewer(res.uri, {
-          origin: this._openOptions.origin,
-          syncPanelTitle: true,
-          forceNewWindow: true,
-        });
+    if (resolve.kind === 'dispatch') {
+      switch (resolve.target) {
+        case 'new':
+          void openDocViewer(resolve.uri, {
+            origin: this._openOptions.origin,
+            syncPanelTitle: true,
+            forceNewWindow: true,
+          });
+          break;
+
+      case 'vscode-env':
+        void env.openExternal(resolve.uri);
+        break;
+
+      case 'file-manager':
+        fsFile(resolve.uri.fsPath).revealInFileManager();
+        break;
       }
     }
 
-    this.channel.replyData(cmd, res);
+    this.channel.replyData(cmd, resolve);
   }
+
   private readonly _onGetBookmarks = (cmd: Command) => {
     this.channel.replyData(cmd, {
       entries: this._infra.bookmarks.entries
@@ -162,37 +173,49 @@ export class DocViewerDispatcher extends WebviewDispatcher  {
 
 // helpers
 type ResolveDocResult =
-  | { result: 'load'; serviceUri: string }
-  | { result: 'error'; errorCode: string }
-  | { result: 'open'; target: 'external' | 'newViewer'; uri: Uri };
+  | { kind: 'load'; serviceUri: string }
+  | { kind: 'error'; errorCode: string }
+  | {
+    kind: 'dispatch';
+    target: Exclude<OpenInTarget, 'current'>;
+    uri: Uri
+  };
+
+const badData = { kind: 'error', errorCode: '400' } as ResolveDocResult;
+const notFound = { kind: 'error', errorCode: '404' } as ResolveDocResult;
 
 function resolveDoc(
   uri_s: string,
-  newWindow: boolean,
+  target: string,
   server: DocViewerHttpServer
 ): ResolveDocResult {
+
   let uri: Uri;
 
   try {
+    if (!isOpenInTarget(target)) {
+      throw new Error('400');
+    }
+
     uri = Uri.parse(uri_s, true);
   } catch {
-    return { result: 'error', errorCode: '400' };
+    return badData;
   }
 
   const redirect = server.getRedirectUri(uri);
-  const isLocalFile = server.matchesOrigin(redirect);
+  const isExternal = !server.matchesOrigin(redirect);
 
-  if (!isLocalFile) {
-    return { result: 'open', target: 'external', uri };
+  if (isExternal) {
+    return { kind: 'dispatch', target: 'vscode-env', uri };
+  } else {
+    if (!fsFile(redirect.path).exists()) {
+      return notFound;
+    }
+
+    if (target !== 'current') {
+      return { kind: 'dispatch', target, uri };
+    } else {
+      return { kind: 'load', serviceUri: redirect.toString() };
+    }
   }
-
-  if (!fsFile(redirect.path).exists()) {
-    return { result: 'error', errorCode: '404' };
-  }
-
-  if (newWindow) {
-    return { result: 'open', target: 'newViewer', uri: redirect };
-  }
-
-  return { result: 'load', serviceUri: redirect.toString() };
 }

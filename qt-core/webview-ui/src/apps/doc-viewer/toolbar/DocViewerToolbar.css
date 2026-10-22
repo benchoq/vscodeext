@@ -47,11 +47,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }
   }
 
-  [data-role='findDialog'],
-  [data-role='toggleBookmark'] {
+  [data-role='showFindInPage'],
+  [data-role='toggleBookmark'],
+  [data-role='openInFileManager'] {
     border: none;
     background: none;
     padding: 4px;
+    color: var(--qt-text-muted);
 
     &:disabled {
       visibility: hidden;

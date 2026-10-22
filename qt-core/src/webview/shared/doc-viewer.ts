@@ -2,7 +2,10 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 const OpenOriginNames = ['unspecified', 'qt-help', 'ex-browser'] as const;
+const OpenInTargetNames = ['new', 'current', 'vscode-env', 'file-manager'] as const;
+
 export type OpenOrigin = (typeof OpenOriginNames)[number];
+export type OpenInTarget = (typeof OpenInTargetNames)[number];
 
 export interface OpenOptions {
   origin: OpenOrigin;
@@ -14,6 +17,12 @@ export interface OpenOptions {
 export interface NamedUri {
   uri: string;
   title: string;
+}
+
+export interface Uri {
+  uri: string;
+  title: string;
+  timestamp: number;
 }
 
 export type BookmarkEntry = NamedUri;
@@ -53,6 +62,13 @@ export function isOpenOrigin(x: unknown): x is OpenOrigin {
   return (
     typeof x === 'string' &&
     (OpenOriginNames as readonly string[]).includes(x)
+  );
+}
+
+export function isOpenInTarget(x: unknown): x is OpenInTarget {
+  return (
+    typeof x === 'string' &&
+    (OpenInTargetNames as readonly string[]).includes(x)
   );
 }
 

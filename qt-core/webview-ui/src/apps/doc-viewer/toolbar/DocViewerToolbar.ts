@@ -7,8 +7,9 @@ import {
   Clock4,
   Bookmark,
   ArrowLeft,
+  FolderOpen,
   ArrowRight,
-  SquareArrowOutUpRight
+  SquareArrowOutUpRight,
 } from "@lucide/svelte";
 
 import { ui } from '../states.svelte';
@@ -17,15 +18,17 @@ import * as viewlogic from '../viewlogic.svelte';
 
 export type Action =
   | 'back' | 'forward'
-  | 'findDialog' | 'toggleBookmark'
-  | 'openInNewViewer' | 'bookmarkView' | 'historyView';
+  | 'showFindInPage' | 'toggleBookmark'
+  | 'openInNewViewer' | 'openInFileManager'
+  | 'bookmarkView' | 'historyView';
 
 const icons: Record<Action, typeof ArrowLeft> = {
   back: ArrowLeft,
   forward: ArrowRight,
-  findDialog: Search,
+  showFindInPage: Search,
   toggleBookmark: Star,
   openInNewViewer: SquareArrowOutUpRight,
+  openInFileManager: FolderOpen,
   bookmarkView: Bookmark,
   historyView: Clock4
 };
@@ -33,8 +36,9 @@ const icons: Record<Action, typeof ArrowLeft> = {
 const tooltips: Record<Action, string> = {
   back: 'Go back',
   forward: 'Go forward',
-  findDialog: 'Find in page',
+  showFindInPage: 'Find in page',
   openInNewViewer: 'Open in new viewer',
+  openInFileManager: 'Open in file manager',
   toggleBookmark: 'Toggle bookmark',
   bookmarkView: 'Show bookmarks',
   historyView: 'Show history',
@@ -49,9 +53,10 @@ export function isEnabled(role: Action) {
     case 'forward':
       return !error && ui.history.canGo(role);
 
-    case 'findDialog':
-    case 'toggleBookmark':
-    case 'openInNewViewer':
+      case 'showFindInPage':
+      case 'toggleBookmark':
+      case 'openInNewViewer':
+      case 'openInFileManager':
       return !error && !empty;
 
     case 'bookmarkView':
@@ -65,7 +70,7 @@ export function isEnabled(role: Action) {
 
 export function isChecked(role: Action) {
   switch (role) {
-    case 'findDialog': return ui.popovers.find.visible;
+    case 'showFindInPage': return ui.popovers.find.visible;
     case 'bookmarkView': return ui.sidePanel.mode === 'bookmark';
     case 'historyView': return ui.sidePanel.mode === 'history';
     default:
@@ -88,12 +93,16 @@ export function onClicked(role: Action) {
       viewlogic.navigate(role);
       break;
 
-    case 'findDialog':
+    case 'showFindInPage':
       ui.popovers.find.visible = !ui.popovers.find.visible;
       break;
 
     case 'openInNewViewer':
-      viewlogic.openDoc(ui.iframe.uri, true);
+      viewlogic.openDoc(ui.iframe.uri, 'new');
+      break;
+
+    case 'openInFileManager':
+      viewlogic.openDoc(ui.iframe.uri, 'file-manager');
       break;
 
     case 'toggleBookmark':

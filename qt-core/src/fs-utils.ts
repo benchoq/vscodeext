@@ -203,6 +203,10 @@ class FileWrapper {
       }
     );
   }
+
+  public revealInFileManager() {
+    vscode.commands.executeCommand('revealFileInOS', this.toUri());
+  }
 }
 
 // helper
