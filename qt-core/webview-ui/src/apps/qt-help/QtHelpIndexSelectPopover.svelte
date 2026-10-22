@@ -14,7 +14,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 </script>
 
-<div data-role="area" class="qt-popover">
+<div data-role="area" class="qt-popover flex flex-col gap-3">
+  <span data-role='guide'>Select a section to jump to:</span>
   <div data-role="grid">
     {#each letters as l (l)}
       <button
@@ -37,6 +38,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     min-width: 200px;
   }
 
+  [data-role='guide'] {
+    color: var(--qt-text-muted);
+  }
+
   [data-role='grid'] {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -48,6 +53,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     height: 36px;
     padding: 5;
     color: var(--qt-text-muted);
+    background: var(--qt-bg-default);
+    border: 1px solid var(--qt-stroke-subtle);
 
     &:hover {
       background: var(--qt-hover-bg);
