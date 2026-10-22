@@ -6,7 +6,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { untrack, onMount, type Snippet } from 'svelte';
   import { Dot } from '@lucide/svelte';
-  import VirtualList from 'svelte-tiny-virtual-list';
+  import VirtualList, { type ItemsUpdatedDetail } from 'svelte-tiny-virtual-list';
 
   import ScrollToTopButton from '@/comps/ScrollToTopButton.svelte';
   import { createVerticalScroller } from '@/comps/VerticalScroller.svelte';
@@ -17,10 +17,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import * as viewlogic from '../viewlogic.svelte';
   import { type IndexOrHeader } from '../types.svelte';
 
-  const all = $derived(ui.index.filtered);
-
   let virtualList: VirtualList;
   let virtualListHeight = $state(0);
+  let topIndex = $state(-1);
+
+  const all = $derived(ui.index.filtered);
+  const topItem = $derived<IndexOrHeader | undefined>(all[topIndex]);
+  const section = $derived(topItem?.name[0].toUpperCase() ?? '');
+
   let inputEl = $state(undefined as HTMLInputElement | undefined);
   let hovered = $state<IndexOrHeader | undefined>();
   const scroller = createVerticalScroller();
@@ -29,6 +33,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     const n1 = entry.name;
     const n2 = hovered?.name;
     return (n1.length !== 0) && n2 && (n1 == n2);
+  }
+
+  function onVirtualListItemsUpdated(e: ItemsUpdatedDetail) {
+    topIndex = e.start;
   }
 
   $effect(() => {
@@ -62,6 +70,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         viewlogic.updateFilteredIndex();
       }}
     />
+
+    {#if section}
+      {@render listSectionButton(section)}
+    {/if}
   </div>
 {/snippet}
 
@@ -77,6 +89,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       scrollDirection='vertical'
       itemCount={all.length}
       itemSize={24}
+      onItemsUpdated={onVirtualListItemsUpdated}
     >
       {#snippet item({ style, index })}
         {@render _item(style, index)}
@@ -126,6 +139,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       {/if}
     </button>
   {/if}
+{/snippet}
+
+{#snippet listSectionButton(section: string)}
+  <button
+    bind:this={ui.popovers.indexSelector.refEl}
+    class='qt-button'
+    onclick={() => {
+      ui.popovers.indexSelector.visible = !ui.popovers.indexSelector.visible;
+    }}
+  >
+    {section}
+  </button>
 {/snippet}
 
 <style>

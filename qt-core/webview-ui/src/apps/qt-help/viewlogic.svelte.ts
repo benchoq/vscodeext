@@ -122,6 +122,11 @@ export async function updateFilteredIndex() {
   });
 }
 
+export async function setIndexSectionAndScroll(section: string) {
+  ui.index.section = section;
+  console.log(section);
+}
+
 export function setMode(mode: UiMode) {
   ui.mode = mode;
 }

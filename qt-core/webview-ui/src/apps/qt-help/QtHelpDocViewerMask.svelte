@@ -6,11 +6,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { ui } from './states.svelte';
   import QtHelpSidebarResizeHandle from './others/QtHelpResizeHandle.svelte';
+
+  const consumeEvents = $derived(
+    ui.popovers.qtVersions.visible || ui.popovers.indexSelector.visible
+  );
 </script>
 
 <div
   class='absolute inset-0'
-  class:pointer-events-none={!ui.popovers.qtVersions.visible}
+  class:pointer-events-none={!consumeEvents}
 >
 </div>
 

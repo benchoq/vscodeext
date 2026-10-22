@@ -46,11 +46,17 @@ export const ui = $state({
   index: {
     filter: { keyword: '' },
     filtered: [] as IndexOrHeader[],
-    modified: [] as IndexOrHeader[]
+    modified: [] as IndexOrHeader[],
+    section: '',
   },
 
   popovers: {
     qtVersions: {
+      visible: false,
+      refEl: undefined as HTMLButtonElement | undefined,
+    },
+
+    indexSelector: {
       visible: false,
       refEl: undefined as HTMLButtonElement | undefined,
     }
