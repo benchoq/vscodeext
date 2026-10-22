@@ -102,7 +102,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         }
       }
     }
-    use:tooltip={{ text: toolbar.tooltip(action), placement: 'bottom' }}
+    use:tooltip={{
+      text: toolbar.tooltip(action),
+      placement: 'bottom',
+      offset: 10
+    }}
     data-role={action}
     aria-pressed={toolbar.isChecked(action)}
     class='qt-button flex items-center justify-center'

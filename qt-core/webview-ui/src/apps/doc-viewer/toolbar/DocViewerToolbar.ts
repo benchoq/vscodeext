@@ -37,7 +37,7 @@ const tooltips: Record<Action, string> = {
   back: 'Go back',
   forward: 'Go forward',
   showFindInPage: 'Find in page',
-  openInNewViewer: 'Open in new viewer',
+  openInNewViewer: 'Open in separate viewer',
   openInFileManager: 'Open in file manager',
   toggleBookmark: 'Toggle bookmark',
   bookmarkView: 'Show bookmarks',
