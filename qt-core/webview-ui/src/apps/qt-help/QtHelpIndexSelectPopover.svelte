@@ -4,9 +4,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
+  import Popover from '@/comps/Popover.svelte';
+  import Separator from '@/comps/Separator.svelte';
   import { ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
-  import Separator from '@/comps/Separator.svelte';
 
   const letters = $derived.by(() => {
     const alphabet: string[] = [];
@@ -28,13 +29,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   const active_lc = $derived(ui.index.section.toLowerCase());
 </script>
 
-<div data-role="area" class="qt-popover flex flex-col gap-3">
-  <span data-role='guide'>Jump to:</span>
-  {@render sectionGrid(letters.alphabet)}
-  <Separator />
-  {@render sectionGrid(letters.others)}
-</div>
+<Popover
+  controller={ui.popovers.indexSelector}
+  placement='bottom'
+  offset={5}
+>
+  <div data-role="area" class="qt-popover flex flex-col gap-3">
+    <span data-role='guide'>Jump to:</span>
+    {@render sectionGrid(letters.alphabet)}
+    <Separator />
+    {@render sectionGrid(letters.others)}
+  </div>
+</Popover>
 
+<!-- snippets -->
 {#snippet sectionGrid(sections: string[])}
   <div data-role="grid">
     {#each sections as l (l)}
@@ -44,7 +52,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
         class:active={l.toLowerCase() === active_lc}
         onclick={() => {
           viewlogic.setIndexSectionAndScroll(l);
-          ui.popovers.indexSelector.visible = false;
+          ui.popovers.indexSelector.hide();
         }}
       >
         {l}
@@ -52,6 +60,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     {/each}
   </div>
 {/snippet}
+
 <style>
   [data-role='area'] {
     padding: 10px;

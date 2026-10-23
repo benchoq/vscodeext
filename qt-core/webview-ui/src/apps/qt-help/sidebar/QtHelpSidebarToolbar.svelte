@@ -29,7 +29,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     bind:this={ui.popovers.qtVersions.refEl}
     class='qt-button flex flex-row !h-full justify-center !px-3'
     onclick={(e: MouseEvent) => {
-      ui.popovers.qtVersions.visible = !ui.popovers.qtVersions.visible;
+      ui.popovers.qtVersions.toggle();
       e.stopPropagation();
     }}
   >

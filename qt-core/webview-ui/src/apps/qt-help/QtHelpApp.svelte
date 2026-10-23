@@ -4,24 +4,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { onMount, onDestroy, type Component } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
   import '@/styles/components/components.css';
-  import Popover from '@/comps/Popover.svelte';
   import DocViewerApp from '@/apps/doc-viewer/DocViewerApp.svelte';
 
   import QtHelpSidebar from './sidebar/QtHelpSidebar.svelte';
   import QtHelpDocViewerMask from './QtHelpDocViewerMask.svelte';
   import QtHelpQtVersionPopover from './QtHelpQtVersionPopover.svelte';
   import QtHelpIndexSelectPopover from './QtHelpIndexSelectPopover.svelte';
-
   import { ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
-
-  interface PopoverState {
-    refEl: HTMLButtonElement | undefined;
-    visible: boolean;
-  }
 
   onMount(() => viewlogic.onAppMount());
   onDestroy(() => viewlogic.onAppDestroy());
@@ -32,26 +25,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     <QtHelpSidebar />
   </div>
 
-  {@render popover(ui.popovers.qtVersions, QtHelpQtVersionPopover)}
-  {@render popover(ui.popovers.indexSelector, QtHelpIndexSelectPopover)}
+  <QtHelpQtVersionPopover />
+  <QtHelpIndexSelectPopover />
 
   <div class='w-full h-full overflow-x-hidden relative'>
     <DocViewerApp fullScreen={false} />
     <QtHelpDocViewerMask />
   </div>
 </div>
-
-<!-- snippet -->
-{#snippet popover(state: PopoverState, Content: Component)}
-  {@const v = (state === ui.popovers.qtVersions)}
-  {#if state.visible}
-    <Popover
-      reference={state.refEl}
-      placement={v ? 'bottom' : 'bottom-start'}
-      offset={5}
-      onClose={() => { state.visible = false; }}
-    >
-      <Content />
-    </Popover>
-  {/if}
-{/snippet}

@@ -6,13 +6,15 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { PackageCheck } from '@lucide/svelte';
 
+  import { type QtDocRootInfo } from '@shared/qt-help';
   import { icons } from '@/symbols';
   import { tooltip } from '@/utils/actions';
+  import Popover from '@/comps/Popover.svelte';
   import Separator from '@/comps/Separator.svelte';
   import ToolButton from '@/comps/ToolButton.svelte';
+
   import { data, ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
-  import { type QtDocRootInfo } from '@shared/qt-help';
 
   const annotation = $derived.by(() => {
     const length = data.packages.length;
@@ -24,34 +26,43 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   });
 </script>
 
-<div data-role='area' class="qt-popover">
-  <div class='qt-item-list flex flex-col'>
-    {#each data.packages as p, i (i)}
-      {@const prev = data.packages[i - 1]}
-      {#if i !== 0 && prev.source !== p.source}
-        <Separator />
-      {/if}
-
-      <button
-        class='item w-full flex group relative'
-        class:active={ui.selected.package === p}
-        use:tooltip={{ text: p.fsPath, placement: 'right', delay: 0 }}
-        onclick={(e: MouseEvent) => {
-          void viewlogic.selectPackage(p);
-          ui.popovers.qtVersions.visible = false;
-          e.stopPropagation();
-        }}
-      >
-        <span data-role='version'>Qt-{p.version}</span>
-        {@render revealButton(p)}
-      </button>
-    {/each}
-
-    {@render footer()}
+<Popover
+  controller={ui.popovers.qtVersions}
+  placement='bottom'
+  offset={5}
+>
+  <div data-role='area' class="qt-popover">
+    <div class='qt-item-list flex flex-col'>
+      {@render content()}
+      {@render footer()}
+    </div>
   </div>
-</div>
+</Popover>
 
 <!-- snippets -->
+{#snippet content()}
+  {#each data.packages as p, i (i)}
+    {@const prev = data.packages[i - 1]}
+    {#if i !== 0 && prev.source !== p.source}
+      <Separator />
+    {/if}
+
+    <button
+      class='item w-full flex group relative'
+      class:active={ui.selected.package === p}
+      use:tooltip={{ text: p.fsPath, placement: 'right', delay: 0 }}
+      onclick={(e: MouseEvent) => {
+        void viewlogic.selectPackage(p);
+        ui.popovers.qtVersions.hide();
+        e.stopPropagation();
+      }}
+    >
+      <span data-role='version'>Qt-{p.version}</span>
+      {@render revealButton(p)}
+    </button>
+  {/each}
+{/snippet}
+
 {#snippet revealButton(p: QtDocRootInfo)}
   <div
     data-role='reveal-button'

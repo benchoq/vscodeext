@@ -1,36 +1,44 @@
-<!-- Popup.svelte -->
+<!--
+Copyright (C) 2026 The Qt Company Ltd.
+SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+-->
+
 <script lang="ts">
   import { type Snippet } from 'svelte';
-  import { type Placement, type ReferenceElement } from '@floating-ui/dom';
+  import { type Placement } from '@floating-ui/dom';
   import { clickOutside, portal, placeNear } from '@/utils/actions';
+  import { type PopoverController } from './Popover.logic.svelte';
 
   interface Props {
-    reference?: ReferenceElement;
-    placement?: Placement;
+    controller: PopoverController;
     offset?: number;
+    placement?: Placement;
     onClose?: (e: MouseEvent) => void;
     children: Snippet;
   }
 
   let {
-    reference,
+    controller,
     placement = 'bottom-start',
     offset = 0,
     onClose,
     children,
   }: Props = $props();
 
-  function handleClickOutside(e: MouseEvent) {
+  function onClickOutside(e: MouseEvent) {
     onClose?.(e);
+    controller.hide();
     e.stopPropagation();
   }
 </script>
 
-<div
-  use:portal
-  use:placeNear={{ ref: reference, placement, offset }}
-  use:clickOutside={handleClickOutside}
-  class="z-1"
->
-  {@render children()}
-</div>
+{#if controller.visible}
+  <div
+    use:portal
+    use:placeNear={{ ref: controller.refEl, placement, offset }}
+    use:clickOutside={onClickOutside}
+    class="z-1"
+  >
+    {@render children()}
+  </div>
+{/if}

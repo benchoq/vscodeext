@@ -9,6 +9,10 @@ import {
 } from '@shared/qt-help';
   import VirtualList from 'svelte-tiny-virtual-list';
 import { TaskBusyRunner } from '@/comps/TaskBusyRunner.svelte';
+import {
+  createPopoverController,
+  createPopoverControllerWith
+} from '@/comps/Popover.logic.svelte';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 import { TocTreeModel, type IndexOrHeader } from './types.svelte';
 
@@ -58,17 +62,11 @@ export const ui = $state({
   },
 
   popovers: {
-    qtVersions: {
-      visible: false,
-      refEl: undefined as HTMLButtonElement | undefined,
-    },
-
-    indexSelector: {
-      visible: false,
-      refEl: undefined as HTMLButtonElement | undefined,
+    qtVersions: createPopoverController(),
+    indexSelector: createPopoverControllerWith({
       refVirtualList: undefined as VirtualList | undefined,
       scrollToIndex: -1,
       scrollOffset: 0,
-    }
+    })
   }
 });

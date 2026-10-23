@@ -153,7 +153,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     data-role='section-button'
     class='flex flex-row items-center gap-0.5'
     onclick={() => {
-      ui.popovers.indexSelector.visible = !ui.popovers.indexSelector.visible;
+      ui.popovers.indexSelector.toggle();
     }}
   >
     <span data-role='section-text'>
