@@ -4,79 +4,60 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang='ts'>
-  import { ArrowLeft } from '@lucide/svelte';
-
+  import Popover from '@/comps/Popover.svelte';
   import Separator from '@/comps/Separator.svelte';
   import { ui } from './states.svelte';
-  import * as viewlogic from './viewlogic.svelte';
+  import * as contextMenu from './DocViewerContextMenu';
 
-  const items = [
-    { id: 'back', label: 'Back', icon: ArrowLeft },
-    { id: 'forward', label: 'Forward' },
-    { id: '' },
-    { id: 'copy', label: 'Copy'}
-  ]
+  $effect(() => {
+    const { x, y } = ui.popovers.contextMenu.pos;
 
-  function onClicked(id: string) {
-    switch (id) {
-      case 'back':
-        viewlogic.navigate('back');
-        break;
-
-      case 'forward':
-        viewlogic.navigate('forward');
-        break;
-
-      case 'copy':
-        viewlogic.copySelection();
-        break;
-
-      default:
-        return;
-    }
-
-    ui.popovers.contextMenu.visible = false;
-  }
-
-  function isEnabled(id: string) {
-    switch (id) {
-      case 'back':
-        return ui.history.canGo('back');
-
-      case 'forward':
-        return ui.history.canGo('forward');
-
-      case 'copy':
-        return true;
-
-      default:
-        return false;
-    }
-  }
-
+    ui.popovers.contextMenu.refEl = {
+      getBoundingClientRect: () => {
+        return {
+          x, y, width: 0, height: 0,
+          top: y, right: x, left: x, bottom: y,
+        };
+      }
+    };
+  });
 </script>
 
-<div class="qt-popover min-w-[150px]">
-  <div class="qt-item-list flex flex-col">
-    {#each items as item, i (i)}
-      {#if item.id.length === 0}
-        <Separator />
-      {:else}
-        <button
-          class='item flex flex-row items-center gap-2'
-          disabled={!isEnabled(item.id)}
-          onclick={() => { onClicked(item.id); }}
-        >
-          {#if item.icon}
-            <item.icon size='20px'/>
-          {/if}
-
-          {item.label}
-        </button>
-      {/if}
-    {/each}
+<Popover
+  controller={ui.popovers.contextMenu}
+  placement='bottom-start'
+  offset={5}
+>
+  <div class="qt-popover min-w-[150px]">
+    <div class="qt-item-list flex flex-col">
+      {@render content()}
+    </div>
   </div>
-</div>
+</Popover>
+
+<!-- snippets -->
+{#snippet content()}
+  {#each contextMenu.items as item, i (i)}
+    {#if item.id.length === 0}
+      <Separator />
+    {:else}
+      <button
+        class='item flex flex-row items-center gap-2'
+        disabled={!contextMenu.isEnabled(item.id)}
+        onclick={() => {
+          contextMenu.onClicked(item.id);
+          ui.popovers.contextMenu.hide();
+        }}
+      >
+        {#if item.icon}
+          <item.icon size='20px'/>
+        {/if}
+
+        {item.label}
+      </button>
+    {/if}
+  {/each}
+{/snippet}
 
 <style>
   .qt-item-list .item {

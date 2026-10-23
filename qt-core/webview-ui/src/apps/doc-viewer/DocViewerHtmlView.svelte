@@ -4,30 +4,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 -->
 
 <script lang="ts">
-  import { fly } from 'svelte/transition';
   import { ui } from './states.svelte';
   import * as helpers from './helpers';
 
-  import Popover from '@/comps/Popover.svelte';
   import DocViewerErrorPage from './DocViewerErrorPage.svelte';
   import DocViewerEmptyPage from './DocViewerEmptyPage.svelte';
   import DocViewerFindPopover from './DocViewerFindPopover.svelte';
   import DocViewerContextMenu from './DocViewerContextMenu.svelte';
   import DocViewerHtmlViewMask from './DocViewerHtmlViewMask.svelte';
-
-  const popover = $derived(ui.popovers.find);
-  const pos = $derived(ui.popovers.contextMenu.pos);
-  const virtualRef = $derived(pos
-    ? {
-        getBoundingClientRect: () => ({
-          x: pos.x, y: pos.y,
-          top: pos.y, left: pos.x,
-          right: pos.x, bottom: pos.y,
-          width: 0, height: 0,
-        }),
-      }
-    : undefined
-  );
 </script>
 
 <div class='w-full h-full relative'>
@@ -46,30 +30,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {/if}
 
   <DocViewerHtmlViewMask />
-
-  {#if popover.visible}
-    <Popover
-      reference={popover.refEl}
-      placement='bottom'
-      offset={5}
-      onClose={() => {
-        popover.visible = false;
-      }}
-    >
-      <div transition:fly={{ duration: 120, y: -20, opacity: 0 }}>
-        <DocViewerFindPopover />
-      </div>
-    </Popover>
-  {/if}
-
-  {#if ui.popovers.contextMenu.visible}
-    <Popover
-      reference={virtualRef}
-      placement='bottom-start'
-    >
-      <DocViewerContextMenu />
-    </Popover>
-  {/if}
+  <DocViewerFindPopover />
+  <DocViewerContextMenu />
 
   {#if ui.iframe.hoveredUri}
     <span data-role='hover-uri' class='absolute'>

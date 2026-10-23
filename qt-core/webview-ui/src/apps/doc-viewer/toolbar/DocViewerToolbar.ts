@@ -94,7 +94,7 @@ export function onClicked(role: Action) {
       break;
 
     case 'showFindInPage':
-      ui.popovers.find.visible = !ui.popovers.find.visible;
+      ui.popovers.find.toggle();
       break;
 
     case 'openInNewViewer':

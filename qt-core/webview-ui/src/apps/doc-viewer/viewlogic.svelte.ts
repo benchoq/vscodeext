@@ -210,13 +210,13 @@ function onMessageFromIframe(e: MessageEvent) {
         const x = r.left + e.data.x;
         const y = r.top + e.data.y;
         ui.popovers.contextMenu.pos = { x, y };
-        ui.popovers.contextMenu.visible = true;
+        ui.popovers.contextMenu.show();
       }
       break;
     }
 
     case IframeMessageId.EventMouseDown:
-      ui.popovers.contextMenu.visible = false;
+      ui.popovers.contextMenu.hide();
       break;
 
     default:

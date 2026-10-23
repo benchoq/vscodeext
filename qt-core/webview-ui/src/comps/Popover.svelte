@@ -7,10 +7,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { type Snippet } from 'svelte';
   import { type Placement } from '@floating-ui/dom';
   import { clickOutside, portal, placeNear } from '@/utils/actions';
-  import { type PopoverController } from './Popover.logic.svelte';
+  import { type PopoverControllerBase } from './Popover.logic.svelte';
 
   interface Props {
-    controller: PopoverController;
+    controller: PopoverControllerBase;
     offset?: number;
     placement?: Placement;
     onClose?: (e: MouseEvent) => void;

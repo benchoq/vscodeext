@@ -1,33 +1,44 @@
 // Copyright (C) 2025 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-export function createPopoverController() {
+import { type ReferenceElement } from '@floating-ui/dom';
+
+function createPopoverBase() {
   let _visible = $state(false);
-  let _refEl = $state<HTMLElement>();
+  let _refEl = $state<ReferenceElement>();
+
+  function _setVisible(visible: boolean) {
+    if (_visible !== visible) {
+      _visible = visible;
+
+      if (_refEl === undefined && _visible) {
+        console.warn("Invalid reference element while make it visible");
+      }
+    }
+  }
 
   return {
     get visible() { return _visible; },
+    set visible(v) { _setVisible(v); },
     get refEl() { return _refEl; },
     set refEl(el) { _refEl = el; },
 
-    show: () => { _visible = true; },
-    hide: () => { _visible = false; },
-    toggle: () => { _visible = !_visible; }
+    show: () => { _setVisible(true); },
+    hide: () => { _setVisible(false); },
+    toggle: () => { _setVisible(!_visible); }
   };
 }
 
-export function createPopoverControllerWith<T extends object>(extra?: T) {
-  const c = createPopoverController();
-  type PopoverControllerWithExtra = typeof c & T;
+export type PopoverControllerBase = ReturnType<typeof createPopoverBase>;
 
+export function createPopoverController<T extends object>(extra?: T) {
+  const c = createPopoverBase();
   if (!extra) {
-    return c as PopoverControllerWithExtra;
+    return c as (typeof c & T);
   }
 
   return Object.defineProperties(
     c,
     Object.getOwnPropertyDescriptors(extra)
-  ) as PopoverControllerWithExtra;
+  ) as (typeof c & T);
 }
-
-export type PopoverController = ReturnType<typeof createPopoverController>;

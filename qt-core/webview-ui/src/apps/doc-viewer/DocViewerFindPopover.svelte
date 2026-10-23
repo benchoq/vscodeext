@@ -5,8 +5,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { type Component, onMount } from 'svelte';
+  import { fly } from 'svelte/transition';
   import { ChevronUp, ChevronDown, X } from '@lucide/svelte';
 
+  import Popover from '@/comps/Popover.svelte';
   import { ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
 
@@ -18,7 +20,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       inputEl?.select();
     } else {
       viewlogic.findInPage('clear');
-      ui.popovers.find.visible = false;
+      ui.popovers.find.hide();
     }
   }
 
@@ -42,21 +44,34 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   });
 </script>
 
-<div data-root class="qt-popover h-[36px] flex flex-row items-center">
-  <input
-    bind:this={inputEl}
-    bind:value={ui.popovers.find.keyword}
-    data-role='find-input'
-    class='qt-input min-w-[200px] self-stretch px-2'
-    placeholder="Find in page"
-    onkeydown={onKeyDown}
-    onfocus={onFocus}
-  />
+<Popover
+  controller={ui.popovers.find}
+  placement='bottom'
+  offset={5}
+>
+  <div transition:fly={{ duration: 120, y: -20, opacity: 0 }}>
+    {@render content()}
+  </div>
+</Popover>
 
-  {@render toolButton('prev', ChevronUp)}
-  {@render toolButton('next', ChevronDown)}
-  {@render toolButton('close', X)}
-</div>
+<!-- snippets -->
+{#snippet content()}
+  <div class="qt-popover h-[36px] flex flex-row items-center">
+    <input
+      bind:this={inputEl}
+      bind:value={ui.popovers.find.keyword}
+      data-role='find-input'
+      class='qt-input min-w-[200px] self-stretch px-2'
+      placeholder="Find in page"
+      onkeydown={onKeyDown}
+      onfocus={onFocus}
+    />
+
+    {@render toolButton('prev', ChevronUp)}
+    {@render toolButton('next', ChevronDown)}
+    {@render toolButton('close', X)}
+  </div>
+{/snippet}
 
 {#snippet toolButton(action: 'prev' | 'next' | 'close', Icon: Component)}
   <button

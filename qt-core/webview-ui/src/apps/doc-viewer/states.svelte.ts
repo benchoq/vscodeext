@@ -1,8 +1,8 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import { type Coords } from '@floating-ui/dom';
 import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
+import { createPopoverController } from '@/comps/Popover.logic.svelte';
 import {
   HistoryManager,
   type HistoryItemGroup,
@@ -48,15 +48,9 @@ export const ui = $state({
   },
 
   popovers: {
-    find: {
-      keyword: '',
-      visible: false,
-      refEl: undefined as HTMLButtonElement | undefined,
-    },
-
-    contextMenu: {
-      pos: undefined as Coords | undefined,
-      visible: false,
-    }
+    find: createPopoverController({ keyword: '' }),
+    contextMenu: createPopoverController({
+      pos: { x: 0, y: 0 }
+    })
   }
 });
