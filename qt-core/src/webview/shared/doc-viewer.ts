@@ -55,6 +55,7 @@ export enum IframeMessageId {
   EventContextMenu = 'event-contextmenu',
   EventHashChanged = 'event-hash-changed',
   EventHoverChanged = 'event-hover-changed',
+  EventSelectionChanged = 'event-selection-changed'
 }
 
 // type guard functions

@@ -11,7 +11,7 @@ type ItemId = 'back' | 'forward' | 'openLink' | 'copy' | '_';
 const texts: Record<ItemId, string> = {
   back: 'Back',
   forward: 'Forward',
-  openLink: 'Open link in new viewer',
+  openLink: 'Open link in new tab',
   copy: 'Copy',
   _: ''
 };
@@ -24,11 +24,11 @@ const icons: Record<ItemId, typeof ArrowLeft | undefined> = {
   _: undefined,
 };
 
-export const itemIds: ItemId[] = [
+export const orderedIds: ItemId[] = [
   'back',
   'forward',
-  'openLink',
   '_',
+  'openLink',
   'copy'
 ];
 
@@ -62,7 +62,7 @@ export function isEnabled(id: ItemId) {
       return ui.popovers.contextMenu.hoveredUri;
 
     case 'copy':
-      return true;
+      return ui.popovers.contextMenu.hasSelection;
 
     default:
       return false;

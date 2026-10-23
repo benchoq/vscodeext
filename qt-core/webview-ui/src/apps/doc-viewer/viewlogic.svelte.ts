@@ -173,7 +173,7 @@ function onMessageFromIframe(e: MessageEvent) {
       break;
 
     case IframeMessageId.EventClicked:
-      if (typeof e.data?.href === 'string') {
+      if (typeof e.data.href === 'string') {
         openDoc(
           e.data.href,
           e.data.newWindow === true ? 'new' : 'current'
@@ -220,6 +220,10 @@ function onMessageFromIframe(e: MessageEvent) {
 
     case IframeMessageId.EventMouseDown:
       ui.popovers.contextMenu.hide();
+      break;
+
+    case IframeMessageId.EventSelectionChanged:
+      ui.popovers.contextMenu.hasSelection = e.data.hasSelection;
       break;
 
     default:

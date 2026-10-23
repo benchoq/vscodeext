@@ -20,7 +20,8 @@ export function getScriptToInject() {
       ForwardKeyDownScript,
       ScrolledScript,
       ContextMenuScript,
-      CopySelectionScript
+      CopySelectionScript,
+      SelectionChangedScript
     ];
 
     cached = /*html*/`
@@ -250,5 +251,21 @@ const CopySelectionScript = /*js*/`
     } catch {
       document.execCommand('copy');
     }
+  });
+`;
+
+const SelectionChangedScript = /*js*/`
+  let hadSelection = false;
+
+  addListener('selectionchange', () => {
+    const hasSelection = !!window.getSelection()?.toString();
+    if (hasSelection === hadSelection) {
+      return;
+    }
+
+    hadSelection = hasSelection;
+    notifyParent('${IframeMessageId.EventSelectionChanged}', {
+      hasSelection
+    });
   });
 `;

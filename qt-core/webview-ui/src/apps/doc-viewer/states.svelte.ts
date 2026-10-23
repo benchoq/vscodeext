@@ -51,7 +51,8 @@ export const ui = $state({
     find: createPopoverController({ keyword: '' }),
     contextMenu: createPopoverController({
       pos: { x: 0, y: 0 },
-      hoveredUri: ''
+      hoveredUri: '',
+      hasSelection: false
     })
   }
 });

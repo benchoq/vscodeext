@@ -28,7 +28,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   placement='bottom-start'
   offset={5}
 >
-  <div class="qt-popover min-w-[150px]">
+  <div class="qt-popover min-w-[200px]">
     <div class="qt-item-list flex flex-col">
       {@render content()}
     </div>
@@ -37,7 +37,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <!-- snippets -->
 {#snippet content()}
-  {#each contextMenu.itemIds as id (id)}
+  {#each contextMenu.orderedIds as id (id)}
     {@const Icon = contextMenu.findIcon(id)}
     {#if id === '_'}
       <Separator />
