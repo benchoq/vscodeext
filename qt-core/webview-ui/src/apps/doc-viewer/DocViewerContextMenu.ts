@@ -1,24 +1,47 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import { ArrowLeft } from '@lucide/svelte';
+import { ArrowLeft, ArrowRight } from '@lucide/svelte';
 
 import { ui } from './states.svelte';
 import * as viewlogic from './viewlogic.svelte';
 
-export const items = [
-  { id: 'back', label: 'Back', icon: ArrowLeft },
-  { id: 'forward', label: 'Forward' },
-  { id: '' },
-  { id: 'copy', label: 'Copy'}
-]
+type ItemId = 'back' | 'forward' | 'openLink' | 'copy' | '_';
 
-export function onClicked(id: string) {
+const texts: Record<ItemId, string> = {
+  back: 'Back',
+  forward: 'Forward',
+  openLink: 'Open link in new viewer',
+  copy: 'Copy',
+  _: ''
+};
+
+const icons: Record<ItemId, typeof ArrowLeft | undefined> = {
+  back: ArrowLeft,
+  forward: ArrowRight,
+  openLink: undefined,
+  copy: undefined,
+  _: undefined,
+};
+
+export const itemIds: ItemId[] = [
+  'back',
+  'forward',
+  'openLink',
+  '_',
+  'copy'
+];
+
+export function onClicked(id: ItemId) {
   switch (id) {
     case 'back':
     case 'forward':
       viewlogic.navigate(id);
       break;
+
+    case 'openLink':
+      viewlogic.openDoc(ui.popovers.contextMenu.hoveredUri, 'new');
+      return;
 
     case 'copy':
       viewlogic.copySelection();
@@ -29,11 +52,14 @@ export function onClicked(id: string) {
   }
 }
 
-export function isEnabled(id: string) {
+export function isEnabled(id: ItemId) {
   switch (id) {
     case 'back':
     case 'forward':
       return ui.history.canGo(id);
+
+    case 'openLink':
+      return ui.popovers.contextMenu.hoveredUri;
 
     case 'copy':
       return true;
@@ -41,4 +67,12 @@ export function isEnabled(id: string) {
     default:
       return false;
   }
+}
+
+export function findText(id: ItemId) {
+  return texts[id];
+}
+
+export function findIcon(id: ItemId) {
+  return icons[id];
 }

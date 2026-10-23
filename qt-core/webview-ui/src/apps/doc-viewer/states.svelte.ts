@@ -50,7 +50,8 @@ export const ui = $state({
   popovers: {
     find: createPopoverController({ keyword: '' }),
     contextMenu: createPopoverController({
-      pos: { x: 0, y: 0 }
+      pos: { x: 0, y: 0 },
+      hoveredUri: ''
     })
   }
 });

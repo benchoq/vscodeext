@@ -207,10 +207,13 @@ function onMessageFromIframe(e: MessageEvent) {
     case IframeMessageId.EventContextMenu: {
       const r = ui.iframe.el?.getBoundingClientRect();
       if (r) {
-        const x = r.left + e.data.x;
-        const y = r.top + e.data.y;
-        ui.popovers.contextMenu.pos = { x, y };
-        ui.popovers.contextMenu.show();
+        const menu = ui.popovers.contextMenu;
+        menu.hoveredUri = ui.iframe.hoveredUri;
+        menu.pos = {
+          x: r.left + e.data.x,
+          y: r.top + e.data.y
+        };
+        menu.show();
       }
       break;
     }

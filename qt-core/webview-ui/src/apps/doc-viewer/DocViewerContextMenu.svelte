@@ -37,35 +37,51 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <!-- snippets -->
 {#snippet content()}
-  {#each contextMenu.items as item, i (i)}
-    {#if item.id.length === 0}
+  {#each contextMenu.itemIds as id (id)}
+    {@const Icon = contextMenu.findIcon(id)}
+    {#if id === '_'}
       <Separator />
     {:else}
       <button
         class='item flex flex-row items-center gap-2'
-        disabled={!contextMenu.isEnabled(item.id)}
+        disabled={!contextMenu.isEnabled(id)}
         onclick={() => {
-          contextMenu.onClicked(item.id);
+          contextMenu.onClicked(id);
           ui.popovers.contextMenu.hide();
         }}
       >
-        {#if item.icon}
-          <item.icon size='20px'/>
+        {#if Icon}
+          <Icon size='20px'/>
         {/if}
 
-        {item.label}
+        {contextMenu.findText(id)}
       </button>
     {/if}
   {/each}
 {/snippet}
 
 <style>
-  .qt-item-list .item {
-    padding: 6px 10px;
+  .qt-item-list {
+    border-radius: var(--qt-radius-s);
 
-    &:hover:enabled {
-      background: var(--qt-accent-info);
-      color: var(--qt-button-fg);
+    & .item {
+      color: var(--qt-text-default);
+      background: var(--qt-bg-default);
+
+      &:disabled {
+        color: var(--qt-text-muted);
+      }
+
+      &:hover {
+        color: var(--qt-selected-fg);
+        background: var(--qt-selected-bg);
+
+        &:disabled {
+          color: var(--qt-text-muted);
+          background: var(--qt-hover-bg);
+          cursor: not-allowed;
+        }
+      }
     }
   }
 </style>
