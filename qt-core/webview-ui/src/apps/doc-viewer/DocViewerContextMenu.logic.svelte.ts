@@ -24,13 +24,13 @@ const icons: Record<ItemId, typeof ArrowLeft | undefined> = {
   _: undefined,
 };
 
-export const orderedIds: ItemId[] = [
-  'back',
-  'forward',
-  '_',
-  'openLink',
-  'copy'
-];
+export function orderedIds(): ItemId[] {
+  return [
+    'back', 'forward', '_',
+    ...(isEnabled('openLink') ? (['openLink'] as ItemId[]) : []),
+    'copy',
+  ];
+}
 
 export function onClicked(id: ItemId) {
   switch (id) {

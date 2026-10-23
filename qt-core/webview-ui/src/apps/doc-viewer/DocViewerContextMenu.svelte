@@ -7,7 +7,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import Popover from '@/comps/Popover.svelte';
   import Separator from '@/comps/Separator.svelte';
   import { ui } from './states.svelte';
-  import * as contextMenu from './DocViewerContextMenu';
+  import * as contextMenu from './DocViewerContextMenu.logic.svelte';
 
   $effect(() => {
     const { x, y } = ui.popovers.contextMenu.pos;
@@ -37,7 +37,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <!-- snippets -->
 {#snippet content()}
-  {#each contextMenu.orderedIds as id (id)}
+  {#each contextMenu.orderedIds() as id (id)}
     {@const Icon = contextMenu.findIcon(id)}
     {#if id === '_'}
       <Separator />
