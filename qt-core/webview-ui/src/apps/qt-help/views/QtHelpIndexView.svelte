@@ -5,7 +5,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <script lang="ts">
   import { untrack, onMount, type Snippet } from 'svelte';
-  import { Dot, Hash } from '@lucide/svelte';
+  import { Dot } from '@lucide/svelte';
   import VirtualList, { type ItemsUpdatedDetail } from 'svelte-tiny-virtual-list';
 
   import ScrollToTopButton from '@/comps/ScrollToTopButton.svelte';
@@ -151,15 +151,14 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <button
     bind:this={ui.popovers.indexSelector.refEl}
     data-role='section-button'
-    class='flex flex-row items-center gap-0.5'
+    class='flex flex-row items-center'
     onclick={() => {
       ui.popovers.indexSelector.toggle();
     }}
   >
-    <span data-role='section-text'>
-      <Hash />
+    <span data-role='section-name'>
+      {section}
     </span>
-    <span data-role='section-name'>{section.toUpperCase()}</span>
   </button>
 {/snippet}
 
@@ -173,7 +172,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='section-button'] {
-    padding: 0px 8px 0px 6px;
+    padding: 0px 10px;
     background: var(--qt-hover-bg);
     border-radius: var(--qt-radius-s);
 
@@ -182,15 +181,12 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     }
   }
 
-  [data-role='section-text'] {
-    color: var(--qt-text-muted);
-  }
-
   [data-role='section-name'] {
     color: var(--qt-text-default);
     display: inline-block;
     width: 1.2em;
     text-align: center;
+    text-transform: uppercase;
   }
 
   [data-role='item'],

@@ -74,20 +74,21 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   [data-role='grid'] {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 1px;
+    gap: 6px;
   }
 
   .qt-button[data-role='letter'] {
     width: 36px;
     height: 36px;
-    padding: 5;
+    padding: 4px;
     color: var(--qt-text-muted);
     border: none;
-    background: none;
+    background: color-mix(in srgb, var(--qt-bg-input) 20%, transparent);
 
     &:hover {
       color: var(--qt-text-default);
       background: var(--qt-hover-bg);
+      border: 1px solid var(--qt-stroke-subtle);
     }
 
     &.active {
