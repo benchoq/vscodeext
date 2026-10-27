@@ -136,17 +136,13 @@ export function updateSectionJump() {
   }, []);
 
   ui.index.sectionJump = sectionJump;
-  console.log(sectionJump);
 }
 
 export async function setIndexSectionAndScroll(section: string) {
-  const list = ui.popovers.indexSelector.refVirtualList;
+  const list = ui.index.list.comp;
   if (!list) {
-    console.log('no list valid');
     return;
   }
-
-  ui.index.section = section.toLowerCase();
 
   const match = ui.index
     .sectionJump
@@ -154,14 +150,9 @@ export async function setIndexSectionAndScroll(section: string) {
       return s.name.toLowerCase() === section.toLowerCase();
     });
 
-  const foundIndex = match?.index ?? -1;
-
-  console.log(match);
-
-  if (foundIndex >= 0) {
-    // ui.popovers.indexSelector.scrollToIndex = 10;
-    ui.popovers.indexSelector.scrollOffset = foundIndex * 24;
-    console.log(section);
+  const i = match?.index ?? -1;
+  if (i >= 0) {
+    ui.index.list.scrollOffset = i * ui.index.list.itemHeight;
   }
 }
 

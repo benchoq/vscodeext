@@ -26,7 +26,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     return { alphabet, others };
   });
 
-  const active_lc = $derived(ui.index.section.toLowerCase());
+  // const active_lc = $derived(ui.index.section.toLowerCase());
 </script>
 
 <Popover
@@ -49,7 +49,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       <button
         data-role="letter"
         class="qt-button"
-        class:active={l.toLowerCase() === active_lc}
+        // class:active={l.toLowerCase() === active_lc}
         onclick={() => {
           viewlogic.setIndexSectionAndScroll(l);
           ui.popovers.indexSelector.hide();

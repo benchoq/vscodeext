@@ -55,15 +55,19 @@ export const ui = $state({
     filtered: [] as IndexOrHeader[],
     modified: [] as IndexOrHeader[],
     sectionJump: [] as IndexSectionInfo[],
-    section: '',
+
+    list: {
+      comp: undefined as VirtualList | undefined,
+      height: 0,
+      itemHeight: 24,
+      startItem: undefined as IndexOrHeader | undefined,
+      startIndex: 0,
+      scrollOffset: 0
+    }
   },
 
   popovers: {
     qtVersions: createPopoverController(),
-    indexSelector: createPopoverController({
-      refVirtualList: undefined as VirtualList | undefined,
-      scrollToIndex: -1,
-      scrollOffset: 0,
-    })
+    indexSelector: createPopoverController()
   }
 });

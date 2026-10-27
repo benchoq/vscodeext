@@ -6,23 +6,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <script lang="ts">
   import { untrack, onMount, type Snippet } from 'svelte';
   import { Dot } from '@lucide/svelte';
-  import VirtualList, { type ItemsUpdatedDetail } from 'svelte-tiny-virtual-list';
+  import VirtualList from 'svelte-tiny-virtual-list';
+  import { type AfterScrollDetail } from 'svelte-tiny-virtual-list';
 
   import ScrollToTopButton from '@/comps/ScrollToTopButton.svelte';
   import { createVerticalScroller } from '@/comps/VerticalScroller.svelte';
   import QtHelpBaseView from './QtHelpBaseView.svelte';
   import QtHelpSearchInput from '../others/QtHelpSearchInput.svelte';
-
   import { ui } from '../states.svelte';
   import * as viewlogic from '../viewlogic.svelte';
   import { type IndexOrHeader } from '../types.svelte';
 
-  let virtualListHeight = $state(0);
-  // let topIndex = $state(-1);
-
   const all = $derived(ui.index.filtered);
-  // const topItem = $derived<IndexOrHeader | undefined>(all[topIndex]);
-  // const section = $derived(topItem?.name[0].toUpperCase() ?? '');
+  const list = $derived(ui.index.list);
 
   let inputEl = $state(undefined as HTMLInputElement | undefined);
   let hovered = $state<IndexOrHeader | undefined>();
@@ -34,15 +30,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
     return (n1.length !== 0) && n2 && (n1 == n2);
   }
 
-  function onVirtualListItemsUpdated(e: ItemsUpdatedDetail) {
-    const name = (all[e.start].data?.name[0] ?? '').toLocaleLowerCase();
-    ui.index.section = name;
+  function onVirtualListAfterScroll(e: AfterScrollDetail) {
+    const i = Math.floor(e.offset / list.itemHeight);
+
+    ui.index.list.startIndex = Math.min(i, all.length - 1);
+    ui.index.list.startItem = all[ui.index.list.startIndex];
   }
 
   $effect(() => {
     void ui.index.filter.keyword;
     untrack(() => {
-      ui.popovers.indexSelector.refVirtualList?.recomputeSizes?.(0);
+      ui.index.list.comp?.recomputeSizes?.(0);
     });
   })
 
@@ -71,9 +69,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       }}
     />
 
-    {#if ui.index.section}
-      {@render listSectionButton(ui.index.section)}
-    {/if}
+    {@render listSectionButton()}
   </div>
 {/snippet}
 
@@ -81,20 +77,19 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   <div class='w-full h-full flex flex-col relative'>
     <div
       use:scroller.attach
-      bind:clientHeight={virtualListHeight}
+      bind:clientHeight={ui.index.list.height}
       class='qt-item-list w-full h-full relative'
     >
       <VirtualList
-        bind:this={ui.popovers.indexSelector.refVirtualList}
-        scrollOffset={ui.popovers.indexSelector.scrollOffset}
-        height={virtualListHeight}
-        scrollDirection='vertical'
+        bind:this={list.comp}
+        scrollOffset={ui.index.list.scrollOffset}
+        height={list.height}
         itemCount={all.length}
-        itemSize={24}
-        onItemsUpdated={onVirtualListItemsUpdated}
-        // scrollToIndex={ui.popovers.indexSelector.scrollToIndex}
-        scrollToAlignment="start"
-        scrollToBehaviour="smooth"
+        itemSize={list.itemHeight}
+        onAfterScroll={onVirtualListAfterScroll}
+        scrollDirection='vertical'
+        scrollToAlignment='start'
+        scrollToBehaviour='instant'
       >
         {#snippet item({ style, index })}
           {@render _item(style, index)}
@@ -102,7 +97,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       </VirtualList>
 
       {#if scroller.scrolledEnough}
-        <ScrollToTopButton onClicked={() => scroller.scrollToTop()} />
+        <ScrollToTopButton onClicked={scroller.scrollToTop} />
       {/if}
     </div>
   </div>
@@ -147,7 +142,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   {/if}
 {/snippet}
 
-{#snippet listSectionButton(section: string)}
+{#snippet listSectionButton()}
+  {@const item = ui.index.list.startItem}
+  {@const name = item?.type === 'item' ? item.data?.name ?? '' : item?.name}
+  {@const section = name?.[0] ?? '-'}
   <button
     bind:this={ui.popovers.indexSelector.refEl}
     data-role='section-button'
@@ -156,9 +154,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
       ui.popovers.indexSelector.toggle();
     }}
   >
-    <span data-role='section-name'>
-      {section}
-    </span>
+    <span data-role='section-name'>{section}</span>
   </button>
 {/snippet}
 
