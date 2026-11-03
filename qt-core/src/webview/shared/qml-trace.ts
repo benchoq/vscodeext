@@ -5,8 +5,11 @@ export type QmlTraceCommandReply =
   | { status: 'done' }
   | { folders: string[] }
   | { filePath: string; additionalDirs: string[] }
+  | { filePath: string; bytes: Uint8Array }
   | {
       fileName: string;
       filePath: string;
+      fileUri: string;
       additionalDirs: string[];
+      distDir: string;
     };

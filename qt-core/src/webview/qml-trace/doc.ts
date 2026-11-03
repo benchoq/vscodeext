@@ -3,6 +3,7 @@
 
 import * as vscode from 'vscode';
 import { getQtQmlApi } from 'qt-lib';
+import { fsFile } from '@/fs-utils';
 
 export class QmlTraceDoc implements vscode.CustomDocument {
   constructor(private readonly _uri: vscode.Uri) {}
@@ -12,6 +13,11 @@ export class QmlTraceDoc implements vscode.CustomDocument {
 
   get uri() {
     return this._uri;
+  }
+
+  public readAll() {
+    const f = fsFile(this.uri.path);
+    return f.readAll();
   }
 
   public async getAdditionalDirs() {

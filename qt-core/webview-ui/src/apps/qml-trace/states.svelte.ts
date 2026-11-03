@@ -2,14 +2,20 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 export const data = $state({
+  bytes: new Uint8Array(),
   configs: {
+    qtProfiler: {
+      distDir: '' // output from asWebviewUri()
+    },
+
     fileName: '',
-    filePath: "",
+    filePath: '',
     additionalDirs: [] as string[],
   }
 })
 
 export const ui = $state({
+  container: undefined as HTMLElement | undefined,
   overlays: {
     config: {
       visible: false

@@ -5,10 +5,23 @@ import _ from 'lodash';
 
 import { vscode } from '@/apps/vscode';
 import { CommandId } from '@shared/message';
-import { data } from './states.svelte';
+import { data, ui } from './states.svelte';
+import * as profiler from './viewlogic.profiler.svelte';
 
 export async function onAppMount() {
-  void updateConfigs();
+  await updateConfigs();
+  await loadFileContent();
+
+  if (!ui.container) {
+    console.log('Invalid container for wasm');
+    return;
+  }
+
+  await profiler.load(
+    ui.container,
+    data.configs.qtProfiler.distDir,
+    data.bytes
+  );
 }
 
 export async function setConfigsAndReload(allDirs: string) {
@@ -23,14 +36,6 @@ export async function setConfigsAndReload(allDirs: string) {
 
   await vscode.post(CommandId.QmlTraceSetConfigs, { additionalDirs });
   await updateConfigs();
-}
-
-export async function openFileInTextEditor() {
-  await vscode.post(CommandId.QmlTraceOpenFileInTextEditor);
-}
-
-export async function openFileInTraceViewer() {
-  await vscode.post(CommandId.QmlTraceOpenFileInTraceViewer);
 }
 
 export async function getFoldersToAdd(source: 'dialog' | 'workspaces') {
@@ -50,9 +55,26 @@ export async function getFoldersToAdd(source: 'dialog' | 'workspaces') {
 async function updateConfigs() {
   const r = await vscode.post(CommandId.QmlTraceGetConfigs);
 
-  data.configs = {
-    filePath: _.get(r, 'filePath', data.configs.filePath),
-    fileName: _.get(r, 'fileName', data.configs.fileName),
-    additionalDirs: _.get(r, 'additionalDirs', data.configs.additionalDirs),
-  }
+  const c = data.configs;
+  c.filePath = _.get(r, 'filePath', c.filePath);
+  c.fileName =  _.get(r, 'fileName', c.fileName);
+  c.additionalDirs = _.get(r, 'additionalDirs', c.additionalDirs);
+  c.qtProfiler.distDir = _.get(r, 'distDir', c.qtProfiler.distDir);
+}
+
+async function loadFileContent() {
+  const start = performance.now();
+
+  const r = await vscode.post(CommandId.QmlTraceReadBytes);
+  const raw = _.get(r, 'bytes');
+  data.bytes = raw
+    ? new Uint8Array(raw as ArrayLike<number>)
+    : new Uint8Array();
+
+  console.log('QML trace loaded', {
+    fileName: data.configs.fileName,
+    filePath: data.configs.filePath,
+    length: data.bytes.length,
+    took: (performance.now() - start)
+  });
 }

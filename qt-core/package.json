@@ -394,7 +394,7 @@
   },
   "scripts": {
     "vscode:prepublish": "cross-env NODE_ENV=production npm run compile && git rev-parse HEAD > commit",
-    "compile": "npm run build:webview && node ./esbuild.mjs",
+    "compile": "npm run deploy:qtprofiler && npm run build:webview && node ./esbuild.mjs",
     "compile-test": "node ./esbuild.mjs --test",
     "watch": "node ./esbuild.mjs --watch",
     "pretest": "npm run compile && npm run lint",
@@ -409,7 +409,8 @@
     "install:all": "npm run install:webview && npm install",
     "ci:webview": "cd webview-ui && npm ci",
     "build:webview": "cd webview-ui && npm run build",
-    "install:webview": "cd webview-ui && npm install"
+    "install:webview": "cd webview-ui && npm install",
+    "deploy:qtprofiler": "shx cp -r node_modules/@qtproject/qtprofiler-wasm/dist/ ./res/others/qtprofiler"
   },
   "devDependencies": {
     "@types/chai": "^5.2.2",
@@ -436,10 +437,12 @@
     "glob": "^11.0.2",
     "mocha": "^11.3.0",
     "prettier": "^3.3.3",
+    "shx": "^0.4.0",
     "sinon": "^21.0.1",
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "@qtproject/qtprofiler-wasm": "^0.0.1-test.3",
     "axios": "^1.9.0",
     "command-exists": "^1.2.9",
     "dotenv": "^16.5.0",
@@ -462,6 +465,7 @@
   "allowScripts": {
     "esbuild": true,
     "keytar": true,
-    "@vscode/vsce-sign": true
+    "@vscode/vsce-sign": true,
+    "fsevents": true
   }
 }

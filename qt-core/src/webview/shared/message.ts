@@ -30,9 +30,8 @@ export enum CommandId {
   QrcRunClipboardAction,
 
   // qml trace file (.qtd, .qzt)
+  QmlTraceReadBytes,
   QmlTraceGetConfigs,
-  QmlTraceOpenFileInTextEditor,
-  QmlTraceOpenFileInTraceViewer,
   QmlTraceSetConfigs,
   QmlTraceSelectFolder,
   QmlTraceGetWorkspaceFolders,

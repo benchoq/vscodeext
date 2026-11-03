@@ -5,7 +5,7 @@ import _ from 'lodash';
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-import { getQtQmlApi, normalizeDriveLetter, DisposableStore } from 'qt-lib';
+import { normalizeDriveLetter, DisposableStore } from 'qt-lib';
 import { Command, CommandId } from '@/webview/shared/message';
 import { WebviewDispatcher } from '@/webview/dispatcher';
 import { QmlTraceCommandReply } from '@/webview/shared/qml-trace';
@@ -18,13 +18,13 @@ export class QmlTraceController {
 
   public constructor(
     private readonly _doc: QmlTraceDoc,
-    panel: vscode.WebviewPanel
+    private readonly _qtProfilerDistDirUri: vscode.Uri,
+    private readonly _panel: vscode.WebviewPanel
   ) {
-    this._dispatcher = new WebviewDispatcher('qml-trace', panel);
+    this._dispatcher = new WebviewDispatcher('qml-trace', _panel);
     this._dispatcher.setHandlers([
+      [CommandId.QmlTraceReadBytes, this._onReadBytes],
       [CommandId.QmlTraceGetConfigs, this._onGetConfigs],
-      [CommandId.QmlTraceOpenFileInTextEditor, this._onOpenFileInTextEditor],
-      [CommandId.QmlTraceOpenFileInTraceViewer, this._onOpenFileInTraceViewer],
       [CommandId.QmlTraceSetConfigs, this._onSetConfigs],
       [CommandId.QmlTraceSelectFolder, this._onSelectFolder],
       [CommandId.QmlTraceGetWorkspaceFolders, this._onGetWorkspaceFolders]
@@ -41,18 +41,19 @@ export class QmlTraceController {
     this._reply(cmd, {
       filePath: this._doc.uri.fsPath,
       fileName: path.basename(this._doc.uri.fsPath),
-      additionalDirs: await this._doc.getAdditionalDirs()
-    });
+      fileUri: this._panel.webview.asWebviewUri(vscode.Uri.file(this._doc.uri.fsPath)).toString(),
+      additionalDirs: await this._doc.getAdditionalDirs(),
+      distDir: this._panel.webview
+        .asWebviewUri(this._qtProfilerDistDirUri)
+        .toString()
+    })
   };
 
-  private readonly _onOpenFileInTextEditor = (cmd: Command) => {
-    void vscode.window.showTextDocument(this._doc.uri);
-    this._reply(cmd, { status: 'done' });
-  };
-
-  private readonly _onOpenFileInTraceViewer = async (cmd: Command) => {
-    (await getQmlTraceApi()).open(this._doc.uri);
-    this._reply(cmd, { status: 'done' });
+  private readonly _onReadBytes = (cmd: Command) => {
+    this._reply(cmd, {
+      filePath: this._doc.uri.fsPath,
+      bytes: new Uint8Array(this._doc.readAll())
+     });
   };
 
   private readonly _onSetConfigs = (cmd: Command) => {
@@ -87,14 +88,4 @@ export class QmlTraceController {
   private _reply(cmd: Command, data: QmlTraceCommandReply) {
     this._dispatcher.channel.replyData(cmd, data);
   }
-}
-
-// helpers
-async function getQmlTraceApi() {
-  const api = await getQtQmlApi();
-  if (!api) {
-    throw Error('QtQmlAPI is not available');
-  }
-
-  return api.traceFile;
 }

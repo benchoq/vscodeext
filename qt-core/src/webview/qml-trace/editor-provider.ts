@@ -10,9 +10,10 @@ import {
   CustomDocumentOpenContext as DocContext,
   CustomReadonlyEditorProvider as EditorProvider
 } from 'vscode';
+import * as path from 'path';
 
 import { getQtQmlApi } from 'qt-lib';
-import { setupWebApp } from '@/webview/utils';
+import { exposeDirs, setupWebApp } from '@/webview/utils';
 import { EXTENSION_ID } from '@/constants';
 import { QmlTraceDoc as Doc } from './doc';
 import { QmlTraceController as Controller } from './controller';
@@ -45,8 +46,14 @@ class QmlTraceEditorProvider implements EditorProvider<Doc> {
   public async resolveCustomEditor(doc: Doc, panel: Panel, token: Token) {
     void token;
 
+    const qtProfilerDistUri = Uri.file(path.join(
+      this._context.extensionPath, 'res/others/qtprofiler'
+    ));
+
     setupWebApp('qml-trace', this._context, panel);
-    const controller = new Controller(doc, panel);
+    exposeDirs(panel, [ qtProfilerDistUri ]);
+
+    const controller = new Controller(doc, qtProfilerDistUri, panel);
     this._controllers.set(panel, controller);
 
     panel.onDidDispose(async () => {

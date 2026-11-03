@@ -9,7 +9,8 @@ import {
   Webview as View,
   WebviewPanel as Panel,
   ExtensionMode as Mode,
-  ExtensionContext as Context
+  ExtensionContext as Context,
+  WebviewPanel
 } from 'vscode';
 
 import { getWebAppInfo } from './info';
@@ -58,7 +59,7 @@ function createHtml(id: WebAppId, context: Context, panel: Panel) {
   const meta = getWebAppInfo(id);
   const extraHeaders =
     context.extensionMode === Mode.Development
-      ? createDevHeaders()
+      ? createDevHeaders(panel)
       : createProductionHeaders(panel.webview, context.extensionUri);
 
   return /*html*/ `
@@ -77,7 +78,7 @@ function createHtml(id: WebAppId, context: Context, panel: Panel) {
   `;
 }
 
-function createDevHeaders() {
+function createDevHeaders(panel: WebviewPanel) {
   dotenv.config({
     path: path.resolve(__dirname, `../${WebAppDirs.src}/.env`)
   });
@@ -87,6 +88,13 @@ function createDevHeaders() {
   const moduleUri = `http://${host}/src/apps/main.ts`;
 
   return `
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'none';
+      script-src ${panel.webview.cspSource} 'wasm-unsafe-eval' 'unsafe-eval' http://${host};
+      connect-src ${panel.webview.cspSource} ws://${host};
+      worker-src blob:;
+      img-src ${panel.webview.cspSource} data: blob:;
+      style-src ${panel.webview.cspSource} 'unsafe-inline';">
     <script type="module" src="${moduleUri}"></script>
   `;
 }
