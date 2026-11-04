@@ -1,16 +1,28 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-// import _ from 'lodash';
 import * as path from 'path';
-import * as vscode from 'vscode';
+import {
+  window,
+  Uri,
+  Range,
+  Position,
+  ViewColumn,
+  WebviewPanel as Panel
+} from 'vscode';
 
-import { DisposableStore } from 'qt-lib';
+import {
+  exists,
+  createWrappedLogger,
+  FileFinder,
+  DisposableStore
+ } from 'qt-lib';
 import { WebviewDispatcher } from '@/webview/dispatcher';
 import { Command, CommandId } from '@/webview/shared/message';
 import { QtProfilerCommandReply } from '@/webview/shared/qt-profiler';
 import { QtProfilerDoc } from './doc';
-// import * as texts from '@/texts';
+
+const logger = createWrappedLogger('qtprofiler-controller');
 
 export class QtProfilerController {
   private readonly _dispatcher: WebviewDispatcher;
@@ -18,16 +30,14 @@ export class QtProfilerController {
 
   public constructor(
     private readonly _doc: QtProfilerDoc,
-    panel: vscode.WebviewPanel
+    private readonly _panel: Panel,
+    private readonly _qtProfilerDistDirUri: Uri,
   ) {
-    this._dispatcher = new WebviewDispatcher('qt-profiler', panel);
+    this._dispatcher = new WebviewDispatcher('qt-profiler', this._panel);
     this._dispatcher.setHandlers([
-      [CommandId.QtProfilerGetConfig, this._onGetConfigs],
-      // [CommandId.QmlTraceOpenFileInTextEditor, this._onOpenFileInTextEditor],
-      // [CommandId.QmlTraceOpenFileInTraceViewer, this._onOpenFileInTraceViewer],
-      // [CommandId.QmlTraceSetConfigs, this._onSetConfigs],
-      // [CommandId.QmlTraceSelectFolder, this._onSelectFolder],
-      // [CommandId.QmlTraceGetWorkspaceFolders, this._onGetWorkspaceFolders]
+      [CommandId.QtProfilerGetConfig, this._onGetConfig],
+      [CommandId.QtProfilerReadBytes, this._onReadBytes],
+      [CommandId.QtProfilerEventSelected, this._onEventSelected]
     ]);
 
     this._disposables.push(this._dispatcher);
@@ -37,65 +47,107 @@ export class QtProfilerController {
     this._disposables.dispose();
   }
 
-  private readonly _onGetConfigs = (cmd: Command) => {
+  private readonly _onGetConfig = (cmd: Command) => {
+    const pathAbs = this._doc.uri.fsPath;
+
     this._reply(cmd, {
-      filePath: this._doc.uri.fsPath,
-      fileName: path.basename(this._doc.uri.fsPath),
-      additionalDirs: []
-      // additionalDirs: await this._doc.getAdditionalDirs()
-    });
+      filePath: pathAbs,
+      fileName: path.basename(pathAbs),
+      distDir: this._panel.webview
+        .asWebviewUri(this._qtProfilerDistDirUri)
+        .toString()
+    })
   };
 
-  // private readonly _onOpenFileInTextEditor = (cmd: Command) => {
-  //   void vscode.window.showTextDocument(this._doc.uri);
-  //   this._reply(cmd, { status: 'done' });
-  // };
+  private readonly _onReadBytes = (cmd: Command) => {
+    this._reply(cmd, {
+      filePath: this._doc.uri.fsPath,
+      bytes: new Uint8Array(this._doc.readAll())
+     });
+  };
 
-  // private readonly _onOpenFileInTraceViewer = async (cmd: Command) => {
-  //   (await getQmlTraceApi()).open(this._doc.uri);
-  //   this._reply(cmd, { status: 'done' });
-  // };
+  private readonly _onEventSelected = (cmd: Command) => {
+    // method: 'traceEventSelected',
+    // params: {
+    //   columnNumber: number,
+    //   lineNumber: number,
+    //   sourceFilePath: string
+    // }
 
-  // private readonly _onSetConfigs = (cmd: Command) => {
-  //   const dirs = _.get(cmd.payload, 'additionalDirs', [] as string[]);
-  //   void this._doc.setAdditionalDirs(dirs);
-  //   this._reply(cmd, { status: 'done' });
-  // };
+    console.log("+++++++++++++++++++++");
+    console.log(cmd.payload);
 
-  // private readonly _onSelectFolder = async (cmd: Command) => {
-  //   const options: vscode.OpenDialogOptions = {
-  //     canSelectMany: false,
-  //     canSelectFiles: false,
-  //     canSelectFolders: true,
-  //     openLabel: texts.qmlTrace.folderSelectTitle
-  //   };
-
-  //   const folderUri = await vscode.window.showOpenDialog(options);
-  //   if (folderUri && folderUri.length > 0) {
-  //     const folder = normalizeDriveLetter(folderUri[0]?.fsPath ?? '');
-  //     this._reply(cmd, { folders: [folder] });
-  //   }
-  // };
-
-  // private readonly _onGetWorkspaceFolders = (cmd: Command) => {
-  //   const folders = (vscode.workspace.workspaceFolders ?? []).map((f) => {
-  //     return f.uri.fsPath;
-  //   });
-
-  //   this._reply(cmd, { folders });
-  // };
+    void openSourceFile(cmd.payload as Record<string, unknown>);
+    this._reply(cmd, { status: 'done' });
+  }
 
   private _reply(cmd: Command, data: QtProfilerCommandReply) {
     this._dispatcher.channel.replyData(cmd, data);
   }
 }
 
-// helpers
-// async function getQmlTraceApi() {
-//   const api = await getQtQmlApi();
-//   if (!api) {
-//     throw Error('QtQmlAPI is not available');
-//   }
 
-//   return api.traceFile;
-// }
+// helpers
+async function openSourceFile(params: Record<string, unknown>) {
+  // const qmlApi = await getQtQmlApi();
+  // const dirs = qmlApi?.traceFile.getAdditionalDirs(uri);
+  // if (!dirs || dirs.length === 0) {
+  //   logger.text('Cannot locate QML file, no additionalDirs assigned').info();
+  //   return;
+  // }
+
+  const dirs = [
+    // '/Users/bencho/tools/Qt/Examples/Qt-6.11.1/demos/robotarm',
+    '/Users/bencho/ws_temp/robot-arm'
+  ];
+
+  const line = parseInt(parseString(params.lineNumber));
+  const column = parseInt(parseString(params.columnNumber));
+  const filePath = parseString(params.sourceFilePath);
+  if (!filePath.toLowerCase().endsWith('.qml')) {
+    return;
+  }
+
+  const finder = new FileFinder();
+  finder.buildDirs = dirs;
+
+  const fsFilePath = await finder.findFile(filePath);
+  if (!fsFilePath) {
+    logger
+      .text('Cannot resolve QML file')
+      .data('filePath', filePath)
+      .error();
+    return;
+  }
+
+  if (!(await exists(fsFilePath))) {
+    logger
+      .text('Cannot open QML file')
+      .data('exist', 'false')
+      .data('qml-file', fsFilePath)
+      .error();
+    return;
+  }
+
+  const uri = Uri.file(fsFilePath);
+  const pos = new Position(Math.max(0, line - 1), Math.max(0, column - 1));
+
+  void window.showTextDocument(uri, {
+    viewColumn: ViewColumn.Two,
+    selection: new Range(pos, pos),
+    preview: true
+  });
+}
+
+function parseString(value: unknown): string {
+  switch (typeof value) {
+    case 'string':
+      return value.trim();
+
+    case 'number':
+      return String(value);
+
+    default:
+      return '';
+  }
+}
