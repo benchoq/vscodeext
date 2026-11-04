@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import * as vscode from 'vscode';
-// import { getQtQmlApi } from 'qt-lib';
+import { fsFile } from '@/fs-utils';
 
 export class QtProfilerDoc implements vscode.CustomDocument {
   constructor(private readonly _uri: vscode.Uri) {}
@@ -12,6 +12,10 @@ export class QtProfilerDoc implements vscode.CustomDocument {
 
   get uri() {
     return this._uri;
+  }
+
+  public readAll() {
+    return fsFile(this.uri.path).readAll();
   }
 
   // public async getAdditionalDirs() {

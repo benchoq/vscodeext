@@ -10,9 +10,9 @@ import {
   CustomDocumentOpenContext as DocContext,
   CustomReadonlyEditorProvider as EditorProvider
 } from 'vscode';
+import * as path from 'path';
 
-// import { getQtQmlApi } from 'qt-lib';
-import { setupWebApp } from '@/webview/utils';
+import { setupWebApp, exposeDirs } from '@/webview/utils';
 import { EXTENSION_ID } from '@/constants';
 import { QtProfilerDoc as Doc } from './doc';
 import { QtProfilerController as Controller } from './controller';
@@ -45,8 +45,15 @@ class QtProfilerEditorProvider implements EditorProvider<Doc> {
   public async resolveCustomEditor(doc: Doc, panel: Panel, token: Token) {
     void token;
 
+    const qtProfilerDistUri = Uri.file(path.join(
+      this._context.extensionPath,
+      'res/others/qtprofiler'
+    ));
+
     setupWebApp('qt-profiler', this._context, panel);
-    const controller = new Controller(doc, panel);
+    exposeDirs(panel, [ qtProfilerDistUri ]);
+
+    const controller = new Controller(doc, panel, qtProfilerDistUri);
     this._controllers.set(panel, controller);
 
     panel.onDidDispose(() => {

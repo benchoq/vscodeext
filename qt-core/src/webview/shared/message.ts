@@ -39,6 +39,7 @@ export enum CommandId {
 
   // Qt profiler
   QtProfilerGetConfig,
+  QtProfilerReadBytes,
 
   // qt examples
   ExBrowserGetPackages,
