@@ -21,7 +21,13 @@ interface QtWindow {
   qtprofiler_entry: unknown;
 }
 
-export async function load(ui: HTMLElement, dist: string, bytes: Uint8Array) {
+export async function load(
+  ui: HTMLElement,
+  dist: string,
+  bytes: Uint8Array,
+  fileName: string
+) {
+  const tracePath = `/traces/${fileName}`;
   await loadScript(`${dist}/qtloader.js`);
   await loadScript(`${dist}/qtprofiler.js`);
 
@@ -31,11 +37,11 @@ export async function load(ui: HTMLElement, dist: string, bytes: Uint8Array) {
       containerElements: [ui],
       entryFunction: w.qtprofiler_entry,
     },
-    arguments: ['--embedded', '/traces/trace.qtd'],
+    arguments: ['--embedded', tracePath],
     locateFile: (p) => `${dist}/${p}`,
     preRun: [module => {
       module.FS.mkdir('/traces');
-      module.FS.writeFile('/traces/trace.qtd', bytes);
+      module.FS.writeFile(tracePath, bytes);
     }]
   });
 }

@@ -20,7 +20,8 @@ export async function onAppMount() {
   await profiler.load(
     ui.container,
     data.configs.qtProfiler.distDir,
-    data.bytes
+    data.bytes,
+    data.configs.fileName
   );
 }
 
