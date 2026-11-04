@@ -47,7 +47,7 @@ import { addCoursesBrowser } from '@/webview/courses/controller';
 import { addQtTsSupport } from '@/translation';
 import { addUiFileSupport } from '@/ui-file/editor-provider';
 import { addQrcFileSupport } from '@/webview/qrc-editor/editor-provider';
-import { addQmlTraceFileSupport } from '@/webview/qml-trace/editor-provider';
+import { addQmlTraceFileSupport } from '@/webview/qt-profiler/editor-provider';
 
 const logger = createLogger('extension');
 

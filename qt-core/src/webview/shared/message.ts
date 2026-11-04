@@ -37,6 +37,9 @@ export enum CommandId {
   QmlTraceSelectFolder,
   QmlTraceGetWorkspaceFolders,
 
+  // Qt profiler
+  QtProfilerGetConfig,
+
   // qt examples
   ExBrowserGetPackages,
   ExBrowserGetExamples,
