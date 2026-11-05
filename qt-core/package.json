@@ -419,7 +419,7 @@
     "deploy:qtprofiler": "shx mkdir -p ./res/others/qtprofiler && shx cp node_modules/@qtproject/qtprofiler-wasm/dist/* ./res/others/qtprofiler/"
   },
   "devDependencies": {
-    "@qtproject/qtprofiler-wasm": "^0.1.0",
+    "@qtproject/qtprofiler-wasm": "^0.0.1-test.3",
     "@types/chai": "^5.2.2",
     "@types/command-exists": "^1.2.3",
     "@types/glob": "^8.1.0",

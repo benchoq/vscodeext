@@ -1,6 +1,7 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
+import _ from 'lodash';
 import * as path from 'path';
 import {
   window,
@@ -14,9 +15,9 @@ import {
 import {
   exists,
   createWrappedLogger,
-  FileFinder,
   DisposableStore
  } from 'qt-lib';
+import { FileFinder } from './file-finder';
 import { WebviewDispatcher } from '@/webview/dispatcher';
 import { Command, CommandId } from '@/webview/shared/message';
 import { QtProfilerCommandReply } from '@/webview/shared/qt-profiler';
@@ -67,17 +68,9 @@ export class QtProfilerController {
   };
 
   private readonly _onEventSelected = (cmd: Command) => {
-    // method: 'traceEventSelected',
-    // params: {
-    //   columnNumber: number,
-    //   lineNumber: number,
-    //   sourceFilePath: string
-    // }
+    const params = cmd.payload as Record<string, unknown>;
+    void openSourceFile(params);
 
-    console.log("+++++++++++++++++++++");
-    console.log(cmd.payload);
-
-    void openSourceFile(cmd.payload as Record<string, unknown>);
     this._reply(cmd, { status: 'done' });
   }
 
@@ -89,6 +82,12 @@ export class QtProfilerController {
 
 // helpers
 async function openSourceFile(params: Record<string, unknown>) {
+  // params: {
+  //   columnNumber: number,
+  //   lineNumber: number,
+  //   sourceFilePath: string
+  // }
+
   // const qmlApi = await getQtQmlApi();
   // const dirs = qmlApi?.traceFile.getAdditionalDirs(uri);
   // if (!dirs || dirs.length === 0) {
@@ -96,40 +95,19 @@ async function openSourceFile(params: Record<string, unknown>) {
   //   return;
   // }
 
-  const dirs = [
-    // '/Users/bencho/tools/Qt/Examples/Qt-6.11.1/demos/robotarm',
-    '/Users/bencho/ws_temp/robot-arm'
-  ];
-
-  const line = parseInt(parseString(params.lineNumber));
-  const column = parseInt(parseString(params.columnNumber));
-  const filePath = parseString(params.sourceFilePath);
-  if (!filePath.toLowerCase().endsWith('.qml')) {
+  const line = _.toInteger(params.lineNumber);
+  const column = _.toInteger(params.columnNumber);
+  const sourceFilePath = _.toString(params.sourceFilePath);
+  if (!sourceFilePath.toLowerCase().endsWith('.qml')) {
     return;
   }
 
-  const finder = new FileFinder();
-  finder.buildDirs = dirs;
-
-  const fsFilePath = await finder.findFile(filePath);
-  if (!fsFilePath) {
-    logger
-      .text('Cannot resolve QML file')
-      .data('filePath', filePath)
-      .error();
+  const physicalPath = await resolveFsFile(sourceFilePath);
+  if (!physicalPath) {
     return;
   }
 
-  if (!(await exists(fsFilePath))) {
-    logger
-      .text('Cannot open QML file')
-      .data('exist', 'false')
-      .data('qml-file', fsFilePath)
-      .error();
-    return;
-  }
-
-  const uri = Uri.file(fsFilePath);
+  const uri = Uri.file(physicalPath);
   const pos = new Position(Math.max(0, line - 1), Math.max(0, column - 1));
 
   void window.showTextDocument(uri, {
@@ -139,15 +117,33 @@ async function openSourceFile(params: Record<string, unknown>) {
   });
 }
 
-function parseString(value: unknown): string {
-  switch (typeof value) {
-    case 'string':
-      return value.trim();
+async function resolveFsFile(logicalPath: string) {
+  const dirs = [
+    // '/Users/bencho/tools/Qt/Examples/Qt-6.11.1/demos/robotarm',
+    '/Users/bencho/ws_temp/robot-arm'
+  ];
 
-    case 'number':
-      return String(value);
+  const finder = new FileFinder();
+  finder.buildDirs = dirs;
 
-    default:
-      return '';
+  const resolved = await finder.findFile(logicalPath);
+  if (!resolved) {
+    logger
+      .text('Cannot resolve the file')
+      .data('filePath(logical)', logicalPath)
+      .error();
+    return undefined;
   }
+
+  if (!(await exists(resolved))) {
+    logger
+      .text('Cannot locate the file')
+      .data('exist', 'false')
+      .data('filePath(logical)', logicalPath)
+      .data('filePath(physical)', resolved)
+      .error();
+    return undefined;
+  }
+
+  return resolved;
 }
