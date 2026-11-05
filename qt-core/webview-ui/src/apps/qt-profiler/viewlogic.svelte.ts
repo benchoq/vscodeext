@@ -6,57 +6,58 @@ import _ from 'lodash';
 import { vscode } from '@/apps/vscode';
 import { CommandId } from '@shared/message';
 import { data, ui } from './states.svelte';
-import * as profiler from './viewlogic.profiler.svelte';
+import { runProfiler } from './viewlogic.profiler.svelte';
 import { isRpcOutput } from "./types";
 
 export async function onAppMount() {
-  await updateConfigs();
-  await loadFileContent();
-
-  if (!ui.container) {
+  if (!ui.containerEl) {
     console.log('Invalid container for wasm');
     return;
   }
 
-  ui.profiler.state = 'triggered';
+  ui.state = 'triggered';
 
-  await profiler.load(
-    ui.container,
-    data.configs.qtProfiler.distDir,
-    data.bytes,
-    data.configs.fileName,
-    onStdOut,
-    onStdError
-  );
+  await readConfig();
+  await readTraceData();
+
+  await runProfiler(data.trace, {
+    distUri: data.profilerDistUri,
+    print,
+    printErr,
+    fontDpi: 85,
+    containerEl: ui.containerEl
+  });
 }
 
-async function updateConfigs() {
+// helpers
+async function readConfig() {
   const r = await vscode.post(CommandId.QtProfilerGetConfig);
-
-  const c = data.configs;
-  c.filePath = _.get(r, 'filePath', c.filePath);
-  c.fileName =  _.get(r, 'fileName', c.fileName);
-  c.qtProfiler.distDir = _.get(r, 'distDir', c.qtProfiler.distDir);
+  data.profilerDistUri = _.get(r, 'profilerDistUri', '');
 }
 
-async function loadFileContent() {
+async function readTraceData() {
   const start = performance.now();
+  const r = await vscode.post(CommandId.QtProfilerReadTraceData);
+  const rawBytes = _.get(r, 'bytes');
 
-  const r = await vscode.post(CommandId.QtProfilerReadBytes);
-  const raw = _.get(r, 'bytes');
-  data.bytes = raw
-    ? new Uint8Array(raw as ArrayLike<number>)
-    : new Uint8Array();
+  data.trace = {
+    filePath: _.get(r, 'filePath', ''),
+    fileName: _.get(r, 'fileName', ''),
+    bytes: rawBytes
+      ? new Uint8Array(rawBytes as ArrayLike<number>)
+      : new Uint8Array()
+  }
+
+  const { bytes, ...traceInfo } = data.trace;
 
   console.log('QML trace loaded', {
-    fileName: data.configs.fileName,
-    filePath: data.configs.filePath,
-    length: data.bytes.length,
+    ...traceInfo,
+    length: bytes.length,
     took: (performance.now() - start)
   });
 }
 
-function onStdOut(line: string) {
+function print(line: string) {
   let msg;
 
   try {
@@ -73,11 +74,11 @@ function onStdOut(line: string) {
 
   switch (msg.method) {
     case 'traceFileLoadingStarted':
-      ui.profiler.state = 'loading';
+      ui.state = 'loading';
       break;
 
     case 'traceFileLoadingFinished':
-      ui.profiler.state = 'loaded';
+      ui.state = 'loaded';
       break;
 
     case 'traceEventSelected': {
@@ -87,6 +88,6 @@ function onStdOut(line: string) {
   }
 }
 
-function onStdError(line: string) {
+function printErr(line: string) {
   console.error('[qtprofiler]', line);
 }

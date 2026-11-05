@@ -7,19 +7,18 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   import { onMount } from 'svelte';
 
   import '@/styles/components/components.css';
-
   import LoadingMask from '@/comps/LoadingMask.svelte';
   import { ui } from './states.svelte';
   import * as viewlogic from './viewlogic.svelte';
 
-  const loading = $derived(ui.profiler.state === 'loading');
+  const loading = $derived(ui.state === 'loading');
 
   onMount(viewlogic.onAppMount);
 </script>
 
-<div class='w-screen h-screen relative'>
+<div class='w-screen h-screen relative flex flex-col'>
   <div
-    bind:this={ui.container}
+    bind:this={ui.containerEl}
     data-role='profiler-container'
     class='w-full h-full'
     style:visibility={loading ? 'hidden' : 'visible'}
@@ -40,7 +39,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
   }
 
   [data-role='overlay'] {
-    z-index: 10;
+    z-index: 100;
     pointer-events: none;
+    isolation: isolate;
   }
 </style>

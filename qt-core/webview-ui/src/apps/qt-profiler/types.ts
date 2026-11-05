@@ -2,51 +2,58 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-interface RpcEventSelected {
-  jsonrpc: '2.0',
-  method: 'traceEventSelected',
-  params: {
-    columnNumber: number,
-    lineNumber: number,
-    sourceFilePath: string
-  }
+export type UiState =  'unknown' | 'triggered' | 'loading' | 'loaded';
+
+export interface TraceData {
+  fileName: string;
+  filePath: string;
+  bytes: Uint8Array;
+};
+
+export interface ProfilerConfig {
+  distUri: string;
+  print: (_: string) => void;
+  printErr: (_: string) => void;
+  fontDpi: number;
+  containerEl: HTMLElement;
 }
 
-interface RpcLoadingStarted {
-  jsonrpc: '2.0',
-  method: 'traceFileLoadingStarted',
-  params: {
-    traceFilePath: string
-  }
-}
-
-interface RpcLoadingFinished {
-  jsonrpc: '2.0',
-  method: 'traceFileLoadingFinished',
-  params: {
-    successful: boolean,
-    errorMessage: string,
-    traceFilePath: string
-  }
-}
+type RpcMessage<M extends string, P> = {
+  jsonrpc: '2.0';
+  method: M;
+  params: P
+};
 
 type RpcOutput =
-  | RpcEventSelected
-  | RpcLoadingStarted
-  | RpcLoadingFinished
+  | RpcMessage<'traceEventSelected', {
+      lineNumber: number,
+      columnNumber: number,
+      sourceFilePath: string
+    }>
+
+  | RpcMessage<'traceFileLoadingStarted', {
+    traceFilePath: string
+    }>
+
+  | RpcMessage<'traceFileLoadingFinished', {
+      successful: boolean,
+      errorMessage: string,
+      traceFilePath: string
+    }>
 ;
 
+// type guards
 export function isRpcOutput(msg: unknown): msg is RpcOutput {
-  if (!isRecord(msg) || msg.jsonrpc !== '2.0' || !isRecord(msg.params)) {
+  if (!isObject(msg) || msg.jsonrpc !== '2.0' || !isObject(msg.params)) {
     return false;
   }
 
   const p = msg.params;
   switch (msg.method) {
     case 'traceEventSelected':
-      return typeof p.sourceFilePath === 'string'
-        && typeof p.lineNumber === 'number'
-        && typeof p.columnNumber === 'number';
+      return typeof p.lineNumber === 'number'
+        && typeof p.columnNumber === 'number'
+        && typeof p.sourceFilePath === 'string';
 
     case 'traceFileLoadingStarted':
       return typeof p.traceFilePath === 'string';
@@ -61,6 +68,7 @@ export function isRpcOutput(msg: unknown): msg is RpcOutput {
   }
 }
 
-function isRecord(v: unknown): v is Record<string, unknown> {
+// helpers
+function isObject(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null;
 }

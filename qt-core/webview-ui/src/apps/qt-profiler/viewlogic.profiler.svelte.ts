@@ -1,10 +1,48 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-interface QtLoadArgs {
+import type { TraceData, ProfilerConfig } from "./types";
+
+export async function runProfiler(trace: TraceData, c: ProfilerConfig) {
+  const w = window as unknown as QtWasmWindow;
+  const fileToLoad = `/traces/${trace.fileName}`;
+
+  await loadScript(`${c.distUri}/qtloader.js`);
+  await loadScript(`${c.distUri}/qtprofiler.js`);
+
+  await w.qtLoad({
+    qt: {
+      containerElements: [c.containerEl],
+      entryFunction: w.qtprofiler_entry,
+      fontDpi: c.fontDpi
+    },
+    arguments: ['--rpc', '--embedded', fileToLoad],
+    print: c.print,
+    printErr: c.printErr,
+    locateFile: (p) => `${c.distUri}/${p}`,
+    preRun: [module => {
+      module.FS.mkdir('/traces');
+      module.FS.writeFile(fileToLoad, trace.bytes);
+    }]
+  });
+}
+
+// helpers, local types
+async function loadScript(src: string) {
+  return new Promise<void>((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = () => resolve();
+    s.onerror = reject;
+    document.head.append(s);
+  });
+}
+
+interface QtWasmLoadArgs {
   qt: {
     entryFunction: unknown;
     containerElements: HTMLElement[];
+    fontDpi: number;
   },
   arguments?: string[],
   locateFile?: (p: unknown) => string,
@@ -18,48 +56,7 @@ interface QtLoadArgs {
   }) => void]
 };
 
-interface QtWindow {
-  qtLoad: (_: QtLoadArgs) => Promise<void>,
+interface QtWasmWindow {
+  qtLoad: (_: QtWasmLoadArgs) => Promise<void>,
   qtprofiler_entry: unknown;
-}
-
-export async function load(
-  el: HTMLElement,
-  dist: string,
-  bytes: Uint8Array,
-  fileName: string,
-  print: (line: string) => void,
-  printErr: (line: string) => void
-) {
-  const traceDir = '/traces'
-  const tracePath = `${traceDir}/${fileName}`;
-
-  await loadScript(`${dist}/qtloader.js`);
-  await loadScript(`${dist}/qtprofiler.js`);
-
-  const w = window as unknown as QtWindow;
-  await w.qtLoad({
-    qt: {
-      containerElements: [el],
-      entryFunction: w.qtprofiler_entry,
-    },
-    arguments: ['--rpc', '--embedded', tracePath],
-    locateFile: (p) => `${dist}/${p}`,
-    print,
-    printErr,
-    preRun: [module => {
-      module.FS.mkdir(traceDir);
-      module.FS.writeFile(tracePath, bytes);
-    }]
-  });
-}
-
-async function loadScript(src: string) {
-  return new Promise<void>((resolve, reject) => {
-    const s = document.createElement('script');
-    s.src = src;
-    s.onload = () => resolve();
-    s.onerror = reject;
-    document.head.append(s);
-  });
 }

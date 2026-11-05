@@ -37,7 +37,7 @@ export class QtProfilerController {
     this._dispatcher = new WebviewDispatcher('qt-profiler', this._panel);
     this._dispatcher.setHandlers([
       [CommandId.QtProfilerGetConfig, this._onGetConfig],
-      [CommandId.QtProfilerReadBytes, this._onReadBytes],
+      [CommandId.QtProfilerReadTraceData, this._onReadTraceData],
       [CommandId.QtProfilerEventSelected, this._onEventSelected]
     ]);
 
@@ -49,20 +49,19 @@ export class QtProfilerController {
   }
 
   private readonly _onGetConfig = (cmd: Command) => {
-    const pathAbs = this._doc.uri.fsPath;
-
     this._reply(cmd, {
-      filePath: pathAbs,
-      fileName: path.basename(pathAbs),
-      distDir: this._panel.webview
+      profilerDistUri: this._panel.webview
         .asWebviewUri(this._qtProfilerDistDirUri)
         .toString()
     })
   };
 
-  private readonly _onReadBytes = (cmd: Command) => {
+  private readonly _onReadTraceData = (cmd: Command) => {
+    const pathAbs = this._doc.uri.fsPath;
+
     this._reply(cmd, {
-      filePath: this._doc.uri.fsPath,
+      filePath: pathAbs,
+      fileName: path.basename(pathAbs),
       bytes: new Uint8Array(this._doc.readAll())
      });
   };
@@ -102,7 +101,7 @@ async function showSourceFile(params: Record<string, unknown>) {
     );
 
     fsFile(resolved).openInEditor({
-      viewColumn: ViewColumn.Beside,
+      viewColumn: ViewColumn.Two,
       selection: new Range(pos, pos),
       preview: true
     });
