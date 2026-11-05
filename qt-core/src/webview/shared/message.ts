@@ -39,7 +39,7 @@ export enum CommandId {
 
   // Qt profiler
   QtProfilerGetConfig,
-  QtProfilerReadBytes,
+  QtProfilerReadTraceData,
   QtProfilerEventSelected,
 
   // qt examples

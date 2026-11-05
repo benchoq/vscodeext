@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 export type QtProfilerCommandReply =
-  | {
-    filePath: string;
-    fileName: string;
-    distDir: string;
-    }
-  | { filePath: string; bytes: Uint8Array; }
   | { status: 'done' }
+  | { profilerDistUri: string; }
+  | {
+      filePath: string;
+      fileName: string;
+      bytes: Uint8Array;
+    };
