@@ -373,6 +373,21 @@
           "default": "",
           "description": "Specify the custom Qt Widgets Designer executable path",
           "scope": "machine-overridable"
+        },
+       "qt-core.profiler.openSourceOnSelect": {
+          "type": "boolean",
+          "default": true,
+          "description": "Open the corresponding source file when an item is selected in the Qt profiler.",
+          "scope": "machine-overridable"
+        },
+        "qt-core.profiler.additionalBuildDirs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Additional build directories to search for QRC files in the Qt profiler. Use this when the build directory is outside the workspace.",
+          "scope": "machine-overridable"
         }
       }
     },

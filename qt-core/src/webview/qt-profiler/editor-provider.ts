@@ -45,10 +45,9 @@ class QtProfilerEditorProvider implements EditorProvider<Doc> {
   public async resolveCustomEditor(doc: Doc, panel: Panel, token: Token) {
     void token;
 
-    const qtProfilerDistUri = Uri.file(path.join(
-      this._context.extensionPath,
-      'res/others/qtprofiler'
-    ));
+    const qtProfilerDistUri = Uri.file(
+      path.join(this._context.extensionPath, 'res/others/qtprofiler')
+    );
 
     setupWebApp('qt-profiler', this._context, panel);
     exposeDirs(panel, [ qtProfilerDistUri ]);
@@ -57,7 +56,6 @@ class QtProfilerEditorProvider implements EditorProvider<Doc> {
     this._controllers.set(panel, controller);
 
     panel.onDidDispose(() => {
-      // (await getQtQmlApi())?.traceFile.close(doc.uri);
       controller.dispose();
       this._controllers.delete(panel);
     });

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import * as vscode from 'vscode';
+import { getQtQmlApi } from 'qt-lib';
 import { fsFile } from '@/fs-utils';
 
 export class QtProfilerDoc implements vscode.CustomDocument {
@@ -18,16 +19,16 @@ export class QtProfilerDoc implements vscode.CustomDocument {
     return fsFile(this.uri.path).readAll();
   }
 
-  // public async getAdditionalDirs() {
-  //   const qmlApi = await getQtQmlApi();
-  //   return qmlApi ? qmlApi.traceFile.getAdditionalDirs(this._uri) : [];
-  // }
+  public async getAdditionalDirs() {
+    const qmlApi = await getQtQmlApi();
+    return qmlApi ? qmlApi.traceFile.getAdditionalDirs(this._uri) : [];
+  }
 
-  // public async setAdditionalDirs(dirs: string[]) {
-  //   const qmlApi = await getQtQmlApi();
-  //   if (qmlApi) {
-  //     const value = dirs.map((d) => d.trim()).filter((d) => d.length > 0);
-  //     qmlApi.traceFile.setAdditionalDirs(this._uri, value);
-  //   }
-  // }
+  public async setAdditionalDirs(dirs: string[]) {
+    const qmlApi = await getQtQmlApi();
+    if (qmlApi) {
+      const value = dirs.map((d) => d.trim()).filter((d) => d.length > 0);
+      qmlApi.traceFile.setAdditionalDirs(this._uri, value);
+    }
+  }
 }

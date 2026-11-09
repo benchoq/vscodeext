@@ -13,8 +13,9 @@ import {
 
 import {
   exists,
+  settings,
   createWrappedLogger,
-  DisposableStore
+  DisposableStore,
  } from 'qt-lib';
 import { FilePathResolver } from './file-resolver';
 import { WebviewDispatcher } from '@/webview/dispatcher';
@@ -67,8 +68,10 @@ export class QtProfilerController {
   };
 
   private readonly _onEventSelected = (cmd: Command) => {
-    const params = cmd.payload as Record<string, unknown>;
-    void showSourceFile(params);
+    if (settings.core.profiler.openSourceOnSelect.get() ?? false){
+      const params = cmd.payload as Record<string, unknown>;
+      void showSourceFile(params);
+    }
 
     this._reply(cmd, { status: 'done' });
   }
@@ -90,9 +93,10 @@ async function showSourceFile(params: Record<string, unknown>) {
   const source = _.toString(params.sourceFilePath);
   if (!source.toLowerCase().endsWith('.qml')) {
     return;
-
   }
-  const resolved = await resolveFsFile(source);
+
+  const dirs = settings.core.profiler.additionalFolders.get() ?? [];
+  const resolved = await resolveFsFile(source, dirs);
 
   if (resolved) {
     const pos = new Position(
@@ -108,19 +112,7 @@ async function showSourceFile(params: Record<string, unknown>) {
   }
 }
 
-async function resolveFsFile(logicalPath: string) {
-  // const qmlApi = await getQtQmlApi();
-  // const dirs = qmlApi?.traceFile.getAdditionalDirs(uri);
-  // if (!dirs || dirs.length === 0) {
-  //   logger.text('Cannot locate QML file, no additionalDirs assigned').info();
-  //   return;
-  // }
-
-  const dirs = [
-    // '/Users/bencho/tools/Qt/Examples/Qt-6.11.1/demos/robotarm',
-    '/Users/bencho/ws_temp/robot-arm'
-  ];
-
+async function resolveFsFile(logicalPath: string, dirs: string[]) {
   const resolver = new FilePathResolver(dirs);
   const resolved = await resolver.resolve(logicalPath);
   if (!resolved) {
