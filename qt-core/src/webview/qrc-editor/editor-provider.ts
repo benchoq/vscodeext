@@ -8,10 +8,11 @@ import {
   WebviewPanel as Panel,
   ExtensionContext as Context,
   CancellationToken as Token,
-  CustomTextEditorProvider as EditorProvider
+  CustomTextEditorProvider as EditorProvider,
+  ConfigurationTarget
 } from 'vscode';
 
-import { telemetry, DisposableStore } from 'qt-lib';
+import { telemetry, DisposableStore, settings } from 'qt-lib';
 import { EXTENSION_ID } from '@/constants';
 import { setupWebApp } from '@/webview/utils';
 import { QrcDocsManager } from './docs-manager';
@@ -28,17 +29,13 @@ export function addQrcFileSupport(context: Context) {
   );
 
   // Set initial editor association based on the setting
-  const configKey = 'enableQrcEditor';
-  const configKeyFull = `${EXTENSION_ID}.${configKey}`;
-  const config = workspace.getConfiguration(EXTENSION_ID);
-  updateEditorAssociation(config.get<boolean>(configKey, true));
+  const config = settings.core.enableQrcEditor;
+  updateEditorAssociation(config.get() ?? true);
 
   // Listen for configuration changes
   const configListener = workspace.onDidChangeConfiguration((e) => {
-    if (e.affectsConfiguration(configKeyFull)) {
-      const newConfig = workspace.getConfiguration(EXTENSION_ID);
-      const newEnableQrcEditor = newConfig.get<boolean>(configKey, true);
-      updateEditorAssociation(newEnableQrcEditor);
+    if (config.affectedBy(e)) {
+      updateEditorAssociation(config.get() ?? true);
     }
   });
 
@@ -81,19 +78,13 @@ class QrcEditorProvider implements EditorProvider {
 }
 
 function updateEditorAssociation(enable: boolean) {
-  const section = 'workbench';
-  const key = 'editorAssociations';
+  const config = settings.others.editorAssociations;
 
+  const all = config.get() ?? {};
   const qrcAssociation = enable ? editorType : 'default';
-  const allAssociations = workspace
-    .getConfiguration(section)
-    .get<Record<string, string>>(key, {});
 
-  if (allAssociations['*.qrc'] !== qrcAssociation) {
-    void workspace.getConfiguration(section).update(
-      key,
-      { ...allAssociations, '*.qrc': qrcAssociation },
-      true // global configuration
-    );
+  if (all['*.qrc'] !== qrcAssociation) {
+    const value = { ...all, '*.qrc': qrcAssociation };
+    void config.update(value, ConfigurationTarget.Global);
   }
 }

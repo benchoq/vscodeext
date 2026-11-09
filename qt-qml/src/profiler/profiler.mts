@@ -14,7 +14,8 @@ import {
   CoreKey,
   getQtQmlApi,
   type QtBridgePreviewLaunch,
-  type QtBridgeProject
+  type QtBridgeProject,
+  settings
 } from 'qt-lib';
 import { EXTENSION_ID } from '@/constants.js';
 import { projectManager, coreAPI } from '@/extension.mjs';
@@ -34,6 +35,7 @@ import {
 
 const logger = createLogger('qml-profiler');
 const ui = new QmlProfilerUI();
+const config = settings.qml.profiler;
 
 let profilerManager: QmlProfilerConnectionManager | undefined;
 let profilerProcess: QtProcess | undefined;
@@ -92,10 +94,6 @@ function resolveTraceOutputDir(folder?: vscode.WorkspaceFolder): string {
 
 function buildProfilerArgs(host: string, port: number) {
   return `-qmljsdebugger=host:${host},port:${String(port)},block,services:CanvasFrameRate`;
-}
-
-function getProfilerConfig() {
-  return vscode.workspace.getConfiguration('qt-qml.profiler');
 }
 
 async function resolveCMakeProgram() {
@@ -275,7 +273,7 @@ async function launchCMakeProfiler(
 
   const manager = createProfilerManager();
   const profilerArgs = buildProfilerArgs(host, port);
-  const additionalArgs = getProfilerConfig().get<string[]>('args', []);
+  const additionalArgs = config.additionalArgs.get() ?? [];
   const command = `${program} ${profilerArgs}`;
   logger.info(`Command: ${command} ${additionalArgs.join(' ')}`);
 
@@ -340,7 +338,7 @@ async function launchPySideProfiler(
 
   const manager = createProfilerManager();
   const profilerArgs = buildProfilerArgs(host, port);
-  const additionalArgs = getProfilerConfig().get<string[]>('args', []);
+  const additionalArgs = config.additionalArgs.get() ?? [];
   const allArgs = [profilerArgs, ...additionalArgs];
 
   try {
@@ -451,7 +449,7 @@ async function launchQtBridgeProfiler(
     }
 
     const profilerArgs = buildProfilerArgs(host, port);
-    const additionalArgs = getProfilerConfig().get<string[]>('args', []);
+    const additionalArgs = config.additionalArgs.get() ?? [];
     const processArgs = [profilerArgs, ...additionalArgs];
     logger.info(`Command: ${launch.executable} ${processArgs.join(' ')}`);
 

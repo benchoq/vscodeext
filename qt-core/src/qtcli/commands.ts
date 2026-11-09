@@ -5,7 +5,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-import { exists, IsArm64, IsLinux, IsMacOS, IsWindows } from 'qt-lib';
+import { exists, IsArm64, IsLinux, IsMacOS, IsWindows, settings } from 'qt-lib';
 import { EXTENSION_ID } from '@/constants';
 import {
   qtcliExeName,
@@ -37,19 +37,14 @@ export function getNewProjectBaseDir(): string {
 }
 
 export async function setDefaultProjectDir(dir: string) {
-  const scope = vscode.ConfigurationTarget.Global;
-  const config = vscode.workspace.getConfiguration(EXTENSION_ID);
-  await config.update(
-    ConfigDefaultProjectDirectory,
+  await settings.core.defaultProjectDirectory.update(
     path.normalize(dir),
-    scope
-  );
+    vscode.ConfigurationTarget.Global
+  )
 }
 
 function getDefaultProjectDir(): string | undefined {
-  const config = vscode.workspace.getConfiguration(EXTENSION_ID);
-  const readback = config.inspect<string>(ConfigDefaultProjectDirectory);
-  return readback?.globalValue;
+  return settings.core.defaultProjectDirectory.inspect()?.globalValue;
 }
 
 function findQtcliOsPrefix(): string {

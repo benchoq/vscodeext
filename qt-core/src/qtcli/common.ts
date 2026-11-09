@@ -1,6 +1,7 @@
 // Copyright (C) 2024 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
+import { settings } from 'qt-lib';
 import * as fs from 'fs/promises';
 import * as fsSync from 'fs';
 import * as path from 'path';
@@ -13,13 +14,10 @@ const logger = createLogger('qtcli');
 
 export function fallbackWorkingDir(): string {
   const docs = path.join(Home, 'Documents');
-  const settings =
-    vscode.workspace
-      .getConfiguration('files')
-      .get<string>('dialog.defaultPath') ?? '';
+  const config = settings.others.dialogDefaultPath.get() ?? '';
 
   try {
-    const o = settings.trim();
+    const o = config.trim();
     if (fsSync.statSync(o).isDirectory()) {
       return o;
     }

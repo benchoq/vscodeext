@@ -3,6 +3,7 @@
 
 import * as vscode from 'vscode';
 
+import { settings } from 'qt-lib';
 import { EXTENSION_ID } from '@/constants';
 import { telemetry, createLogger, isError, fetchWithAbort } from 'qt-lib';
 
@@ -78,11 +79,7 @@ async function fetchUrl(url: string, token?: vscode.CancellationToken) {
 }
 
 function browseUrl(url: string) {
-  const useExternal = vscode.workspace
-    .getConfiguration(EXTENSION_ID)
-    .get<boolean>('openOnlineDocumentationInExternalBrowser');
-
-  if (useExternal) {
+  if (settings.core.openDocExt.get() ?? false) {
     void vscode.env.openExternal(vscode.Uri.parse(url));
   } else {
     const cmd = 'simpleBrowser.api.open';

@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as vscode from 'vscode';
 import * as childProcess from 'child_process';
 
-import { exists, FileFinder, getQtQmlApi } from 'qt-lib';
+import { exists, FileFinder, getQtQmlApi, settings } from 'qt-lib';
 import { InstallationManager } from './installation-manager.mts';
 import { createWrappedLogger } from './helpers/logger-wrapper.ts';
 import * as consts from './constants.mts';
@@ -133,9 +133,7 @@ export class QmlTraceViewerRunner {
   }
 
   private _resolveViewerExePath() {
-    const custom = vscode.workspace
-      .getConfiguration(consts.CONF_SECTION)
-      .get<string>(consts.CONF_CUSTOM_TRACE_VIEWER_EXE_PATH, '');
+    const custom = settings.qml.profiler.customTraceViewer.get() ?? '';
 
     if (custom.length !== 0) {
       if (fs.existsSync(custom)) {

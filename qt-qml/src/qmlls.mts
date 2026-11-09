@@ -22,7 +22,8 @@ import {
   telemetry,
   resolveConfiguration,
   PySideEnvData,
-  QtWorkspaceFeatures
+  QtWorkspaceFeatures,
+  settings
 } from 'qt-lib';
 import { coreAPI, projectManager } from '@/extension.mjs';
 import { EXTENSION_ID } from '@/constants.js';
@@ -80,21 +81,12 @@ function normalizeQmllsPath(filePath: string | undefined): string | undefined {
 }
 
 export async function setDoNotAskForDownloadingQmlls(value: boolean) {
-  await vscode.workspace
-    .getConfiguration(EXTENSION_ID)
-    .update(
-      'doNotAskForQmllsDownload',
-      value,
-      vscode.ConfigurationTarget.Global
-    );
+  const config = settings.qml.qmlls.doNotAskDownload;
+  await config.update(value, vscode.ConfigurationTarget.Global);
 }
 
 export function getDoNotAskForDownloadingQmlls(): boolean {
-  return (
-    vscode.workspace
-      .getConfiguration(EXTENSION_ID)
-      .get<boolean>('doNotAskForQmllsDownload') ?? false
-  );
+  return settings.qml.qmlls.doNotAskDownload.get() ?? false;
 }
 
 export async function fetchAssetAndDecide(options?: {

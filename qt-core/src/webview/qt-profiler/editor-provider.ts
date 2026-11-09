@@ -45,13 +45,12 @@ class QtProfilerEditorProvider implements EditorProvider<Doc> {
   public async resolveCustomEditor(doc: Doc, panel: Panel, token: Token) {
     void token;
 
-    const qtProfilerDistUri = Uri.file(path.join(
-      this._context.extensionPath,
-      'res/others/qtprofiler'
-    ));
+    const qtProfilerDistUri = Uri.file(
+      path.join(this._context.extensionPath, 'res/others/qtprofiler')
+    );
 
     setupWebApp('qt-profiler', this._context, panel);
-    exposeDirs(panel, [ qtProfilerDistUri ]);
+    exposeDirs(panel, [qtProfilerDistUri]);
 
     const controller = new Controller(doc, panel, qtProfilerDistUri);
     this._controllers.set(panel, controller);

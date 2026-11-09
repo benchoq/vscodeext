@@ -3,7 +3,7 @@
 
 import * as vscode from 'vscode';
 
-import { telemetry, DisposableStore } from 'qt-lib';
+import { telemetry, DisposableStore, settings } from 'qt-lib';
 import { WebAppId } from '@/webview/shared/types';
 import { getWebAppInfo } from '@/webview/info';
 import { setupWebApp, createPanel } from '@/webview/utils';
@@ -58,10 +58,7 @@ export async function showEntryPage(context: Context) {
     return;
   }
 
-  const key = consts.CONFIG_KEY_SHOW_ON_ACTIVATION;
-  const config = vscode.workspace.getConfiguration(consts.EXTENSION_ID);
-
-  if (config.get<boolean>(key) ?? true) {
+  if (settings.core.showWelcomePageOnActivation.get() ?? true) {
     WelcomePageController.render(context);
   }
 }

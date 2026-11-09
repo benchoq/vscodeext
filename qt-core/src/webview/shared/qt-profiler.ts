@@ -3,8 +3,8 @@
 
 export type QtProfilerCommandReply =
   | {
-    filePath: string;
-    fileName: string;
-    distDir: string;
+      filePath: string;
+      fileName: string;
+      distDir: string;
     }
-  | { filePath: string; bytes: Uint8Array; };
+  | { filePath: string; bytes: Uint8Array };
