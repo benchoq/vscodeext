@@ -1,7 +1,13 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-const OpenOriginNames = ['unspecified', 'qt-help', 'ex-browser'] as const;
+const OpenOriginNames = [
+  'unspecified',
+  'qt-help',
+  'ex-browser',
+  'hover-provider'
+] as const;
+
 const OpenInTargetNames = [
   'new',
   'current',

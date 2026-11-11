@@ -71,10 +71,55 @@ export class QtHelpDataManager {
     return results.flat();
   }
 
+  public async findQmlTypeDocs(typeName: string) {
+    const readers = await this._readersPromise;
+    const results = readers.map((r) => r.findQmlTypeDocs(typeName));
+
+    const all = results.flat();
+    return {
+      docPackage: this._selectedPackage,
+      entry: all[0]
+    };
+  }
+
+  public async findIndexEntry(name: string) {
+    const readers = await this._readersPromise;
+    return {
+      docPackage: this._selectedPackage,
+      entry: readers.flatMap((r) => r.findIndexEntries(name))[0]
+    };
+  }
+
+  // Not every import has its own module page, as `QtQuick.Controls.Basic`
+  // (a style of `QtQuick.Controls`), so fall back to the parent modules.
+  public async findQmlModuleDocs(moduleName: string) {
+    const readers = await this._readersPromise;
+    const parts = moduleName.split('.');
+
+    for (let n = parts.length; n > 0; n--) {
+      const name = parts.slice(0, n).join('.');
+      const entry = readers.flatMap((r) => r.findQmlModuleDocs(name))[0];
+
+      if (entry) {
+        return { docPackage: this._selectedPackage, entry };
+      }
+    }
+
+    return { docPackage: this._selectedPackage, entry: undefined };
+  }
+
   public async searchFullText(keyword: string) {
     await this._fullTextIndexBuild;
     const results = this._fullTextIndex.search(keyword);
     return Promise.resolve(results);
+  }
+
+  public async searchKeyword(keyword: string) {
+    const r = await this.searchFullText(keyword);
+    return {
+      docPackage: this._selectedPackage,
+      entry: r[0]
+    };
   }
 
   private _rebuild(docRootDir: string) {

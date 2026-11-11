@@ -48,6 +48,38 @@ export class QchReader {
     statement.free();
     return all;
   }
+
+  public findQmlTypeDocs(typeName: string) {
+    return this._findIndexEntries(SqlQueries.findQmlTypeDocs, {
+      ':typeName': typeName
+    });
+  }
+
+  public findQmlModuleDocs(moduleName: string) {
+    return this._findIndexEntries(SqlQueries.findQmlModuleDocs, {
+      ':moduleName': moduleName
+    });
+  }
+
+  public findIndexEntries(name: string) {
+    return this._findIndexEntries(SqlQueries.findIndexEntries, {
+      ':name': name
+    });
+  }
+
+  private _findIndexEntries(query: string, params: ParamsObject) {
+    const all: IndexEntry[] = [];
+    const statement = this._db.prepare(query);
+    statement.bind(params);
+
+    while (statement.step()) {
+      const o = statement.getAsObject();
+      all.push(buildIndexEntry(o));
+    }
+
+    statement.free();
+    return all;
+  }
 }
 
 // helpers
@@ -130,6 +162,63 @@ const SqlQueries = {
     WHERE
       IndexTable.FileId == FileNameTable.FileId
       AND FileNameTable.FolderId == FolderTable.Id
+  `,
+
+  findQmlTypeDocs: `
+    SELECT DISTINCT
+      IndexTable.Name,
+      IndexTable.Anchor,
+      FolderTable.Name as FolderName,
+      FileNameTable.Name as FileName,
+      FileNameTable.Title as FileTitle
+    FROM
+      IndexTable,
+      FolderTable,
+      FileNameTable
+    WHERE
+      IndexTable.FileId == FileNameTable.FileId
+      AND FileNameTable.FolderId == FolderTable.Id
+      AND IndexTable.Name == :typeName
+      AND IFNULL(IndexTable.Anchor, '') == ''
+      AND FileNameTable.Name LIKE 'qml-%'
+  `,
+
+  // `Qt::AlignLeft` -> qt.html#AlignmentFlag-enum
+  findIndexEntries: `
+    SELECT DISTINCT
+      IndexTable.Name,
+      IndexTable.Anchor,
+      FolderTable.Name as FolderName,
+      FileNameTable.Name as FileName,
+      FileNameTable.Title as FileTitle
+    FROM
+      IndexTable,
+      FolderTable,
+      FileNameTable
+    WHERE
+      IndexTable.FileId == FileNameTable.FileId
+      AND FileNameTable.FolderId == FolderTable.Id
+      AND IndexTable.Name == :name
+  `,
+
+  // `QtQuick.Layouts` -> qtquick-layouts-qmlmodule.html
+  findQmlModuleDocs: `
+    SELECT DISTINCT
+      IndexTable.Name,
+      IndexTable.Anchor,
+      FolderTable.Name as FolderName,
+      FileNameTable.Name as FileName,
+      FileNameTable.Title as FileTitle
+    FROM
+      IndexTable,
+      FolderTable,
+      FileNameTable
+    WHERE
+      IndexTable.FileId == FileNameTable.FileId
+      AND FileNameTable.FolderId == FolderTable.Id
+      AND IndexTable.Name == :moduleName
+      AND IFNULL(IndexTable.Anchor, '') == ''
+      AND FileNameTable.Name LIKE '%-qmlmodule.html'
   `,
 
   readContentData: `

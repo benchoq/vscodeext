@@ -13,7 +13,7 @@ import {
   createColorProvider
 } from 'qt-lib';
 import { CoreAPIImpl } from '@/api';
-import { registerQtDocsHoverProvider } from '@/docs/hover-provider';
+import { registerQtDocsHoverProviders } from '@/docs/hover-providers';
 import { registerQtDocsCommands } from '@/docs/online-docs';
 import { registerSetRecommendedSettingsCommand } from '@/recommended-settings';
 import {
@@ -81,8 +81,7 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   registerQtDocsCommands(context);
-  registerQtDocsHoverProvider(context);
-  registerWebApps(context);
+  registerQtDocsHoverProviders(context);
   registerQtFilesSupport(context);
 
   telemetry.sendEvent(`activated`);
@@ -93,6 +92,8 @@ export async function activate(context: vscode.ExtensionContext) {
   checkVcpkg();
   checkQtpathsInEnvPath();
   initCoreValues();
+
+  registerWebApps(context);
 
   void showEntryPage(context);
 
