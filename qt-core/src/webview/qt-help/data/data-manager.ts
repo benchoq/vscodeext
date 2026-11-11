@@ -77,6 +77,14 @@ export class QtHelpDataManager {
     return Promise.resolve(results);
   }
 
+  public async searchKeyword(keyword: string) {
+    const r = await this.searchFullText(keyword);
+    return {
+      docPackage: this._selectedPackage,
+      entry: r[0]
+    }
+  }
+
   private _rebuild(docRootDir: string) {
     const qchFiles = fsDir(docRootDir).findFiles('*.qch');
     const sqlDistPath = path.join(this._context.extensionPath, 'res/others');

@@ -44,7 +44,7 @@ export class DocViewerController {
 
   public open(context: Context, uri?: Uri, o?: OpenOptions) {
     const col =
-      o?.origin === 'ex-browser'
+      (o?.origin === 'ex-browser' || o?.origin === 'hover-provider')
         ? this._getLastActiveColumn(ViewColumn.Beside)
         : undefined;
 

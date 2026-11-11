@@ -82,7 +82,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
   registerQtDocsCommands(context);
   registerQtDocsHoverProvider(context);
-  registerWebApps(context);
   registerQtFilesSupport(context);
 
   telemetry.sendEvent(`activated`);
@@ -93,6 +92,8 @@ export async function activate(context: vscode.ExtensionContext) {
   checkVcpkg();
   checkQtpathsInEnvPath();
   initCoreValues();
+
+  registerWebApps(context);
 
   void showEntryPage(context);
 

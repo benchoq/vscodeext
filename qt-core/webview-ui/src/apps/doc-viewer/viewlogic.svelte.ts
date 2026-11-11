@@ -28,8 +28,8 @@ export async function onAppMount() {
   vscode.onDidReceiveNotification(onMessageFromVscode);
 
   await loadConfigs();
-  await history.load();
-  await bookmark.load();
+  // await history.load();
+  // await bookmark.load();
 
   if (data.configs.homeUri) {
     void openDoc(data.configs.homeUri);

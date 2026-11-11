@@ -12,19 +12,17 @@ import { DocViewerDispatcher } from '@/webview/doc-viewer/dispatcher';
 import { QtHelpDataManager } from './data/data-manager';
 
 export class QtHelpDispatcher extends DocViewerDispatcher {
-  private readonly _data: QtHelpDataManager;
-
   public constructor(
     extContext: ExtContext,
     panel: Panel,
-    docViewerInfra: DocViewerInfra
+    docViewerInfra: DocViewerInfra,
+    private readonly _data: QtHelpDataManager
   ) {
     super(extContext, panel, docViewerInfra, {
       origin: 'qt-help',
       syncPanelTitle: false
     });
 
-    this._data = new QtHelpDataManager(extContext);
     this.setHandlers([
       [CommandId.QtHelpGetDocRoots, this._onGetDocRoots],
       [CommandId.QtHelpSelectDocRoot, this._onSelectDocRoot],
