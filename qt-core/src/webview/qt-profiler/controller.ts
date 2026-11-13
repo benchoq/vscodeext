@@ -41,6 +41,7 @@ export class QtProfilerController {
       [CommandId.QtProfilerGetConfig, this._onGetConfig],
       [CommandId.QtProfilerReadTraceData, this._onReadTraceData],
       [CommandId.QtProfilerEventSelected, this._onEventSelected],
+      [CommandId.QtProfilerReloadHtml, this._onReloadHtml],
       [CommandId.QtProfilerOpenUrl, this._onOpenUrl]
     ]);
 
@@ -74,6 +75,14 @@ export class QtProfilerController {
       const params = cmd.payload as Record<string, unknown>;
       void showSourceFile(params);
     }
+
+    this._reply(cmd, { status: 'done' });
+  }
+
+  private readonly _onReloadHtml = (cmd: Command) => {
+    const html = this._panel.webview.html;
+    this._panel.webview.html = '';
+    this._panel.webview.html = html;
 
     this._reply(cmd, { status: 'done' });
   }

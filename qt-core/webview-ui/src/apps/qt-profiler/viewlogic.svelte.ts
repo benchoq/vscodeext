@@ -8,26 +8,31 @@ import { CommandId } from '@shared/message';
 import { data, ui } from './states.svelte';
 import { runProfiler } from './viewlogic.profiler.svelte';
 import { isRpcOutput } from "./types";
+import type { ThemeInfo } from '@/comps/VscodeThemeMonitor.svelte';
 
 export async function onAppMount() {
-  if (!ui.containerEl) {
-    console.log('Invalid container for wasm');
-    return null;
-  }
-
   ui.theme.monitor.start();
-  ui.state = 'triggered';
+  ui.theme.monitor.onChanged((prev: ThemeInfo, current: ThemeInfo) => {
+    if (prev.dark !== current.dark) {
+      void vscode.post(CommandId.QtProfilerReloadHtml);
+    }
+  });
 
   await readConfig();
-  await readTraceData();
 
-  await runProfiler(data.trace, {
-    distUri: data.profilerDistUri,
-    print,
-    printErr,
-    fontDpi: 85,
-    containerEl: ui.containerEl
-  });
+  if (ui.containerEl) {
+    setColorScheme(ui.theme.states.dark ? 'dark' : 'light');
+    ui.state = 'triggered';
+
+    await readTraceData();
+    await runProfiler(data.trace, {
+      distUri: data.profilerDistUri,
+      print,
+      printErr,
+      fontDpi: 85,
+      containerEl: ui.containerEl
+    });
+  }
 }
 
 export function overrideWindowOpenFunction() {
@@ -113,4 +118,27 @@ function print(line: string) {
 
 function printErr(line: string) {
   console.error('[qtprofiler]', line);
+}
+
+function setColorScheme(scheme: 'dark' | 'light') {
+  const name = '(prefers-color-scheme:dark)';
+  const original = window.matchMedia.bind(window);
+
+  window.matchMedia = (q: string) => {
+    const mql = original(q);
+    if (q.replace(/\s/g, '') !== name) {
+      return mql;
+    }
+
+    return new Proxy(mql, {
+      get: (queries: MediaQueryList, prop) => {
+        if (prop === 'matches') {
+          return scheme === 'dark';
+        }
+
+        const v = Reflect.get(queries, prop);
+        return ((typeof v === 'function') ? v.bind(queries) : v);
+      }
+    });
+  };
 }

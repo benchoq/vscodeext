@@ -41,6 +41,7 @@ export enum CommandId {
   QtProfilerGetConfig,
   QtProfilerReadTraceData,
   QtProfilerEventSelected,
+  QtProfilerReloadHtml,
   QtProfilerOpenUrl,
 
   // qt examples
