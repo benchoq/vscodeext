@@ -18,6 +18,10 @@ export interface ProfilerConfig {
   containerEl: HTMLElement;
 }
 
+export interface QtWasmInstance {
+  qtResizeContainerElement(element: HTMLElement): void;
+}
+
 type RpcMessage<M extends string, P> = {
   jsonrpc: '2.0';
   method: M;

@@ -38,7 +38,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 <style>
   [data-role='profiler-container'] {
     padding: 4px;
-    overflow: hidden;
+    overflow: auto;
   }
 
   [data-role='overlay'] {

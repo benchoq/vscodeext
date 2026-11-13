@@ -1,7 +1,11 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
-import type { TraceData, ProfilerConfig } from "./types";
+import type {
+  TraceData,
+  ProfilerConfig,
+  QtWasmInstance
+ } from "./types";
 
 export async function runProfiler(trace: TraceData, c: ProfilerConfig) {
   const w = window as unknown as QtWasmWindow;
@@ -10,7 +14,7 @@ export async function runProfiler(trace: TraceData, c: ProfilerConfig) {
   await loadScript(`${c.distUri}/qtloader.js`);
   await loadScript(`${c.distUri}/qtprofiler.js`);
 
-  await w.qtLoad({
+  const instance = await w.qtLoad({
     qt: {
       containerElements: [c.containerEl],
       entryFunction: w.qtprofiler_entry,
@@ -25,6 +29,8 @@ export async function runProfiler(trace: TraceData, c: ProfilerConfig) {
       module.FS.writeFile(fileToLoad, trace.bytes);
     }]
   });
+
+  instance.qtResizeContainerElement(c.containerEl);
 }
 
 // helpers, local types
@@ -57,6 +63,6 @@ interface QtWasmLoadArgs {
 };
 
 interface QtWasmWindow {
-  qtLoad: (_: QtWasmLoadArgs) => Promise<void>,
+  qtLoad: (_: QtWasmLoadArgs) => Promise<QtWasmInstance>,
   qtprofiler_entry: unknown;
 }
