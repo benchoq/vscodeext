@@ -23,7 +23,9 @@ export function addQtProfilerSupport(context: Context) {
 
   context.subscriptions.push(
     provider,
-    window.registerCustomEditorProvider(type, provider)
+    window.registerCustomEditorProvider(type, provider, {
+      webviewOptions: { retainContextWhenHidden: true }
+    })
   );
 }
 

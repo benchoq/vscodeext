@@ -34,7 +34,8 @@
     "workspaceContains:**/*.ui",
     "workspaceContains:**/*.qrc",
     "onWebviewPanel:ViewTypeExBrowser",
-    "onWebviewPanel:ViewTypeWelcomePage"
+    "onWebviewPanel:ViewTypeWelcomePage",
+    "onWebviewPanel:ViewTypeQtProfiler"
   ],
   "main": "./out/extension.js",
   "capabilities": {
