@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 import type { TraceData, UiState } from './types';
+import * as VscodeThemeMonitor from '@/comps/VscodeThemeMonitor.svelte';
 
 export const data = $state({
   trace: {
@@ -14,6 +15,7 @@ export const data = $state({
 });
 
 export const ui = $state({
+  theme: VscodeThemeMonitor.createController(),
   state: 'unknown' as UiState,
   containerEl: undefined as HTMLElement | undefined,
 });

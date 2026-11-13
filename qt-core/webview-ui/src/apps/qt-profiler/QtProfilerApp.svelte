@@ -13,7 +13,10 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   const loading = $derived(ui.state === 'loading');
 
-  onMount(viewlogic.onAppMount);
+  onMount(() => {
+    void viewlogic.onAppMount();
+    return viewlogic.overrideWindowOpenFunction();
+  });
 </script>
 
 <div class='w-screen h-screen relative flex flex-col'>

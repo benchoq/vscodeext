@@ -4,6 +4,7 @@
 import _ from 'lodash';
 import * as path from 'path';
 import {
+  env,
   Uri,
   Range,
   Position,
@@ -39,7 +40,8 @@ export class QtProfilerController {
     this._dispatcher.setHandlers([
       [CommandId.QtProfilerGetConfig, this._onGetConfig],
       [CommandId.QtProfilerReadTraceData, this._onReadTraceData],
-      [CommandId.QtProfilerEventSelected, this._onEventSelected]
+      [CommandId.QtProfilerEventSelected, this._onEventSelected],
+      [CommandId.QtProfilerOpenUrl, this._onOpenUrl]
     ]);
 
     this._disposables.push(this._dispatcher);
@@ -71,6 +73,15 @@ export class QtProfilerController {
     if (settings.core.profiler.openSourceOnSelect.get() ?? false){
       const params = cmd.payload as Record<string, unknown>;
       void showSourceFile(params);
+    }
+
+    this._reply(cmd, { status: 'done' });
+  }
+
+  private readonly _onOpenUrl = (cmd: Command) => {
+    const url = String(_.get(cmd.payload, 'url', '')).trim();
+    if (url) {
+      void env.openExternal(Uri.parse(url));
     }
 
     this._reply(cmd, { status: 'done' });

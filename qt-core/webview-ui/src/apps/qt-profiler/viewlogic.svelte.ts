@@ -12,9 +12,10 @@ import { isRpcOutput } from "./types";
 export async function onAppMount() {
   if (!ui.containerEl) {
     console.log('Invalid container for wasm');
-    return;
+    return null;
   }
 
+  ui.theme.monitor.start();
   ui.state = 'triggered';
 
   await readConfig();
@@ -27,6 +28,26 @@ export async function onAppMount() {
     fontDpi: 85,
     containerEl: ui.containerEl
   });
+}
+
+export function overrideWindowOpenFunction() {
+  const originalOpen = window.open;
+
+  window.open = function (url, target, features) {
+    console.log('overridden window.open()', url, target, features);
+
+    const url_s = url ? url.toString() : '';
+    if (url_s.startsWith('https://doc.qt.io')) {
+      void vscode.post(CommandId.QtProfilerOpenUrl, { url: url_s });
+      return null;
+    }
+
+    return originalOpen.call(window, url, target, features);
+  };
+
+  return () => {
+    window.open = originalOpen;
+  };
 }
 
 // helpers
@@ -66,6 +87,8 @@ function print(line: string) {
     console.log('Invalid reply');
     return;
   }
+
+  console.log(performance.now(), line);
 
   if (!isRpcOutput(msg)) {
     console.log('Invalid reply');
