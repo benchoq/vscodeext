@@ -13,10 +13,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
   const loading = $derived(ui.state === 'loading');
 
-  onMount(() => {
-    void viewlogic.onAppMount();
-    return viewlogic.overrideWindowOpenFunction();
-  });
+  onMount(viewlogic.onAppMount);
 </script>
 
 <div class='w-screen h-screen relative flex flex-col'>
@@ -37,6 +34,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
 <style>
   [data-role='profiler-container'] {
+    display: block;
+    position: default;
     padding: 4px;
     overflow: auto;
   }

@@ -41,7 +41,7 @@ export class QtProfilerController {
       [CommandId.QtProfilerGetConfig, this._onGetConfig],
       [CommandId.QtProfilerReadTraceData, this._onReadTraceData],
       [CommandId.QtProfilerEventSelected, this._onEventSelected],
-      [CommandId.QtProfilerReloadHtml, this._onReloadHtml],
+      [CommandId.QtProfilerReloadWebviewHtml, this._onReloadWebviewHtml],
       [CommandId.QtProfilerOpenUrl, this._onOpenUrl]
     ]);
 
@@ -79,7 +79,7 @@ export class QtProfilerController {
     this._reply(cmd, { status: 'done' });
   }
 
-  private readonly _onReloadHtml = (cmd: Command) => {
+  private readonly _onReloadWebviewHtml = (cmd: Command) => {
     const html = this._panel.webview.html;
     this._panel.webview.html = '';
     this._panel.webview.html = html;

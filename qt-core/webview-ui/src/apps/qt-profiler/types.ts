@@ -12,14 +12,8 @@ export interface TraceData {
 
 export interface ProfilerConfig {
   distUri: string;
-  print: (_: string) => void;
-  printErr: (_: string) => void;
-  fontDpi: number;
   containerEl: HTMLElement;
-}
-
-export interface QtWasmInstance {
-  qtResizeContainerElement(element: HTMLElement): void;
+  onRpcMessage: (msg: RpcOutput) => void;
 }
 
 type RpcMessage<M extends string, P> = {
@@ -28,7 +22,7 @@ type RpcMessage<M extends string, P> = {
   params: P
 };
 
-type RpcOutput =
+export type RpcOutput =
   | RpcMessage<'traceEventSelected', {
       lineNumber: number,
       columnNumber: number,
