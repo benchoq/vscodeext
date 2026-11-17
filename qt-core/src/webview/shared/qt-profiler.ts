@@ -3,7 +3,7 @@
 
 export type QtProfilerCommandReply =
   | { status: 'done' }
-  | { profilerDistUri: string; }
+  | { profilerDistUri: string }
   | {
       filePath: string;
       fileName: string;

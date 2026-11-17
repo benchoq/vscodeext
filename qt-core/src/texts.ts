@@ -42,7 +42,7 @@ export const qmlTrace = {
 };
 
 export const qtProfiler = {
-  tabText: 'Qt Profiler',
+  tabText: 'Qt Profiler'
 };
 
 export const qrcEditor = {

@@ -3,12 +3,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import {
-  workspace,
-  Uri,
-  GlobPattern,
-  RelativePattern
-} from 'vscode';
+import { workspace, Uri, GlobPattern, RelativePattern } from 'vscode';
 
 import { QRCParser, createWrappedLogger } from 'qt-lib';
 
@@ -67,7 +62,7 @@ async function findAllQrcUris(additionalDirs: string[]) {
   const globs: GlobPattern[] = [
     pattern,
     ...additionalDirs.map((dir) => new RelativePattern(dir, pattern))
-  ]
+  ];
 
   const found = await Promise.all(globs.map((p) => workspace.findFiles(p)));
   return found.flat();
@@ -75,10 +70,10 @@ async function findAllQrcUris(additionalDirs: string[]) {
 
 async function generateAliasMap(qrcUris: Uri[], parser: QRCParser) {
   const parsedResults = await Promise.all(
-    qrcUris.map((uri) => parser.parseQRCFile(uri.fsPath)
-  ));
+    qrcUris.map((uri) => parser.parseQRCFile(uri.fsPath))
+  );
 
-  const items = parsedResults.flatMap((r) => r ? [...r] : []);
+  const items = parsedResults.flatMap((r) => (r ? [...r] : []));
   return new Map(items);
 }
 
@@ -108,11 +103,7 @@ function measureCommonSuffix(a: string, b: string) {
   let la = a.length;
   let lb = b.length;
 
-  while (
-    --la >= 0 &&
-    --lb >= 0 &&
-    a.charAt(la) === b.charAt(lb)
-  ) {
+  while (--la >= 0 && --lb >= 0 && a.charAt(la) === b.charAt(lb)) {
     rank++;
   }
 

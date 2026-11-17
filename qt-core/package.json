@@ -375,7 +375,7 @@
           "description": "Specify the custom Qt Widgets Designer executable path",
           "scope": "machine-overridable"
         },
-       "qt-core.profiler.openSourceOnSelect": {
+        "qt-core.profiler.openSourceOnSelect": {
           "type": "boolean",
           "default": true,
           "description": "Open the corresponding source file when an item is selected in the Qt profiler.",

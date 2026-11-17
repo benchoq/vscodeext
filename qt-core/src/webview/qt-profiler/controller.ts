@@ -12,12 +12,7 @@ import {
   WebviewPanel as Panel
 } from 'vscode';
 
-import {
-  exists,
-  settings,
-  createWrappedLogger,
-  DisposableStore,
- } from 'qt-lib';
+import { exists, settings, createWrappedLogger, DisposableStore } from 'qt-lib';
 import { FilePathResolver } from './file-resolver';
 import { WebviewDispatcher } from '@/webview/dispatcher';
 import { Command, CommandId } from '@/webview/shared/message';
@@ -34,7 +29,7 @@ export class QtProfilerController {
   public constructor(
     private readonly _doc: QtProfilerDoc,
     private readonly _panel: Panel,
-    private readonly _qtProfilerDistDirUri: Uri,
+    private readonly _qtProfilerDistDirUri: Uri
   ) {
     this._dispatcher = new WebviewDispatcher('qt-profiler', this._panel);
     this._dispatcher.setHandlers([
@@ -57,7 +52,7 @@ export class QtProfilerController {
       profilerDistUri: this._panel.webview
         .asWebviewUri(this._qtProfilerDistDirUri)
         .toString()
-    })
+    });
   };
 
   private readonly _onReadTraceData = (cmd: Command) => {
@@ -67,17 +62,17 @@ export class QtProfilerController {
       filePath: pathAbs,
       fileName: path.basename(pathAbs),
       bytes: new Uint8Array(this._doc.readAll())
-     });
+    });
   };
 
   private readonly _onEventSelected = (cmd: Command) => {
-    if (settings.core.profiler.openSourceOnSelect.get() ?? false){
+    if (settings.core.profiler.openSourceOnSelect.get() ?? false) {
       const params = cmd.payload as Record<string, unknown>;
       void showSourceFile(params);
     }
 
     this._reply(cmd, { status: 'done' });
-  }
+  };
 
   private readonly _onReloadWebviewHtml = (cmd: Command) => {
     const html = this._panel.webview.html;
@@ -85,7 +80,7 @@ export class QtProfilerController {
     this._panel.webview.html = html;
 
     this._reply(cmd, { status: 'done' });
-  }
+  };
 
   private readonly _onOpenUrl = (cmd: Command) => {
     const url = String(_.get(cmd.payload, 'url', '')).trim();
@@ -94,13 +89,12 @@ export class QtProfilerController {
     }
 
     this._reply(cmd, { status: 'done' });
-  }
+  };
 
   private _reply(cmd: Command, data: QtProfilerCommandReply) {
     this._dispatcher.channel.replyData(cmd, data);
   }
 }
-
 
 // helpers
 async function showSourceFile(params: Record<string, unknown>) {

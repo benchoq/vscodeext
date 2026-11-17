@@ -52,7 +52,7 @@ class QtProfilerEditorProvider implements EditorProvider<Doc> {
     );
 
     setupWebApp('qt-profiler', this._context, panel);
-    exposeDirs(panel, [ qtProfilerDistUri ]);
+    exposeDirs(panel, [qtProfilerDistUri]);
 
     const controller = new Controller(doc, panel, qtProfilerDistUri);
     this._controllers.set(panel, controller);
