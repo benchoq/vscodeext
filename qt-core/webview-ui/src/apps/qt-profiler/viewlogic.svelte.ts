@@ -8,7 +8,7 @@ import { CommandId } from '@shared/message';
 import { type ThemeInfo } from '@/comps/VscodeThemeMonitor.svelte';
 
 import { data, ui } from './states.svelte';
-import { loadProfiler, log } from './viewlogic.profiler.svelte';
+import { loadProfiler } from './viewlogic.profiler.svelte';
 import { type RpcOutput, type UiState } from "./types";
 
 export async function onAppMount() {
@@ -23,11 +23,12 @@ export async function onAppMount() {
   setUiState('triggered');
 
   await loadConfig();
-  await loadTrace();
+  await loadTraceData();
   await loadProfiler(data.trace, {
     distUri: data.config.profilerDistUri,
     containerEl: ui.containerEl,
     onRpcMessage,
+    log
   });
 }
 
@@ -37,7 +38,7 @@ async function loadConfig() {
   data.config.profilerDistUri = _.get(r, 'profilerDistUri', '');
 }
 
-async function loadTrace() {
+async function loadTraceData() {
   const start = performance.now();
   const r = await vscode.post(CommandId.QtProfilerReadTraceData);
   const rawBytes = _.get(r, 'bytes');
@@ -53,10 +54,20 @@ async function loadTrace() {
   const { bytes, ...traceInfo } = data.trace;
 
   log('QML trace loaded', {
-    ...traceInfo,
+    took_ms: (performance.now() - start).toFixed(3),
     length: bytes.length,
-    took: (performance.now() - start)
+    filePath: traceInfo.filePath,
   });
+}
+
+function log(...args: unknown[]) {
+  const line = args.map(arg =>
+    typeof arg === 'object' && arg !== null
+      ? JSON.stringify(arg)
+      : String(arg)
+  ).join(' ');
+
+  void vscode.post(CommandId.QtProfilerWriteLog, { line });
 }
 
 function onRpcMessage(msg: RpcOutput) {

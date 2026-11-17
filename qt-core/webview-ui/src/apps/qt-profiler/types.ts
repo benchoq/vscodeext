@@ -14,6 +14,7 @@ export interface ProfilerConfig {
   distUri: string;
   containerEl: HTMLElement;
   onRpcMessage: (msg: RpcOutput) => void;
+  log: (...args: unknown[]) => void;
 }
 
 type RpcMessage<M extends string, P> = {

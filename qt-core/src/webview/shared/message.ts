@@ -43,6 +43,7 @@ export enum CommandId {
   QtProfilerEventSelected,
   QtProfilerReloadWebviewHtml,
   QtProfilerOpenUrl,
+  QtProfilerWriteLog,
 
   // qt examples
   ExBrowserGetPackages,

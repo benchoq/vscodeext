@@ -5,15 +5,15 @@ import _ from 'lodash';
 
 import {
   isRpcOutput,
-  type RpcOutput,
   type TraceData,
   type ProfilerConfig
 } from './types';
 
 export async function loadProfiler(trace: TraceData, c: ProfilerConfig) {
+  c.log('Loading application', { dist: c.distUri });
+
   const w = window as unknown as QtWasmWindow;
   const fileToLoad = `/traces/${trace.fileName}`;
-
   await loadScript(`${c.distUri}/qtloader.js`);
   await loadScript(`${c.distUri}/qtprofiler.js`);
 
@@ -22,12 +22,12 @@ export async function loadProfiler(trace: TraceData, c: ProfilerConfig) {
       containerElements: [c.containerEl],
       entryFunction: w.qtprofiler_entry,
       fontDpi: 85,
-      onLoaded: () => log("Application loaded"),
-      onExit
+      onLoaded: () => c.log("Application loaded"),
+      onExit: createOnExit(c)
     },
     arguments: ['--rpc', '--embedded', fileToLoad],
-    print: createPrint(c.onRpcMessage),
-    printErr: (line: string) => log(line),
+    print: createPrint(c),
+    printErr: (line: string) => c.log(line),
     locateFile: (p) => `${c.distUri}/${p}`,
     preRun: [module => {
       module.FS.mkdir('/traces');
@@ -36,42 +36,40 @@ export async function loadProfiler(trace: TraceData, c: ProfilerConfig) {
   });
 }
 
-export function log(...args: unknown[]) {
-  console.log('[Qt Profiler]', ...args);
-}
-
 // helpers, local types
-function createPrint(onRpcMessage: (msg: RpcOutput) => void) {
+function createPrint(c: ProfilerConfig) {
   return (line: string) => {
     let msg;
 
     try {
       msg = JSON.parse(line);
     } catch {
-      log('Invalid JSON output');
+      c.log('Invalid JSON output');
       return;
     }
 
     if (!isRpcOutput(msg)) {
-      log('Invalid RPC message');
+      c.log('Invalid RPC message');
       return;
     }
 
-    onRpcMessage(msg);
+    c.onRpcMessage(msg);
   };
 }
 
-function onExit(data: unknown) {
-  const code = _.get(data, 'code', 0);
-  const text = _.get(data, 'text', '');
+function createOnExit(c: ProfilerConfig) {
+  return (data: unknown) => {
+    const code = _.get(data, 'code', 0);
+    const text = _.get(data, 'text', '');
 
-  const texts = [
-    'Application exit',
-    code !== 0 ? `with code ${code}` : '',
-    text.length !== 0 ? `(${text})` : ''
-  ];
+    const texts = [
+      'Application exit',
+      code !== 0 ? `with code ${code}` : '',
+      text.length !== 0 ? `(${text})` : ''
+    ];
 
-  log(texts);
+    c.log(texts);
+  }
 }
 
 async function loadScript(src: string) {

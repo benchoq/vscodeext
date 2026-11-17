@@ -37,7 +37,8 @@ export class QtProfilerController {
       [CommandId.QtProfilerReadTraceData, this._onReadTraceData],
       [CommandId.QtProfilerEventSelected, this._onEventSelected],
       [CommandId.QtProfilerReloadWebviewHtml, this._onReloadWebviewHtml],
-      [CommandId.QtProfilerOpenUrl, this._onOpenUrl]
+      [CommandId.QtProfilerOpenUrl, this._onOpenUrl],
+      [CommandId.QtProfilerWriteLog, this._onWriteLog]
     ]);
 
     this._disposables.push(this._dispatcher);
@@ -86,6 +87,15 @@ export class QtProfilerController {
     const url = String(_.get(cmd.payload, 'url', '')).trim();
     if (url) {
       void env.openExternal(Uri.parse(url));
+    }
+
+    this._reply(cmd, { status: 'done' });
+  };
+
+  private readonly _onWriteLog = (cmd: Command) => {
+    const line = String(_.get(cmd.payload, 'line', '')).trim();
+    if (line) {
+      logger.text(line).info();
     }
 
     this._reply(cmd, { status: 'done' });
