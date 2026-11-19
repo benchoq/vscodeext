@@ -1,36 +1,36 @@
-## SYNTAX TEST "source.qml" "QML types"
+// SYNTAX TEST "source.qml" "QML types"
 
 Rectangle {
-## <--------- entity.name.type.object.qml
+// <--------- entity.name.type.object.qml
 
   width: 300
-## <~~----- variable.parameter.attr-expr.qml
-##       ^^^ constant.numeric.decimal.js
+// <~~----- variable.parameter.attr-expr.qml
+//       ^^^ constant.numeric.decimal.js
 
   visible: true
-##         ^^^^ constant.language.boolean.true.js
+//         ^^^^ constant.language.boolean.true.js
 
   color: "skyblue"
-##       ^^^^^^^^^ string.quoted.double.js
+//       ^^^^^^^^^ string.quoted.double.js
 
   gradient: Gradient {
-## <~~-------- variable.parameter.attr-object.qml
-##          ^^^^^^^^ entity.name.type.object.qml
+// <~~-------- variable.parameter.attr-object.qml
+//          ^^^^^^^^ entity.name.type.object.qml
       GradientStop { position: 0.0; color: "yellow" }
-##    ^^^^^^^^^^^^ entity.name.type.object.qml
-##                   ^^^^^^^^ variable.parameter.attr-expr.qml
-##                             ^^^ constant.numeric.decimal.js
+//    ^^^^^^^^^^^^ entity.name.type.object.qml
+//                   ^^^^^^^^ variable.parameter.attr-expr.qml
+//                             ^^^ constant.numeric.decimal.js
   }
 
   enum TextType {
-## <~~---- keyword.other.enum.qml
-##     ^^^^^^^^ entity.name.type.enum.qml
+// <~~---- keyword.other.enum.qml
+//     ^^^^^^^^ entity.name.type.enum.qml
       Normal,
-##    ^^^^^^ variable.other.enummember.qml
+//    ^^^^^^ variable.other.enummember.qml
       Heading = 20,
-##    ^^^^^^^ variable.other.enummember.qml
-##              ^^ constant.numeric.decimal.js
+//    ^^^^^^^ variable.other.enummember.qml
+//              ^^ constant.numeric.decimal.js
       Contents
-##    ^^^^^^^^ variable.other.enummember.qml
+//    ^^^^^^^^ variable.other.enummember.qml
   }
 }

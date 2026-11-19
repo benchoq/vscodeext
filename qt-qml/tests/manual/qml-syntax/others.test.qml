@@ -1,193 +1,193 @@
-## SYNTAX TEST "source.qml" "QML others"
+// SYNTAX TEST "source.qml" "QML others"
 // Copyright (C) 2024 The Qt Company Ltd.
-## <-- comment.line.qml
+// <-- comment.line.qml
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
-## <-- comment.line.qml
+// <-- comment.line.qml
 
 // enum
-## <-- comment.line.qml
+// <-- comment.line.qml
 Text {
-## <---- entity.name.type.object.qml
+// <---- entity.name.type.object.qml
     enum TextType {
-##  ^^^^ keyword.other.enum.qml
-##       ^^^^^^^^ entity.name.type.enum.qml
+//  ^^^^ keyword.other.enum.qml
+//       ^^^^^^^^ entity.name.type.enum.qml
         Normal,
-##      ^^^^^^ variable.other.enummember.qml
+//      ^^^^^^ variable.other.enummember.qml
         Heading = 2,
-##      ^^^^^^^ variable.other.enummember.qml
-##              ^ keyword.operator.assignment.qml
-##                ^ constant.numeric.decimal.js
+//      ^^^^^^^ variable.other.enummember.qml
+//              ^ keyword.operator.assignment.qml
+//                ^ constant.numeric.decimal.js
         Contents
-##      ^^^^^^^^ variable.other.enummember.qml
+//      ^^^^^^^^ variable.other.enummember.qml
     }
 
     property int textType: MyText.TextType.Normal
-##  ^^^^^^^^ keyword.other.prop-custom.qml
-##           ^^^ storage.type.prop-custom.type.qml
+//  ^^^^^^^^ keyword.other.prop-custom.qml
+//           ^^^ storage.type.prop-custom.type.qml
 
     font.bold: textType === MyText.TextType.Heading
-##  ^^^^^^^^^ variable.parameter.attr-expr.qml
+//  ^^^^^^^^^ variable.parameter.attr-expr.qml
     font.pixelSize: textType === MyText.TextType.Heading ? 24 : 12
-##  ^^^^^^^^^^^^^^ variable.parameter.attr-expr.qml
-##                                                         ^^ constant.numeric.decimal.js
-##                                                              ^^ constant.numeric.decimal.js
+//  ^^^^^^^^^^^^^^ variable.parameter.attr-expr.qml
+//                                                         ^^ constant.numeric.decimal.js
+//                                                              ^^ constant.numeric.decimal.js
 }
 
 // inline component
-## <-- comment.line.qml
+// <-- comment.line.qml
 Window {
-## <------ entity.name.type.object.qml
+// <------ entity.name.type.object.qml
     width: 300
-##  ^^^^^ variable.parameter.attr-expr.qml
-##         ^^^ constant.numeric.decimal.js
+//  ^^^^^ variable.parameter.attr-expr.qml
+//         ^^^ constant.numeric.decimal.js
     height: 200
-##  ^^^^^^ variable.parameter.attr-expr.qml
-##          ^^^ constant.numeric.decimal.js
+//  ^^^^^^ variable.parameter.attr-expr.qml
+//          ^^^ constant.numeric.decimal.js
     visible: true
-##  ^^^^^^^ variable.parameter.attr-expr.qml
-##           ^^^^ constant.language.boolean.true.js
+//  ^^^^^^^ variable.parameter.attr-expr.qml
+//           ^^^^ constant.language.boolean.true.js
 
     PushButtonInline { x: 50; y: 20 }
-##  ^^^^^^^^^^^^^^^^ entity.name.type.object.qml
-##                     ^ variable.parameter.attr-expr.qml
-##                        ^^ constant.numeric.decimal.js
-##                            ^ variable.parameter.attr-expr.qml
-##                               ^^ constant.numeric.decimal.js
+//  ^^^^^^^^^^^^^^^^ entity.name.type.object.qml
+//                     ^ variable.parameter.attr-expr.qml
+//                        ^^ constant.numeric.decimal.js
+//                            ^ variable.parameter.attr-expr.qml
+//                               ^^ constant.numeric.decimal.js
     PushButtonInline { x: 50; y: 100 }
-##  ^^^^^^^^^^^^^^^^ entity.name.type.object.qml
-##                     ^ variable.parameter.attr-expr.qml
-##                        ^^ constant.numeric.decimal.js
-##                            ^ variable.parameter.attr-expr.qml
-##                               ^^^ constant.numeric.decimal.js
+//  ^^^^^^^^^^^^^^^^ entity.name.type.object.qml
+//                     ^ variable.parameter.attr-expr.qml
+//                        ^^ constant.numeric.decimal.js
+//                            ^ variable.parameter.attr-expr.qml
+//                               ^^^ constant.numeric.decimal.js
 
     component PushButtonInline: Rectangle {
-##  ^^^^^^^^^ keyword.other.comp-inline.qml
-##            ^^^^^^^^^^^^^^^^ entity.name.type.comp-line.name.qml
-##                              ^^^^^^^^^ entity.name.type.object.qml
+//  ^^^^^^^^^ keyword.other.comp-inline.qml
+//            ^^^^^^^^^^^^^^^^ entity.name.type.comp-line.name.qml
+//                              ^^^^^^^^^ entity.name.type.object.qml
         id: _rect
-##      ^^ variable.parameter.attr-expr.qml
+//      ^^ variable.parameter.attr-expr.qml
         color: "skyblue"
-##      ^^^^^ variable.parameter.attr-expr.qml
-##             ^^^^^^^^^ string.quoted.double.js
+//      ^^^^^ variable.parameter.attr-expr.qml
+//             ^^^^^^^^^ string.quoted.double.js
         border.color: "lightgray"
-##      ^^^^^^^^^^^^ variable.parameter.attr-expr.qml
-##                    ^^^^^^^^^^^ string.quoted.double.js
+//      ^^^^^^^^^^^^ variable.parameter.attr-expr.qml
+//                    ^^^^^^^^^^^ string.quoted.double.js
         implicitWidth: 150
-##      ^^^^^^^^^^^^^ variable.parameter.attr-expr.qml
-##                     ^^^ constant.numeric.decimal.js
+//      ^^^^^^^^^^^^^ variable.parameter.attr-expr.qml
+//                     ^^^ constant.numeric.decimal.js
         implicitHeight: 60
-##      ^^^^^^^^^^^^^^ variable.parameter.attr-expr.qml
-##                      ^^ constant.numeric.decimal.js
+//      ^^^^^^^^^^^^^^ variable.parameter.attr-expr.qml
+//                      ^^ constant.numeric.decimal.js
     }
 }
 
 // attached prop
-## <-- comment.line.qml
+// <-- comment.line.qml
 ListView {
-## <-------- entity.name.type.object.qml
+// <-------- entity.name.type.object.qml
     delegate: Item {
-##  ^^^^^^^^ variable.parameter.attr-object.qml
-##            ^^^^ entity.name.type.object.qml
+//  ^^^^^^^^ variable.parameter.attr-object.qml
+//            ^^^^ entity.name.type.object.qml
         id: _delegate
-##      ^^ variable.parameter.attr-expr.qml
+//      ^^ variable.parameter.attr-expr.qml
         width: 100; height: 30
-##      ^^^^^ variable.parameter.attr-expr.qml
-##             ^^^ constant.numeric.decimal.js
-##                  ^^^^^^ variable.parameter.attr-expr.qml
-##                          ^^ constant.numeric.decimal.js
+//      ^^^^^ variable.parameter.attr-expr.qml
+//             ^^^ constant.numeric.decimal.js
+//                  ^^^^^^ variable.parameter.attr-expr.qml
+//                          ^^ constant.numeric.decimal.js
 
         Rectangle {
-##      ^^^^^^^^^ entity.name.type.object.qml
+//      ^^^^^^^^^ entity.name.type.object.qml
             width: 100; height: 30
-##          ^^^^^ variable.parameter.attr-expr.qml
-##                 ^^^ constant.numeric.decimal.js
-##                      ^^^^^^ variable.parameter.attr-expr.qml
-##                              ^^ constant.numeric.decimal.js
+//          ^^^^^ variable.parameter.attr-expr.qml
+//                 ^^^ constant.numeric.decimal.js
+//                      ^^^^^^ variable.parameter.attr-expr.qml
+//                              ^^ constant.numeric.decimal.js
             color: _delegate.ListView.isCurrentItem ? "red" : "yellow" // correct
-##          ^^^^^ variable.parameter.attr-expr.qml
-##                                                    ^^^^^ string.quoted.double.js
-##                                                            ^^^^^^^^ string.quoted.double.js
-##                                                                     ^^^^^^^^^^ comment.line.double-slash.js
+//          ^^^^^ variable.parameter.attr-expr.qml
+//                                                    ^^^^^ string.quoted.double.js
+//                                                            ^^^^^^^^ string.quoted.double.js
+//                                                                     ^^^^^^^^^^ comment.line.double-slash.js
         }
     }
 }
 
 // string
-## <-- comment.line.qml
+// <-- comment.line.qml
 Item {
-## <---- entity.name.type.object.qml
+// <---- entity.name.type.object.qml
     prop1: "value1"
-##  ^^^^^ variable.parameter.attr-expr.qml
-##         ^^^^^^^^ string.quoted.double.js
+//  ^^^^^ variable.parameter.attr-expr.qml
+//         ^^^^^^^^ string.quoted.double.js
     prop2: 'value2'
-##  ^^^^^ variable.parameter.attr-expr.qml
-##         ^^^^^^^^ string.quoted.single.js
+//  ^^^^^ variable.parameter.attr-expr.qml
+//         ^^^^^^^^ string.quoted.single.js
     prop3: `${prop1} abcd` + `this is a ${prop2} value.`
-##  ^^^^^ variable.parameter.attr-expr.qml
-##                   ^^^^ string.template.js
-##                            ^^^^^^^^^ string.template.js
+//  ^^^^^ variable.parameter.attr-expr.qml
+//                   ^^^^ string.template.js
+//                            ^^^^^^^^^ string.template.js
 
     Component.onCompleted: {
-##  ^^^^^^^^^^^^^^^^^^^^^ variable.parameter.attr-block.qml
+//  ^^^^^^^^^^^^^^^^^^^^^ variable.parameter.attr-block.qml
         // single line
-##      ^^^^^^^^^^^^^^ comment.line.double-slash.js
+//      ^^^^^^^^^^^^^^ comment.line.double-slash.js
         console.log("string text line ");
-##                  ^^^^^^^^^^^^^^^^^^^ string.quoted.double.js
+//                  ^^^^^^^^^^^^^^^^^^^ string.quoted.double.js
         console.log('string text line ');
-##                  ^^^^^^^^^^^^^^^^^^^ string.quoted.single.js
+//                  ^^^^^^^^^^^^^^^^^^^ string.quoted.single.js
         console.log(`string text line with ${a+b} and ${prop1}.`);
-##                   ^^^^^^^^^^^^^^^^^^^^^ string.template.js
-##                                                ^^^ string.template.js
+//                   ^^^^^^^^^^^^^^^^^^^^^ string.template.js
+//                                                ^^^ string.template.js
 
         // multiple line
-##      ^^^^^^^^^^^^^^^^ comment.line.double-slash.js
+//      ^^^^^^^^^^^^^^^^ comment.line.double-slash.js
         console.log(`string text line with ${a+b} and ${prop1}.
-##                   ^^^^^^^^^^^^^^^^^^^^^ string.template.js
+//                   ^^^^^^^^^^^^^^^^^^^^^ string.template.js
             the second line`);
-##          ^^^^^^^^^^^^^^^ string.template.js
+//          ^^^^^^^^^^^^^^^ string.template.js
     }
 }
 
 // comment
-## <-- comment.line.qml
+// <-- comment.line.qml
 // This is a line comment
-## <-- comment.line.qml
+// <-- comment.line.qml
 
 Item { // This is a comment
-## <---- entity.name.type.object.qml
-##     ^^^^^^^^^^^^^^^^^^^^ comment.line.qml
+// <---- entity.name.type.object.qml
+//     ^^^^^^^^^^^^^^^^^^^^ comment.line.qml
 }
 
 /*
-## <-- comment.block.qml
+// <-- comment.block.qml
   This is a block comment
-##^^^^^^^^^^^^^^^^^^^^^^^ comment.block.qml
+//^^^^^^^^^^^^^^^^^^^^^^^ comment.block.qml
 */
-## <-- comment.block.qml
+// <-- comment.block.qml
 
 /*!
-## <--- comment.block.qml
+// <--- comment.block.qml
   This is a block comment
-##^^^^^^^^^^^^^^^^^^^^^^^ comment.block.qml
+//^^^^^^^^^^^^^^^^^^^^^^^ comment.block.qml
 */
-## <-- comment.block.qml
+// <-- comment.block.qml
 
 // some helpers for user convenience
-## <-- comment.line.qml
+// <-- comment.line.qml
 Item {
-## <---- entity.name.type.object.qml
+// <---- entity.name.type.object.qml
   // NOTE note entry
-##   ^^^^ constant.language.qml
+//   ^^^^ constant.language.qml
   // TODO todo entry
-##   ^^^^ constant.language.qml
+//   ^^^^ constant.language.qml
   // DEBUG debug entry
-##   ^^^^^ constant.language.qml
+//   ^^^^^ constant.language.qml
   // XXX xxx entry
-##   ^^^ constant.language.qml
+//   ^^^ constant.language.qml
   // BUG bug entry
-##   ^^^ invalid
+//   ^^^ invalid
   // FIXME fixme entry
-##   ^^^^^ invalid
+//   ^^^^^ invalid
   // WARNING warning entry
-##   ^^^^^^^ invalid
+//   ^^^^^^^ invalid
 }
