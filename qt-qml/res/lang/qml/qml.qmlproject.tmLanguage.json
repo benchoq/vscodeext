@@ -309,13 +309,13 @@
       ],
       "repository": {
         "attr-object": {
-          "begin": "\\b([\\w\\.]*)\\s*:\\s*([A-Z]\\w*\\s*\\{)",
+          "begin": "\\b([\\w\\.]*)\\s*:\\s*([A-Z][\\w\\.]*)\\s*(\\{)",
           "beginCaptures": {
             "1": {
               "name": "variable.parameter.attr-object.qml"
             },
             "2": {
-              "name": "variable.parameter.attr-object.type.qml"
+              "name": "entity.name.type.object.qml"
             }
           },
           "end": "\\}",

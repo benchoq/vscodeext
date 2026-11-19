@@ -3,7 +3,7 @@
 
 // enum
 Text {
-    enumm TextType {
+    enum TextType {
         Normal,
         Heading = 2,
         Contents
