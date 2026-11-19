@@ -114,6 +114,9 @@
           "include": "#method"
         },
         {
+          "include": "#enum"
+        },
+        {
           "include": "#on-prop"
         },
         {
@@ -124,10 +127,6 @@
         },
         {
           "include": "#attr-group-notation"
-        },
-        {
-          "name": "keyword.ohter.enum.qml",
-          "match": "\\b(enum)\\b"
         }
       ]
     },
@@ -232,6 +231,32 @@
       "patterns": [
         {
           "include": "source.js"
+        }
+      ]
+    },
+    "enum": {
+      "begin": "\\b(enum)\\s+([A-Z]\\w*)\\s*(\\{)",
+      "beginCaptures": {
+        "1": { "name": "keyword.other.enum.qml" },
+        "2": { "name": "entity.name.type.enum.qml" }
+      },
+      "end": "\\}",
+      "patterns": [
+        { "include": "#comment" },
+        {
+          "begin": "([A-Za-z_]\\w*)\\s*(=)",
+          "beginCaptures": {
+            "1": { "name": "variable.other.enummember.qml" },
+            "2": { "name": "keyword.operator.assignment.qml" }
+          },
+          "end": "(?=,|\\})|$",
+          "patterns": [
+            { "include": "source.js" }
+          ]
+        },
+        {
+          "name": "variable.other.enummember.qml",
+          "match": "[A-Za-z_]\\w*"
         }
       ]
     },

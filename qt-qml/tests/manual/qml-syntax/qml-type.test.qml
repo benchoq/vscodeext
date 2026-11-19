@@ -21,4 +21,16 @@ Rectangle {
 ##                   ^^^^^^^^ variable.parameter.attr-expr.qml
 ##                             ^^^ constant.numeric.decimal.js
   }
+
+  enum TextType {
+## <~~---- keyword.other.enum.qml
+##     ^^^^^^^^ entity.name.type.enum.qml
+      Normal,
+##    ^^^^^^ variable.other.enummember.qml
+      Heading = 20,
+##    ^^^^^^^ variable.other.enummember.qml
+##              ^^ constant.numeric.decimal.js
+      Contents
+##    ^^^^^^^^ variable.other.enummember.qml
+  }
 }
