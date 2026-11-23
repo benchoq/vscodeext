@@ -1,8 +1,4 @@
 // SYNTAX TEST "source.qml" "QML others"
-// Copyright (C) 2024 The Qt Company Ltd.
-// <-- comment.line.qml
-// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
-// <-- comment.line.qml
 
 // enum
 // <-- comment.line.qml
@@ -13,10 +9,10 @@ Text {
 //       ^^^^^^^^ entity.name.type.enum.qml
         Normal,
 //      ^^^^^^ variable.other.enummember.qml
-        Heading = 2,
+        Heading = 20,
 //      ^^^^^^^ variable.other.enummember.qml
 //              ^ keyword.operator.assignment.qml
-//                ^ constant.numeric.decimal.js
+//                ^^ constant.numeric.decimal.js
         Contents
 //      ^^^^^^^^ variable.other.enummember.qml
     }

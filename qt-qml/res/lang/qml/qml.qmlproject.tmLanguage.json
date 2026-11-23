@@ -388,7 +388,7 @@
               "name": "variable.parameter.attr-expr.qml"
             }
           },
-          "end": ";|$",
+          "end": ";|$|(?=\\})",
           "patterns": [
             {
               "include": "source.js"
