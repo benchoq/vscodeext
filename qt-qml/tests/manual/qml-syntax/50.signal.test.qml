@@ -30,6 +30,15 @@ Rectangle {
 //                      ^^^^ entity.name.type.signal.param-type.qml
 //                            ^ variable.parameter.signal.param-name.qml
 //                               ^^^^ entity.name.type.signal.param-type.qml
+
+    signal clickedAt(points: list<point>, x: real)
+//  ^^^^^^ storage.type.signal.qml
+//         ^^^^^^^^^ entity.name.function.signal.name.qml
+//                   ^^^^^ variable.parameter.signal.param-name.qml
+//                           ^^^^^^^^^^^ entity.name.type.signal.param-type.qml
+//                                        ^ variable.parameter.signal.param-name.qml
+//                                           ^^^^ entity.name.type.signal.param-type.qml
+
     signal clickedAt(real x, real y) // old style
 //  ^^^^^^ storage.type.signal.qml
 //         ^^^^^^^^^ entity.name.function.signal.name.qml
@@ -38,4 +47,5 @@ Rectangle {
 //                           ^^^^ entity.name.type.signal.param-type.qml
 //                                ^ variable.parameter.signal.param-name.qml
 //                                   ^^^^^^^^^^^^ comment.line.qml
+
 }
