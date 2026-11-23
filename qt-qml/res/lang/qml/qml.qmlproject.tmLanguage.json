@@ -199,7 +199,7 @@
           }
         },
         {
-          "match": "\\b(property)\\s+([\\w<>]+)\\s+(\\w+)\\s*$",
+          "match": "\\b(property)\\s+([\\w<>]+)\\s+(\\w+)\\s*(?=$|;|\\/[\\/*])",
           "captures": {
             "1": {
               "name": "keyword.other.prop-custom.qml"
