@@ -237,21 +237,33 @@
     "enum": {
       "begin": "\\b(enum)\\s+([A-Z]\\w*)\\s*(\\{)",
       "beginCaptures": {
-        "1": { "name": "keyword.other.enum.qml" },
-        "2": { "name": "entity.name.type.enum.qml" }
+        "1": {
+          "name": "keyword.other.enum.qml"
+        },
+        "2": {
+          "name": "entity.name.type.enum.qml"
+        }
       },
       "end": "\\}",
       "patterns": [
-        { "include": "#comment" },
+        {
+          "include": "#comment"
+        },
         {
           "begin": "([A-Za-z_]\\w*)\\s*(=)",
           "beginCaptures": {
-            "1": { "name": "variable.other.enummember.qml" },
-            "2": { "name": "keyword.operator.assignment.qml" }
+            "1": {
+              "name": "variable.other.enummember.qml"
+            },
+            "2": {
+              "name": "keyword.operator.assignment.qml"
+            }
           },
           "end": "(?=,|\\})|$",
           "patterns": [
-            { "include": "source.js" }
+            {
+              "include": "source.js"
+            }
           ]
         },
         {
@@ -329,10 +341,25 @@
           "include": "#attr-block"
         },
         {
+          "include": "#attr-expr-continuation"
+        },
+        {
           "include": "#attr-expr"
         }
       ],
       "repository": {
+        "attr-expr-continuation": {
+          "begin": "^(?=\\s*(?:\\?|:|\\|\\||&&|[+\\-*%.<>=!]|\\/(?![\\/*])|\\|(?!\\|)|&(?!&)))",
+          "end": ";|(?=\\})|$",
+          "patterns": [
+            {
+              "include": "#expr-trailing-operator"
+            },
+            {
+              "include": "source.js"
+            }
+          ]
+        },
         "attr-object": {
           "begin": "\\b([\\w\\.]*)\\s*:\\s*([A-Z][\\w\\.]*)\\s*(\\{)",
           "beginCaptures": {
@@ -391,9 +418,29 @@
           "end": ";|$|(?=\\})",
           "patterns": [
             {
+              "include": "#expr-trailing-operator"
+            },
+            {
               "include": "source.js"
             }
           ]
+        },
+        "expr-trailing-operator": {
+          "begin": "([+\\-*%/?:<>=&|]+)(?<!\\+\\+)(?<!--)\\s*$",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "source.js"
+                },
+                {
+                  "match": ":",
+                  "name": "keyword.operator.ternary.js"
+                }
+              ]
+            }
+          },
+          "end": "(?=\\S)"
         }
       }
     },

@@ -1,4 +1,4 @@
-## SYNTAX TEST "source.qml" "QML on-prop"
+## SYNTAX TEST "source.qml" "QML regression"
 
 // Single-line QML objects break syntax highlighting of following code
 // Task-number: VSCODEEXT-341
@@ -40,6 +40,5 @@ Item {
 ##        ^^^^^^ variable.other.object.js
 ##              ^	punctuation.accessor.js
 ##               ^^^^ variable.other.property.js
-
   }
 }
