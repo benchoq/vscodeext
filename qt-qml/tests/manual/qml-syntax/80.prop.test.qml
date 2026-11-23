@@ -54,7 +54,7 @@ Window {
     Component {
 //  ^^^^^^^^^ entity.name.type.object.qml
         id: _delegate
-//      ^^ variable.parameter.attr-expr.qml
+//      ^^ storage.modifier.attr-id.qml
 
         Item {
 //      ^^^^ entity.name.type.object.qml
@@ -149,7 +149,7 @@ Window {
         Rectangle {
 //      ^^^^^^^^^ entity.name.type.object.qml
             id: child
-//          ^^ variable.parameter.attr-expr.qml
+//          ^^ storage.modifier.attr-id.qml
         }
     }
 

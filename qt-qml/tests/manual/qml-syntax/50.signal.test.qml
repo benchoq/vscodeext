@@ -6,7 +6,7 @@ import QtQuick
 Rectangle {
 // <--------- entity.name.type.object.qml
     id: _rect
-//  ^^ variable.parameter.attr-expr.qml
+//  ^^ storage.modifier.attr-id.qml
 
     // without parameters
 //  ^^ comment.line.qml

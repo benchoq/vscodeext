@@ -61,7 +61,7 @@ Window {
 //            ^^^^^^^^^^^^^^^^ entity.name.type.comp-line.name.qml
 //                              ^^^^^^^^^ entity.name.type.object.qml
         id: _rect
-//      ^^ variable.parameter.attr-expr.qml
+//      ^^ storage.modifier.attr-id.qml
         color: "skyblue"
 //      ^^^^^ variable.parameter.attr-expr.qml
 //             ^^^^^^^^^ string.quoted.double.js
@@ -85,7 +85,7 @@ ListView {
 //  ^^^^^^^^ variable.parameter.attr-object.qml
 //            ^^^^ entity.name.type.object.qml
         id: _delegate
-//      ^^ variable.parameter.attr-expr.qml
+//      ^^ storage.modifier.attr-id.qml
         width: 100; height: 30
 //      ^^^^^ variable.parameter.attr-expr.qml
 //             ^^^ constant.numeric.decimal.js

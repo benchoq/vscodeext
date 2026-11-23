@@ -345,6 +345,9 @@
           "include": "#attr-expr-continuation"
         },
         {
+          "include": "#attr-id"
+        },
+        {
           "include": "#attr-expr"
         }
       ],
@@ -442,6 +445,23 @@
             }
           },
           "end": "(?=\\S)"
+        },
+        "attr-id": {
+          "begin": "(?<![\\w.])(id)\\s*:\\s*(?=[^\\s]+)",
+          "beginCaptures": {
+            "1": {
+              "name": "storage.modifier.attr-id.qml"
+            }
+          },
+          "end": ";|$|(?=\\})",
+          "patterns": [
+            {
+              "include": "#expr-trailing-operator"
+            },
+            {
+              "include": "source.js"
+            }
+          ]
         }
       }
     },

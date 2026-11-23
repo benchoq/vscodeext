@@ -2,6 +2,8 @@
 
 Window {
 // <------ entity.name.type.object.qml
+    id: mywindow
+//  ^^ storage.modifier.attr-id.qml
     width: 640
 //  ^^^^^ variable.parameter.attr-expr.qml
 //         ^^^ constant.numeric.decimal.js
