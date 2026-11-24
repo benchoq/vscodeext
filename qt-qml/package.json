@@ -233,6 +233,13 @@
     ],
     "grammars": [
       {
+        "scopeName": "qml-js.injection",
+        "path": "./res/lang/qml/qml-js.injection.tmLanguage.json",
+        "injectTo": [
+          "source.qml"
+        ]
+      },
+      {
         "language": "qml",
         "scopeName": "source.qml",
         "path": "./res/lang/qml/qml.qmlproject.tmLanguage.json"

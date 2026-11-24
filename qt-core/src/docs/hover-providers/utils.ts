@@ -22,3 +22,10 @@ export function createMarkdownHover(r: ResolvedResult): Hover {
 
   return new Hover(md);
 }
+
+
+// export interface ResolvedResult {
+//   keyword: string;
+//   appendix: string;
+//   linkText?: string;
+// }

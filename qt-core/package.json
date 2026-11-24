@@ -463,6 +463,8 @@
     "rss-parser": "^3.13.0",
     "sql.js": "^1.15.2",
     "svelte-tiny-virtual-list": "^4.0.0",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.3.2",
     "which": "^5.0.0"
   },
   "overrides": {

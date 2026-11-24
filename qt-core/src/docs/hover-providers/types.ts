@@ -1,13 +1,16 @@
 // Copyright (C) 2026 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
 
+import { Position, Range } from "vscode";
+
 export interface HoverInfo {
   word: string;
   line: string;
+  pos: Position;
+  range?: Range | undefined;
 }
 
 export interface ResolvedResult {
-  kind: 'qml-import' | 'qml-type' | 'qml-value-type';
   keyword: string;
   appendix: string;
   linkText?: string;

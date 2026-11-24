@@ -9,9 +9,13 @@ import {
   HoverProvider,
   MarkdownString,
   ExtensionContext,
+  workspace,
 } from 'vscode';
 
-import { QmlHoverProvider } from './hover-providers/qml-hover';
+import {
+  QmlHoverProvider,
+  releaseRuleStackCache
+} from './hover-providers/qml-hover';
 
 const QtGeneralPatterns: RegExp[] = [
   /Q[A-Za-z][A-Za-z0-9_]*/, // Classes/types, e.g. QString, QColor, Qt
@@ -59,6 +63,7 @@ export function registerQtDocsHoverProvider(context: ExtensionContext) {
     register(cmakeSelector, new QtHoverProvider(QtCMakePattern)),
     register(generalSelector, new QtHoverProvider(QtGeneralPatternsMerged)),
     register([{ language: 'qml'}], new QmlHoverProvider()),
+    workspace.onDidCloseTextDocument(releaseRuleStackCache),
   );
 }
 
