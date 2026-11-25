@@ -48,6 +48,20 @@ export class QchReader {
     statement.free();
     return all;
   }
+
+  public findQmlTypeDocs(typeName: string) {
+    const all: IndexEntry[] = [];
+    const statement = this._db.prepare(SqlQueries.findQmlTypeDocs);
+    statement.bind({ ':typeName': typeName });
+
+    while (statement.step()) {
+      const o = statement.getAsObject();
+      all.push(buildIndexEntry(o));
+    }
+
+    statement.free();
+    return all;
+  }
 }
 
 // helpers
@@ -130,6 +144,25 @@ const SqlQueries = {
     WHERE
       IndexTable.FileId == FileNameTable.FileId
       AND FileNameTable.FolderId == FolderTable.Id
+  `,
+
+  findQmlTypeDocs: `
+    SELECT DISTINCT
+      IndexTable.Name,
+      IndexTable.Anchor,
+      FolderTable.Name as FolderName,
+      FileNameTable.Name as FileName,
+      FileNameTable.Title as FileTitle
+    FROM
+      IndexTable,
+      FolderTable,
+      FileNameTable
+    WHERE
+      IndexTable.FileId == FileNameTable.FileId
+      AND FileNameTable.FolderId == FolderTable.Id
+      AND IndexTable.Name == :typeName
+      AND IFNULL(IndexTable.Anchor, '') == ''
+      AND FileNameTable.Name LIKE 'qml-%'
   `,
 
   readContentData: `

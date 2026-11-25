@@ -71,6 +71,17 @@ export class QtHelpDataManager {
     return results.flat();
   }
 
+  public async findQmlTypeDocs(typeName: string) {
+    const readers = await this._readersPromise;
+    const results = readers.map((r) => r.findQmlTypeDocs(typeName));
+
+    const all = results.flat();
+    return {
+      docPackage: this._selectedPackage,
+      entry: all[0]
+    }
+  }
+
   public async searchFullText(keyword: string) {
     await this._fullTextIndexBuild;
     const results = this._fullTextIndex.search(keyword);

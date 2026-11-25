@@ -17,3 +17,18 @@ export interface ResolvedResult {
 }
 
 export type KeywordResolver = (info: HoverInfo) => ResolvedResult | undefined ;
+
+export interface ScopeMatchResult {
+  kind: 'object' | 'attribute' | 'attached-prop' | 'signal-handler';
+  typeName: string;
+  attributeName?: string;
+}
+
+export function isScopeMatchResult(x: unknown): x is ScopeMatchResult {
+  if (typeof x !== 'object' || x === null) {
+    return false;
+  }
+
+  const r = x as Record<string, unknown>;
+  return typeof r.kind === 'string' && typeof r.typeName === 'string';
+}
