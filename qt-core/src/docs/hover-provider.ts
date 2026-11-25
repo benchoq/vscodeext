@@ -13,8 +13,8 @@ import {
 } from 'vscode';
 
 import {
-  QmlHoverProvider,
-  releaseRuleStackCache
+  lineStartStates,
+  QmlHoverProvider
 } from './hover-providers/qml-hover';
 
 const QtGeneralPatterns: RegExp[] = [
@@ -63,7 +63,9 @@ export function registerQtDocsHoverProvider(context: ExtensionContext) {
     register(cmakeSelector, new QtHoverProvider(QtCMakePattern)),
     register(generalSelector, new QtHoverProvider(QtGeneralPatternsMerged)),
     register([{ language: 'qml'}], new QmlHoverProvider()),
-    workspace.onDidCloseTextDocument(releaseRuleStackCache),
+    workspace.onDidCloseTextDocument((doc: TextDocument) => {
+      lineStartStates.release(doc);
+    }),
   );
 }
 
