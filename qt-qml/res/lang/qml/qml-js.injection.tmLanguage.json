@@ -26,13 +26,13 @@
           "match": "(?<![\\w$.])(Qt)\\s*(\\.)\\s*([a-z_]\\w*)(?=\\s*\\()",
           "captures": {
             "1": {
-              "name": "support.class.qt.qml"
+              "name": "support.class.qt.qml meta.doc.type.Qt.qml"
             },
             "2": {
               "name": "punctuation.accessor.qml"
             },
             "3": {
-              "name": "support.function.qt.qml"
+              "name": "support.function.qt.qml meta.doc.type.Qt.qml meta.doc.member.$3.qml"
             }
           }
         },
@@ -40,13 +40,13 @@
           "match": "(?<![\\w$.])(Qt)\\s*(\\.)\\s*([A-Z]\\w*)",
           "captures": {
             "1": {
-              "name": "support.class.qt.qml"
+              "name": "support.class.qt.qml meta.doc.type.Qt.qml"
             },
             "2": {
               "name": "punctuation.accessor.qml"
             },
             "3": {
-              "name": "support.constant.qt.qml"
+              "name": "support.constant.qt.qml meta.doc.qt-enum.$3.qml"
             }
           }
         },
@@ -54,18 +54,18 @@
           "match": "(?<![\\w$.])(Qt)\\s*(\\.)\\s*([a-z_]\\w*)",
           "captures": {
             "1": {
-              "name": "support.class.qt.qml"
+              "name": "support.class.qt.qml meta.doc.type.Qt.qml"
             },
             "2": {
               "name": "punctuation.accessor.qml"
             },
             "3": {
-              "name": "support.variable.property.qt.qml"
+              "name": "support.variable.property.qt.qml meta.doc.type.Qt.qml meta.doc.member.$3.qml"
             }
           }
         },
         {
-          "name": "support.class.qt.qml",
+          "name": "support.class.qt.qml meta.doc.type.Qt.qml",
           "match": "(?<![\\w$.])Qt\\b"
         }
       ]
@@ -74,13 +74,13 @@
       "match": "(?<![\\w$.])(?!(?:Array|Atomics|BigInt|Date|Error|Intl|JSON|Math|Number|Object|Promise|Reflect|RegExp|String|Symbol)\\b)([A-Z][\\w$]*)\\s*(\\.)\\s*([A-Z][\\w$]*)(?![\\w$])(?!\\s*[.({])",
       "captures": {
         "1": {
-          "name": "entity.name.type.qml"
+          "name": "entity.name.type.qml meta.doc.type.$1.qml"
         },
         "2": {
           "name": "punctuation.accessor.qml"
         },
         "3": {
-          "name": "variable.other.enummember.qml"
+          "name": "variable.other.enummember.qml meta.doc.type.$1.qml meta.doc.member.$3.qml"
         }
       }
     },
@@ -88,12 +88,12 @@
       "match": "(?<![\\w$.])(?!(?:Array|Atomics|BigInt|Date|Error|Intl|JSON|Math|Number|Object|Promise|Reflect|RegExp|String|Symbol)\\b)([A-Z][\\w$]*)(?=\\s*\\.)(?!\\s*\\.\\s*[A-Z][\\w$]*\\s*\\{)",
       "captures": {
         "1": {
-          "name": "entity.name.type.qml"
+          "name": "entity.name.type.qml meta.doc.type.$1.qml"
         }
       }
     },
     "translation-functions": {
-      "name": "support.function.translation.qml",
+      "name": "support.function.translation.qml meta.doc.type.Qt.qml meta.doc.member.$0.qml",
       "match": "(?<![\\w$.])(?:qsTr|qsTranslate|qsTrId|qsTrNoOp|qsTranslateNoOp|qsTrIdNoOp|QT_TR_NOOP|QT_TRANSLATE_NOOP|QT_TRID_NOOP)(?=\\s*\\()"
     },
     "parent": {

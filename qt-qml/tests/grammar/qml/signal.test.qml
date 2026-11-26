@@ -151,6 +151,18 @@ Rectangle {
 }
 
 //------------------------------------------------------------------------------
+// documentation scopes: parameter types
+//------------------------------------------------------------------------------
+Item {
+    signal clickedAt(x: real, item: T.Item)
+//                      ^^^^ meta.doc.type.real.qml
+//                                  ^^^^^^ meta.doc.type.T.Item.qml
+    signal itemAdded(list<int> x) // old style
+//                   ^^^^ meta.doc.type.list.qml
+//                        ^^^ meta.doc.type.int.qml
+}
+
+//------------------------------------------------------------------------------
 // end of file: every object above is closed
 //------------------------------------------------------------------------------
 // end

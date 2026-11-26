@@ -178,6 +178,65 @@ Item {
 }
 
 //------------------------------------------------------------------------------
+// type name in the object scope
+//------------------------------------------------------------------------------
+Window {
+// <-------- meta.doc.type.Window.qml
+    Rectangle { width: 100 }
+//              ^^^^^ meta.doc.type.Rectangle.qml
+//              ^^^^^ meta.doc.type.Window.qml
+    width: 100
+//  ^^^^^ meta.doc.type.Window.qml
+//  ^^^^^ - meta.doc.type.Rectangle.qml
+    T.Button { }
+//  ^^^^^^^^^^^^ meta.doc.type.T.Button.qml
+    Behavior on x { }
+//  ^^^^^^^^^^^^^^^^^ meta.doc.type.Behavior.qml
+//              ^ meta.doc.on-target.qml
+//              ^ meta.doc.member.x.qml
+//           ^^ - meta.doc.on-target.qml
+}
+
+// the brace on the next line
+Window
+// <------ meta.doc.type.Window.qml
+{
+// <- meta.doc.type.Window.qml
+    Rectangle // comment
+//  ^^^^^^^^^^^^^^^^^^^^ meta.doc.type.Rectangle.qml
+    // comment
+//  ^^^^^^^^^^ meta.doc.type.Rectangle.qml
+    {
+//  ^ meta.doc.type.Rectangle.qml
+        width: 100
+//      ^^^^^ meta.doc.type.Rectangle.qml
+//      ^^^^^ meta.doc.type.Window.qml
+    }
+//  ^ meta.doc.type.Rectangle.qml
+    height: 100
+//  ^^^^^^ meta.doc.type.Window.qml
+//  ^^^^^^ - meta.doc.type.Rectangle.qml
+    Behavior on x
+//  ^^^^^^^^^^^^^ meta.doc.type.Behavior.qml
+    {
+        enabled: true
+//      ^^^^^^^ meta.doc.type.Behavior.qml
+    }
+    opacity: 1
+//  ^^^^^^^ - meta.doc.type.Behavior.qml
+}
+// <- meta.doc.type.Window.qml
+
+// the type name alone: the scope ends before the next attribute
+Item {
+    Rectangle
+//  ^^^^^^^^^ meta.doc.type.Rectangle.qml
+    width: 10
+//  ^^^^^ - meta.doc.type.Rectangle.qml
+//  ^^^^^ meta.doc.type.Item.qml
+}
+
+//------------------------------------------------------------------------------
 // end of file: every object above is closed
 //------------------------------------------------------------------------------
 // end

@@ -112,3 +112,14 @@ import "../textwidgets" as MyModule;
 import QtQuick
 Item {}
 // <------- - meta.import.qml
+
+//------------------------------------------------------------------------------
+// documentation scopes: module names, not aliases
+//------------------------------------------------------------------------------
+import QtQuick
+//     ^^^^^^^ meta.doc.module.QtQuick.qml
+import QtQuick.Controls.Basic 2.15 as Basic
+//     ^^^^^^^^^^^^^^^^^^^^^^ meta.doc.module.QtQuick.Controls.Basic.qml
+//                                    ^^^^^ - meta.doc.module.Basic.qml
+import "../textwidgets" as MyModule
+//                         ^^^^^^^^ - meta.doc.module.MyModule.qml

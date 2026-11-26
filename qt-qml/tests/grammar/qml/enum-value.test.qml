@@ -8,13 +8,19 @@
 Label {
     horizontalAlignment: Text.AlignHCenter
 //                       ^^^^ entity.name.type.qml
+//                       ^^^^ meta.doc.type.Text.qml
 //                           ^ punctuation.accessor.qml
+//                           ^ - meta.doc.type.Text.qml
 //                            ^^^^^^^^^^^^ variable.other.enummember.qml
+//                            ^^^^^^^^^^^^ meta.doc.type.Text.qml
+//                            ^^^^^^^^^^^^ meta.doc.member.AlignHCenter.qml
     wrapMode: Text.Wrap | Image.PreserveAspectFit
 //            ^^^^ entity.name.type.qml
 //                 ^^^^ variable.other.enummember.qml
 //                        ^^^^^ entity.name.type.qml
+//                        ^^^^^ meta.doc.type.Image.qml
 //                              ^^^^^^^^^^^^^^^^^ variable.other.enummember.qml
+//                              ^^^^^^^^^^^^^^^^^ meta.doc.member.PreserveAspectFit.qml
 }
 
 //------------------------------------------------------------------------------

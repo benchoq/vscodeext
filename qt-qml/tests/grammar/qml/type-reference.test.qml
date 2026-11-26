@@ -8,12 +8,16 @@
 Item {
     property bool lightMode: Application.styleHints.colorScheme === Qt.Light
 //                           ^^^^^^^^^^^ entity.name.type.qml
+//                           ^^^^^^^^^^^ meta.doc.type.Application.qml
 //                                      ^ - entity.name.type.qml
+//                                      ^ - meta.doc.type.Application.qml
 //                                       ^^^^^^^^^^ - entity.name.type.qml
+//                                       ^^^^^^^^^^ - meta.doc.type.Application.qml
 //                                                                  ^^ support.class.qt.qml
 //                                                                     ^^^^^ support.constant.qt.qml
     x: Utils.format(1)
 //     ^^^^^ entity.name.type.qml
+//     ^^^^^ meta.doc.type.Utils.qml
 //           ^^^^^^ entity.name.function.js
 }
 

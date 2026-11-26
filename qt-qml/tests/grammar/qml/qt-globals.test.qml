@@ -71,6 +71,37 @@ Item {
 }
 
 //------------------------------------------------------------------------------
+// documentation scopes: Qt functions, properties and enum values
+//------------------------------------------------------------------------------
+Item {
+    color: Qt.rgba(1, 0, 0, 1)
+//         ^^ meta.doc.type.Qt.qml
+//            ^^^^ meta.doc.type.Qt.qml
+//            ^^^^ meta.doc.member.rgba.qml
+    horizontalAlignment: Qt.AlignLeft
+//                          ^^^^^^^^^ meta.doc.qt-enum.AlignLeft.qml
+//                          ^^^^^^^^^ - meta.doc.type.Qt.qml
+    property bool lightMode: Qt.styleHints.colorScheme === Qt.Light
+//                              ^^^^^^^^^^ meta.doc.member.styleHints.qml
+//                                         ^^^^^^^^^^^ - meta.doc.member.colorScheme.qml
+//                                                             ^^^^^ meta.doc.qt-enum.Light.qml
+    property var q: Qt
+//                  ^^ meta.doc.type.Qt.qml
+}
+
+//------------------------------------------------------------------------------
+// documentation scopes: translation functions are methods of Qt
+//------------------------------------------------------------------------------
+Item {
+    text: qsTr("Hello")
+//        ^^^^ meta.doc.type.Qt.qml
+//        ^^^^ meta.doc.member.qsTr.qml
+//            ^^^^^^^^^ - meta.doc.member.qsTr.qml
+    names: [QT_TR_NOOP("a")]
+//          ^^^^^^^^^^ meta.doc.member.QT_TR_NOOP.qml
+}
+
+//------------------------------------------------------------------------------
 // not the Qt global object
 //------------------------------------------------------------------------------
 Item {

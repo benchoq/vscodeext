@@ -301,6 +301,24 @@ PropertyAnimation {
 }
 
 //------------------------------------------------------------------------------
+// documentation scopes: property types
+//------------------------------------------------------------------------------
+Item {
+    property bool lightMode: true
+//           ^^^^ meta.doc.type.bool.qml
+//                ^^^^^^^^^ - meta.doc.type.bool.qml
+    property color dark: "#262626"
+//           ^^^^^ meta.doc.type.color.qml
+    property list<T.Item> items
+//           ^^^^ meta.doc.type.list.qml
+//                ^^^^^^ meta.doc.type.T.Item.qml
+    property Item content
+//           ^^^^ meta.doc.type.Item.qml
+    property alias text: _text.text
+//           ^^^^^ - meta.doc.type.alias.qml
+}
+
+//------------------------------------------------------------------------------
 // end of file: every object above is closed
 //------------------------------------------------------------------------------
 // end
