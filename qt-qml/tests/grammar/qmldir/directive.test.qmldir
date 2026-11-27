@@ -1,0 +1,60 @@
+# SYNTAX TEST "source.qmldir" "other directives"
+# Copyright (C) 2026 The Qt Company Ltd.
+# SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+
+#------------------------------------------------------------------------------
+# classname
+#------------------------------------------------------------------------------
+classname QtQuick2Plugin
+# <--------- keyword.other.classname.qmldir
+#         ^^^^^^^^^^^^^^ entity.name.type.class.qmldir
+# <------------------------ meta.classname.qmldir
+
+#------------------------------------------------------------------------------
+# typeinfo
+#------------------------------------------------------------------------------
+typeinfo plugins.qmltypes
+# <-------- keyword.other.typeinfo.qmldir
+#        ^^^^^^^^^^^^^^^^ string.unquoted.path.qmldir
+# <------------------------- meta.typeinfo.qmldir
+typeinfo ./my-qmltypes/plugins.qmltypes
+# <-------- keyword.other.typeinfo.qmldir
+#        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ string.unquoted.path.qmldir
+
+#------------------------------------------------------------------------------
+# prefer
+#------------------------------------------------------------------------------
+prefer :/qt-project.org/imports/Qt/labs/folderlistmodel/
+# <------ keyword.other.prefer.qmldir
+#      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ string.unquoted.path.qmldir
+
+#------------------------------------------------------------------------------
+# linktarget
+#------------------------------------------------------------------------------
+linktarget Qt6::qmlfolderlistmodelplugin
+# <---------- keyword.other.linktarget.qmldir
+#          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ entity.name.target.qmldir
+
+#------------------------------------------------------------------------------
+# directives without arguments
+#------------------------------------------------------------------------------
+designersupported
+# <----------------- keyword.other.designersupported.qmldir
+# <----------------- meta.directive.qmldir
+static
+# <------ keyword.other.static.qmldir
+system
+# <------ keyword.other.system.qmldir
+static # a static module
+# <------ keyword.other.static.qmldir
+#      ^ comment.line.number-sign.qmldir punctuation.definition.comment.qmldir
+
+#------------------------------------------------------------------------------
+# invalid
+#------------------------------------------------------------------------------
+designersupported true
+# <----------------- - keyword.other.designersupported.qmldir
+classname
+# <--------- - keyword.other.classname.qmldir
+typeinfo a.qmltypes b.qmltypes
+# <-------- - keyword.other.typeinfo.qmldir

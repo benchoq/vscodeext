@@ -1,0 +1,65 @@
+# SYNTAX TEST "source.qmldir" "import and depends directives"
+# Copyright (C) 2026 The Qt Company Ltd.
+# SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+
+#------------------------------------------------------------------------------
+# import
+#------------------------------------------------------------------------------
+import QtQml
+# <------ keyword.control.import.qmldir
+#      ^^^^^ entity.name.namespace.qmldir
+# <------------ meta.import.qmldir
+import QtQml 2.0
+# <------ keyword.control.import.qmldir
+#      ^^^^^ entity.name.namespace.qmldir
+#            ^^^ constant.numeric.version.qmldir
+import QtQml auto
+# <------ keyword.control.import.qmldir
+#      ^^^^^ entity.name.namespace.qmldir
+#            ^^^^ constant.language.auto.qmldir
+import QtQuick.Controls.Basic auto
+# <------ keyword.control.import.qmldir
+#      ^^^^^^^^^^^^^^^^^^^^^^ entity.name.namespace.qmldir
+#                             ^^^^ constant.language.auto.qmldir
+
+#------------------------------------------------------------------------------
+# default and optional import
+#------------------------------------------------------------------------------
+default import QtQuick.Controls.Basic auto
+# <------- storage.modifier.default.qmldir
+#       ^^^^^^ keyword.control.import.qmldir
+#              ^^^^^^^^^^^^^^^^^^^^^^ entity.name.namespace.qmldir
+#                                     ^^^^ constant.language.auto.qmldir
+optional import QtQuick.Controls.Fusion auto
+# <-------- storage.modifier.optional.qmldir
+#        ^^^^^^ keyword.control.import.qmldir
+#               ^^^^^^^^^^^^^^^^^^^^^^^ entity.name.namespace.qmldir
+#                                       ^^^^ constant.language.auto.qmldir
+
+#------------------------------------------------------------------------------
+# depends
+#------------------------------------------------------------------------------
+depends QtQuick
+# <------- keyword.other.depends.qmldir
+#       ^^^^^^^ entity.name.namespace.qmldir
+# <--------------- meta.depends.qmldir
+depends QtQml.Models 2.0
+# <------- keyword.other.depends.qmldir
+#       ^^^^^^^^^^^^ entity.name.namespace.qmldir
+#                    ^^^ constant.numeric.version.qmldir
+depends QtQuick auto
+# <------- keyword.other.depends.qmldir
+#       ^^^^^^^ entity.name.namespace.qmldir
+#               ^^^^ constant.language.auto.qmldir
+
+#------------------------------------------------------------------------------
+# invalid
+#------------------------------------------------------------------------------
+import QtQml 6
+# <------ - keyword.control.import.qmldir
+import QtQml 2.0 extra
+# <------ - keyword.control.import.qmldir
+depends QtQuick 2
+# <------- - keyword.other.depends.qmldir
+optional depends QtQuick
+#        ^^^^^^^ - keyword.other.depends.qmldir

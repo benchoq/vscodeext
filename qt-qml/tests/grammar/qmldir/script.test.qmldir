@@ -1,0 +1,26 @@
+# SYNTAX TEST "source.qmldir" "JavaScript resource declarations"
+# Copyright (C) 2026 The Qt Company Ltd.
+# SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+
+StyleHelpers 1.0 style.js
+# <------------ entity.name.namespace.qmldir
+#            ^^^ constant.numeric.version.qmldir
+#                ^^^^^^^^ string.unquoted.path.qmldir
+# <------------------------- meta.script.qmldir
+StyleHelpers ./my-js/style.js
+# <------------ entity.name.namespace.qmldir
+#            ^^^^^^^^^^^^^^^^ string.unquoted.path.qmldir
+Utils 1.0 utils.mjs
+# <----- entity.name.namespace.qmldir
+#     ^^^ constant.numeric.version.qmldir
+#         ^^^^^^^^^ string.unquoted.path.qmldir
+# <------------------- meta.script.qmldir
+
+#------------------------------------------------------------------------------
+# not a script
+#------------------------------------------------------------------------------
+Helpers style.jsx
+# <------- - meta.script.qmldir
+# <------- entity.name.type.qmldir
+Margins Margins.qml
+# <------- - meta.script.qmldir

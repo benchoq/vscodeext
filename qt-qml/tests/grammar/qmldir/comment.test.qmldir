@@ -1,0 +1,15 @@
+# SYNTAX TEST "source.qmldir" "comments"
+# Copyright (C) 2026 The Qt Company Ltd.
+# SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+
+# this is a comment
+# <- comment.line.number-sign.qmldir punctuation.definition.comment.qmldir
+# <------------------- comment.line.number-sign.qmldir
+    # indented comment
+#   ^ comment.line.number-sign.qmldir punctuation.definition.comment.qmldir
+#   ^^^^^^^^^^^^^^^^^^ comment.line.number-sign.qmldir
+#comment without space
+# <--------------------- comment.line.number-sign.qmldir
+import QtQml # trailing comment
+# <------------ - comment.line.number-sign.qmldir
+#            ^^^^^^^^^^^^^^^^^^ comment.line.number-sign.qmldir

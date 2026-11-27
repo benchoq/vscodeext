@@ -1,179 +1,314 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "Qt QML Module Definition file",
+  "scopeName": "source.qmldir",
   "patterns": [
     {
-      "name": "module.qmldir",
-      "match": "^(module)\\s+([\\w\\.]+)$",
-      "captures": {
-        "1": {
-          "name": "keyword.module.qmldir"
-        },
-        "2": {
-          "name": "entity.name.class.module.qmldir"
-        }
-      }
+      "include": "#comment"
     },
     {
-      "name": "qmlfile.qmldir",
-      "match": "^(?:(singleton)\\s+)?([A-Z]\\w*)\\s+(?:(\\d+\\.\\d+)\\s+)?([\\w\\.+\\-/]+\\.qml)$",
-      "captures": {
-        "1": {
-          "name": "keyword.qmlfile.qmldir"
-        },
-        "2": {
-          "name": "variable.qmlfile.qmldir"
-        },
-        "3": {
-          "name": "constant.numeric.qmlfile.qmldir"
-        },
-        "4": {
-          "name": "string.qmlfile.qmldir"
-        }
-      }
+      "include": "#module"
     },
     {
-      "name": "internal.qmldir",
-      "match": "^(internal)\\s+([A-Z]\\w*)\\s+([\\w\\.+\\-/]+\\.qml)$",
-      "captures": {
-        "1": {
-          "name": "keyword.internal.qmldir"
-        },
-        "2": {
-          "name": "variable.internal.qmldir"
-        },
-        "3": {
-          "name": "string.internal.qmldir"
-        }
-      }
+      "include": "#singleton"
     },
     {
-      "name": "jsfile.qmldir",
-      "match": "^([A-Z]\\w*)\\s+(?:(\\d+\\.\\d+)\\s+)?([\\w\\.+\\-/]+\\.js)$",
-      "captures": {
-        "1": {
-          "name": "variable.jsfile.qmldir"
-        },
-        "2": {
-          "name": "constant.numeric.jsfile.qmldir"
-        },
-        "3": {
-          "name": "string.jsfile.qmldir"
-        }
-      }
+      "include": "#internal"
     },
     {
-      "name": "plugin.qmldir",
-      "match": "^(?:(optional)\\s+)?\\b(plugin)\\s+(\\w+)(\\s+[\\w\\.+\\-/]+)?$",
-      "captures": {
-        "1": {
-          "name": "keyword.plugin.qmldir"
-        },
-        "2": {
-          "name": "keyword.plugin.qmldir"
-        },
-        "3": {
-          "name": "variable.plugin.qmldir"
-        },
-        "4": {
-          "name": "string.plugin.qmldir"
-        }
-      }
+      "include": "#script"
     },
     {
-      "name": "classname.qmldir",
-      "match": "^(classname)\\s+(\\w+)$",
-      "captures": {
-        "1": {
-          "name": "keyword.classname.qmldir"
-        },
-        "2": {
-          "name": "variable.classname.qmldir"
-        }
-      }
+      "include": "#type"
     },
     {
-      "name": "typeinfo.qmldir",
-      "match": "^(typeinfo)\\s+([\\w\\.+\\-/]+\\.qmltypes)$",
-      "captures": {
-        "1": {
-          "name": "keyword.typeinfo.qmldir"
-        },
-        "2": {
-          "name": "string.typeinfo.qmldir"
-        }
-      }
+      "include": "#plugin"
     },
     {
-      "name": "depends.qmldir",
-      "match": "^(depends)\\s+([\\w\\./]+)\\s+(auto|\\d+.\\d+)?$",
-      "captures": {
-        "1": {
-          "name": "keyword.depends.qmldir"
-        },
-        "2": {
-          "name": "variable.depends.qmldir"
-        },
-        "3": {
-          "name": "constant.numeric.depends.qmldir"
-        }
-      }
+      "include": "#classname"
     },
     {
-      "name": "import.qmldir",
-      "match": "^(?:(default|optional)\\s+)?(import)\\s+([\\w\\./]+)\\s+(auto|\\d+.\\d+)?$",
-      "captures": {
-        "1": {
-          "name": "keyword.import.qmldir"
-        },
-        "2": {
-          "name": "keyword.import.qmldir"
-        },
-        "3": {
-          "name": "variable.import.qmldir"
-        },
-        "4": {
-          "name": "constant.numeric.import.qmldir"
-        }
-      }
+      "include": "#typeinfo"
     },
     {
-      "name": "prefer.qmldir",
-      "match": "^(prefer)\\s+([\\w\\.+\\-/:]+)$",
-      "captures": {
-        "1": {
-          "name": "keyword.prefer.qmldir"
-        },
-        "2": {
-          "name": "string.prefer.qmldir"
-        }
-      }
+      "include": "#import"
     },
     {
-      "name": "directive.qmldir",
-      "match": "^(designersupported|static|system)$",
-      "captures": {
-        "1": {
-          "name": "keyword.directive.qmldir"
-        }
-      }
+      "include": "#depends"
     },
     {
-      "name": "linktarget.qmldir",
-      "match": "^(linktarget)\\s+([\\w\\.:]+)$",
-      "captures": {
-        "1": {
-          "name": "keyword.linktarget.qmldir"
-        },
-        "2": {
-          "name": "variable.linktarget.qmldir"
-        }
-      }
+      "include": "#prefer"
     },
     {
-      "name": "comment.qmldir",
-      "match": "^#.*$"
+      "include": "#linktarget"
+    },
+    {
+      "include": "#directive"
     }
   ],
-  "scopeName": "source.qmldir"
+  "repository": {
+    "comment": {
+      "comment": "A comment starts with '#' at the beginning of a token and runs to the end of the line.",
+      "name": "comment.line.number-sign.qmldir",
+      "match": "(?:^|(?<=\\s))(#).*$",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.comment.qmldir"
+        }
+      }
+    },
+    "path": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.qmldir",
+          "match": "(\")[^\"]*(\")",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.string.begin.qmldir"
+            },
+            "2": {
+              "name": "punctuation.definition.string.end.qmldir"
+            }
+          }
+        },
+        {
+          "name": "string.unquoted.path.qmldir",
+          "match": "\\S+"
+        }
+      ]
+    },
+    "module": {
+      "comment": "module <ModuleIdentifier>",
+      "name": "meta.module.qmldir",
+      "match": "^\\s*(module)\\s+([A-Za-z_][\\w.]*)(?=\\s+#|\\s*$)",
+      "captures": {
+        "1": {
+          "name": "keyword.other.module.qmldir"
+        },
+        "2": {
+          "name": "entity.name.namespace.qmldir"
+        }
+      }
+    },
+    "singleton": {
+      "comment": "singleton <TypeName> [<InitialVersion>] <File>",
+      "name": "meta.type.qmldir",
+      "match": "^\\s*(singleton)\\s+([A-Z]\\w*)\\s+(?:(\\d+\\.\\d+)\\s+)?(\"[^\"]*\"|[^\\s\"#]\\S*)(?=\\s+#|\\s*$)",
+      "captures": {
+        "1": {
+          "name": "storage.modifier.singleton.qmldir"
+        },
+        "2": {
+          "name": "entity.name.type.qmldir"
+        },
+        "3": {
+          "name": "constant.numeric.version.qmldir"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#path"
+            }
+          ]
+        }
+      }
+    },
+    "internal": {
+      "comment": "internal <TypeName> [<InitialVersion>] <File>",
+      "name": "meta.type.qmldir",
+      "match": "^\\s*(internal)\\s+([A-Z]\\w*)\\s+(?:(\\d+\\.\\d+)\\s+)?(\"[^\"]*\"|[^\\s\"#]\\S*)(?=\\s+#|\\s*$)",
+      "captures": {
+        "1": {
+          "name": "storage.modifier.internal.qmldir"
+        },
+        "2": {
+          "name": "entity.name.type.qmldir"
+        },
+        "3": {
+          "name": "constant.numeric.version.qmldir"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#path"
+            }
+          ]
+        }
+      }
+    },
+    "script": {
+      "comment": "<ResourceIdentifier> [<InitialVersion>] <File>, where <File> ends with '.js' or '.mjs'",
+      "name": "meta.script.qmldir",
+      "match": "^\\s*([A-Z]\\w*)\\s+(?:(\\d+\\.\\d+)\\s+)?(\"[^\"]*\\.m?js\"|[^\\s\"#]\\S*\\.m?js)(?=\\s+#|\\s*$)",
+      "captures": {
+        "1": {
+          "name": "entity.name.namespace.qmldir"
+        },
+        "2": {
+          "name": "constant.numeric.version.qmldir"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#path"
+            }
+          ]
+        }
+      }
+    },
+    "type": {
+      "comment": "<TypeName> [<InitialVersion>] <File>",
+      "name": "meta.type.qmldir",
+      "match": "^\\s*([A-Z]\\w*)\\s+(?:(\\d+\\.\\d+)\\s+)?(\"[^\"]*\"|[^\\s\"#]\\S*)(?=\\s+#|\\s*$)",
+      "captures": {
+        "1": {
+          "name": "entity.name.type.qmldir"
+        },
+        "2": {
+          "name": "constant.numeric.version.qmldir"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#path"
+            }
+          ]
+        }
+      }
+    },
+    "plugin": {
+      "comment": "[optional] plugin <Name> [<Path>]",
+      "name": "meta.plugin.qmldir",
+      "match": "^\\s*(?:(optional)\\s+)?(plugin)\\s+([^\\s\"#]\\S*)(?:\\s+(\"[^\"]*\"|[^\\s\"#]\\S*))?(?=\\s+#|\\s*$)",
+      "captures": {
+        "1": {
+          "name": "storage.modifier.optional.qmldir"
+        },
+        "2": {
+          "name": "keyword.other.plugin.qmldir"
+        },
+        "3": {
+          "name": "entity.name.plugin.qmldir"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#path"
+            }
+          ]
+        }
+      }
+    },
+    "classname": {
+      "comment": "classname <C++ClassName>",
+      "name": "meta.classname.qmldir",
+      "match": "^\\s*(classname)\\s+([^\\s\"#]\\S*)(?=\\s+#|\\s*$)",
+      "captures": {
+        "1": {
+          "name": "keyword.other.classname.qmldir"
+        },
+        "2": {
+          "name": "entity.name.type.class.qmldir"
+        }
+      }
+    },
+    "typeinfo": {
+      "comment": "typeinfo <File>",
+      "name": "meta.typeinfo.qmldir",
+      "match": "^\\s*(typeinfo)\\s+(\"[^\"]*\"|[^\\s\"#]\\S*)(?=\\s+#|\\s*$)",
+      "captures": {
+        "1": {
+          "name": "keyword.other.typeinfo.qmldir"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#path"
+            }
+          ]
+        }
+      }
+    },
+    "import": {
+      "comment": "[default | optional] import <ModuleIdentifier> [<Version> | auto]",
+      "name": "meta.import.qmldir",
+      "match": "^\\s*(?:(default|optional)\\s+)?(import)\\s+([A-Za-z_][\\w.]*)(?:\\s+(?:(auto)|(\\d+\\.\\d+)))?(?=\\s+#|\\s*$)",
+      "captures": {
+        "1": {
+          "name": "storage.modifier.$1.qmldir"
+        },
+        "2": {
+          "name": "keyword.control.import.qmldir"
+        },
+        "3": {
+          "name": "entity.name.namespace.qmldir"
+        },
+        "4": {
+          "name": "constant.language.auto.qmldir"
+        },
+        "5": {
+          "name": "constant.numeric.version.qmldir"
+        }
+      }
+    },
+    "depends": {
+      "comment": "depends <ModuleIdentifier> [<Version> | auto]",
+      "name": "meta.depends.qmldir",
+      "match": "^\\s*(depends)\\s+([A-Za-z_][\\w.]*)(?:\\s+(?:(auto)|(\\d+\\.\\d+)))?(?=\\s+#|\\s*$)",
+      "captures": {
+        "1": {
+          "name": "keyword.other.depends.qmldir"
+        },
+        "2": {
+          "name": "entity.name.namespace.qmldir"
+        },
+        "3": {
+          "name": "constant.language.auto.qmldir"
+        },
+        "4": {
+          "name": "constant.numeric.version.qmldir"
+        }
+      }
+    },
+    "prefer": {
+      "comment": "prefer <Path>",
+      "name": "meta.prefer.qmldir",
+      "match": "^\\s*(prefer)\\s+(\"[^\"]*\"|[^\\s\"#]\\S*)(?=\\s+#|\\s*$)",
+      "captures": {
+        "1": {
+          "name": "keyword.other.prefer.qmldir"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#path"
+            }
+          ]
+        }
+      }
+    },
+    "linktarget": {
+      "comment": "linktarget <CMakeTarget>",
+      "name": "meta.linktarget.qmldir",
+      "match": "^\\s*(linktarget)\\s+([^\\s\"#]\\S*)(?=\\s+#|\\s*$)",
+      "captures": {
+        "1": {
+          "name": "keyword.other.linktarget.qmldir"
+        },
+        "2": {
+          "name": "entity.name.target.qmldir"
+        }
+      }
+    },
+    "directive": {
+      "comment": "Directives without arguments",
+      "name": "meta.directive.qmldir",
+      "match": "^\\s*(designersupported|static|system)(?=\\s+#|\\s*$)",
+      "captures": {
+        "1": {
+          "name": "keyword.other.$1.qmldir"
+        }
+      }
+    }
+  }
 }

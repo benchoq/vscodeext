@@ -1,0 +1,33 @@
+# SYNTAX TEST "source.qmldir" "module directive"
+# Copyright (C) 2026 The Qt Company Ltd.
+# SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+
+module MyModule
+# <------ keyword.other.module.qmldir
+#      ^^^^^^^^ entity.name.namespace.qmldir
+# <--------------- meta.module.qmldir
+
+module QtQuick.Controls.Basic
+# <------ keyword.other.module.qmldir
+#      ^^^^^^^^^^^^^^^^^^^^^^ entity.name.namespace.qmldir
+
+#------------------------------------------------------------------------------
+# surrounding whitespace and comments
+#------------------------------------------------------------------------------
+  module MyModule
+# ^^^^^^ keyword.other.module.qmldir
+#        ^^^^^^^^ entity.name.namespace.qmldir
+module MyModule # the module
+# <------ keyword.other.module.qmldir
+#      ^^^^^^^^ entity.name.namespace.qmldir
+#               ^ comment.line.number-sign.qmldir punctuation.definition.comment.qmldir
+#               ^^^^^^^^^^^^ - meta.module.qmldir
+
+#------------------------------------------------------------------------------
+# invalid
+#------------------------------------------------------------------------------
+module
+# <------ - keyword.other.module.qmldir
+module MyModule Extra
+# <------ - keyword.other.module.qmldir
+#      ^^^^^^^^ - entity.name.namespace.qmldir

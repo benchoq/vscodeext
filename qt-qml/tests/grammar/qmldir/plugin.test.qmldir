@@ -1,0 +1,34 @@
+# SYNTAX TEST "source.qmldir" "plugin directive"
+# Copyright (C) 2026 The Qt Company Ltd.
+# SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+
+plugin qtquick2plugin
+# <------ keyword.other.plugin.qmldir
+#      ^^^^^^^^^^^^^^ entity.name.plugin.qmldir
+# <--------------------- meta.plugin.qmldir
+plugin qtquick2plugin ../my-plugins/+myplugins
+# <------ keyword.other.plugin.qmldir
+#      ^^^^^^^^^^^^^^ entity.name.plugin.qmldir
+#                    ^ - string.unquoted.path.qmldir
+#                     ^^^^^^^^^^^^^^^^^^^^^^^^ string.unquoted.path.qmldir
+
+#------------------------------------------------------------------------------
+# optional
+#------------------------------------------------------------------------------
+optional plugin qtquick2plugin
+# <-------- storage.modifier.optional.qmldir
+#        ^^^^^^ keyword.other.plugin.qmldir
+#               ^^^^^^^^^^^^^^ entity.name.plugin.qmldir
+optional plugin qtquick2plugin ../myplugins
+# <-------- storage.modifier.optional.qmldir
+#        ^^^^^^ keyword.other.plugin.qmldir
+#               ^^^^^^^^^^^^^^ entity.name.plugin.qmldir
+#                              ^^^^^^^^^^^^ string.unquoted.path.qmldir
+
+#------------------------------------------------------------------------------
+# invalid
+#------------------------------------------------------------------------------
+plugin
+# <------ - keyword.other.plugin.qmldir
+plugin qtquick2plugin ../myplugins extra
+# <------ - keyword.other.plugin.qmldir

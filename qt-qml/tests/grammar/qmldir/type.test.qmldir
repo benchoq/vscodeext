@@ -1,0 +1,93 @@
+# SYNTAX TEST "source.qmldir" "type declarations"
+# Copyright (C) 2026 The Qt Company Ltd.
+# SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only
+
+#------------------------------------------------------------------------------
+# with version
+#------------------------------------------------------------------------------
+Margins 1.0 Margins.qml
+# <------- entity.name.type.qmldir
+#       ^^^ constant.numeric.version.qmldir
+#           ^^^^^^^^^^^ string.unquoted.path.qmldir
+# <----------------------- meta.type.qmldir
+Margins 10.1 ./my-qmls/+Fusion/Margins.qml
+# <------- entity.name.type.qmldir
+#       ^^^^ constant.numeric.version.qmldir
+#            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ string.unquoted.path.qmldir
+
+#------------------------------------------------------------------------------
+# without version (directory listing)
+#------------------------------------------------------------------------------
+Margins Margins.qml
+# <------- entity.name.type.qmldir
+#       ^^^^^^^^^^^ string.unquoted.path.qmldir
+#       ^^^^^^^^^^^ - constant.numeric.version.qmldir
+Margins ./my-qmls/Margins.qml
+# <------- entity.name.type.qmldir
+#       ^^^^^^^^^^^^^^^^^^^^^ string.unquoted.path.qmldir
+
+#------------------------------------------------------------------------------
+# singleton
+#------------------------------------------------------------------------------
+singleton Margins 1.0 Margins.qml
+# <--------- storage.modifier.singleton.qmldir
+#         ^^^^^^^ entity.name.type.qmldir
+#                 ^^^ constant.numeric.version.qmldir
+#                     ^^^^^^^^^^^ string.unquoted.path.qmldir
+# <--------------------------------- meta.type.qmldir
+singleton Margins ./my-qmls/Margins.qml
+# <--------- storage.modifier.singleton.qmldir
+#         ^^^^^^^ entity.name.type.qmldir
+#                 ^^^^^^^^^^^^^^^^^^^^^ string.unquoted.path.qmldir
+
+#------------------------------------------------------------------------------
+# internal
+#------------------------------------------------------------------------------
+internal MyPrivateType MyPrivateType.qml
+# <-------- storage.modifier.internal.qmldir
+#        ^^^^^^^^^^^^^ entity.name.type.qmldir
+#                      ^^^^^^^^^^^^^^^^^ string.unquoted.path.qmldir
+# <---------------------------------------- meta.type.qmldir
+internal MyPrivateType 1.0 MyPrivateType.qml
+# <-------- storage.modifier.internal.qmldir
+#        ^^^^^^^^^^^^^ entity.name.type.qmldir
+#                      ^^^ constant.numeric.version.qmldir
+#                          ^^^^^^^^^^^^^^^^^ string.unquoted.path.qmldir
+
+#------------------------------------------------------------------------------
+# quoted file name
+#------------------------------------------------------------------------------
+Margins 1.0 "my qmls/Margins.qml"
+# <------- entity.name.type.qmldir
+#           ^ string.quoted.double.qmldir punctuation.definition.string.begin.qmldir
+#            ^^^^^^^^^^^^^^^^^^^ string.quoted.double.qmldir
+#                               ^ string.quoted.double.qmldir punctuation.definition.string.end.qmldir
+
+#------------------------------------------------------------------------------
+# surrounding whitespace and comments
+#------------------------------------------------------------------------------
+    Margins 1.0 Margins.qml
+#   ^^^^^^^ entity.name.type.qmldir
+#           ^^^ constant.numeric.version.qmldir
+#               ^^^^^^^^^^^ string.unquoted.path.qmldir
+Margins 1.0 Margins.qml # Fusion style
+#           ^^^^^^^^^^^ string.unquoted.path.qmldir
+#                       ^ comment.line.number-sign.qmldir punctuation.definition.comment.qmldir
+#                         ^^^^^^^^^^^^ comment.line.number-sign.qmldir
+#                       ^^^^^^^^^^^^^^ - meta.type.qmldir
+Margins 1.0 Margins#1.qml
+#           ^^^^^^^^^^^^^ string.unquoted.path.qmldir
+#           ^^^^^^^^^^^^^ - comment.line.number-sign.qmldir
+
+#------------------------------------------------------------------------------
+# invalid
+#------------------------------------------------------------------------------
+margins 1.0 Margins.qml
+# <------- - entity.name.type.qmldir
+# <----------------------- - meta.type.qmldir
+Margins 1 Margins.qml
+# <------- - entity.name.type.qmldir
+Margins 1.0 Margins.qml Extra
+# <------- - entity.name.type.qmldir
+singleton Margins
+# <--------- - storage.modifier.singleton.qmldir
